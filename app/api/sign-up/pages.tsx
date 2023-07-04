@@ -1,4 +1,3 @@
-// since we're handling some change events, we're marking this as a client component ("use client")
 "use client";
 
 import InputField from "@/components/InputFields";
