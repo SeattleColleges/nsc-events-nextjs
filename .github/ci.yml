@@ -35,13 +35,11 @@ jobs:
       - name: Run Unit Tests
         run: npm run unit:tests
 
-
       #      - name: Run Error Handling Tests
       #        run: npm run test:error-handling
 
-#      - name: Code Coverage
-#        run: npm run test:coverage
-
+      - name: Code Coverage
+        run: npm run test:coverage
 
 #      - name: Run Redux/State Management Tests
 #        run: npm run redux:tests

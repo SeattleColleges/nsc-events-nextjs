@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "compile": "tsc",
-    "unit:tests": "jest tests/unit"
+    "unit:tests": "jest tests/unit",
+    "test:coverage": "jest --coverage--"
   },
   "dependencies": {
     "@types/node": "20.3.1",
