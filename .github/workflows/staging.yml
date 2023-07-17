@@ -1,13 +1,11 @@
 name: CI-CD Staging Workflow
 run-name: CI-CD Staging
 
-# runs when a branch is pushed to main or merged. The closing of the PR triggers the event and the if statements check
-# whether the branch was merged or not before running the CI and CD jobs
+# runs when a branch is pushed to staging or merged. The closing of the PR triggers the event and the if statements check
+# whether the branch was merged or not before running the CD jobs. CI runs on PR closed if PR was merged into staging
 on:
   push:
     branches: [ "staging"]
-
-  create:
 
   pull_request:
     branches: [ "staging" ]
@@ -16,7 +14,8 @@ on:
       - closed
 
 jobs:
-
+  # TODO: discuss whether this should run here because on successful CI run it will be merged from develop. Essentially
+  #  calling it 2x
   CI:
     uses: ./.github/workflows/ci.yml # reusable workflow file path
 
