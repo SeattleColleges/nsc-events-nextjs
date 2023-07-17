@@ -1,0 +1,31 @@
+name: Continuous Deployment
+run-name: Node.js CD
+on:
+  workflow_call: # required when creating a reusable workflow
+#    inputs:
+#      config-path:
+#        required: false
+#        type: string
+#    secrets:
+#      token:
+#        required: false
+jobs:
+  deploy-to-staging:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Run CD for Staging
+        run: |
+          # TODO Perform deployment steps for the staging environment
+
+  deploy-to-production:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Run CD for Production
+        run: |
+          echo Perform deployment steps for the production environment
