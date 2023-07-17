@@ -32,8 +32,9 @@ jobs:
       - name: Lint Code
         run: npm run lint --if-present
 
-#      - name: Run Unit Tests
-#        run: npm run unit:tests
+      - name: Run Unit Tests
+        run: npm run unit:tests
+
 
       #      - name: Run Error Handling Tests
       #        run: npm run test:error-handling
