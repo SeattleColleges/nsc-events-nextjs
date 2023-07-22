@@ -5,11 +5,11 @@ run-name: CI-CD Workflow
 # whether the branch was merged or not before running the CI and CD jobs
 on:
   push:
-    branches:
-      - staging
+    branches: [ "staging"]
+
   pull_request:
-    branches:
-      - staging
+    branches: [ "staging" ]
+
     types:
       - closed
 
