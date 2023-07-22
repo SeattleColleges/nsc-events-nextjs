@@ -19,7 +19,7 @@ jobs:
 
   CI:
     uses: ./.github/workflows/ci.yml # reusable workflow file path
-    if: github.event.pull_request.merged == true || github.event_name == 'push'
+
 
   CD:
     uses: ./.github/workflows/cd.yml # reusable workflow file path
