@@ -33,4 +33,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# intellij
 /.idea/
+
+# env files
+.env*
+!.env.sample
