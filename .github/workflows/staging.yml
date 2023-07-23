@@ -1,8 +1,29 @@
 name: CI-CD Staging Workflow
 run-name: CI-CD Staging
 
-# runs when a branch is pushed to staging or merged. The closing of the PR triggers the event and the if statements check
-# whether the branch was merged or not before running the CD jobs. CI runs on PR closed if PR was merged into staging
+# This is the CI-CD Staging Workflow.
+# The purpose of this workflow is to automate the process of integrating (CI) and deploying (CD) code changes
+# that are pushed to the 'staging' branch or merged into 'staging' via a pull request.
+#
+# The workflow is triggered in two scenarios:
+# 1. When a branch is pushed to 'staging'.
+# 2. When a pull request targeting the 'staging' branch is closed (which typically happens when it's merged).
+#
+# The workflow consists of two jobs: 'CI' and 'CD'.
+#
+# The 'CI' job:
+# - Is defined in the separate '.github/workflows/ci.yml' file.
+# - Runs every time the workflow is triggered, regardless of the specific event.
+# - Represents the 'Continuous Integration' part of the workflow, where the code changes are built and tested.
+#
+# The 'CD' job:
+# - Is defined in the separate '.github/workflows/cd.yml' file.
+# - Depends on the 'CI' job, meaning it only runs if the 'CI' job has completed successfully.
+# - Only runs if the workflow was triggered by a push to 'staging' or by merging a pull request into 'staging'.
+# - Represents the 'Continuous Deployment' part of the workflow, where the integrated code changes are deployed.
+#
+# This setup ensures that code changes are always integrated and tested (CI) when they're pushed to 'staging' or merged into 'staging',
+# and that they're only deployed (CD) if the integration was successful and the change was a push or a merged pull request.
 on:
   push:
     branches: [ "staging"]

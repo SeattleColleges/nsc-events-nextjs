@@ -33,3 +33,4 @@ jobs:
     uses: ./.github/workflows/ci.yml # reusable workflow file path
 
   #TODO: add merging into staging here on successful CI run and is a PR from develop
+  # if pull request is closed and merged = true
