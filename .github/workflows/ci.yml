@@ -10,36 +10,34 @@ on:
 #      token:
 #        required: false
 jobs:
-  check-code:
+  build-and-test:
+
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x, 18.x, 19.x ] #
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      # TODO: use typescript compiler to validate code
-
-      - name: Set up Node.js
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
-          node-version: 16 # originally using v14 but getting error. I believe using setup-node@v2 would allow older version
-
-      - name: Install dependencies
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      - name: Clean install
         run: npm ci
-
-      - name: Compile TypeScript
-        run: npx tsc --listFiles
-
-      - name: Lint Code
-        run: npm run lint --if-present
-
-      - name: Run Unit Tests
+      - name: Run linter
+        run: npm run lint
+      - name: Compile typescript
+        run: npm run compile
+      - name: Jest unit tests
         run: npm run unit:tests
-
-      #      - name: Run Error Handling Tests
-      #        run: npm run test:error-handling
-
-      - name: Code Coverage
+      - name: Test coverage
         run: npm run test:coverage
+#      - name: Build App
+#        run: npm run build --if-present
 
 #      - name: Run Redux/State Management Tests
 #        run: npm run redux:tests

@@ -18,7 +18,7 @@ jobs:
 
       - name: Run CD for Staging
         run: |
-          # TODO Perform deployment steps for the staging environment
+          echo Perform deployment steps for the staging environment
 
   deploy-to-production:
     runs-on: ubuntu-latest
