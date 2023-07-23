@@ -1,5 +1,5 @@
 name: CI New Branch
-run-name: CI-CD Staging
+run-name: CI-Merge New Branch
 
 # This is the CI New Branch Workflow.
 # The purpose of this workflow is to automate the process of integrating (CI) code changes
