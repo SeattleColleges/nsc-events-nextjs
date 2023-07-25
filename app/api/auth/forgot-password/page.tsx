@@ -1,25 +1,26 @@
 'use client';
 import React from 'react';
+import styles from './page.module.css';
 
 const ForgotPassword = () => {
   return (
-    <div className="flex justify-center items-center h-screen">
-      <div className="bg-gray-100 p-8 rounded shadow-md">
-          <h2 className="text-2xl mb-4">Forgot Password</h2>
+    <div className={styles.flexContainer}>
+      <div className={styles.formContainer}>
+          <h2 className={styles.title}>Forgot Password</h2>
           <form>
-            <div className="mb-4">
-              <label htmlFor="email" className="block text-gray-700 font-bold mb-2">
+            <div className={styles.mb4}>
+              <label htmlFor="email" className={styles.inputLabel}>
                 Email
               </label>
               <input
                 type="email"
                 id="email"
-                className="w-full p-2 border border-gray-300 rounded text-black"
+                className={styles.inputLabel}
                 placeholder="Enter your email"/>
             </div>
             <button
             type="submit"
-            className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 mb-4">
+            className={styles.submitButton}>
             Submit
           </button>
         </form>

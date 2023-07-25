@@ -1,0 +1,42 @@
+/* Signin.module.css */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.formContainer {
+  width: 33.3333%;
+}
+
+.inputLabel {
+  display: block;
+  color: #333;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.inputField {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  color: #000;
+}
+
+.submitButton {
+  width: 100%;
+  padding: 8px;
+  margin-top: 16px;
+  font-weight: bold;
+  text-align: center;
+  color: #fff;
+  background-color: #007bff;
+  border-radius: 4px;
+}
+
+.submitButton:hover {
+  background-color: #0056b3;
+}

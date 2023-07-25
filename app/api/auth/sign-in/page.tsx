@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ChangeEventHandler, FormEventHandler, useState } from "react";
 import { signIn } from "next-auth/react";
 import Router, { useRouter } from "next/navigation";
+import styles from './page.module.css';
 
 // similar to sign-up page, but we're only handling email and password 
 const Signin = () => {
@@ -43,8 +44,8 @@ const Signin = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen">
-      <form className="w-1/3" onSubmit={handleSubmit}>
+    <div className={styles.container}>
+      <form className={styles.formContainer} onSubmit={handleSubmit}>
         <InputField
           label="Email"
           type="email"
@@ -60,7 +61,7 @@ const Signin = () => {
           onChange={handleChange}
         />
         <button 
-          className="w-full py-2 mt-4 font-semibold text-white bg-blue-500 rounded-md hover:bg-blue-600"
+          className={styles.inputField}
           type="submit">Sign Up</button>
       </form>
     </div>
