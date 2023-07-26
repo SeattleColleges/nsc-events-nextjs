@@ -3,7 +3,7 @@ run-name: CI-New-Branch
 
 # This is the CI New Branch Workflow.
 # The purpose of this workflow is to automate the process of integrating (CI) code changes
-# that are made on new branches or on pull requests targeting the 'develop' branch.
+# that are made on new branches or on pull requests targeting the 'main' branch which we use for development.
 #
 # The workflow is triggered in two scenarios:
 # 1. When a new branch is created. This is triggered by the 'create' event.
@@ -23,7 +23,7 @@ on:
   create:
 
   pull_request:
-    branches: [ "develop" ]
+    branches: [ "main" ]
 
     types:
       - opened
@@ -34,3 +34,25 @@ jobs:
 
   #TODO: add merging into staging here on successful CI run and is a PR from develop
   # if pull request is closed and merged = true
+  merge-to-staging:
+    if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          ref: staging
+
+      - name: Merge main into staging
+        run: |
+          git config user.name "theGaryLarson"
+          git config user.email "gary.larson@seattlecolleges.edu"
+          git fetch origin main
+          git checkout staging
+          git merge origin/main --no-edit
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: staging
