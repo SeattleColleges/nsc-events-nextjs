@@ -19,7 +19,19 @@ run-name: Sync-Staging
 on:
   push:
     branches: ["main"]
-
+permissions:
+  contents: write
+  actions: write
+  checks: write
+  deployments: write
+  discussions: write
+  issues: write
+  pages: read
+  packages: write
+  pull-requests: write
+  repository-projects: write
+  security-events: write
+  statuses: write
 jobs:
   sync-branch:
     runs-on: ubuntu-latest
