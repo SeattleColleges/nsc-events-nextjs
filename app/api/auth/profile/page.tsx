@@ -1,30 +1,32 @@
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/router";
+// todo: this will be the users profile page when they've signed in
 
-const Profile = () => {
-  const { data: session, status } = useSession();
-  const router = useRouter();
+// import { useSession } from "next-auth/react";
+// import { useRouter } from "next/navigation";
 
-  if (status === "loading") {
-    // Handle loading state
-    return <div>Loading...</div>;
-  }
+// const Profile = () => {
+//   const { data: session, status } = useSession();
+//   const router = useRouter();
 
-  if (!session) {
-    // Redirect the user to the sign-in page if there is no active session
-    router.replace("/auth/sign-in");
-    return null;
-  }
+//   if (status === "loading") {
+//     // Handle loading state
+//     return <div>Loading...</div>;
+//   }
 
-  const { user } = session;
+//   if (!session) {
+//     // Redirect the user to the sign-in page if there is no active session
+//     router.replace("/auth/sign-in");
+//     return null;
+//   }
 
-  return (
-    <div className="flex flex-col items-center justify-center min-h-screen">
-      <h1>Welcome, {user?.name}!</h1>
-      <p>Email: {user?.email}</p>
-      <p>Profile information goes here...</p>
-    </div>
-  );
-};
+//   const { user } = session;
 
-export default Profile;
+//   return (
+//     <div className="flex flex-col items-center justify-center min-h-screen">
+//       <h1>Welcome, {user?.name}!</h1>
+//       <p>Email: {user?.email}</p>
+//       <p>Profile information goes here...</p>
+//     </div>
+//   );
+// };
+
+// export default Profile;

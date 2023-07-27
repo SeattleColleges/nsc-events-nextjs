@@ -40,7 +40,8 @@ const Signin = () => {
     // check if the response contains an error and update error state if necessary
     if (res?.error) return setError(res.error);
     // if no error, we've successfully signed in, then we'll route user to their profile
-    router.replace("/profile")
+    // todo: once successfully signed in, route user to their profile
+    // router.replace("/profile")
   };
 
   return (
