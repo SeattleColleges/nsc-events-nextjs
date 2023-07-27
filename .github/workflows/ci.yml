@@ -1,0 +1,77 @@
+name: Continuous Integration
+run-name: Node.js CI
+on:
+  workflow_call: # required when creating a reusable workflow
+#    inputs:
+#      config-path:
+#        required: false
+#        type: string
+#    secrets:
+#      token:
+#        required: false
+jobs:
+  build-and-test:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x, 18.x] # 19.x stalling on seattlecolleges repo but running fine on my forked repo..
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      - name: Clean install
+        run: npm ci
+      - name: Run linter
+        run: npm run lint
+      - name: Compile typescript
+        run: npm run compile
+      - name: Jest unit tests
+        run: npm run unit:tests
+      - name: Test coverage
+        run: npm run test:coverage
+
+#      - name: Run Redux/State Management Tests
+#        run: npm run redux:tests
+#
+#      - name: Run Component Tests
+#        run: npm run test:components
+#
+#      - name: Run End-to-End Tests
+#        run: npm run test:e2e
+#
+#      - name: Run Snapshot Tests
+#        run: npm run test:snapshot
+#
+#      - name: Run Routing Tests
+#        run: npm run test:routing
+#
+#      - name: Run API Tests
+#        run: npm run test:api
+#
+#      - name: Run Integration Tests
+#        run: npm run test:integration
+
+#      - name: Build App
+#        run: npm run build --if-present
+
+# https://docs.github.com/en/actions/using-workflows/storing-workflow-data-as-artifacts
+#      - name: Archive Next.js build
+#          uses: actions/upload-artifact@v3
+#          with:
+#            name: next.js-build
+#            path: .next/
+#
+#          - name: Archive code coverage results
+#            uses: actions/upload-artifact@v3
+#            with:
+#              name: code-coverage-report
+#              path: docs/coverage/index.html
+#              retention-days: 14
+

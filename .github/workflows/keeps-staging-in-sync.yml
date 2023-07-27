@@ -1,0 +1,58 @@
+# This GitHub Actions workflow is named "Sync Main to Staging"
+# It will run when there is a push to the "main" branch
+
+# The job is named "sync-branch"
+# It will run on the latest Ubuntu environment
+
+# The first step checks out the code using the actions/checkout action
+
+# The second step is named "Merge main(dev) -> staging"
+# It merges the "main" branch into the "staging" branch
+# - `type: now` does the merge immediately
+# - `from_branch: main` is the source branch
+# - `target_branch: staging` is the destination branch
+# - `github_token: ${{ secrets.GITHUB_TOKEN }}` provides access to the repo for merging
+
+name: Sync Main to Staging
+run-name: Sync-Staging
+
+on:
+  push:
+    branches: ["main"]
+permissions: # we can tighten this up in settings but are able to set customize permissions against GITHUB_TOKEN in Yaml
+  contents: write
+  actions: write
+  checks: write
+  deployments: write
+  discussions: write
+  issues: write
+  pages: read
+  packages: write
+  pull-requests: write
+  repository-projects: write
+  security-events: write
+  statuses: write
+jobs:
+  sync-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # fetch all history so we can perform a merge
+          ref: 'staging'
+      - name: Configure Git
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git push origin staging
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Merge main(dev) -> staging # git merge main --no-ff -> no fast forwarding makes it easier to track changes
+        run: |
+          git checkout main
+          git pull
+          git checkout staging
+          git merge main --no-ff
+          git push origin staging
