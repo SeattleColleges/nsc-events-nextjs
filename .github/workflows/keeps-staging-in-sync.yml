@@ -25,7 +25,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-      - uses: actions/checkout@v3
+        uses: actions/checkout@v3
          with:
            fetch-depth: 0 # fetch all history so we can perform a merge
       - name: Configure Git
@@ -36,8 +36,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Merge main(dev) -> staging
+      - name: Merge main(dev) -> staging # git merge main --no-ff -> no fast forwarding makes it easier to track changes
         run: |
           git checkout staging
-          git merge main --no-ff
+          git merge main --no-ff  
           git push origin staging
