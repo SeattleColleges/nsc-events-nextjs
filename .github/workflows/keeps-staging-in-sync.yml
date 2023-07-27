@@ -19,7 +19,7 @@ run-name: Sync-Staging
 on:
   push:
     branches: ["main"]
-permissions:
+permissions: # we can tighten this up in settings but are able to set customize permissions against GITHUB_TOKEN in Yaml
   contents: write
   actions: write
   checks: write
