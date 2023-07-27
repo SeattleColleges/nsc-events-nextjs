@@ -24,12 +24,20 @@ jobs:
   sync-branch:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
       - uses: actions/checkout@v3
+         with:
+           fetch-depth: 0 # fetch all history so we can perform a merge
+      - name: Configure Git
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git push origin staging
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Merge main(dev) -> staging
         run: |
-          git config --global user.name 'theGaryLarson'
-          git config --global user.email 'theGaryLarson@users.noreply.github.com'
           git checkout staging
           git merge main --no-ff
           git push origin staging
