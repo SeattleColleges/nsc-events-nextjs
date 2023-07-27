@@ -54,5 +54,5 @@ jobs:
           git checkout main
           git pull
           git checkout staging
-          git merge main --no-ff  
+          git merge main --no-ff
           git push origin staging
