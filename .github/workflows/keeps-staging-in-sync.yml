@@ -24,12 +24,12 @@ jobs:
   sync-branch:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@main
+      - uses: actions/checkout@v2
 
       - name: Merge main(dev) -> staging
-        uses: devmasx/merge-branch@master
-        with:
-          type: now
-          from_branch: main
-          target_branch: staging
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config --global user.name 'theGaryLarson'
+          git config --global user.email 'theGaryLarson@users.noreply.github.com'
+          git checkout staging
+          git merge main --no-ff
+          git push origin staging
