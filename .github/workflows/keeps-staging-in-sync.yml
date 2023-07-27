@@ -40,7 +40,6 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0 # fetch all history so we can perform a merge
-          ref: 'refs/heads/*'
       - name: Configure Git
         run: |
           git config user.name "GitHub Actions"
@@ -51,6 +50,8 @@ jobs:
 
       - name: Merge main(dev) -> staging # git merge main --no-ff -> no fast forwarding makes it easier to track changes
         run: |
+          git checkout main
+          git pull
           git checkout staging
           git merge main --no-ff  
           git push origin staging
