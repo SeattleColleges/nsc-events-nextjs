@@ -27,6 +27,7 @@ jobs:
       - uses: actions/checkout@main
 
       - name: Merge main(dev) -> staging
+        uses: devmasx/merge-branch@master
         with:
           type: now
           from_branch: main
