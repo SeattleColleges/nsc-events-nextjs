@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import styles from './page.module.css';
+import styles from './forget-password-page.module.css';
 
 const ForgotPassword = () => {
   return (

@@ -2,7 +2,7 @@
 import InputField from "@/components/InputFields";
 import Link from "next/link";
 import { ChangeEventHandler, FormEventHandler, useState } from "react";
-import styles from './page.module.css';
+import styles from './signup-page.module.css';
 
 const SignUp = () => {
   // handling user's incoming info

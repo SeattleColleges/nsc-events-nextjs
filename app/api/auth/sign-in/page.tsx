@@ -5,7 +5,7 @@ import Link from "next/link";
 import { ChangeEventHandler, FormEventHandler, useState } from "react";
 import { signIn } from "next-auth/react";
 import Router, { useRouter } from "next/navigation";
-import styles from './page.module.css';
+import styles from './signin-page.module.css';
 
 // similar to sign-up page, but we're only handling email and password 
 const Signin = () => {
