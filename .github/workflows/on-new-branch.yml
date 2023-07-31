@@ -1,13 +1,9 @@
-name: CI On Branch Creation
-run-name: CI (On Branch Creation)
-
 # This is the CI New Branch Workflow.
 # The purpose of this workflow is to automate the process of integrating (CI) code changes
 # that are made on new branches or on pull requests targeting the 'main' branch which we use for development.
 #
-# The workflow is triggered in two scenarios:
+# The workflow is triggered::
 # 1. When a new branch is created. This is triggered by the 'create' event.
-# 2. When a pull request is opened that targets the 'develop' branch. This is triggered by the 'pull_request' event with the 'opened' type.
 #
 # The workflow consists of a single job: 'CI'.
 #
@@ -16,7 +12,10 @@ run-name: CI (On Branch Creation)
 # - Runs every time the workflow is triggered, regardless of the specific event.
 # - Represents the 'Continuous Integration' part of the workflow, where the code changes are built and tested.
 #
-# This setup ensures that code changes are always integrated and tested (CI) when they're made on a new branch or included in a pull request targeting 'develop'.
+# This setup ensures that code changes are always integrated and tested (CI) when they're made on a new branch.
+
+name: CI On Branch Creation
+run-name: CI (On Branch Creation)
 
 on:
 
