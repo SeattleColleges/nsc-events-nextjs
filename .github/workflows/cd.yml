@@ -13,8 +13,10 @@ jobs:
   deploy-to-staging:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+#      - name: Download build
+#          uses: actions/download-artifact@v3
+#          with:
+#            name: next.js-build
 
       - name: Run CD for Staging
         run: |
@@ -23,8 +25,10 @@ jobs:
   deploy-to-production:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+#      - name: Download build
+#        uses: actions/download-artifact@v3
+#        with:
+#          name: next.js-build
 
       - name: Run CD for Production
         run: |
