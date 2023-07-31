@@ -1,5 +1,14 @@
-name: Continuous Deployment
-run-name: Node.js CD
+# CD workflow to deploy app to production environment.
+# Defines one job - deploy-to-production.
+# Job runs on ubuntu-latest runner.
+#  Steps:
+#   - Download build artifact
+#   - Run CD script to deploy app to production
+# Workflow is reusable and triggered via workflow_call.
+# Can pass inputs and secrets.
+
+name: CD Production
+run-name: Node.js CD (production)
 on:
   workflow_call: # required when creating a reusable workflow
 #    inputs:
@@ -10,18 +19,6 @@ on:
 #      token:
 #        required: false
 jobs:
-  deploy-to-staging:
-    runs-on: ubuntu-latest
-    steps:
-#      - name: Download build
-#          uses: actions/download-artifact@v3
-#          with:
-#            name: next.js-build
-
-      - name: Run CD for Staging
-        run: |
-          echo Perform deployment steps for the staging environment
-
   deploy-to-production:
     runs-on: ubuntu-latest
     steps:
