@@ -11,11 +11,11 @@
 # jobs.CI: Runs the CI workflow defined in .github/workflows/ci.yml
 # CI.if: Only runs if the PR was merged or if it was a push (not a PR)
 
-# jobs.CD: Runs the CD workflow defined in .github/workflows/cd.yml
+# jobs.CD: Runs the CD workflow defined in .github/workflows/cd-production.yml
 # CD.needs: Runs after the "CI" job completes successfully
 # CD.if: Only runs if the PR was merged or if it was a push (not a PR)
 
-name: CI-CD Staging Workflow
+name: Main Staging Workflow
 run-name: CI-CD Staging
 
 on:
@@ -29,6 +29,7 @@ on:
       - closed
 
 jobs:
+  # redundant check to ensure CI passes before deployment
   CI:
     if: github.event.pull_request.merged == true || github.event_name == 'push'
     uses: ./.github/workflows/ci.yml # reusable workflow file path
@@ -36,7 +37,7 @@ jobs:
 
   CD:
     if: github.event.pull_request.merged == true || github.event_name == 'push'
-    uses: ./.github/workflows/cd.yml # reusable workflow file path
+    uses: ./.github/workflows/cd-staging.yml # reusable workflow file path
     needs: CI
 
 
