@@ -29,6 +29,7 @@ on:
       - closed
 
 jobs:
+
   CI:
     if: github.event.pull_request.merged == true || github.event_name == 'push'
     uses: ./.github/workflows/ci.yml # reusable workflow file path
@@ -38,6 +39,5 @@ jobs:
     if: github.event.pull_request.merged == true || github.event_name == 'push'
     uses: ./.github/workflows/cd.yml # reusable workflow file path
     needs: CI
-
 
 
