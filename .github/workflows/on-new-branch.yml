@@ -1,5 +1,5 @@
-name: CI New Branch
-run-name: CI On New Branch
+name: CI On Branch Creation
+run-name: CI (On Branch Creation)
 
 # This is the CI New Branch Workflow.
 # The purpose of this workflow is to automate the process of integrating (CI) code changes
@@ -21,12 +21,6 @@ run-name: CI On New Branch
 on:
 
   create:
-
-  pull_request:
-    branches: [ "main" ]
-
-    types:
-      - opened
 
 jobs:
   CI:
