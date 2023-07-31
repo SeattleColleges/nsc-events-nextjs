@@ -36,8 +36,6 @@ jobs:
         run: npm run unit:tests
       - name: Test coverage
         run: npm run test:coverage
-#      - name: Build App
-#        run: npm run build --if-present
 
 #      - name: Run Redux/State Management Tests
 #        run: npm run redux:tests
@@ -60,4 +58,21 @@ jobs:
 #      - name: Run Integration Tests
 #        run: npm run test:integration
 
+
+#      - name: Build App
+#        run: npm run build --if-present
+
+# https://docs.github.com/en/actions/using-workflows/storing-workflow-data-as-artifacts
+#      - name: Archive Next.js build
+#          uses: actions/upload-artifact@v3
+#          with:
+#            name: next.js-build
+#            path: .next/
+#
+#          - name: Archive code coverage results
+#            uses: actions/upload-artifact@v3
+#            with:
+#              name: code-coverage-report
+#              path: docs/coverage/index.html
+#              retention-days: 14
 
