@@ -1,17 +1,12 @@
-# This GitHub Actions workflow is named "Sync Main to Staging"
-# It will run when there is a push to the "main" branch
-
-# The job is named "sync-branch"
-# It will run on the latest Ubuntu environment
-
-# The first step checks out the code using the actions/checkout action
-
-# The second step is named "Merge main(dev) -> staging"
-# It merges the "main" branch into the "staging" branch
-# - `type: now` does the merge immediately
-# - `from_branch: main` is the source branch
-# - `target_branch: staging` is the destination branch
-# - `github_token: ${{ secrets.GITHUB_TOKEN }}` provides access to the repo for merging
+# Workflow to sync main branch changes into staging branch.
+# Triggered on pushes to main branch.
+# Jobs:
+# - CI-preSyncCheck: Runs CI checks on main branch.
+# - sync-branch:
+#   - Checks out staging branch
+#   - Merges main into staging with --no-ff
+#   - Pushes merged staging branch
+# Merging with --no-ff creates a merge commit to track changes.
 
 name: Sync Main to Staging
 run-name: Sync-Staging
