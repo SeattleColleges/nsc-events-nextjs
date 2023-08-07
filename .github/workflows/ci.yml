@@ -1,9 +1,5 @@
-# CI workflow to build and test a Next.js app.
-# Sets up Node, performs a clean install, runs lint, compiles typescript, unit tests, code coverage.
-# Builds production build title next.js-build and uploads as artifact.
-# Workflow runs on ubuntu-latest and uses matrix build for Node version.
 
-name: CI (
+name: Continuous Integration
 run-name: Node.js CI
 on:
   workflow_call: # required when creating a reusable workflow

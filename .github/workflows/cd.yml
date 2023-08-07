@@ -1,0 +1,35 @@
+name: Continuous Deployment
+run-name: Node.js CD
+on:
+  workflow_call: # required when creating a reusable workflow
+#    inputs:
+#      config-path:
+#        required: false
+#        type: string
+#    secrets:
+#      token:
+#        required: false
+jobs:
+  deploy-to-staging:
+    runs-on: ubuntu-latest
+    steps:
+#      - name: Download build
+#          uses: actions/download-artifact@v3
+#          with:
+#            name: next.js-build
+
+      - name: Run CD for Staging
+        run: |
+          echo Perform deployment steps for the staging environment
+
+  deploy-to-production:
+    runs-on: ubuntu-latest
+    steps:
+#      - name: Download build
+#        uses: actions/download-artifact@v3
+#        with:
+#          name: next.js-build
+
+      - name: Run CD for Production
+        run: |
+          echo Perform deployment steps for the production environment
