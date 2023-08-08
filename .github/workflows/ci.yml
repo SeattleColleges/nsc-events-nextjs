@@ -1,3 +1,4 @@
+
 name: Continuous Integration
 run-name: Node.js CI
 on:
@@ -58,21 +59,21 @@ jobs:
 #      - name: Run Integration Tests
 #        run: npm run test:integration
 
-
-#      - name: Build App
-#        run: npm run build --if-present
+      - name: Build App
+        run: npm run build --if-present
 
 # https://docs.github.com/en/actions/using-workflows/storing-workflow-data-as-artifacts
-#      - name: Archive Next.js build
-#          uses: actions/upload-artifact@v3
-#          with:
-#            name: next.js-build
-#            path: .next/
-#
-#          - name: Archive code coverage results
-#            uses: actions/upload-artifact@v3
-#            with:
-#              name: code-coverage-report
-#              path: docs/coverage/index.html
-#              retention-days: 14
+      - name: Archive Next.js build
+        uses: actions/upload-artifact@v3
+        with:
+            name: next.js-build-${{ matrix.node-version }}
+            path: .next/
+            retention-days: 14
+
+      - name: Archive code coverage results
+        uses: actions/upload-artifact@v3
+        with:
+          name: code-coverage-report-${{ matrix.node-version }}
+          path: docs/coverage/index.html
+          retention-days: 14
 
