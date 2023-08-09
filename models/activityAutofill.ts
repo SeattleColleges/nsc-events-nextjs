@@ -1,4 +1,6 @@
- const eventAutofill = {
+import { Event } from './activity'; // Assuming the Event interface is exported from 'event.ts' in the same directory
+
+const activityAutofill: Event = {
     eventCreatorId: 'user-guid',
     eventTitle: "Sample Event",
     eventDescription: "This is a sample event description.",
@@ -20,13 +22,13 @@
     eventCancellationPolicy: "Full refund if canceled at least 7 days before the event.",
     eventContact: "contact@example.com",
     eventSocialMedia: {
-    facebook: "https://www.facebook.com/sampleevent",
+        facebook: "https://www.facebook.com/sampleevent",
         twitter: "https://twitter.com/sampleevent",
         instagram: "https://www.instagram.com/sampleevent",
         hashtag: "#SampleEvent2023"
-},
+    },
     eventPrivacy: "Public",
     eventAccessibility: "Wheelchair accessible venue."
-}
+};
 
-export default eventAutofill;
+export default activityAutofill;
