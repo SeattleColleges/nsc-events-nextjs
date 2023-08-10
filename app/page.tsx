@@ -34,12 +34,12 @@ const Login = () => {
           </button>
         </form>
         <p className={styles.textCenter}>
-          <a href="/api/auth/forgot-password" className={styles.link}>
+          <a href="/auth/forgot-password" className={styles.link}>
             Forgot Password
           </a>
         </p>
         <p className={styles.textCenter}>
-          <a href="/api/auth/sign-up" className={styles.link}>
+          <a href="/auth/sign-up" className={styles.link}>
             Sign Up
           </a>
         </p>
