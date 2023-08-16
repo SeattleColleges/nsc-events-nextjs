@@ -1,3 +1,5 @@
+import startDb from "@/lib/db";
+import UserModel from "@/models/userModel";
 import { NextResponse } from "next/server";
 
 
@@ -27,6 +29,28 @@ export const POST = async (req: Request): Promise<NewResponse> => {
   // request the data coming from the frontend, then compare incoming data to what's in our db
   const body = (await req.json()) as NewUserRequest;
 
+  await startDb();
+
+    const existingUser = await UserModel.findOne({ email: body.email})
+    if (existingUser) {
+        return NextResponse.json(
+            {error: "email is already in use!"},
+            {status: 422}
+        );
+    }
+    // if a new user create with NewUserRequest
+    const user = await UserModel.create({...body});
+
+    return NextResponse.json({
+        user: {
+        id: user._id.toString(),
+        email: user.email,
+        name: user.name,
+        role: user.role,
+    },
+
+    });
+
 
   // todo: once db has been created along with construction of schema, 
         // we can compare sign-up email to emails in our db 
@@ -34,14 +58,14 @@ export const POST = async (req: Request): Promise<NewResponse> => {
         // then return new user info as a response to the frontend sign-up page
 
 
-  return NextResponse.json({
-    user: {
-      id: "_id",
-      email: "email",
-      name: "name",
-      role: "role",
-    },
-  });
+  // return NextResponse.json({
+  //   user: {
+  //     id: "_id",
+  //     email: "email",
+  //     name: "name",
+  //     role: "role",
+  //   },
+  // });
 
 };
 
