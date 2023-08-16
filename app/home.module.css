@@ -1,0 +1,99 @@
+/* Home page CSS */
+.container {
+  background-color: #bec3c8;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.formContainer {
+  background-color: #dbdfe0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  border-radius: 15px;
+  width: 800px;
+  margin-bottom: 30vh;
+}
+
+.logoContainer {
+  display: block;
+  margin: 0 auto;
+  width: 100px;
+  height: 100px;
+  margin-bottom: 1rem;
+}
+
+.title {
+  text-align: center;
+  color: #101c29;
+  font-weight: bold;
+  font-size: 2.2rem;
+  margin-bottom: 1rem;
+}
+
+.loginButton {
+  display: inline-block;
+  padding: 8px 16px;
+  font-size: 1.15rem;
+  border-radius: 4px;
+  outline: 1px solid #101c29;
+  cursor: pointer;
+  text-align: center;
+  border: none;
+  color: #101c29;
+  background-color: #f0f0f0;
+  font-weight: bold;
+  transition: background-color 0.3s ease-in-out;
+  margin-right: 15px;
+  box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.1);
+}
+
+.loginButton:hover {
+  background-color: #101c29;
+  color: #f0f0f0;
+}
+
+.signUpButton {
+  display: inline-block;
+  padding: 8px 16px;
+  font-size: 1.15rem;
+  border-radius: 4px;
+  outline: none;
+  cursor: pointer;
+  text-align: center;
+  border: 1px solid #101c29;
+  color: #101c29;
+  font-weight: bold;
+  margin: 1.5rem 0;
+  transition: background-color 0.3s ease-in-out;
+  box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.1);
+}
+
+.signUpButton:hover {
+  background-color: #101c29;
+  color: #f0f0f0;
+}
+
+.downloadButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 10px;
+  color: #101c29;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  text-decoration: none;
+}
+
+.downloadButton:hover {
+  background-color: #f0f0f0;
+  text-decoration: underline;
+  box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.1);
+}

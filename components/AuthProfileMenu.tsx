@@ -1,34 +1,20 @@
-"use client"
+"use client";
 import { useSession, signOut } from "next-auth/react";
 import Link from "next/link";
 import React from "react";
 
-
 export default function AuthProfileMenu() {
-    const {data, status} = useSession();
+  const {data, status} = useSession();
 
-    const isAuth = status === "authenticated";
+  const isAuth = status === "authenticated";
 
-    if (isAuth) {
-        return (
-            <p>
-                {data?.user?.name} <button onClick={() => signOut()}>logout</button>
-            </p>
-        )
-    }
+  if (isAuth) {
     return (
-        <ul className="flex items-center space-x-6">
-            <li>
-                <Link href="/auth/sign-in">Login</Link>
-            </li>
-            <li>
-                <Link
-                    className="bg-blue-500 text-white rounded p-3 inline-block shadow-sm"
-                    href="/auth/sign-up"
-                >
-                  Sign-up
-                </Link>
-            </li>
-        </ul>
-    )
+        <div className="flex items-center justify-center">
+            <a href="/profile" className="hover:underline">Hi {data?.user?.name},</a>
+            <a className="ml-3 hover:underline" href="/create-event">Create Event</a>
+            <button className="ml-3 hover:underline" onClick={() => signOut({ callbackUrl: "/" })}>Sign out</button>
+        </div>
+    );
+  }
 }
