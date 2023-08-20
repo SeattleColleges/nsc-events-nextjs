@@ -4,6 +4,7 @@ import TagSelector from "@/components/TagSelector"
 import {Event} from "@/models/activity";
 import activityAutofill from "@/models/activityAutofill";
 
+//test
 const CreateEvent = () => {
     const [eventData, setEventData] = useState<Event>(activityAutofill);
 

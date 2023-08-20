@@ -44,6 +44,7 @@ const SignUp = () => {
   return (
     <div className={styles.container}>
       <form className={styles.formContainer} onSubmit={handleSubmit}>
+        <h1 className={styles.title}>Sign Up</h1>
         <InputField
           label="Name"
           type="name"
@@ -65,12 +66,19 @@ const SignUp = () => {
           value={password}
           onChange={handleChange}
         />
-        <button 
-          className={styles.inputField}
-          type="submit">Sign Up</button>
-      </form> 
+        <button className={styles.submitButton} type="submit">
+          Sign Up
+        </button>
+        <p className={styles.textCenter}>
+          Already have an account?{" "}
+          <a href="sign-in" className={styles.link}>
+            Log In
+          </a>
+        </p>
+        
+      </form>
     </div>
-  )
+  );
 };
 
 export default SignUp;
