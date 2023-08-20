@@ -1,51 +1,39 @@
-import React from 'react';
-import styles from './login-page.module.css';
+import React from "react";
+import styles from "./home.module.css";
+import Image from "next/image";
+import logo from "./logo.png";
+import google_play from "./google_play.png";
 
-const Login = () => {
+const Home = () => {
   return (
     <div className={styles.container}>
       <div className={styles.formContainer}>
-        <h2 className={styles.title}>Login</h2>
-        <form>
-          <div className={styles.mb4}>
-            <label htmlFor="email" className={styles.inputLabel}>
-              Email
-            </label>
-            <input
-              type="email"
-              id="email"
-              className={styles.inputField}
-              placeholder="Enter your email"/>
-          </div>
-          <div className={styles.mb4}>
-            <label htmlFor="password" className={styles.inputLabel}>
-              Password
-            </label>
-            <input
-              type="password"
-              id="password"
-              className={styles.inputField}
-              placeholder="Enter your password"/>
-          </div>
-          <button
-            type="submit"
-            className={styles.submitButton}>
-            Sign In
-          </button>
-        </form>
-        <p className={styles.textCenter}>
-          <a href="/api/auth/forgot-password" className={styles.link}>
-            Forgot Password
+        <div className={styles.logoContainer}>
+          <Image src={logo} alt="logo" />
+        </div>
+        <h1 className={styles.title}>Welcome to North Seattle College Events</h1>
+        <div className={styles.buttonContainer}>
+          <a href="auth/sign-in">
+            <button className={styles.loginButton}>Sign In</button>
           </a>
-        </p>
-        <p className={styles.textCenter}>
-          <a href="/api/auth/sign-up" className={styles.link}>
-            Sign Up
+          <a href="auth/sign-up">
+            <button className={styles.signUpButton}>Sign Up</button>
           </a>
-        </p>
+        </div>
+        {/* download mobile app link */}
+        <div className={styles.downloadContainer}>
+          <p className="textCenter">
+            <a href="" className={styles.link}>
+              <button className={styles.downloadButton}>
+                <Image src={google_play} alt="google_play" />
+                Download App
+              </button>
+            </a>
+          </p>
+        </div>
       </div>
     </div>
   );
 };
 
-export default Login;
+export default Home;

@@ -1,6 +1,7 @@
 import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-
+import startDb from "@/lib/db";
+import UserModel from "@/models/userModel";
 
 // sign-in route creation
 const authOptions: NextAuthOptions = {
@@ -25,17 +26,31 @@ const authOptions: NextAuthOptions = {
                   password: string;
               };
 
+              await startDb();
+              const user = await UserModel.findOne({ email });
+              if (!user) throw Error("email/password mismatch");
+
+              const passwordMatch = await user.comparePassword(password);
+              if (!passwordMatch) throw Error("email/password mismatch");
+
+              return {
+                name: user.name,
+                email: user.email,
+                role: user.role,
+                id: user._id,
+            };
+
               // todo: once db has been created along with construction of schema, 
                     // we can use the schema to grab and store users information
                     // below code is a sandbox and rough ideas of how to comparing user's email and password..
                     // ..return statement would return users info after comparison
 
-              return { 
-                name: "name", 
-                email: "email",
-                role: "role",
-                id: "_id"
-            };
+            //   return { 
+            //     name: "name", 
+            //     email: "email",
+            //     role: "role",
+            //     id: "_id"
+            // };
 
           },
       }),

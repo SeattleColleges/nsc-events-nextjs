@@ -2,10 +2,12 @@
 
 import InputField from "@/components/InputFields";
 import Link from "next/link";
-import { ChangeEventHandler, FormEventHandler, useState } from "react";
+import { ChangeEventHandler, FormEventHandler, useEffect, useState } from "react";
 import { signIn } from "next-auth/react";
 import Router, { useRouter } from "next/navigation";
-import styles from './signin-page.module.css';
+import styles from "./signin-page.module.css";
+import Image from "next/image";
+import logo from "../../logo.png";
 
 // similar to sign-up page, but we're only handling email and password 
 const Signin = () => {
@@ -38,15 +40,21 @@ const Signin = () => {
     });
 
     // check if the response contains an error and update error state if necessary
-    if (res?.error) return setError(res.error);
+    if (!res?.error) {
     // if no error, we've successfully signed in, then we'll route user to their profile
-    // todo: once successfully signed in, route user to their profile
-    // router.replace("/profile")
+    router.replace("/profile")
+    } else {
+      return setError(res.error);
+    }
   };
 
   return (
     <div className={styles.container}>
       <form className={styles.formContainer} onSubmit={handleSubmit}>
+        <div className={styles.logoContainer}>
+          <Image src={logo} alt="logo" />
+        </div>
+        <h1 className={styles.title}>Sign In</h1>
         <InputField
           label="Email"
           type="email"
@@ -61,12 +69,24 @@ const Signin = () => {
           value={password}
           onChange={handleChange}
         />
-        <button 
-          className={styles.inputField}
-          type="submit">Sign Up</button>
+        <button className={styles.submitButton} type="submit">
+          Sign In
+        </button>
+        <div className={styles.linkContainer}>
+        <p className={styles.textCenter}>
+          <a href="/auth/forgot-password" className={styles.link}>
+            Forgot Password
+          </a>
+        </p>
+        <p className={styles.textCenter}>
+          <a href="/auth/sign-up" className={styles.link}>
+            Sign Up
+          </a>
+        </p>
+        </div>
       </form>
     </div>
-  )
+  );
 };
 
 export default Signin;
