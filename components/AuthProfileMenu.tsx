@@ -4,9 +4,8 @@ import React from "react";
 
 export default function AuthProfileMenu() {
   const { data, status } = useSession();
-
+  // remove this comment
   const isAuth = status === "authenticated";
-
   if (isAuth) {
     return (
         <div className="flex items-center justify-center">
