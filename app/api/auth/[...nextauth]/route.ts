@@ -28,10 +28,14 @@ const authOptions: NextAuthOptions = {
 
               await startDb();
               const user = await UserModel.findOne({ email });
-              if (!user) throw Error("email/password mismatch");
+              if (!user) {
+                  throw Error("email/password mismatch");
+              }
 
               const passwordMatch = await user.comparePassword(password);
-              if (!passwordMatch) throw Error("email/password mismatch");
+              if (!passwordMatch) {
+                  throw Error("email/password mismatch");
+              }
 
               return {
                 name: user.name,
