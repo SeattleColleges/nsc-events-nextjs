@@ -41,6 +41,28 @@ const CreateEvent = () => {
         console.log(eventData);
     };
 
+    const createActivity = async (activityData: any) => {
+        try {
+            const response = await fetch('http://localhost:3000/activity/add', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(activityData),
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                console.log('Activity created:', data);
+            } else {
+                console.log('Failed to create activity:', response.status);
+            }
+        } catch (error) {
+            console.error('Error creating activity:', error);
+        }
+    };
+
+
     return (
         <div className="ml-4">
             <form onSubmit={handleSubmit} className="space-y-4 mr-4">
