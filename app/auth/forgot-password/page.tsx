@@ -6,15 +6,15 @@ import InputField from "@/components/InputFields";
 const ForgotPassword = () => {
   
   // user email state
-  const [userEmail, setUserEmail] = useState({email: ""});
+  const [userEmail, setUserEmail] = useState({ email: "" });
   
   // destructure email from userEmail state
-  const {email} = userEmail;
+  const { email } = userEmail;
 
   // handle change event
-  const handleChange: ChangeEventHandler<HTMLInputElement> = ({target}) => {
-    const {name, value} = target;
-    setUserEmail({...userEmail, [name]: value});
+  const handleChange: ChangeEventHandler<HTMLInputElement> = ({ target }) => {
+    const { name, value } = target;
+    setUserEmail({ ...userEmail, [name]: value });
   };
   
   // handle submit event

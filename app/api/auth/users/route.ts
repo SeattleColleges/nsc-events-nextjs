@@ -31,15 +31,15 @@ export const POST = async (req: Request): Promise<NewResponse> => {
 
   await startDb();
 
-    const existingUser = await UserModel.findOne({ email: body.email})
+    const existingUser = await UserModel.findOne({ email: body.email })
     if (existingUser) {
         return NextResponse.json(
-            {error: "email is already in use!"},
-            {status: 422}
+            { error: "email is already in use!" },
+            { status: 422 }
         );
     }
     // if a new user create with NewUserRequest
-    const user = await UserModel.create({...body});
+    const user = await UserModel.create({ ...body });
 
     return NextResponse.json({
         user: {

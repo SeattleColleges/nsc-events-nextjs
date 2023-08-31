@@ -1,7 +1,7 @@
 "use client";
 import { ChangeEventHandler, FormEvent, useState } from "react";
 import TagSelector from "@/components/TagSelector"
-import {Event} from "@/models/activity";
+import { Event } from "@/models/activity";
 import activityAutofill from "@/models/activityAutofill";
 
 //test
