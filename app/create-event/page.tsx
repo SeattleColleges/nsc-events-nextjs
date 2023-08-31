@@ -1,5 +1,5 @@
 "use client";
-import {ChangeEvent, ChangeEventHandler, FormEvent, useState} from "react";
+import { ChangeEventHandler, FormEvent, useState } from "react";
 import TagSelector from "@/components/TagSelector"
 import {Event} from "@/models/activity";
 import activityAutofill from "@/models/activityAutofill";
@@ -44,7 +44,7 @@ const CreateEvent = () => {
 
     const createActivity = async (activityData: any) => {
         try {
-            const response = await fetch('http://localhost:3000/activity/add', {
+            const response = await fetch('http://localhost:3000/api/activity/add', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
