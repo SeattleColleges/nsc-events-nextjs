@@ -37,8 +37,9 @@ const CreateEvent = () => {
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        // Save the event in the db through nest.js
         console.log(eventData);
+        createActivity(eventData);
+
     };
 
     const createActivity = async (activityData: any) => {
