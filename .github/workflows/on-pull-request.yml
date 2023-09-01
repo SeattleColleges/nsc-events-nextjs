@@ -12,5 +12,5 @@ on:
     types: [opened, reopened]
 jobs:
   Continuous-Integration:
-    name: on pull request
+    name: On pull request
     uses: ./.github/workflows/ci.yml
