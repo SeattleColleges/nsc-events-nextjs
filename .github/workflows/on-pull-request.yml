@@ -15,11 +15,12 @@ jobs:
     name: on pull request
     uses: ./.github/workflows/ci.yml
 
-
+  # needed to use GitHub api to set a status check. Reusable workflows are not callable and on pull request doesn't
+  # show up.
   set_status_check:
     runs-on: ubuntu-latest
     steps:
-      - name: Set GitHub Status Check
+      - name: On Pull Request
         run: |
           curl -X POST \
           -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
