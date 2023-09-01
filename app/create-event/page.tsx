@@ -37,9 +37,32 @@ const CreateEvent = () => {
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        // Save the event in the db through nest.js
         console.log(eventData);
+        createActivity(eventData);
+
     };
+
+    const createActivity = async (activityData: any) => {
+        try {
+            const response = await fetch('http://localhost:3000/api/activity/add', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(activityData),
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                console.log('Activity created:', data);
+            } else {
+                console.log('Failed to create activity:', response.status);
+            }
+        } catch (error) {
+            console.error('Error creating activity:', error);
+        }
+    };
+
 
     return (
         <div className="ml-4">
