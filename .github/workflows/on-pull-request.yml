@@ -12,7 +12,7 @@ on:
     types: [opened, reopened]
 jobs:
   Continuous-Integration:
-    name: On pull request
+    name: on pull request
     uses: ./.github/workflows/ci.yml
 
   set_status_check:
