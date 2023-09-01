@@ -14,7 +14,6 @@ jobs:
   Continuous-Integration:
     name: on pull request
     uses: ./.github/workflows/ci.yml
-    continue-on-error: true  # Important: This allows the next job to run even if this job fails
 
   set_status_check:
     needs: Continuous-Integration  # This job depends on the previous job
