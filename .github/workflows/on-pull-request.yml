@@ -14,21 +14,25 @@ jobs:
   Continuous-Integration:
     name: on pull request
     uses: ./.github/workflows/ci.yml
+    continue-on-error: true  # Important: This allows the next job to run even if this job fails
 
-  # needed to use GitHub api to set a status check. Reusable workflows are not callable and on pull request doesn't
-  # show up.
   set_status_check:
+    needs: Continuous-Integration  # This job depends on the previous job
     runs-on: ubuntu-latest
     steps:
-      - name: On Pull Request
+      - name: Set GitHub Status Check
         run: |
+          STATE="success"
+          if [[ "${{ needs.Continuous-Integration.result }}" != "success" ]]; then
+            STATE="failure"
+          fi
           curl -X POST \
           -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
           -H "Accept: application/vnd.github.v3+json" \
           https://api.github.com/repos/SeattleColleges/nsc-events-nextjs/statuses/${{ github.sha }} \
-          -d '{
-            "state": "success",
-            "context": "ci.yml",
-            "description": "CI passed",
-            "target_url": "https://github.com/SeattleColleges/nsc-events-nextjs/actions/runs/${{ github.run_id }}"
-          }'
+          -d "{
+            \"state\": \"$STATE\",
+            \"context\": \"ci.yml\",
+            \"description\": \"CI $STATE\",
+            \"target_url\": \"https://github.com/SeattleColleges/nsc-events-nextjs/actions/runs/${{ github.run_id }}\"
+          }"
