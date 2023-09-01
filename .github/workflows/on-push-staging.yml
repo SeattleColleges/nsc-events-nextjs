@@ -27,7 +27,19 @@ on:
 
     types:
       - closed
-
+permissions: # we can tighten this up in settings but are able to set customize permissions against GITHUB_TOKEN in Yaml
+  contents: write
+  actions: write
+  checks: write
+  deployments: write
+  discussions: write
+  issues: write
+  pages: read
+  packages: write
+  pull-requests: write
+  repository-projects: write
+  security-events: write
+  statuses: write
 jobs:
   # redundant check to ensure CI passes before deployment
   CI:
