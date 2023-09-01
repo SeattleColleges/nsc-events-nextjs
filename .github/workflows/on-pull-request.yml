@@ -12,4 +12,22 @@ on:
     types: [opened, reopened]
 jobs:
   Continuous-Integration:
+    name: on pull request
     uses: ./.github/workflows/ci.yml
+
+
+  set_status_check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set GitHub Status Check
+        run: |
+          curl -X POST \
+          -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+          -H "Accept: application/vnd.github.v3+json" \
+          https://api.github.com/repos/theGaryLarson/nsc-events-nextjs/statuses/${{ github.sha }} \
+          -d '{
+            "state": "success",
+            "context": "ci.yml",
+            "description": "CI passed",
+            "target_url": "https://github.com/SeattleColleges/nsc-events-nextjs/actions/runs/${{ github.run_id }}"
+          }'
