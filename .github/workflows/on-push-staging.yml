@@ -32,13 +32,13 @@ jobs:
   # redundant check to ensure CI passes before deployment
   CI:
     if: github.event.pull_request.merged == true || github.event_name == 'push'
-    name: push to staging
+    name: Push to staging
     uses: ./.github/workflows/ci.yml # reusable workflow file path
 
 
   CD:
     if: github.event.pull_request.merged == true || github.event_name == 'push'
-    name: deploy to staging
+    name: Deploy to staging
     uses: ./.github/workflows/cd-staging.yml # reusable workflow file path
     needs: CI
 
