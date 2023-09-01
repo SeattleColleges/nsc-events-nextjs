@@ -9,7 +9,7 @@
 # Merging with --no-ff creates a merge commit to track changes.
 
 name: Sync Main to Staging
-run-name: Sync-Staging
+run-name: Merge main into Staging
 
 on:
   push:
