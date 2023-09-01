@@ -17,6 +17,7 @@ jobs:
 
   set_status_check:
     needs: Continuous-Integration  # This job depends on the previous job
+    if: always()
     runs-on: ubuntu-latest
     steps:
       - name: Set GitHub Status Check
