@@ -1,6 +1,6 @@
-import { Event } from './activity'; // Assuming the Event interface is exported from 'event.ts' in the same directory
+import { Activity } from './activity'; // Assuming the Event interface is exported from 'event.ts' in the same directory
 
-const activityAutofill: Event = {
+const activityAutofill: Activity = {
     eventCreatorId: 'user-guid',
     eventTitle: "Sample Event",
     eventDescription: "This is a sample event description.",

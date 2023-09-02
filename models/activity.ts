@@ -1,4 +1,4 @@
-export interface Event {
+export interface Activity {
     eventCreatorId: string;
     eventTitle: string;
     eventDescription: string;
@@ -29,7 +29,7 @@ export interface Event {
     eventAccessibility: string;
 }
 
-export const activity: Event = {
+export const activity: Activity = {
     eventCreatorId: "",
     eventTitle: "",
     eventDescription: "",
