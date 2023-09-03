@@ -4,7 +4,7 @@
 # ci.yml will run lint, tests, coverage, build for the PR.
 
 name: CI (on pull-request)
-run-name: PR from branch ${{ github.ref }}
+run-name: CI triggered on Pull Request
 
 # Will run CI workflow on an opened or reopened PR for easy reference. For compilation, unit tests, code coverage etc.
 on:
@@ -14,3 +14,25 @@ jobs:
   Continuous-Integration:
     name: on pull request
     uses: ./.github/workflows/ci.yml
+
+#  set_status_check:
+#    needs: Continuous-Integration  # This job depends on the previous job
+#    if: always() # tells it to run even if it fails that way we can get the status check
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Set GitHub Status Check
+#        run: |
+#          STATE="success"
+#          if [[ "${{ needs.Continuous-Integration.result }}" != "success" ]]; then
+#            STATE="failure"
+#          fi
+#          curl -X POST \
+#          -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+#          -H "Accept: application/vnd.github.v3+json" \
+#          https://api.github.com/repos/SeattleColleges/nsc-events-nextjs/statuses/${{ github.sha }} \
+#          -d "{
+#            \"state\": \"$STATE\",
+#            \"context\": \"ci.yml\",
+#            \"description\": \"CI $STATE\",
+#            \"target_url\": \"https://github.com/SeattleColleges/nsc-events-nextjs/actions/runs/${{ github.run_id }}\"
+#          }"

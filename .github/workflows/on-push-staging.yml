@@ -27,16 +27,30 @@ on:
 
     types:
       - closed
-
+permissions: # we can tighten this up in settings but are able to set customize permissions against GITHUB_TOKEN in Yaml
+  contents: write
+  actions: write
+  checks: write
+  deployments: write
+  discussions: write
+  issues: write
+  pages: read
+  packages: write
+  pull-requests: write
+  repository-projects: write
+  security-events: write
+  statuses: write
 jobs:
   # redundant check to ensure CI passes before deployment
   CI:
     if: github.event.pull_request.merged == true || github.event_name == 'push'
+    name: Push to staging
     uses: ./.github/workflows/ci.yml # reusable workflow file path
 
 
   CD:
     if: github.event.pull_request.merged == true || github.event_name == 'push'
+    name: Deploy to staging
     uses: ./.github/workflows/cd-staging.yml # reusable workflow file path
     needs: CI
 

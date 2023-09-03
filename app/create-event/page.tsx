@@ -1,12 +1,12 @@
 "use client";
 import { ChangeEventHandler, FormEvent, useState } from "react";
 import TagSelector from "@/components/TagSelector"
-import { Event } from "@/models/activity";
+import { Activity } from "@/models/activity";
 import activityAutofill from "@/models/activityAutofill";
 
 //test
 const CreateEvent = () => {
-    const [eventData, setEventData] = useState<Event>(activityAutofill);
+    const [eventData, setEventData] = useState<Activity>(activityAutofill);
 
     const handleInputChange: ChangeEventHandler<HTMLInputElement> = ({ target }) => {
         const { name, value } = target;
