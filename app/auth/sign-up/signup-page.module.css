@@ -1,4 +1,5 @@
-/* Sign Up page CSS */.container {
+/* Sign Up page CSS */
+.container {
   background-color: #fff;
   display: flex;
   justify-content: center;
@@ -25,7 +26,7 @@
   margin-bottom: 1rem;
 }
 .inputField {
-  color: #000
+  color: #000;
 }
 .submitButton {
   width: 100%;
@@ -37,9 +38,9 @@
   cursor: pointer;
   font-weight: bold;
   font-size: 1rem;
-  margin: 1.0rem 0;
+  margin: 1rem 0;
   transition: background-color 0.3s ease-in-out;
-  border: .3cap solid;
+  border: 0.3cap solid;
   border-radius: 5px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.3);
 }

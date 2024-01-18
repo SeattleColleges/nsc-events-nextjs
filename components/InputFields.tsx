@@ -1,4 +1,6 @@
 import React, { ChangeEventHandler } from "react";
+// TODO: Clean this up
+// TODO see which CSS framework are we using
 interface InputFieldProps {
   label: string;
   type: string;
