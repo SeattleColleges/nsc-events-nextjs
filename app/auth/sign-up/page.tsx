@@ -1,6 +1,9 @@
-"use client";import InputField from "@/components/InputFields";import Link from "next/link";import { ChangeEventHandler, FormEventHandler, useState } from "react";import styles from "./signup-page.module.css";import Image from "next/image";import NorthSeattleLogo from "../../NorthSeattleLogo.png";// handling user's incoming information
+"use client";import InputField from "@/components/InputFields";import Link from "next/link";import { ChangeEventHandler, FormEventHandler, useState } from "react";import styles from "./signup-page.module.css";
+import Image from "next/image";
+import NorthSeattleLogo from "../../NorthSeattleLogo.png";
+
+
 const SignUp = () => {
-  
   const [userInfo, setUserInfo] = useState({
     firstName: "",
     lastName: "",
@@ -21,13 +24,11 @@ const SignUp = () => {
   // Destructure the state values for easier access
   const { firstName, lastName, email, password, confirmPassword } = userInfo;
 
-const handleChange: ChangeEventHandler<HTMLInputElement> = ({ target }) => {
-  const { name, value } = target;
-  console.log(name, value); // Debugging line
-  setErrors({ ...errors, [name]: "" });
-  setUserInfo({ ...userInfo, [name]: value });
-};
-
+  const handleChange: ChangeEventHandler<HTMLInputElement> = ({ target }) => {
+    const { name, value } = target;
+    setErrors({ ...errors, [name]: "" });
+    setUserInfo({ ...userInfo, [name]: value });
+  };
 
   // handle submit only fires when user clicks sign up
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
@@ -42,15 +43,24 @@ const handleChange: ChangeEventHandler<HTMLInputElement> = ({ target }) => {
     };
 
     // Validate inputs before form submission
-    if (!firstName)
-      {newErrors.firstName = "First name is required";}
-    if (!lastName)
-      {newErrors.lastName = "Last name is required";}
-    if (!email) {newErrors.email = "Email is required";}
-    if (!password) {newErrors.password = "Password is required";}
-    if (!confirmPassword) {newErrors.confirmPassword = "Confirm password is required";}
-    if (confirmPassword !== password)
-      {newErrors.confirmPassword = "Passwords do not match";}
+    if (!firstName) {
+      newErrors.firstName = "First name is required";
+    }
+    if (!lastName) {
+      newErrors.lastName = "Last name is required";
+    }
+    if (!email) {
+      newErrors.email = "Email is required";
+    }
+    if (!password) {
+      newErrors.password = "Password is required";
+    }
+    if (!confirmPassword) {
+      newErrors.confirmPassword = "Confirm password is required";
+    }
+    if (confirmPassword !== password) {
+      newErrors.confirmPassword = "Passwords do not match";
+    }
 
     // Update the state with the new errors
     setErrors(newErrors);
@@ -61,21 +71,36 @@ const handleChange: ChangeEventHandler<HTMLInputElement> = ({ target }) => {
     );
 
     // If there are errors, prevent form submission
-    if (hasErrors) {return;}
+    if (hasErrors) {
+      return;
+    }
 
+    const payload = {
+      name: firstName + " " + lastName,
+      email,
+      password,
+      role: "user",
+    };
     // send request to backend api then log the response
-    const res = await fetch("/api/auth/users", {
-      method: "POST",
-      body: JSON.stringify(userInfo),
-      headers: {
-        "Content-type": "application/json",
-      },
-    });
+    // TODO: Move this to a service file
+    // TODO: Use correct URL
+    const URL = "http://159.223.203.135:3000/api/auth/signup";
     try {
-      const data = await res.json();
-      console.log(data);
+      const response = await fetch(URL, {
+        method: "POST",
+        body: JSON.stringify(userInfo),
+        headers: {
+          "Content-type": "application/json",
+        },
+      });
+      const data = await response.json();
+      console.log("Response from server:", data);
+      localStorage.setItem("token", data.token);
+      console.log("Token:", data.token);
+      window.location.href = "/";
+      // navigate to home page
     } catch (error) {
-      console.error("Error parson JSON response:", error);
+      console.error("Error parsing JSON response:", error);
     }
   };
 
