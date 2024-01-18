@@ -1,9 +1,24 @@
-"use client";import InputField from "@/components/InputFields";import Link from "next/link";import { ChangeEventHandler, FormEventHandler, useState } from "react";import styles from "./signup-page.module.css";
+"use client";import InputField from "@/components/InputFields";import Link from "next/link";
+import { ChangeEventHandler, FormEventHandler, useState } from "react";
+import styles from "./signup-page.module.css";
 import Image from "next/image";
 import NorthSeattleLogo from "../../NorthSeattleLogo.png";
+// Image by show password by Daniel T. from https://thenounproject.com/browse/icons/term/show-password/ Title = show password Icons used under CC BY 3.0
+import passwordIcon from "../../showpassword.png";
 
 
 const SignUp = () => {
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const toggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword(!showConfirmPassword);
+  };
+
   const [userInfo, setUserInfo] = useState({
     firstName: "",
     lastName: "",
@@ -64,7 +79,8 @@ const SignUp = () => {
     } else if (password.search(/[0-9]/) < 0) {
       newErrors.password = "Password must contain at least one digit";
     } else if (password.search(/[!@#$%^&*]/) < 0) {
-      newErrors.password = "Password must contain at least one special character";
+      newErrors.password =
+        "Password must contain at least one special character";
     }
     if (confirmPassword !== password) {
       newErrors.confirmPassword = "Passwords do not match";
@@ -107,11 +123,12 @@ const SignUp = () => {
       if (!response.ok) {
         throw new Error(data.message);
       } else {
-        console.log("Response from server:", data);}
-        localStorage.setItem("token", data.token);
-        console.log("Token:", data.token);
-        alert("Sign up successful!");
-        // TODO redirect to profile page or home page
+        console.log("Response from server:", data);
+      }
+      localStorage.setItem("token", data.token);
+      console.log("Token:", data.token);
+      alert("Sign up successful!");
+      // TODO redirect to profile page or home page
     } catch (error) {
       console.error("Error signing up:", error);
       alert("Sign up failed!");
@@ -151,19 +168,42 @@ const SignUp = () => {
         />
         <InputField
           label="Password"
-          type="password"
           name="password"
           value={password}
+          type={showPassword ? "text" : "password"}
           onChange={handleChange}
           error={errors.password}
+          togglePasswordVisibility={togglePasswordVisibility}
+          icon={
+            <Image
+              src={passwordIcon}
+              alt="Show Password"
+              color="white"
+              onClick={togglePasswordVisibility}
+              width={40}
+              height={40}
+              className="translate-x-3 translate-y-4"
+            />
+          }
         />
         <InputField
           label="Confirm Password"
-          type="password"
+          type={showConfirmPassword ? "text" : "password"}
           name="confirmPassword"
           value={confirmPassword}
           onChange={handleChange}
           error={errors.confirmPassword}
+          icon={
+            <Image
+              src={passwordIcon}
+              alt="Show Password"
+              color="white"
+              onClick={toggleConfirmPasswordVisibility}
+              width={40}
+              height={40}
+              className="translate-x-3 translate-y-4"
+            />
+          }
         />
         <button className={styles.submitButton} type="submit">
           Sign Up
