@@ -2,23 +2,28 @@
 import { ChangeEventHandler, FormEventHandler, useState } from "react";
 import styles from "./signup-page.module.css";
 import Image from "next/image";
+
+// TODO determine if this is the correct logo
 import NorthSeattleLogo from "../../NorthSeattleLogo.png";
 // Image by show password by Daniel T. from https://thenounproject.com/browse/icons/term/show-password/ Title = show password Icons used under CC BY 3.0
+// TODO: Replace with a different icon
 import passwordIcon from "../../showpassword.png";
 
 
 const SignUp = () => {
+  // Set initial state for password visibility
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
+  // Toggle password visibility
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
-
   const toggleConfirmPasswordVisibility = () => {
     setShowConfirmPassword(!showConfirmPassword);
   };
 
+  // Set initial state for user info and errors
   const [userInfo, setUserInfo] = useState({
     firstName: "",
     lastName: "",
@@ -27,6 +32,7 @@ const SignUp = () => {
     confirmPassword: "",
   });
 
+  // Set initial state for errors
   const [errors, setErrors] = useState({
     firstName: "",
     lastName: "",
@@ -56,6 +62,7 @@ const SignUp = () => {
     };
 
     // Validate inputs before form submission
+    // TODO add more validation
     if (!firstName) {
       newErrors.firstName = "First name is required";
     }
@@ -99,7 +106,7 @@ const SignUp = () => {
       return;
     }
 
-    // TODO: handle role better
+    // TODO: handle role better - probably need a different route for users vs admins
     const payload = {
       name: firstName + " " + lastName,
       email,
@@ -125,10 +132,12 @@ const SignUp = () => {
       } else {
         console.log("Response from server:", data);
       }
+      // TODO Should this be a token or a cookie or something else?
       localStorage.setItem("token", data.token);
       console.log("Token:", data.token);
       alert("Sign up successful!");
       // TODO redirect to profile page or home page
+      // QUESTION: Are we using next.js routing or something else?
     } catch (error) {
       console.error("Error signing up:", error);
       alert("Sign up failed!");
@@ -182,6 +191,7 @@ const SignUp = () => {
               onClick={togglePasswordVisibility}
               width={40}
               height={40}
+              // TODO: Fix this
               className="translate-x-3 translate-y-4"
             />
           }
@@ -201,6 +211,7 @@ const SignUp = () => {
               onClick={toggleConfirmPasswordVisibility}
               width={40}
               height={40}
+              // TODO: Fix this
               className="translate-x-3 translate-y-4"
             />
           }
