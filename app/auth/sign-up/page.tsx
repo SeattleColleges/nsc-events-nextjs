@@ -85,7 +85,7 @@ const handleChange: ChangeEventHandler<HTMLInputElement> = ({ target }) => {
         <Image src={NorthSeattleLogo} alt="North Seattle College Logo" />
       </div>
       <form className={styles.formContainer} onSubmit={handleSubmit}>
-        <h1 className={styles.title}>User Sign Up</h1>
+        <h1 className={styles.title}>Sign Up</h1>
         <InputField
           label="First Name"
           type="text"
