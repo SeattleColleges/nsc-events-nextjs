@@ -41,7 +41,7 @@
   transition: background-color 0.3s ease-in-out;
   border: .3cap solid;
   border-radius: 5px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.3);
 }
 
 .submitButton:hover {
