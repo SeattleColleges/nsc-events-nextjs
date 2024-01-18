@@ -12,7 +12,6 @@ const SignUp = () => {
     confirmPassword: "",
   });
 
-  // handling error messages
   const [errors, setErrors] = useState({
     firstName: "",
     lastName: "",
@@ -21,7 +20,6 @@ const SignUp = () => {
     confirmPassword: "",
   });
 
-  // Destructure the state values for easier access
   const { firstName, lastName, email, password, confirmPassword } = userInfo;
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = ({ target }) => {
@@ -57,6 +55,16 @@ const SignUp = () => {
     }
     if (!confirmPassword) {
       newErrors.confirmPassword = "Confirm password is required";
+    } else if (password.length < 10) {
+      newErrors.password = "Password must be at least 8 characters";
+    } else if (password.length > 20) {
+      newErrors.password = "Password must be less than 20 characters";
+    } else if (password.search(/[a-z]/i) < 0) {
+      newErrors.password = "Password must contain at least one letter";
+    } else if (password.search(/[0-9]/) < 0) {
+      newErrors.password = "Password must contain at least one digit";
+    } else if (password.search(/[!@#$%^&*]/) < 0) {
+      newErrors.password = "Password must contain at least one special character";
     }
     if (confirmPassword !== password) {
       newErrors.confirmPassword = "Passwords do not match";
@@ -75,6 +83,7 @@ const SignUp = () => {
       return;
     }
 
+    // TODO: handle role better
     const payload = {
       name: firstName + " " + lastName,
       email,
@@ -84,6 +93,7 @@ const SignUp = () => {
     // send request to backend api then log the response
     // TODO: Move this to a service file
     // TODO: Use correct URL
+    // TODO: Check email is unique first then send request
     const URL = "http://159.223.203.135:3000/api/auth/signup";
     try {
       const response = await fetch(URL, {
@@ -101,6 +111,7 @@ const SignUp = () => {
         localStorage.setItem("token", data.token);
         console.log("Token:", data.token);
         alert("Sign up successful!");
+        // TODO redirect to profile page or home page
     } catch (error) {
       console.error("Error signing up:", error);
       alert("Sign up failed!");
