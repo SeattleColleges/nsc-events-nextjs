@@ -88,19 +88,22 @@ const SignUp = () => {
     try {
       const response = await fetch(URL, {
         method: "POST",
-        body: JSON.stringify(userInfo),
+        body: JSON.stringify(payload),
         headers: {
           "Content-type": "application/json",
         },
       });
       const data = await response.json();
-      console.log("Response from server:", data);
-      localStorage.setItem("token", data.token);
-      console.log("Token:", data.token);
-      window.location.href = "/";
-      // navigate to home page
+      if (!response.ok) {
+        throw new Error(data.message);
+      } else {
+        console.log("Response from server:", data);}
+        localStorage.setItem("token", data.token);
+        console.log("Token:", data.token);
+        alert("Sign up successful!");
     } catch (error) {
-      console.error("Error parsing JSON response:", error);
+      console.error("Error signing up:", error);
+      alert("Sign up failed!");
     }
   };
 
