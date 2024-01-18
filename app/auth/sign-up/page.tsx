@@ -1,18 +1,15 @@
-"use client";
-import InputField from "@/components/InputFields";
-import Link from "next/link";
-import { ChangeEventHandler, FormEventHandler, useState } from "react";
-import styles from './signup-page.module.css';
-
+"use client";import InputField from "@/components/InputFields";import Link from "next/link";import { ChangeEventHandler, FormEventHandler, useState } from "react";import styles from './signup-page.module.css';import Image from "next/image";import NorthSeattleLogo from '../../NorthSeattleLogo.png'
 const SignUp = () => {
   // handling user's incoming info
   const [userInfo, setUserInfo] = useState({
-    name: "",
+    firstName: "",
+    lastName: "",
     email: "",
     password: "",
+    confirmPassword: "",
   });
 
-  const { name, email, password } = userInfo;
+  const { firstName, lastName, email, password, confirmPassword } = userInfo;
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = ({ target }) => {
     const { name, value } = target;
@@ -43,13 +40,23 @@ const SignUp = () => {
 
   return (
     <div className={styles.container}>
+      <div className={styles.imageWrapper}>
+        <Image src={NorthSeattleLogo} alt="North Seattle College Logo" />
+      </div>
       <form className={styles.formContainer} onSubmit={handleSubmit}>
-        <h1 className={styles.title}>Sign Up</h1>
+        <h1 className={styles.title}>User Sign Up</h1>
         <InputField
-          label="Name"
+          label="First Name"
           type="name"
-          name="name"
-          value={name}
+          name="firstName"
+          value={firstName}
+          onChange={handleChange}
+        />
+        <InputField
+          label="Last Name"
+          type="name"
+          name="lastName"
+          value={lastName}
           onChange={handleChange}
         />
         <InputField
@@ -66,16 +73,16 @@ const SignUp = () => {
           value={password}
           onChange={handleChange}
         />
+        <InputField
+          label="Confirm Password"
+          type="password"
+          name="confirmPassword"
+          value={confirmPassword}
+          onChange={handleChange}
+        />
         <button className={styles.submitButton} type="submit">
           Sign Up
         </button>
-        <p className={styles.textCenter}>
-          Already have an account?{" "}
-          <a href="sign-in" className={styles.link}>
-            Log In
-          </a>
-        </p>
-        
       </form>
     </div>
   );

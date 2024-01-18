@@ -1,45 +1,53 @@
-/* Sign Up page CSS */
-.container {
-  background-color: #bec3c8;
+/* Sign Up page CSS */.container {
+  background-color: #fff;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
+  flex-direction: column;
 }
 
 .formContainer {
-  background-color: #dbdfe0;
+  background-color: #08469f;
   padding: 2rem;
   border-radius: 15px;
   width: 400px;
   max-width: 100%;
   margin-bottom: 20vh;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.6);
 }
 
 .title {
   text-align: center;
-  color: #101c29;
+  color: #ffffff;
   font-weight: bold;
   font-size: 1.8rem;
   margin-bottom: 1rem;
 }
-
+.inputField {
+  color: #000
+}
 .submitButton {
   width: 100%;
   padding: 8px;
   border: none;
   border-radius: 4px;
-  color: #f0f0f0;
-  background-color: #101c29;
+  color: #000;
+  background-color: #95ca59;
   cursor: pointer;
   font-weight: bold;
   font-size: 1rem;
-  margin: 1.5rem 0;
+  margin: 1.0rem 0;
   transition: background-color 0.3s ease-in-out;
+  border: .3cap solid;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.6);
 }
 
 .submitButton:hover {
-  background-color: #0c141c;
+  transition: background-color 0.3s ease-in-out;
+  background-color: #fff;
+  color: #95ca59;
 }
 
 .textCenter {
@@ -61,4 +69,14 @@
 .link:hover {
   text-decoration: underline;
   text-underline-offset: 2px;
+}
+
+.imageWrapper {
+  background-color: white;
+  display: inline-block;
+  padding: 2rem;
+  border-radius: 15px;
+  width: 400px;
+  max-width: 100%;
+  margin-bottom: 2vh;
 }
