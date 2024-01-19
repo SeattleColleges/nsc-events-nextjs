@@ -3,6 +3,7 @@ import styles from "./home.module.css";
 import Image from "next/image";
 import logo from "./logo.png";
 import google_play from "./google_play.png";
+import EventsList from './eventsapi'
 
 const Home = () => {
   return (
@@ -30,6 +31,9 @@ const Home = () => {
               </button>
             </a>
           </p>
+        </div>
+        <div>
+          <EventsList/>
         </div>
       </div>
     </div>
