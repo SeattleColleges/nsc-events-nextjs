@@ -15,6 +15,10 @@
     "test:coverage": "jest --coverage--"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.3",
+    "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "^5.15.5",
+    "@mui/material": "^5.15.5",
     "@types/bcrypt": "^5.0.0",
     "@types/node": "20.3.1",
     "@types/react": "18.2.13",
