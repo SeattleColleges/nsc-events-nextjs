@@ -9,7 +9,16 @@ run-name: CI triggered on Pull Request
 # Will run CI workflow on an opened or reopened PR for easy reference. For compilation, unit tests, code coverage etc.
 on:
   pull_request:
-    types: [opened, reopened]
+    types: [opened, synchronize, reopened]
+    paths:
+      - '**.tsx' # Run CI on PRs that change .tsx files.
+      - '**.ts' # Run CI on PRs that change .ts files.
+      - '**.jsx'  # Run CI on PRs that change .jsx files.
+      - 'app/**/*' # Run CI on PRs that change files in the app folder.
+      - 'components/**/*' # Run CI on PRs that change files in the components folder.
+      - 'styles/**/*' # Run CI on PRs that change files in the styles folder.
+      - '**/*.md' # Run CI on PRs that change .md files.
+      # Add more paths here if needed.
 jobs:
   Continuous-Integration:
     name: on pull request
