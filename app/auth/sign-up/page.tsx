@@ -1,7 +1,4 @@
-"use client";import InputField from "@/components/InputFields";import Link from "next/link";
-import { ChangeEventHandler, FormEventHandler, useState } from "react";
-import styles from "./signup-page.module.css";
-import Image from "next/image";
+"use client";import InputField from "@/components/InputFields";import Link from "next/link";import { ChangeEventHandler, FormEventHandler, useState } from "react";import styles from "./signup-page.module.css";import Image from "next/image";
 
 // TODO determine if this is the correct logo
 import NorthSeattleLogo from "../../NorthSeattleLogo.png";
@@ -146,10 +143,13 @@ const SignUp = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.imageWrapper}>
-        <Image src={NorthSeattleLogo} alt="North Seattle College Logo" />
-      </div>
       <form className={styles.formContainer} onSubmit={handleSubmit}>
+        <div className={styles.imageWrapper}>
+          <Image
+            src={NorthSeattleLogo}
+            alt="North Seattle College Logo"
+          />
+        </div>
         <h1 className={styles.title}>Sign Up</h1>
         <InputField
           label="First Name"

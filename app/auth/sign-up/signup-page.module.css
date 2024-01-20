@@ -14,8 +14,9 @@
   border-radius: 15px;
   width: 400px;
   max-width: 100%;
-  margin-bottom: 20vh;
+  max-height: calc(100vh - 4rem);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.6);
+  margin-bottom: 2rem;
 }
 
 .title {
@@ -73,9 +74,13 @@
 .imageWrapper {
   background-color: white;
   display: inline-block;
-  padding: 2rem;
-  border-radius: 15px;
-  width: 400px;
+  padding: 1em;
   max-width: 100%;
-  margin-bottom: 2vh;
+  height: auto;
+  border-radius: 10px;
+}
+@media (max-height: 800px) { 
+  .imageWrapper {
+    display: none;
+  }
 }
