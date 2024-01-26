@@ -4,10 +4,22 @@ import TagSelector from "@/components/TagSelector"
 import { Activity } from "@/models/activity";
 import activityAutofill from "@/models/activityAutofill";
 
+
+type FormErrors = {
+  eventTitle?: string;
+  eventDescription?: string;
+  eventCategory?: string;
+  eventStartTime?: string;
+  eventEndTime?: string;
+  eventSchedule?: string;
+  eventLocation?: string;
+}
+
+
 //test
 const CreateEvent = () => {
     const [eventData, setEventData] = useState<Activity>(activityAutofill);
-    const [errors, setErrors] = useState({});
+    const [errors, setErrors] = useState<FormErrors>({});
 
     const handleInputChange: ChangeEventHandler<HTMLInputElement> = ({ target }) => {
         const { name, value } = target;
@@ -16,6 +28,10 @@ const CreateEvent = () => {
             [name]: value
         }));
     };
+
+
+    // for file handling and for the eventCoverPhoto, the file selected by the user should be converted to a local URL. 
+    // this would involve uploading the file to a server and getting a URL in return.
 
 
     const handleTagClick = (tag: string) => {
@@ -57,11 +73,14 @@ const CreateEvent = () => {
         if (!data.eventDescription) {
             newErrors = { ...newErrors, eventDescription: 'Event description is required' };
         }
-
+        if (!data.eventCategory) {
+            newErrors = { ...newErrors, eventCategory: 'Event Category is required' };
+        }
+        if (!data.eventDate) {
+            newErrors = { ...newErrors, eventDate: 'Event date is required' };
+        }
         // todo: add more error validation rules
-
         return newErrors;
-
     }
 
     const createActivity = async (activityData: any) => {
@@ -101,7 +120,7 @@ const CreateEvent = () => {
                                     onChange={handleInputChange}
                                     className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                     />    
-                                {/* todo: add the errors checking for eventDescription */}
+                                {errors.eventTitle && <p className="error-text">{errors.eventTitle}</p>}
                             </label>
                             <label>
                                 Event Description
@@ -112,7 +131,7 @@ const CreateEvent = () => {
                                     onChange={handleInputChange}
                                     className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                 />
-                                {/* todo: add the errors checking for eventCategory */}
+                                {errors.eventDescription && <p className="error-text">{errors.eventDescription}</p>}
                             </label>
                             <label>
                                 Event Category
@@ -123,7 +142,7 @@ const CreateEvent = () => {
                                     onChange={handleInputChange}
                                     className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                 />
-                                {/* todo: add the errors checking for eventCategory */}
+                                {errors.eventCategory && <p className="error-text">{errors.eventCategory}</p>}
                             </label>
                         <div className="space-y-2">
                             <TagSelector 
@@ -147,7 +166,8 @@ const CreateEvent = () => {
                                 name="eventDate" 
                                 value={eventData.eventDate} 
                                 onChange={handleInputChange}
-                                className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"/>
+                                className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                            />
                         </label>
 
                         <label>
@@ -159,6 +179,7 @@ const CreateEvent = () => {
                                 onChange={handleInputChange}
                                 className="block w-full mt-1" 
                             />
+                            {errors.eventStartTime && <p className="error-text">{errors.eventStartTime}</p>}
                         </label>
 
                         <label>
@@ -170,6 +191,7 @@ const CreateEvent = () => {
                                 onChange={handleInputChange}
                                 className="block w-full mt-1" 
                             />
+                            {errors.eventEndTime && <p className="error-text">{errors.eventEndTime}</p>}
                         </label>
 
                         <label>
@@ -181,6 +203,7 @@ const CreateEvent = () => {
                                 onChange={handleInputChange}
                                 className="block w-full mt-1" 
                             />
+                            {errors.eventSchedule && <p className="error-text">{errors.eventSchedule}</p>}
                         </label>
                     </div>
                 </div>
@@ -199,6 +222,7 @@ const CreateEvent = () => {
                                 onChange={handleInputChange}
                                 className="block w-full mt-1" 
                             />
+                            {errors.eventLocation && <p className="error-text">{errors.eventLocation}</p>}
                         </label>
                         
                     </div>
@@ -215,13 +239,29 @@ const CreateEvent = () => {
                     <h2 className="text-lg font-bold">Event Media</h2>
                     <div className="space-y-2">
                         {/* Add fields for eventCoverPhoto, eventSocialMedia */}
+                        <label>
+                            Event Cover Photo
+                            <input 
+                                // change the type & onChange to file & handleFileChange once we're able to upload image files 
+                                type="text"
+                                name="eventCoverPhoto"
+                                onChange={handleInputChange}
+                                className="block w-full mt-1"
+                            />
+                        </label>
                         
                     </div>
                 </div>
 
-                <button type="submit" className="px-4 py-2 text-white bg-indigo-600 rounded hover:bg-indigo-700">Create
-                    Event
+                <button type="submit" className="px-4 py-2 text-white bg-indigo-600 rounded hover:bg-indigo-700">
+                    Create Event
                 </button>
+                <div className="error-messages">
+                    {/* rendering accumulated error messages */}
+                    {Object.entries(errors).map(([key, value]) => (
+                        <p key={key} className="error-text">{value}</p>
+                    ))}
+                </div>
             </form>
         </div>
     );
