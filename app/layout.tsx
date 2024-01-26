@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google';
 import Navbar from '@/components/Navbar';
 import SessionProvider from '@/components/SessionProvider';
 import React from 'react';
+import ReactQueryProvider from "@/components/ReactQueryProvider";
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -19,9 +20,11 @@ export default function RootLayout({
   return (
       <html lang="en">
         <body className={inter.className}>
+        <ReactQueryProvider>
           <SessionProvider>
             <Navbar/>{children}
           </SessionProvider>
+        </ReactQueryProvider>
         </body>
       </html>
   )
