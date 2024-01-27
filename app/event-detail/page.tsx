@@ -1,27 +1,35 @@
 import React from 'react';
 
+
 const EventDetail = () => {
 
-  const dummyEvent = {
+  // todo: fetch event data from backend using event id from url
+    // can use useEffect to fetch event data from backend when component mounts
+    // handle any errors that may arise during data fetching process, (network & server errors)
+  // todo: once data is fetched, store in state variable
+    // format any data that needs to be formatted (date, time, etc..)
+    // use state variable to deplay event details in component 
+  
+  // temporary: mockEvent is placeholder for the event that'll be captured
+  const mockEvent = {
     eventTitle: "Sample Event",
-    imageUrl: "https://via.placeholder.com/150",
-    description: "This is a sample event description.",
-    date: "2024-01-30",
-    startTime: "10:00 AM",
-    endTime: "4:00 PM",
-    location: "123 Main St, City, Country"
+    eventDescription: "This is a sample event description.",
+    eventDate: new Date().toDateString(),
+    eventStartTime: "10:00 AM",
+    eventEndTime: "4:00 PM",
+    eventLocation: "123 Main St, City, Country",
+    eventCoverPhoto: "https://via.placeholder.com/150"
   }
 
     return (
       <div>
-        <h1>Event Detail</h1>
-        <h1>{dummyEvent.eventTitle}</h1>
-        <img src={dummyEvent.imageUrl} alt={dummyEvent.eventTitle} />
-        <p>{dummyEvent.description}</p>
-        <p>Date: {dummyEvent.date}</p>
-        <p>Start Time: {dummyEvent.startTime}</p>
-        <p>End Time: {dummyEvent.endTime}</p>
-        <p>Location: {dummyEvent.location}</p>
+        <h1>{mockEvent.eventTitle}</h1>
+        <img src={mockEvent.eventCoverPhoto} alt={mockEvent.eventTitle} />
+        <p>{mockEvent.eventDescription}</p>
+        <p>Date: {mockEvent.eventDate}</p>
+        <p>Start Time: {mockEvent.eventStartTime}</p>
+        <p>End Time: {mockEvent.eventEndTime}</p>
+        <p>Location: {mockEvent.eventLocation}</p>
       </div>
     );
 };
