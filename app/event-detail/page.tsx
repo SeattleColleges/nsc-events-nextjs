@@ -1,4 +1,5 @@
 import React from 'react';
+import { Typography, Card, CardContent, CardMedia, Box } from '@mui/material';
 
 
 const EventDetail = () => {
@@ -22,15 +23,46 @@ const EventDetail = () => {
   }
 
     return (
-      <div>
-        <h1>{mockEvent.eventTitle}</h1>
-        <img src={mockEvent.eventCoverPhoto} alt={mockEvent.eventTitle} />
-        <p>{mockEvent.eventDescription}</p>
-        <p>Date: {mockEvent.eventDate}</p>
-        <p>Start Time: {mockEvent.eventStartTime}</p>
-        <p>End Time: {mockEvent.eventEndTime}</p>
-        <p>Location: {mockEvent.eventLocation}</p>
-      </div>
+      // <div>
+      //   <h1>{mockEvent.eventTitle}</h1>
+      //   <img src={mockEvent.eventCoverPhoto} alt={mockEvent.eventTitle}/>
+      //   <p>{mockEvent.eventDescription}</p>
+      //   <p>Date: {mockEvent.eventDate}</p>
+      //   <p>Start Time: {mockEvent.eventStartTime}</p>
+      //   <p>End Time: {mockEvent.eventEndTime}</p>
+      //   <p>Location: {mockEvent.eventLocation}</p>
+      // </div>
+
+      <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
+        <Card sx={{ maxWidth: 345 }}>
+          <CardMedia
+            component="img"
+            height="140"
+            image={mockEvent.eventCoverPhoto}
+            alt={mockEvent.eventTitle}
+          />
+          <CardContent>
+            <Typography gutterBottom variant="h5" component="div">
+              {mockEvent.eventTitle}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              {mockEvent.eventDescription}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              Date: {mockEvent.eventDate}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              Start Time: {mockEvent.eventStartTime}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              End Time: {mockEvent.eventEndTime}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              Location: {mockEvent.eventLocation}
+            </Typography>
+          </CardContent>
+        </Card>
+      </Box>
     );
 };
 
