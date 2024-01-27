@@ -23,15 +23,6 @@ const EventDetail = () => {
   }
 
     return (
-      // <div>
-      //   <h1>{mockEvent.eventTitle}</h1>
-      //   <img src={mockEvent.eventCoverPhoto} alt={mockEvent.eventTitle}/>
-      //   <p>{mockEvent.eventDescription}</p>
-      //   <p>Date: {mockEvent.eventDate}</p>
-      //   <p>Start Time: {mockEvent.eventStartTime}</p>
-      //   <p>End Time: {mockEvent.eventEndTime}</p>
-      //   <p>Location: {mockEvent.eventLocation}</p>
-      // </div>
 
       <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
         <Card sx={{ maxWidth: 345 }}>
