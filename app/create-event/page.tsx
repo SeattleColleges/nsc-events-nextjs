@@ -109,41 +109,79 @@ const CreateEvent = () => {
         <div className="ml-4">
             <form onSubmit={handleSubmit} className="space-y-4 mr-4">
                 <div>
-                    <h2 className="text-lg font-bold mt-4">General Information</h2>
+                    <h2 className="text-lg font-bold mt-4">Add Event</h2>
                     <div className="space-y-2">
-                            <label>
-                                Event Title
-                                <input 
-                                    type="text"
-                                    name="eventTitle" 
-                                    value={eventData.eventTitle} 
-                                    onChange={handleInputChange}
-                                    className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                    />    
-                                {errors.eventTitle && <p className="error-text">{errors.eventTitle}</p>}
-                            </label>
-                            <label>
-                                Event Description
-                                <input 
-                                    type="text"
-                                    name="eventDescription"
-                                    value={eventData.eventDescription}
-                                    onChange={handleInputChange}
-                                    className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                />
-                                {errors.eventDescription && <p className="error-text">{errors.eventDescription}</p>}
-                            </label>
-                            <label>
-                                Event Category
-                                <input 
-                                    type="text"
-                                    name="eventCategory" 
-                                    value={eventData.eventCategory} 
-                                    onChange={handleInputChange}
-                                    className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                />
-                                {errors.eventCategory && <p className="error-text">{errors.eventCategory}</p>}
-                            </label>
+                        <label>
+                            Event Title
+                            <input name="eventTitle" value={eventData.eventTitle} onChange={handleInputChange} style={{ color: 'black' }}
+                                   className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"/>
+                                    {errors.eventTitle && <p className="error-text">{errors.eventTitle}</p>}
+                        </label>
+                        <label>
+                            Event Description
+                            <input name="eventDescription" value={eventData.eventDescription} onChange={handleInputChange} style={{ color: 'black' }}
+                                   className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"/>
+                                    {errors.eventDescription && <p className="error-text">{errors.eventDescription}</p>}
+                        </label>
+                        <label>
+                            Event Category
+                            <input name="eventCategory" value={eventData.eventCategory} onChange={handleInputChange} style={{ color: 'black' }}
+                                   className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"/>
+                                    {errors.eventCategory && <p className="error-text">{errors.eventCategory}</p>}
+                        </label>
+                        <label>
+                            Event Date
+                            <input name="eventDate" value={eventData.eventDate} onChange={handleInputChange} style={{ color: 'black' }}
+                                   className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"/>
+                        </label>
+                        <label>
+                            Event Start Time
+                            <input name="eventStartTime" value={eventData.eventStartTime} onChange={handleInputChange} style={{ color: 'black' }}
+                                   className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"/>
+                                    {errors.eventStartTime && <p className="error-text">{errors.eventStartTime}</p>}
+                        </label>
+                        <label>
+                            Event End Time
+                            <input name="eventEndTime" value={eventData.eventEndTime} onChange={handleInputChange} style={{ color: 'black' }}
+                                   className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"/>
+                                    {errors.eventEndTime && <p className="error-text">{errors.eventEndTime}</p>}
+                        </label>
+                        <label>
+                            Event Location
+                            <input name="eventLocation" value={eventData.eventLocation} onChange={handleInputChange} style={{ color: 'black' }}
+                                   className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"/>
+                                    {errors.eventLocation && <p className="error-text">{errors.eventLocation}</p>}
+                        </label>
+                        <label>
+                            Event Cover Photo
+                            <input name="eventCoverPhoto" value={eventData.eventCoverPhoto} onChange={handleInputChange} style={{ color: 'black' }}
+                                   className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"/>
+                        </label>
+                        <label>
+                            Event Host
+                            <input name="eventHost" value={eventData.eventHost} onChange={handleInputChange} style={{ color: 'black' }}
+                                   className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"/>
+                        </label>
+                        <label>
+                            Event Website
+                            <input name="eventWebsite" value={eventData.eventWebsite} onChange={handleInputChange} style={{ color: 'black' }}
+                                   className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"/>
+                        </label>
+                        <label>
+                            Event Registration
+                            <input name="eventRegistration" value={eventData.eventRegistration} onChange={handleInputChange} style={{ color: 'black' }}
+                                   className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"/>
+                        </label>
+                        <label>
+                            Event Capacity
+                            <input name="eventCapacity" value={eventData.eventCapacity} onChange={handleInputChange} style={{ color: 'black' }}
+                                   className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"/>
+                        </label>
+                        <label>
+                            Event Cost
+                            <input name="eventCost" value={eventData.eventCost} onChange={handleInputChange} style={{ color: 'black' }}
+                                   className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"/>
+                        </label>
                         <div className="space-y-2">
                             <TagSelector 
                                 selectedTags={eventData.eventTags}
@@ -151,105 +189,62 @@ const CreateEvent = () => {
                                 onTagClick={handleTagClick}/>
                         </div>
                         {/* Repeat for other fields in the "General Information" group */}
-
-                    </div>
-                </div>
-
-                <div>
-                    <h2 className="text-lg font-bold">Event Schedule</h2>
-                    <div className="space-y-2">
-                        {/* Add fields for eventDate, eventStartTime, eventEndTime, eventSchedule */}
-                        <label>
-                            Event Date
-                            <input 
-                                type="date"
-                                name="eventDate" 
-                                value={eventData.eventDate} 
-                                onChange={handleInputChange}
-                                className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            />
-                        </label>
-
-                        <label>
-                            Event Start Time
-                            <input 
-                                type="time"
-                                name="eventStartTime"
-                                value={eventData.eventStartTime}
-                                onChange={handleInputChange}
-                                className="block w-full mt-1" 
-                            />
-                            {errors.eventStartTime && <p className="error-text">{errors.eventStartTime}</p>}
-                        </label>
-
-                        <label>
-                            Event End Time
-                            <input 
-                                type="time"
-                                name="eventEndTime"
-                                value={eventData.eventEndTime}
-                                onChange={handleInputChange}
-                                className="block w-full mt-1" 
-                            />
-                            {errors.eventEndTime && <p className="error-text">{errors.eventEndTime}</p>}
-                        </label>
-
                         <label>
                             Event Schedule
-                            <input 
-                                type="text"
-                                name="eventSchedule"
-                                value={eventData.eventSchedule}
-                                onChange={handleInputChange}
-                                className="block w-full mt-1" 
-                            />
-                            {errors.eventSchedule && <p className="error-text">{errors.eventSchedule}</p>}
+                            <input name="eventSchedule" value={eventData.eventSchedule} onChange={handleInputChange} style={{ color: 'black' }}
+                                   className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"/>
+                                    {errors.eventSchedule && <p className="error-text">{errors.eventSchedule}</p>}
                         </label>
-                    </div>
-                </div>
-
-                <div>
-                    <h2 className="text-lg font-bold">Event Details</h2>
-                    <div className="space-y-2">
-                        {/* Add fields for eventLocation, eventHost, eventWebsite, eventRegistration, eventCapacity, eventCost, eventSpeakers, eventPrerequisites, eventCancellationPolicy */}
-
                         <label>
-                            Event Location
-                            <input 
-                                type="text"
-                                name="eventLocation"
-                                value={eventData.eventLocation}
-                                onChange={handleInputChange}
-                                className="block w-full mt-1" 
-                            />
-                            {errors.eventLocation && <p className="error-text">{errors.eventLocation}</p>}
+                            Event Speakers
+                            <input name="eventSpeakers" value={eventData.eventSpeakers} onChange={handleInputChange} style={{ color: 'black' }}
+                                   className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"/>
                         </label>
-                        
-                    </div>
-                </div>
-
-                <div>
-                    <h2 className="text-lg font-bold">Contact & Accessibility</h2>
-                    <div className="space-y-2">
-                        {/* Add fields for eventContact, eventPrivacy, eventAccessibility */}
-                    </div>
-                </div>
-
-                <div>
-                    <h2 className="text-lg font-bold">Event Media</h2>
-                    <div className="space-y-2">
-                        {/* Add fields for eventCoverPhoto, eventSocialMedia */}
                         <label>
-                            Event Cover Photo
-                            <input 
-                                // change the type & onChange to file & handleFileChange once we're able to upload image files 
-                                type="text"
-                                name="eventCoverPhoto"
-                                onChange={handleInputChange}
-                                className="block w-full mt-1"
-                            />
+                            Event Prerequisites
+                            <input name="eventPrerequisites" value={eventData.eventPrerequisites} onChange={handleInputChange} style={{ color: 'black' }}
+                                   className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"/>
                         </label>
-                        
+                        <label>
+                            Event Cancellation Policy
+                            <input name="eventCancellationPolicy" value={eventData.eventCancellationPolicy} onChange={handleInputChange} style={{ color: 'black' }}
+                                   className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"/>
+                        </label>
+                        <label>
+                            Event Contact
+                            <input name="eventContact" value={eventData.eventContact} onChange={handleInputChange} style={{ color: 'black' }}
+                                   className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"/>
+                        </label>
+                        <label>
+                            Facebook
+                            <input name="facebook" value={eventData.eventSocialMedia.facebook} onChange={handleInputChange} style={{ color: 'black' }}
+                                   className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"/>
+                        </label>
+                        <label>
+                            Twitter
+                            <input name="twitter" value={eventData.eventSocialMedia.twitter} onChange={handleInputChange} style={{ color: 'black' }}
+                                   className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"/>
+                        </label>
+                        <label>
+                            Instagram
+                            <input name="instagram" value={eventData.eventSocialMedia.instagram} onChange={handleInputChange} style={{ color: 'black' }}
+                                   className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"/>
+                        </label>
+                        <label>
+                            Hashtag
+                            <input name="hashtag" value={eventData.eventSocialMedia.hashtag} onChange={handleInputChange} style={{ color: 'black' }}
+                                   className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"/>
+                        </label>
+                        <label>
+                            Event Privacy
+                            <input name="eventPrivacy" value={eventData.eventPrivacy} onChange={handleInputChange} style={{ color: 'black' }}
+                                   className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"/>
+                        </label>
+                        <label>
+                            Event Accessibility
+                            <input name="eventAccessibility" value={eventData.eventAccessibility} onChange={handleInputChange} style={{ color: 'black' }}
+                                   className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"/>
+                        </label>
                     </div>
                 </div>
 
