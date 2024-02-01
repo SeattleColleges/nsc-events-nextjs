@@ -3,6 +3,8 @@ import { ChangeEventHandler, FormEvent, useState } from "react";
 import TagSelector from "@/components/TagSelector"
 import { Activity } from "@/models/activity";
 import activityAutofill from "@/models/activityAutofill";
+import Datepicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 
 type FormErrors = {
@@ -20,6 +22,7 @@ type FormErrors = {
 const CreateEvent = () => {
     const [eventData, setEventData] = useState<Activity>(activityAutofill);
     const [errors, setErrors] = useState<FormErrors>({});
+    const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
     const handleInputChange: ChangeEventHandler<HTMLInputElement> = ({ target }) => {
         const { name, value } = target;
@@ -129,11 +132,13 @@ const CreateEvent = () => {
                                    className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"/>
                                     {errors.eventCategory && <p className="error-text">{errors.eventCategory}</p>}
                         </label>
-                        <label>
+                        <label className="block text-sm font-medium text-white-700">
                             Event Date
-                            <input name="eventDate" value={eventData.eventDate} onChange={handleInputChange} style={{ color: 'black' }}
-                                   className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"/>
                         </label>
+                        <div className="mt-1">
+                            <Datepicker selected={selectedDate} onChange={date => setSelectedDate(date)} minDate={new Date()} 
+                                showMonthDropdown showYearDropdown dropdownMode="select" dateFormat={'MM dd, yyyy'} placeholderText="Select Date"/>
+                        </div>
                         <label>
                             Event Start Time
                             <input name="eventStartTime" value={eventData.eventStartTime} onChange={handleInputChange} style={{ color: 'black' }}
