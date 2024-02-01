@@ -18,6 +18,14 @@ type FormErrors = {
   eventEndTime?: string;
   eventSchedule?: string;
   eventLocation?: string;
+  eventHost?: string;
+  eventRegistration?: string;
+  eventCapacity?: string;
+  eventSpeakers?: string;
+  eventPrerequisites?: string;
+  eventCancellationPolicy?: string;
+  eventContact?: string;
+  eventAccessibility?: string;
 }
 
 
@@ -87,8 +95,35 @@ const CreateEvent = () => {
         if (!data.eventCategory) {
             newErrors = { ...newErrors, eventCategory: 'Event Category is required' };
         }
-        if (!data.eventDate) {
-            newErrors = { ...newErrors, eventDate: 'Event date is required' };
+        if (!data.eventLocation) {
+            newErrors = { ...newErrors, eventLocation: 'Event location is required' };
+        }
+        if (!data.eventHost) {
+            newErrors = { ...newErrors, eventHost: 'Event host is required' };
+        }
+        if (!data.eventRegistration) {
+            newErrors = { ...newErrors, eventRegistration: 'Event registration is required' };
+        }
+        if (!data.eventCapacity) {
+            newErrors = { ...newErrors, eventCapacity: 'Event capacity is required' };
+        }
+        if (!data.eventSchedule) {
+            newErrors = { ...newErrors, eventSchedule: 'Event schedule is required' };
+        }
+        if (!data.eventSpeakers) {
+            newErrors = { ...newErrors, eventSpeakers: 'Event speakers is required' };
+        }
+        if (!data.eventPrerequisites) {
+            newErrors = { ...newErrors, eventPrerequisites: 'Event prerequisites is required' };
+        }
+        if (!data.eventCancellationPolicy) {
+            newErrors = { ...newErrors, eventCancellationPolicy: 'Event cancellation policy is required' };
+        }
+        if (!data.eventContact) {
+            newErrors = { ...newErrors, eventContact: 'Event contact is required' };
+        }
+        if (!data.eventAccessibility) {
+            newErrors = { ...newErrors, eventAccessibility: 'Event accessibility is required' };
         }
         // todo: add more error validation rules
         return newErrors;
@@ -147,19 +182,19 @@ const CreateEvent = () => {
                             Event Title
                             <input name="eventTitle" value={eventData.eventTitle} onChange={handleInputChange} style={{ color: 'black' }}
                                    className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"/>
-                                    {errors.eventTitle && <p className="error-text">{errors.eventTitle}</p>}
+                                    {errors.eventTitle && <p className="error-text" style={{ color: 'red' }}>{errors.eventTitle}</p>}
                         </label>
                         <label>
                             Event Description
                             <input name="eventDescription" value={eventData.eventDescription} onChange={handleInputChange} style={{ color: 'black' }}
                                    className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"/>
-                                    {errors.eventDescription && <p className="error-text">{errors.eventDescription}</p>}
+                                    {errors.eventDescription && <p className="error-text" style={{ color: 'red' }}>{errors.eventDescription}</p>}
                         </label>
                         <label>
                             Event Category
                             <input name="eventCategory" value={eventData.eventCategory} onChange={handleInputChange} style={{ color: 'black' }}
                                    className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"/>
-                                    {errors.eventCategory && <p className="error-text">{errors.eventCategory}</p>}
+                                    {errors.eventCategory && <p className="error-text" style={{ color: 'red' }}>{errors.eventCategory}</p>}
                         </label>
                         <div className="mt-1">
                             <label className="block text-sm font-medium text-white-700">
@@ -192,7 +227,7 @@ const CreateEvent = () => {
                             Event Location
                             <input name="eventLocation" value={eventData.eventLocation} onChange={handleInputChange} style={{ color: 'black' }}
                                    className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"/>
-                                    {errors.eventLocation && <p className="error-text">{errors.eventLocation}</p>}
+                                    {errors.eventLocation && <p className="error-text" style={{ color: 'red' }}>{errors.eventLocation}</p>}
                         </label>
                         <label>
                             Event Cover Photo
@@ -203,6 +238,7 @@ const CreateEvent = () => {
                             Event Host
                             <input name="eventHost" value={eventData.eventHost} onChange={handleInputChange} style={{ color: 'black' }}
                                    className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"/>
+                                   {errors.eventHost && <p className="error-text" style={{ color: 'red' }}>{errors.eventHost}</p>}
                         </label>
                         <label>
                             Event Website
@@ -213,11 +249,13 @@ const CreateEvent = () => {
                             Event Registration
                             <input name="eventRegistration" value={eventData.eventRegistration} onChange={handleInputChange} style={{ color: 'black' }}
                                    className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"/>
+                                   {errors.eventRegistration && <p className="error-text" style={{ color: 'red' }}>{errors.eventRegistration}</p>}
                         </label>
                         <label>
                             Event Capacity
                             <input name="eventCapacity" value={eventData.eventCapacity} onChange={handleInputChange} style={{ color: 'black' }}
                                    className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"/>
+                                   {errors.eventCapacity && <p className="error-text" style={{ color: 'red' }}>{errors.eventCapacity}</p>}
                         </label>
                         <label>
                             Event Cost
@@ -235,27 +273,31 @@ const CreateEvent = () => {
                             Event Schedule
                             <input name="eventSchedule" value={eventData.eventSchedule} onChange={handleInputChange} style={{ color: 'black' }}
                                    className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"/>
-                                    {errors.eventSchedule && <p className="error-text">{errors.eventSchedule}</p>}
+                                    {errors.eventSchedule && <p className="error-text" style={{ color: 'red' }}>{errors.eventSchedule}</p>}
                         </label>
                         <label>
                             Event Speakers
                             <input name="eventSpeakers" value={eventData.eventSpeakers} onChange={handleInputChange} style={{ color: 'black' }}
                                    className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"/>
+                                   {errors.eventSpeakers && <p className="error-text" style={{ color: 'red' }}>{errors.eventSpeakers}</p>}
                         </label>
                         <label>
                             Event Prerequisites
                             <input name="eventPrerequisites" value={eventData.eventPrerequisites} onChange={handleInputChange} style={{ color: 'black' }}
                                    className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"/>
+                                   {errors.eventPrerequisites && <p className="error-text" style={{ color: 'red' }}>{errors.eventPrerequisites}</p>}
                         </label>
                         <label>
                             Event Cancellation Policy
                             <input name="eventCancellationPolicy" value={eventData.eventCancellationPolicy} onChange={handleInputChange} style={{ color: 'black' }}
                                    className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"/>
+                                   {errors.eventCancellationPolicy && <p className="error-text" style={{ color: 'red' }}>{errors.eventCancellationPolicy}</p>}
                         </label>
                         <label>
                             Event Contact
                             <input name="eventContact" value={eventData.eventContact} onChange={handleInputChange} style={{ color: 'black' }}
                                    className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"/>
+                                   {errors.eventContact && <p className="error-text" style={{ color: 'red' }}>{errors.eventContact}</p>}
                         </label>
                         <label>
                             Facebook
@@ -286,6 +328,7 @@ const CreateEvent = () => {
                             Event Accessibility
                             <input name="eventAccessibility" value={eventData.eventAccessibility} onChange={handleInputChange} style={{ color: 'black' }}
                                    className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"/>
+                                   {errors.eventAccessibility && <p className="error-text" style={{ color: 'red' }}>{errors.eventAccessibility}</p>}
                         </label>
                     </div>
                 </div>
@@ -296,7 +339,7 @@ const CreateEvent = () => {
                 <div className="error-messages">
                     {/* rendering accumulated error messages */}
                     {Object.entries(errors).map(([key, value]) => (
-                        <p key={key} className="error-text">{value}</p>
+                        <p key={key} className="error-text" style={{ color: 'red' }}>{value}</p>
                     ))}
                 </div>
             </form>
