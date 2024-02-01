@@ -28,6 +28,8 @@ const CreateEvent = () => {
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
     const [startTime, setStartTime] = useState<string>('10:00');
     const [endTime, setEndTime] = useState<string>('11:00');
+    const [timeError, setTimeError] = useState<string | null>(null);
+
 
 
     const handleInputChange: ChangeEventHandler<HTMLInputElement> = ({ target }) => {
@@ -114,6 +116,27 @@ const CreateEvent = () => {
     };
 
 
+    // handling logic for time selection 
+    const handleStartTimeChange = (time: string) => {
+        setStartTime(time);
+        if (endTime && time >= endTime) {
+            setTimeError('End time must be after start time');
+        } else {
+            // clearing any error msgs if time selection is valid
+            setTimeError(null);
+        }
+    }
+
+    const handleEndTimeChange = (time: string) => {
+        setEndTime(time);
+        if (startTime && time <= startTime) {
+            setTimeError('End time must be after start time');
+        } else {
+            // clearing any error msgs if time selection is valid
+            setTimeError(null);
+        }
+    }
+
     return (
         <div className="ml-4">
             <form onSubmit={handleSubmit} className="space-y-4 mr-4">
@@ -150,15 +173,21 @@ const CreateEvent = () => {
                                 Start Time
                             </label>
                             <input 
-                                type="time" name="startTime" value={startTime} onChange={e => setStartTime(e.target.value)} className="form-input mt-1 block w-full text-black"/>
+                                type="time" name="startTime" value={startTime || ''} onChange={time => handleStartTimeChange(time.target.value)} className="form-input mt-1 block w-full text-black"/>
                         </div>
                         <div>
                             <label className="block text-sm font-medium text-white-700">
                                 End Time
                             </label>
                             <input 
-                                type="time" name="endTime" value={endTime} onChange={e => setEndTime(e.target.value)} className="form-input mt-1 block w-full text-black"/>
+                                type="time" name="endTime" value={endTime || ''} onChange={time => handleEndTimeChange(time.target.value)} className="form-input mt-1 block w-full text-black"/>
                         </div>
+                        {/* Time Error Message */}
+                        {timeError && (
+                            <div className="text-red-500 text-sm mt-2">
+                                {timeError}
+                            </div>
+                        )}
                         <label>
                             Event Location
                             <input name="eventLocation" value={eventData.eventLocation} onChange={handleInputChange} style={{ color: 'black' }}
