@@ -5,6 +5,9 @@ import { Activity } from "@/models/activity";
 import activityAutofill from "@/models/activityAutofill";
 import Datepicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import TimePicker from 'react-time-picker';
+import 'react-time-picker/dist/TimePicker.css';
+import 'react-clock/dist/Clock.css';
 
 
 type FormErrors = {
@@ -23,6 +26,9 @@ const CreateEvent = () => {
     const [eventData, setEventData] = useState<Activity>(activityAutofill);
     const [errors, setErrors] = useState<FormErrors>({});
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+    const [startTime, setStartTime] = useState<string>('10:00');
+    const [endTime, setEndTime] = useState<string>('11:00');
+
 
     const handleInputChange: ChangeEventHandler<HTMLInputElement> = ({ target }) => {
         const { name, value } = target;
@@ -132,25 +138,27 @@ const CreateEvent = () => {
                                    className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"/>
                                     {errors.eventCategory && <p className="error-text">{errors.eventCategory}</p>}
                         </label>
-                        <label className="block text-sm font-medium text-white-700">
-                            Event Date
-                        </label>
                         <div className="mt-1">
-                            <Datepicker selected={selectedDate} onChange={date => setSelectedDate(date)} minDate={new Date()} 
-                                showMonthDropdown showYearDropdown dropdownMode="select" dateFormat={'MM dd, yyyy'} placeholderText="Select Date"/>
+                            <label className="block text-sm font-medium text-white-700">
+                                Event Date
+                            </label>
+                                <Datepicker selected={selectedDate} onChange={date => setSelectedDate(date)} minDate={new Date()} 
+                                    showMonthDropdown showYearDropdown dropdownMode="select" dateFormat={'MM dd, yyyy'} placeholderText="Select Date"/>
                         </div>
-                        <label>
-                            Event Start Time
-                            <input name="eventStartTime" value={eventData.eventStartTime} onChange={handleInputChange} style={{ color: 'black' }}
-                                   className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"/>
-                                    {errors.eventStartTime && <p className="error-text">{errors.eventStartTime}</p>}
-                        </label>
-                        <label>
-                            Event End Time
-                            <input name="eventEndTime" value={eventData.eventEndTime} onChange={handleInputChange} style={{ color: 'black' }}
-                                   className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"/>
-                                    {errors.eventEndTime && <p className="error-text">{errors.eventEndTime}</p>}
-                        </label>
+                        <div>
+                            <label className="block text-sm font-medium text-white-700">
+                                Start Time
+                            </label>
+                            <input 
+                                type="time" name="startTime" value={startTime} onChange={e => setStartTime(e.target.value)} className="form-input mt-1 block w-full text-black"/>
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium text-white-700">
+                                End Time
+                            </label>
+                            <input 
+                                type="time" name="endTime" value={endTime} onChange={e => setEndTime(e.target.value)} className="form-input mt-1 block w-full text-black"/>
+                        </div>
                         <label>
                             Event Location
                             <input name="eventLocation" value={eventData.eventLocation} onChange={handleInputChange} style={{ color: 'black' }}
