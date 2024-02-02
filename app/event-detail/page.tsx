@@ -3,13 +3,21 @@
 import React from 'react';
 import { Typography, Card, CardContent, CardMedia, Box } from '@mui/material';
 import { useQueryClient } from "@tanstack/react-query";
+import { ActivityDatabase } from "@/models/activityDatabase";
 
-const EventDetail = ( { searchParams }) => {
+interface SearchParams {
+  searchParams: {
+    id: string;
+  };
+}
+
+const EventDetail = ({ searchParams }: SearchParams) => {
 
   const queryClient = useQueryClient();
 
-  const event = queryClient.getQueryData(["event"])
-      .find((event: { _id: String; }) => event._id == searchParams.id);
+  const event =
+      (queryClient.getQueryData(['event']) as ActivityDatabase[])
+          .find(event => event._id === searchParams.id)!;
 
     return (
 

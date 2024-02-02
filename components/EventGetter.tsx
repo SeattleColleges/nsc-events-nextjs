@@ -4,6 +4,7 @@ import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardMedia, Typography, Grid, Box, CardActions, Button } from '@mui/material';
 import Link from "next/link";
+import { ActivityDatabase } from "@/models/activityDatabase";
 
 const getEvents = async() => {
     const response = await fetch("http://localhost:3000/api/events");
@@ -12,7 +13,7 @@ const getEvents = async() => {
 
 export function EventsList(){
 
-    const { data, isLoading, isError } = useQuery<any>({
+    const { data, isLoading, isError } = useQuery<ActivityDatabase[]>({
         queryKey: ["event"],
         queryFn: getEvents
     });
@@ -24,7 +25,7 @@ export function EventsList(){
     } else {
         return (
             <Grid container spacing={1}>
-                {data?.map((event: any) => (
+                {data?.map((event: ActivityDatabase) => (
                     <Grid item xs={12} sm={6} md={4} lg={3} key={event._id}>
                         <Box sx={{ width: 450, height: 400 }}>
                             <Card sx={{ display: 'flex', flexDirection: 'column' }}>
