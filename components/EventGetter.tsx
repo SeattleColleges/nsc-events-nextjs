@@ -1,39 +1,21 @@
 'use client';
 
-import React, { useState } from "react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import React from "react";
+import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardMedia, Typography, Grid, Box, CardActions, Button } from '@mui/material';
-import { Activity } from "@/models/activity";
+import Link from "next/link";
 
 const getEvents = async() => {
     const response = await fetch("http://localhost:3000/api/events");
     return response.json();
 }
 
-
-
-
 export function EventsList(){
-    const queryClient = useQueryClient();
-
 
     const { data, isLoading, isError } = useQuery<any>({
         queryKey: ["event"],
         queryFn: getEvents
     });
-
-    const [clickedEvent, setClickedEvent] = useState<any>();
-
-    const handleClick = (id: String) => {
-
-
-        const data = queryClient.getQueryData(["event"])
-            .find((event: { _id: String; }) => event._id == id) as Activity;
-        setClickedEvent(data)
-    }
-
-    console.log(clickedEvent)
-
 
     if(isLoading) {
         return <span>Loading events...</span>
@@ -59,8 +41,17 @@ export function EventsList(){
                                     
                                 </CardContent>
                                 <CardActions>
-                                    <Button onClick={() => handleClick(event._id)} size={"small"}>Details</Button>
-                                    {/*<EventDetail event={clickedEvent} />*/}
+                                    <Link href={
+                                        {
+                                            pathname: "/event-detail",
+                                            query: {
+                                                id: event._id,
+                                            },
+                                        }
+
+                                    } >
+                                    <Button   size={"small"}>Details</Button>
+                                    </Link>
                                 </CardActions>
                             </Card>
                         </Box>

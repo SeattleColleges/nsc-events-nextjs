@@ -1,26 +1,17 @@
+"use client"
+
 import React from 'react';
 import { Typography, Card, CardContent, CardMedia, Box } from '@mui/material';
+import { useQueryClient } from "@tanstack/react-query";
+import { Activity } from "@/models/activity";
 
+const EventDetail = ( { searchParams }) => {
+  const queryClient = useQueryClient();
 
-const EventDetail = () => {
+  const id = searchParams.id
 
-  // todo: fetch event data from backend using event id from url
-    // can use useEffect to fetch event data from backend when component mounts
-    // handle any errors that may arise during data fetching process, (network & server errors)
-  // todo: once data is fetched, store in state variable
-    // format any data that needs to be formatted (date, time, etc..)
-    // use state variable to deplay event details in component 
-  
-  // temporary: mockEvent is placeholder for the event that'll be captured
-  const mockEvent = {
-    eventTitle: "Sample Event",
-    eventDescription: "This is a sample event description.",
-    eventDate: new Date().toDateString(),
-    eventStartTime: "10:00 AM",
-    eventEndTime: "4:00 PM",
-    eventLocation: "123 Main St, City, Country",
-    eventCoverPhoto: "https://via.placeholder.com/150"
-  }
+  const data = queryClient.getQueryData(["event"])
+      .find((event: { _id: String; }) => event._id == id) as Activity;
 
     return (
 
@@ -29,27 +20,27 @@ const EventDetail = () => {
           <CardMedia
             component="img"
             height="140"
-            image={mockEvent.eventCoverPhoto}
-            alt={mockEvent.eventTitle}
+            image={data.eventCoverPhoto}
+            alt={data.eventTitle}
           />
           <CardContent>
             <Typography gutterBottom variant="h5" component="div">
-              {mockEvent.eventTitle}
+              {data.eventTitle}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              {mockEvent.eventDescription}
+              {data.eventDescription}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              Date: {mockEvent.eventDate}
+              Date: {data.eventDate}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              Start Time: {mockEvent.eventStartTime}
+              Start Time: {data.eventStartTime}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              End Time: {mockEvent.eventEndTime}
+              End Time: {data.eventEndTime}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              Location: {mockEvent.eventLocation}
+              Location: {data.eventLocation}
             </Typography>
           </CardContent>
         </Card>
