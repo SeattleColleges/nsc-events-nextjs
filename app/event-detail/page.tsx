@@ -3,15 +3,13 @@
 import React from 'react';
 import { Typography, Card, CardContent, CardMedia, Box } from '@mui/material';
 import { useQueryClient } from "@tanstack/react-query";
-import { Activity } from "@/models/activity";
 
 const EventDetail = ( { searchParams }) => {
+
   const queryClient = useQueryClient();
 
-  const id = searchParams.id
-
-  const data = queryClient.getQueryData(["event"])
-      .find((event: { _id: String; }) => event._id == id) as Activity;
+  const event = queryClient.getQueryData(["event"])
+      .find((event: { _id: String; }) => event._id == searchParams.id);
 
     return (
 
@@ -20,27 +18,27 @@ const EventDetail = ( { searchParams }) => {
           <CardMedia
             component="img"
             height="140"
-            image={data.eventCoverPhoto}
-            alt={data.eventTitle}
+            image={event.eventCoverPhoto}
+            alt={event.eventTitle}
           />
           <CardContent>
             <Typography gutterBottom variant="h5" component="div">
-              {data.eventTitle}
+              {event.eventTitle}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              {data.eventDescription}
+              {event.eventDescription}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              Date: {data.eventDate}
+              Date: {event.eventDate}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              Start Time: {data.eventStartTime}
+              Start Time: {event.eventStartTime}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              End Time: {data.eventEndTime}
+              End Time: {event.eventEndTime}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              Location: {data.eventLocation}
+              Location: {event.eventLocation}
             </Typography>
           </CardContent>
         </Card>
