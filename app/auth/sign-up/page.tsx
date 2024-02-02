@@ -15,6 +15,8 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { blue, green } from "@mui/material/colors";
 import Link from "next/link";
+import Image from 'next/image';
+
 // TODO determine if this is the correct logo
 import NorthSeattleLogo from "../../NorthSeattleLogo.png";
 
@@ -164,7 +166,7 @@ const SignUp = () => {
       <Container maxWidth="xs" sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', height: '100vh', justifyContent: 'center' }}>
         <Paper elevation={6} sx={{ padding: 4, width: '100%', borderRadius: 2, mb: 2 }}>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <img
+            <Image
               src={NorthSeattleLogo.src}
               alt="North Seattle College Logo"
               style={{ maxWidth: '100%', height: 'auto', borderRadius: '10px' }}
