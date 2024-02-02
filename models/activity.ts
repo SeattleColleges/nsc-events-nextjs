@@ -1,32 +1,33 @@
 export interface Activity {
-    eventCreatorId: string;
-    eventTitle: string;
-    eventDescription: string;
-    eventCategory: string;
-    eventDate: string;
-    eventStartTime: string;
-    eventEndTime: string;
-    eventLocation: string;
-    eventCoverPhoto: string;
-    eventHost: string;
-    eventWebsite: string;
-    eventRegistration: string;
-    eventCapacity: number;
-    eventCost: string;
-    eventTags: string[];
-    eventSchedule: string;
-    eventSpeakers: string[];
-    eventPrerequisites: string;
-    eventCancellationPolicy: string;
-    eventContact: string;
+    eventCreatorId: string,
+    eventTitle: string,
+    eventDescription: string,
+    eventCategory: string,
+    eventDate: string,
+    eventStartTime: string,
+    eventEndTime: string,
+    eventLocation: string,
+    eventCoverPhoto: string,
+    eventHost: string,
+    eventWebsite: string,
+    eventRegistration: string,
+    eventCapacity: number,
+    eventCost: string,
+    eventTags: string[],
+    eventSchedule: string,
+    eventSpeakers: string[],
+    eventPrerequisites: string,
+    eventCancellationPolicy: string,
+    eventContact: string,
     eventSocialMedia: {
         facebook: string;
         twitter: string;
         instagram: string;
         hashtag: string;
-    };
-    eventPrivacy: string;
-    eventAccessibility: string;
+    },
+    eventPrivacy: string,
+    eventAccessibility: string,
+    event: any
 }
 
 export const activity: Activity = {
