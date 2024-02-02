@@ -1,9 +1,9 @@
 "use client"
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Typography, Card, CardContent, CardMedia, Box } from '@mui/material';
 import { useQueryClient } from "@tanstack/react-query";
-import { ActivityDatabase } from "@/models/activityDatabase";
+import { activityDatabase, ActivityDatabase } from "@/models/activityDatabase";
 
 interface SearchParams {
   searchParams: {
@@ -12,22 +12,29 @@ interface SearchParams {
 }
 
 const EventDetail = ({ searchParams }: SearchParams) => {
-
+  const [event, setEvent] = useState(activityDatabase)
+  
   const queryClient = useQueryClient();
+  
+  useEffect( () => {
+    if(searchParams.id) {
+      const selectedEvent = (queryClient.getQueryData<ActivityDatabase[]>(['event']) as ActivityDatabase[])
+          .find(event => event._id === searchParams.id) as ActivityDatabase;
+      setEvent(selectedEvent)
+    }
 
-  const event =
-      (queryClient.getQueryData(['event']) as ActivityDatabase[])
-          .find(event => event._id === searchParams.id)!;
+      }, [queryClient, searchParams.id]
 
-    return (
+  )
+  return (
 
       <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
         <Card sx={{ maxWidth: 345 }}>
           <CardMedia
-            component="img"
-            height="140"
-            image={event.eventCoverPhoto}
-            alt={event.eventTitle}
+              component="img"
+              height="140"
+              image={event.eventCoverPhoto}
+              alt={event.eventTitle}
           />
           <CardContent>
             <Typography gutterBottom variant="h5" component="div">
@@ -51,7 +58,8 @@ const EventDetail = ({ searchParams }: SearchParams) => {
           </CardContent>
         </Card>
       </Box>
-    );
+  );
+  
 };
 
 export default EventDetail;
