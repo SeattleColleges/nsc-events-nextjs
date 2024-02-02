@@ -169,7 +169,9 @@ const SignUp = () => {
             <Image
               src={NorthSeattleLogo.src}
               alt="North Seattle College Logo"
-              style={{ maxWidth: '100%', height: 'auto', borderRadius: '10px' }}
+              width={150}
+              height={50}
+              style={{ borderRadius: '10px' }}
             />
             <h1>Sign Up</h1>
             <TextField
