@@ -1,10 +1,8 @@
 "use client";
 
 import InputField from "@/components/InputFields";
-import Link from "next/link";
-import { ChangeEventHandler, FormEventHandler, useEffect, useState } from "react";
-import { signIn } from "next-auth/react";
-import Router, { useRouter } from "next/navigation";
+import { ChangeEventHandler, FormEventHandler, useState } from "react";
+import { useRouter } from "next/navigation";
 import styles from "./signin-page.module.css";
 import Image from "next/image";
 import logo from "../../logo.png";
@@ -30,21 +28,28 @@ const Signin = () => {
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
 
-    // handle form submission logic. Import signIn from next-auth react
-    // since we're using email and password, we need to pass in credentials option
-    const res = await signIn("credentials", {
-      email, 
-      password,
-      // this prevents the defualt redirect and it's needed to render error message coming from backend
-      redirect: false,
+    // Fetch sign in
+    const res = await fetch("http://localhost:3000/api/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email,
+        password,
+      }),
     });
-
-    // check if the response contains an error and update error state if necessary
-    if (!res?.error) {
-    // if no error, we've successfully signed in, then we'll route user to their profile
-    router.replace("/admin")
+    if (!res.ok) {
+      alert("Invalid email or password"); // error message for now
+      throw new Error(await res.text());
+    }
+    const { token } = await res.json();
+    const userRole = JSON.parse(atob(token.split(".")[1])).role; // decode token to get user role
+    // Redirect to user page
+    if (userRole === "admin") {
+      router.push("/admin");
+    } else if (userRole === "creator") {
+      router.push("/creator");
     } else {
-      return setError(res.error);
+      router.push("/profile");
     }
   };
 
