@@ -1,11 +1,31 @@
-"use client";import InputField from "@/components/InputFields";import Link from "next/link";import { ChangeEventHandler, FormEventHandler, useState } from "react";import styles from "./signup-page.module.css";import Image from "next/image";
+"use client";
+import { ChangeEventHandler, FormEventHandler, useState } from "react";
+import {
+  ThemeProvider,
+  createTheme,
+  Container,
+  Paper,
+  Box,
+  TextField,
+  InputAdornment,
+  IconButton,
+  Button
+} from "@mui/material";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import { blue, green } from "@mui/material/colors";
+import Link from "next/link";
+import Image from 'next/image';
 
 // TODO determine if this is the correct logo
 import NorthSeattleLogo from "../../NorthSeattleLogo.png";
-// Image by show password by Daniel T. from https://thenounproject.com/browse/icons/term/show-password/ Title = show password Icons used under CC BY 3.0
-// TODO: Replace with a different icon
-import passwordIcon from "../../showpassword.png";
 
+const theme = createTheme({
+  palette: {
+    primary: blue,
+    secondary: green,
+  },
+});
 
 const SignUp = () => {
   // Set initial state for password visibility
@@ -142,85 +162,104 @@ const SignUp = () => {
   };
 
   return (
-    <div className={styles.container}>
-      <form className={styles.formContainer} onSubmit={handleSubmit}>
-        <div className={styles.imageWrapper}>
-          <Image
-            src={NorthSeattleLogo}
-            alt="North Seattle College Logo"
-          />
-        </div>
-        <h1 className={styles.title}>Sign Up</h1>
-        <InputField
-          label="First Name"
-          type="text"
-          name="firstName"
-          value={userInfo.firstName}
-          onChange={handleChange}
-          error={errors.firstName}
-        />
-        <InputField
-          label="Last Name"
-          type="name"
-          name="lastName"
-          value={lastName}
-          onChange={handleChange}
-          error={errors.lastName}
-        />
-        <InputField
-          label="Email"
-          type="email"
-          name="email"
-          value={email}
-          onChange={handleChange}
-          error={errors.email}
-        />
-        <InputField
-          label="Password"
-          name="password"
-          value={password}
-          type={showPassword ? "text" : "password"}
-          onChange={handleChange}
-          error={errors.password}
-          togglePasswordVisibility={togglePasswordVisibility}
-          icon={
+    <ThemeProvider theme={theme}>
+      <Container maxWidth="xs" sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', height: '100vh', justifyContent: 'center' }}>
+        <Paper elevation={6} sx={{ padding: 4, width: '100%', borderRadius: 2, mb: 2 }}>
+          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <Image
-              src={passwordIcon}
-              alt="Show Password"
-              color="white"
-              onClick={togglePasswordVisibility}
-              width={40}
-              height={40}
-              // TODO: Fix this
-              className="translate-x-3 translate-y-4"
+              src={NorthSeattleLogo.src}
+              alt="North Seattle College Logo"
+              width={150}
+              height={50}
+              style={{ borderRadius: '10px' }}
             />
-          }
-        />
-        <InputField
-          label="Confirm Password"
-          type={showConfirmPassword ? "text" : "password"}
-          name="confirmPassword"
-          value={confirmPassword}
-          onChange={handleChange}
-          error={errors.confirmPassword}
-          icon={
-            <Image
-              src={passwordIcon}
-              alt="Show Password"
-              color="white"
-              onClick={toggleConfirmPasswordVisibility}
-              width={40}
-              height={40}
-              // TODO: Fix this
-              className="translate-x-3 translate-y-4"
+            <h1>Sign Up</h1>
+            <TextField
+              fullWidth
+              margin="normal"
+              label="First Name"
+              name="firstName"
+              value={userInfo.firstName}
+              onChange={handleChange}
+              error={Boolean(errors.firstName)}
+              helperText={errors.firstName}
             />
-          }
-        />
-        <button className={styles.submitButton} type="submit">
-          Sign Up
-        </button>
-      </form>
-    </div>
+            <TextField
+              fullWidth
+              margin="normal"
+              label="Last Name"
+              name="lastName"
+              value={lastName}
+              onChange={handleChange}
+              error={Boolean(errors.lastName)}
+              helperText={errors.lastName}
+            />
+            <TextField
+              fullWidth
+              margin="normal"
+              label="Email"
+              name="email"
+              value={email}
+              onChange={handleChange}
+              error={Boolean(errors.email)}
+              helperText={errors.email}
+            />
+            <TextField
+              fullWidth
+              margin="normal"
+              label="Password"
+              name="password"
+              value={password}
+              type={showPassword ? "text" : "password"}
+              onChange={handleChange}
+              error={Boolean(errors.password)}
+              helperText={errors.password}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={togglePasswordVisibility}
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+            <TextField
+              fullWidth
+              margin="normal"
+              label="Confirm Password"
+              name="confirmPassword"
+              value={confirmPassword}
+              type={showConfirmPassword ? "text" : "password"}
+              onChange={handleChange}
+              error={Boolean(errors.confirmPassword)}
+              helperText={errors.confirmPassword}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={toggleConfirmPasswordVisibility}
+                    >
+                      {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+            <Button fullWidth variant="contained" style={{ textTransform: 'none' }} color="secondary" type="submit" sx={{ mt: 2 }}>
+              Sign Up
+            </Button>
+            <Link href="/auth/sign-in" passHref>
+              <Button component="a" fullWidth style={{ textTransform: 'none' }}>
+                Already have an account? Log In
+              </Button>
+            </Link>
+          </Box>
+        </Paper>
+      </Container>
+    </ThemeProvider>
   );
 };
 
