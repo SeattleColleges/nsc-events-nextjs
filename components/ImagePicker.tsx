@@ -1,4 +1,5 @@
 import React, { useState, ChangeEvent } from 'react';
+import Image from 'next/image'
 
 const ImagePicker: React.FC = () => {
 
@@ -28,7 +29,7 @@ const ImagePicker: React.FC = () => {
           {preview && (
             <div>
               <h3>Image Preview:</h3>
-              <img src={preview.toString()} alt="Preview" style={{ maxWidth: '100%', maxHeight: '300px', objectFit: 'contain' }} />
+              <Image src={preview.toString()} alt="Preview" width={500} height={500} />
             </div> 
           )}
       </div>
