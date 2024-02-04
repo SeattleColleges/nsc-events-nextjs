@@ -5,181 +5,28 @@ import { Activity } from "@/models/activity";
 import activityAutofill from "@/models/activityAutofill";
 import Datepicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import TimePicker from "react-time-picker";
 import "react-time-picker/dist/TimePicker.css";
 import "react-clock/dist/Clock.css";
+import { useEventForm } from "@/hooks/useEventForm";
 
-type FormErrors = {
-  eventTitle?: string;
-  eventDescription?: string;
-  eventCategory?: string;
-  eventStartTime?: string;
-  eventEndTime?: string;
-  eventSchedule?: string;
-  eventLocation?: string;
-  eventHost?: string;
-  eventRegistration?: string;
-  eventCapacity?: string;
-  eventSpeakers?: string;
-  eventPrerequisites?: string;
-  eventCancellationPolicy?: string;
-  eventContact?: string;
-  eventAccessibility?: string;
-};
-
-//test
-const CreateEvent = () => {
-  const [eventData, setEventData] = useState<Activity>(activityAutofill);
-  const [errors, setErrors] = useState<FormErrors>({});
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [startTime, setStartTime] = useState<string>("10:00");
-  const [endTime, setEndTime] = useState<string>("11:00");
-  const [timeError, setTimeError] = useState<string | null>(null);
-
-  const handleInputChange: ChangeEventHandler<HTMLInputElement> = ({
-    target,
-  }) => {
-    const { name, value } = target;
-    setEventData((prevEventData) => ({
-      ...prevEventData,
-      [name]: value,
-    }));
-  };
-
-  // for file handling and for the eventCoverPhoto, the file selected by the user should be converted to a local URL.
-  // this would involve uploading the file to a server and getting a URL in return.
-
-  const handleTagClick = (tag: string) => {
-    setEventData((prevEventData) => {
-      if (prevEventData.eventTags.includes(tag)) {
-        // If the tag is already selected, remove it from the array
-        return {
-          ...prevEventData,
-          eventTags: prevEventData.eventTags.filter((t) => t !== tag),
-        };
-      } else {
-        // If the tag is not selected, add it to the array
-        return {
-          ...prevEventData,
-          eventTags: [...prevEventData.eventTags, tag],
-        };
-      }
-    });
-  };
-
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log(eventData);
-    const newErrors = validateFormData(eventData);
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
-    } else {
-      createActivity(eventData);
-    }
-  };
-
-  const validateFormData = (data: Activity) => {
-    let newErrors = {};
-    // basic validation rules, extend as needed
-    if (!data.eventTitle) {
-      newErrors = { ...newErrors, eventTitle: "Event title is required" };
-    }
-    if (!data.eventDescription) {
-      newErrors = {
-        ...newErrors,
-        eventDescription: "Event description is required",
-      };
-    }
-    if (!data.eventCategory) {
-      newErrors = { ...newErrors, eventCategory: "Event Category is required" };
-    }
-    if (!data.eventLocation) {
-      newErrors = { ...newErrors, eventLocation: "Event location is required" };
-    }
-    if (!data.eventHost) {
-      newErrors = { ...newErrors, eventHost: "Event host is required" };
-    }
-    if (!data.eventRegistration) {
-      newErrors = {
-        ...newErrors,
-        eventRegistration: "Event registration is required",
-      };
-    }
-    if (!data.eventCapacity) {
-      newErrors = { ...newErrors, eventCapacity: "Event capacity is required" };
-    }
-    if (!data.eventSchedule) {
-      newErrors = { ...newErrors, eventSchedule: "Event schedule is required" };
-    }
-    if (!data.eventSpeakers) {
-      newErrors = { ...newErrors, eventSpeakers: "Event speakers is required" };
-    }
-    if (!data.eventPrerequisites) {
-      newErrors = {
-        ...newErrors,
-        eventPrerequisites: "Event prerequisites is required",
-      };
-    }
-    if (!data.eventCancellationPolicy) {
-      newErrors = {
-        ...newErrors,
-        eventCancellationPolicy: "Event cancellation policy is required",
-      };
-    }
-    if (!data.eventContact) {
-      newErrors = { ...newErrors, eventContact: "Event contact is required" };
-    }
-    if (!data.eventAccessibility) {
-      newErrors = {
-        ...newErrors,
-        eventAccessibility: "Event accessibility is required",
-      };
-    }
-    // todo: add more error validation rules
-    return newErrors;
-  };
-
-  const createActivity = async (activityData: any) => {
-    try {
-      const response = await fetch("http://localhost:3000/api/activity/add", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(activityData),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        console.log("Activity created:", data);
-      } else {
-        console.log("Failed to create activity:", response.status);
-      }
-    } catch (error) {
-      console.error("Error creating activity:", error);
-    }
-  };
-
-  // handling logic for time selection
-  const handleStartTimeChange = (time: string) => {
-    setStartTime(time);
-    if (endTime && time >= endTime) {
-      setTimeError("End time must be after start time");
-    } else {
-      // clearing any error msgs if time selection is valid
-      setTimeError(null);
-    }
-  };
-
-  const handleEndTimeChange = (time: string) => {
-    setEndTime(time);
-    if (startTime && time <= startTime) {
-      setTimeError("End time must be after start time");
-    } else {
-      // clearing any error msgs if time selection is valid
-      setTimeError(null);
-    }
-  };
+const CreateEvent: React.FC = () => {
+  const {
+    eventData,
+    handleInputChange,
+    handleTagClick,
+    handleSubmit,
+    errors,
+    selectedDate,
+    setSelectedDate,
+    startTime,
+    setStartTime,
+    handleStartTimeChange,
+    endTime,
+    setEndTime,
+    handleEndTimeChange,
+    timeError,
+    setTimeError
+  } = useEventForm(activityAutofill);
 
   return (
     <div className="ml-4">
@@ -243,8 +90,9 @@ const CreateEvent = () => {
                 showMonthDropdown
                 showYearDropdown
                 dropdownMode="select"
-                dateFormat={"MM dd, yyyy"}
+                dateFormat={"MM-dd-yyyy"}
                 placeholderText="Select Date"
+                className="form-input mt-1 block w-full text-black"
               />
             </div>
             <div>

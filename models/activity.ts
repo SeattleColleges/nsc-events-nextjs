@@ -1,3 +1,30 @@
+// Define FormErrors interface
+export interface FormErrors {
+    eventTitle?: string;
+    eventDescription?: string;
+    eventCategory?: string;
+    eventStartTime?: string;
+    eventEndTime?: string;
+    eventSchedule?: string;
+    eventLocation?: string;
+    eventHost?: string;
+    eventRegistration?: string;
+    eventCapacity?: string;
+    eventSpeakers?: string;
+    eventPrerequisites?: string;
+    eventCancellationPolicy?: string;
+    eventContact?: string;
+    eventAccessibility?: string;
+  };
+
+// Additional states not directly related to formData might need their own handling.
+export interface AdditionalState {
+    selectedDate: Date | null;
+    startTime: string;
+    endTime: string;
+    timeError: string | null;
+  }
+
 export interface Activity {
     eventCreatorId: string;
     eventTitle: string;
