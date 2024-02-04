@@ -8,6 +8,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import "react-time-picker/dist/TimePicker.css";
 import "react-clock/dist/Clock.css";
 import { useEventForm } from "@/hooks/useEventForm";
+import ImagePicker from "@/components/ImagePicker";
 
 const CreateEvent: React.FC = () => {
   const {
@@ -140,13 +141,7 @@ const CreateEvent: React.FC = () => {
             </label>
             <label>
               Event Cover Photo
-              <input
-                name="eventCoverPhoto"
-                value={eventData.eventCoverPhoto}
-                onChange={handleInputChange}
-                style={{ color: "black" }}
-                className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-              />
+              <ImagePicker/>
             </label>
             <label>
               Event Host
