@@ -1,60 +1,65 @@
-import React from 'react';
+"use client"
+
+import React, { useEffect, useState } from 'react';
 import { Typography, Card, CardContent, CardMedia, Box } from '@mui/material';
+import { useQueryClient } from "@tanstack/react-query";
+import { activityDatabase, ActivityDatabase } from "@/models/activityDatabase";
 
+interface SearchParams {
+  searchParams: {
+    id: string;
+  };
+}
 
-const EventDetail = () => {
-
-  // todo: fetch event data from backend using event id from url
-    // can use useEffect to fetch event data from backend when component mounts
-    // handle any errors that may arise during data fetching process, (network & server errors)
-  // todo: once data is fetched, store in state variable
-    // format any data that needs to be formatted (date, time, etc..)
-    // use state variable to deplay event details in component 
+const EventDetail = ({ searchParams }: SearchParams) => {
+  const [event, setEvent] = useState(activityDatabase)
   
-  // temporary: mockEvent is placeholder for the event that'll be captured
-  const mockEvent = {
-    eventTitle: "Sample Event",
-    eventDescription: "This is a sample event description.",
-    eventDate: new Date().toDateString(),
-    eventStartTime: "10:00 AM",
-    eventEndTime: "4:00 PM",
-    eventLocation: "123 Main St, City, Country",
-    eventCoverPhoto: "https://via.placeholder.com/150"
-  }
+  const queryClient = useQueryClient();
+  
+  useEffect( () => {
+    if(searchParams.id) {
+      const selectedEvent = (queryClient.getQueryData<ActivityDatabase[]>(['event']) as ActivityDatabase[])
+          .find(event => event._id === searchParams.id) as ActivityDatabase;
+      setEvent(selectedEvent)
+    }
 
-    return (
+      }, [queryClient, searchParams.id]
+
+  )
+  return (
 
       <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
         <Card sx={{ maxWidth: 345 }}>
           <CardMedia
-            component="img"
-            height="140"
-            image={mockEvent.eventCoverPhoto}
-            alt={mockEvent.eventTitle}
+              component="img"
+              height="140"
+              image={event.eventCoverPhoto}
+              alt={event.eventTitle}
           />
           <CardContent>
             <Typography gutterBottom variant="h5" component="div">
-              {mockEvent.eventTitle}
+              {event.eventTitle}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              {mockEvent.eventDescription}
+              {event.eventDescription}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              Date: {mockEvent.eventDate}
+              Date: {event.eventDate}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              Start Time: {mockEvent.eventStartTime}
+              Start Time: {event.eventStartTime}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              End Time: {mockEvent.eventEndTime}
+              End Time: {event.eventEndTime}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              Location: {mockEvent.eventLocation}
+              Location: {event.eventLocation}
             </Typography>
           </CardContent>
         </Card>
       </Box>
-    );
+  );
+  
 };
 
 export default EventDetail;
