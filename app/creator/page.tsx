@@ -8,9 +8,9 @@ const Creator = () => {
         {/* <h1>Placeholder for the creator page so npm run build compiles successfully.</h1>
           <p>FIX: move to pages or use getSession from nextauth</p>
           <p>FIX: allow only users with creator role to be routed to this page</p> */}
-          <button className={styles.button}>Edit User Role</button>
           <button className={styles.button}><Link href="/create-event">Create Event</Link></button>
-          <button className={styles.button}>View Events</button>
+          <button className={styles.button}>View My Events</button>
+          <button className={styles.button}>View All Events</button>
       </div>
   );
 };
