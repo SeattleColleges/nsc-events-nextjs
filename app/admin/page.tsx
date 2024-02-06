@@ -10,7 +10,8 @@ const Admin = () => {
           <p>FIX: allow only users with admin role to be routed to this page</p> */}
           <button className={styles.button}>Edit User Role</button>
           <button className={styles.button}><Link href="/create-event">Create Event</Link></button>
-          <button className={styles.button}>View Events</button>
+          <button className={styles.button}>View My Events</button>
+          <button className={styles.button}>View All Events</button>
       </div>
   );
 };
