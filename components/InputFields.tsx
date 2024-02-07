@@ -7,9 +7,9 @@ interface InputFieldProps {
   label: string;
   type: string;
   name: string;
-  value: string;
+  value: string | number | string[];
   onChange: ChangeEventHandler<HTMLInputElement>;
-  error?: string;
+  error?: string | number | string[];
   required?: boolean;
   togglePasswordVisibility?: () => void;
   icon?: React.ReactNode;
