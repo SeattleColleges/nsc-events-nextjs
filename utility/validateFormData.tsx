@@ -2,7 +2,6 @@ import { Activity, FormErrors } from "@/models/activity";
 
 
 export const validateFormData = (data: Activity): FormErrors => {
-  
   let newErrors: FormErrors = {};
   // basic validation rules, extend as needed
   if (!data.eventTitle) {
@@ -29,8 +28,8 @@ export const validateFormData = (data: Activity): FormErrors => {
       eventRegistration: "Event registration is required",
     };
   }
-  if (!data.eventCapacity) {
-    newErrors = { ...newErrors, eventCapacity: "Event capacity is required" };
+  if (!data.eventCapacity && data.eventCapacity !== 0) {
+    newErrors = { ...newErrors, eventCapacity: "Event capacity is required"  };
   }
   if (!data.eventSchedule) {
     newErrors = { ...newErrors, eventSchedule: "Event schedule is required" };
@@ -61,5 +60,4 @@ export const validateFormData = (data: Activity): FormErrors => {
   }
   // todo: add more error validation rules
   return newErrors;
-
-}
+};
