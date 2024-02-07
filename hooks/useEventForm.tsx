@@ -1,15 +1,52 @@
 import { ChangeEventHandler, FormEvent, useState } from "react";
 import { validateFormData } from "@/utility/validateFormData";
 import { Activity, FormErrors } from "@/models/activity";
+import useDateTimeSelection from "./useDateTimeSelection";
 
 export const useEventForm = (initialData: Activity) => {
 
   const [eventData, setEventData] = useState<Activity>(initialData);
-  const [errors, setErrors] = useState<FormErrors>({});
+  const [errors, setErrors] = useState<FormErrors>({
+    eventTitle: "",
+    eventDescription: "",
+    eventCategory: "",
+    eventDate: "",
+    eventStartTime: "",
+    eventEndTime: "",
+    eventLocation: "",
+    eventCoverPhoto: "",
+    eventHost: "",
+    eventWebsite: "",
+    eventRegistration: "",
+    eventCost: "",
+    eventTags: [],
+    eventSchedule: "",
+    eventSpeakers: [],
+    eventPrerequisites: "",
+    eventCancellationPolicy: "",
+    eventContact: "",
+    eventSocialMedia: {
+        facebook: "",
+        twitter: "",
+        instagram: "",
+        hashtag: ""
+    },
+    eventPrivacy: "",
+    eventAccessibility: ""
+  });
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [startTime, setStartTime] = useState<string>("10:00");
-  const [endTime, setEndTime] = useState<string>("11:00");
-  const [timeError, setTimeError] = useState<string | null>(null);
+
+  // Use useDateTimeSelection hook
+  const {
+    startTime,
+    setStartTime,
+    endTime,
+    setEndTime,
+    timeError,
+    handleStartTimeChange,
+    handleEndTimeChange,
+  } = useDateTimeSelection("10:00", "11:00");
+
 
   const handleInputChange: ChangeEventHandler<HTMLInputElement> = ({
     target,
@@ -18,6 +55,19 @@ export const useEventForm = (initialData: Activity) => {
     setEventData((prevEventData) => ({
       ...prevEventData,
       [name]: value,
+    }));
+    
+  };
+
+  // handling changes to the social media fields
+  const handleSocialMediaChange = (key: keyof Activity['eventSocialMedia'], value: string) => {
+    setEventData((prev) => ({
+      ...prev,
+      eventSocialMedia: {
+        ...prev.eventSocialMedia,
+        // update the correct social media field
+        [key]: value, 
+      },
     }));
   };
 
@@ -72,28 +122,21 @@ export const useEventForm = (initialData: Activity) => {
   };
 
 
-  // handling logic for time selection
-  const handleStartTimeChange = (time: string) => {
-    setStartTime(time);
-    if (endTime && time >= endTime) {
-      setTimeError("End time must be after start time");
-    } else {
-      // clearing any error msgs if time selection is valid
-      setTimeError(null);
-    }
+  return { 
+    eventData, 
+    handleInputChange, 
+    handleSocialMediaChange,
+    handleTagClick, 
+    handleSubmit, 
+    errors, 
+    selectedDate, 
+    setSelectedDate, 
+    startTime, 
+    setStartTime, 
+    handleStartTimeChange, 
+    endTime, 
+    setEndTime, 
+    handleEndTimeChange, 
+    timeError 
   };
-
-  const handleEndTimeChange = (time: string) => {
-    setEndTime(time);
-    if (startTime && time <= startTime) {
-      setTimeError("End time must be after start time");
-    } else {
-      // clearing any error msgs if time selection is valid
-      setTimeError(null);
-    }
-  };
-
-
-  return { eventData, handleInputChange, handleTagClick, handleSubmit, errors, selectedDate, setSelectedDate, startTime, setStartTime, handleStartTimeChange, endTime, setEndTime, handleEndTimeChange, timeError, setTimeError };
-
 }
