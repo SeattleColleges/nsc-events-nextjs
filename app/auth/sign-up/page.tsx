@@ -1,31 +1,23 @@
 "use client";
 import { ChangeEventHandler, FormEventHandler, useState } from "react";
 import {
-  ThemeProvider,
-  createTheme,
   Container,
   Paper,
   Box,
   TextField,
   InputAdornment,
   IconButton,
-  Button
+  Button,
+  Typography,
+  Link as MuiLink
 } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import { blue, green } from "@mui/material/colors";
-import Link from "next/link";
 import Image from 'next/image';
 
 // TODO determine if this is the correct logo
 import NorthSeattleLogo from "../../NorthSeattleLogo.png";
 
-const theme = createTheme({
-  palette: {
-    primary: blue,
-    secondary: green,
-  },
-});
 
 const SignUp = () => {
   // Set initial state for password visibility
@@ -162,104 +154,102 @@ const SignUp = () => {
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <Container maxWidth="xs" sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', height: '100vh', justifyContent: 'center' }}>
-        <Paper elevation={6} sx={{ padding: 4, width: '100%', borderRadius: 2, mb: 2 }}>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <Image
-              src={NorthSeattleLogo.src}
-              alt="North Seattle College Logo"
-              width={150}
-              height={50}
-              style={{ borderRadius: '10px' }}
-            />
-            <h1>Sign Up</h1>
-            <TextField
-              fullWidth
-              margin="normal"
-              label="First Name"
-              name="firstName"
-              value={userInfo.firstName}
-              onChange={handleChange}
-              error={Boolean(errors.firstName)}
-              helperText={errors.firstName}
-            />
-            <TextField
-              fullWidth
-              margin="normal"
-              label="Last Name"
-              name="lastName"
-              value={lastName}
-              onChange={handleChange}
-              error={Boolean(errors.lastName)}
-              helperText={errors.lastName}
-            />
-            <TextField
-              fullWidth
-              margin="normal"
-              label="Email"
-              name="email"
-              value={email}
-              onChange={handleChange}
-              error={Boolean(errors.email)}
-              helperText={errors.email}
-            />
-            <TextField
-              fullWidth
-              margin="normal"
-              label="Password"
-              name="password"
-              value={password}
-              type={showPassword ? "text" : "password"}
-              onChange={handleChange}
-              error={Boolean(errors.password)}
-              helperText={errors.password}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      onClick={togglePasswordVisibility}
-                    >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-            />
-            <TextField
-              fullWidth
-              margin="normal"
-              label="Confirm Password"
-              name="confirmPassword"
-              value={confirmPassword}
-              type={showConfirmPassword ? "text" : "password"}
-              onChange={handleChange}
-              error={Boolean(errors.confirmPassword)}
-              helperText={errors.confirmPassword}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      onClick={toggleConfirmPasswordVisibility}
-                    >
-                      {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-            />
-            <Button fullWidth variant="contained" style={{ textTransform: 'none' }} color="secondary" type="submit" sx={{ mt: 2 }}>
-              Sign Up
-            </Button>
-            <Link href="/auth/sign-in" passHref>
-              <Button component="a" fullWidth style={{ textTransform: 'none' }}>
-                Already have an account? Log In
-              </Button>
-            </Link>
+    <Container maxWidth="xs" sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', height: '100vh', justifyContent: 'center' }}>
+      <Paper elevation={6} sx={{ padding: 4, width: '100%', borderRadius: 2, mb: 2 }}>
+        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <Image
+            src={NorthSeattleLogo.src}
+            alt="North Seattle College Logo"
+            width={150}
+            height={50}
+            style={{ borderRadius: '10px' }}
+          />
+          <Typography component="h1" variant="h5">Sign Up</Typography>
+          <TextField
+            fullWidth
+            margin="normal"
+            label="First Name"
+            name="firstName"
+            value={userInfo.firstName}
+            onChange={handleChange}
+            error={Boolean(errors.firstName)}
+            helperText={errors.firstName}
+          />
+          <TextField
+            fullWidth
+            margin="normal"
+            label="Last Name"
+            name="lastName"
+            value={lastName}
+            onChange={handleChange}
+            error={Boolean(errors.lastName)}
+            helperText={errors.lastName}
+          />
+          <TextField
+            fullWidth
+            margin="normal"
+            label="Email"
+            name="email"
+            value={email}
+            onChange={handleChange}
+            error={Boolean(errors.email)}
+            helperText={errors.email}
+          />
+          <TextField
+            fullWidth
+            margin="normal"
+            label="Password"
+            name="password"
+            value={password}
+            type={showPassword ? "text" : "password"}
+            onChange={handleChange}
+            error={Boolean(errors.password)}
+            helperText={errors.password}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    onClick={togglePasswordVisibility}
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
+          <TextField
+            fullWidth
+            margin="normal"
+            label="Confirm Password"
+            name="confirmPassword"
+            value={confirmPassword}
+            type={showConfirmPassword ? "text" : "password"}
+            onChange={handleChange}
+            error={Boolean(errors.confirmPassword)}
+            helperText={errors.confirmPassword}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    onClick={toggleConfirmPasswordVisibility}
+                  >
+                    {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
+          <Button fullWidth variant="contained" style={{ textTransform: 'none' }} color="secondary" type="submit" sx={{ mt: 2 }}>
+            Sign Up
+          </Button>
+          <Box textAlign="center" sx={{ mt: 2 }}>
+            <MuiLink href="/auth/sign-in" variant="body2">
+              Already have an account? Log In
+            </MuiLink>
           </Box>
-        </Paper>
-      </Container>
-    </ThemeProvider>
+        </Box>
+      </Paper>
+    </Container>
   );
 };
 

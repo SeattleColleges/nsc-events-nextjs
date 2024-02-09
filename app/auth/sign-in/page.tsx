@@ -1,11 +1,11 @@
 "use client";
 
-import InputField from "@/components/InputFields";
 import { ChangeEventHandler, FormEventHandler, useState } from "react";
 import { useRouter } from "next/navigation";
-import styles from "./signin-page.module.css";
 import Image from "next/image";
 import logo from "../../logo.png";
+import { Container, Paper, Box, TextField, Button, Typography, Link as MuiLink } from "@mui/material";
+
 
 // similar to sign-up page, but we're only handling email and password 
 const Signin = () => {
@@ -54,43 +54,65 @@ const Signin = () => {
   };
 
   return (
-    <div className={styles.container}>
-      <form className={styles.formContainer} onSubmit={handleSubmit}>
-        <div className={styles.logoContainer}>
-          <Image src={logo} alt="logo" />
-        </div>
-        <h1 className={styles.title}>Sign In</h1>
-        <InputField
-          label="Email"
-          type="email"
-          name="email"
-          value={email}
-          onChange={handleChange}
-        />
-        <InputField
-          label="Password"
-          type="password"
-          name="password"
-          value={password}
-          onChange={handleChange}
-        />
-        <button className={styles.submitButton} type="submit">
+    <Container maxWidth="xs" sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', height: '100vh', justifyContent: 'center' }}>
+      <Paper elevation={6} sx={{ padding: 4, width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', borderRadius: 2, mb: 2 }}>
+        <Image src={logo} alt="logo" width={100} height={30} style={{ marginBottom: '20px', borderRadius: '10px' }} />
+        <Typography component="h1" variant="h5">
           Sign In
-        </button>
-        <div className={styles.linkContainer}>
-        <p className={styles.textCenter}>
-          <a href="/auth/forgot-password" className={styles.link}>
-            Forgot Password
-          </a>
-        </p>
-        <p className={styles.textCenter}>
-          <a href="/auth/sign-up" className={styles.link}>
-            Sign Up
-          </a>
-        </p>
-        </div>
-      </form>
-    </div>
+        </Typography>
+        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1, width: '100%' }}>
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="email"
+            label="Email Address"
+            name="email"
+            autoComplete="email"
+            autoFocus
+            value={userInfo.email}
+            onChange={handleChange}
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="password"
+            label="Password"
+            type="password"
+            id="password"
+            autoComplete="current-password"
+            value={userInfo.password}
+            onChange={handleChange}
+          />
+          <Button
+            style={{ textTransform: 'none' }}
+            color="secondary"
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+          >
+            Sign In
+          </Button>
+          {error && (
+            <Typography color="error" textAlign="center">
+              {error}
+            </Typography>
+          )}
+          <Box textAlign="center">
+            <MuiLink href="/auth/forgot-password" variant="body2">
+              Forgot password?
+            </MuiLink>
+          </Box>
+          <Box textAlign="center" sx={{ mt: 2 }}>
+            <MuiLink href="/auth/sign-up" variant="body2">
+              Don't have an account? Sign Up
+            </MuiLink>
+          </Box>
+        </Box>
+      </Paper>
+    </Container>
   );
 };
 
