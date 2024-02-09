@@ -5,7 +5,6 @@ import Navbar from '@/components/Navbar';
 import SessionProvider from '@/components/SessionProvider';
 import ReactQueryProvider from "@/components/ReactQueryProvider";
 import { ThemeProvider } from '@mui/material/styles'; 
-import CssBaseline from '@mui/material/CssBaseline'; //* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon.
 import theme from './theme'; 
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter';
 
@@ -18,8 +17,7 @@ export const metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <ThemeProvider theme={theme}>
-      
+    <ThemeProvider theme={theme}>    
       <AppRouterCacheProvider>
         <html lang="en">
           <body className={inter.className}>
