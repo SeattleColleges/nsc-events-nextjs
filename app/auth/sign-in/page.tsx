@@ -107,7 +107,7 @@ const Signin = () => {
           </Box>
           <Box textAlign="center" sx={{ mt: 2 }}>
             <MuiLink href="/auth/sign-up" variant="body2">
-              Don't have an account? Sign Up
+              {"Don't have an account? Sign Up"}
             </MuiLink>
           </Box>
         </Box>
