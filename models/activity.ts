@@ -1,3 +1,47 @@
+// FormErrors interface
+export interface FormErrors {
+    eventTitle?: string;
+    eventDescription?: string;
+    eventCategory?: string;
+    eventDate?: string;
+    eventStartTime?: string;
+    eventEndTime?: string;
+    eventSchedule?: string;
+    eventLocation?: string;
+    eventCoverPhoto?: string;
+    eventHost?: string;
+    eventRegistration?: string;
+    eventCapacity?: string;
+    eventCost?: string;
+    eventTags?: string;
+    eventSpeakers?: string;
+    eventWebsite?: string;
+    eventPrerequisites?: string;
+    eventContact?: string;
+    eventCancellationPolicy?: string;
+    eventSocialMedia?: Partial<SocialMediaLinks>;
+    eventPrivacy?: string;
+    eventAccessibility?: string;
+  };
+
+// Additional states not directly related to formData might need their own handling.
+export interface AdditionalState {
+    selectedDate: Date | null;
+    startTime: string;
+    endTime: string;
+    timeError: string | null;
+}
+
+
+interface SocialMediaLinks {
+    facebook: string;
+    twitter: string;
+    instagram: string;
+    hashtag: string;
+    [key: string]: string; 
+}
+  
+
 export interface Activity {
     eventCreatorId: string;
     eventTitle: string;
@@ -19,12 +63,7 @@ export interface Activity {
     eventPrerequisites: string;
     eventCancellationPolicy: string;
     eventContact: string;
-    eventSocialMedia: {
-        facebook: string;
-        twitter: string;
-        instagram: string;
-        hashtag: string;
-    };
+    eventSocialMedia: SocialMediaLinks;
     eventPrivacy: string;
     eventAccessibility: string;
 }
