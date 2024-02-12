@@ -9,15 +9,15 @@ import {
   IconButton,
   Button,
   Typography,
-  Link as MuiLink
+  Link as MuiLink,
 } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import Image from 'next/image';
+import Image from "next/image";
+import { validateSignUp } from "./validateSignUp";
 
 // TODO determine if this is the correct logo
 import NorthSeattleLogo from "../../NorthSeattleLogo.png";
-
 
 const SignUp = () => {
   // Set initial state for password visibility
@@ -32,7 +32,7 @@ const SignUp = () => {
     setShowConfirmPassword(!showConfirmPassword);
   };
 
-  // Set initial state for user info and errors
+  // Set initial state for user info
   const [userInfo, setUserInfo] = useState({
     firstName: "",
     lastName: "",
@@ -42,7 +42,7 @@ const SignUp = () => {
   });
 
   // Set initial state for errors
-  const [errors, setErrors] = useState({
+  const [errors, setErrors] = useState<Partial<typeof userInfo>>({
     firstName: "",
     lastName: "",
     email: "",
@@ -58,31 +58,14 @@ const SignUp = () => {
     setUserInfo({ ...userInfo, [name]: value });
   };
 
-  // handle submit only fires when user clicks sign up
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
-    // Assume no errors initially
-    let newErrors = {
-      firstName: "",
-      lastName: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
-    };
 
-    // Validate inputs before form submission
-    // TODO add more validation
-
-
-    // Update the state with the new errors
-    setErrors(newErrors);
-
-    // Check if there are any errors
-    const hasErrors = Object.values(newErrors).some(
-      (errorMsg) => errorMsg !== ""
-    );
-
-    // If there are errors, prevent form submission
+    // Validate user input
+    let errors = validateSignUp(userInfo);
+    setErrors(errors);
+    const hasErrors = Object.values(errors).some((error) => error !== "");
+    // If there are errors, do not submit the form
     if (hasErrors) {
       return;
     }
@@ -126,17 +109,40 @@ const SignUp = () => {
   };
 
   return (
-    <Container maxWidth="xs" sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', height: '100vh', justifyContent: 'center' }}>
-      <Paper elevation={6} sx={{ padding: 4, width: '100%', borderRadius: 2, mb: 2 }}>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+    <Container
+      maxWidth="xs"
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        height: "100vh",
+        justifyContent: "center",
+      }}
+    >
+      <Paper
+        elevation={6}
+        sx={{ padding: 4, width: "100%", borderRadius: 2, mb: 2 }}
+      >
+        <Box
+          component="form"
+          onSubmit={handleSubmit}
+          noValidate
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
           <Image
             src={NorthSeattleLogo.src}
             alt="North Seattle College Logo"
             width={150}
             height={50}
-            style={{ borderRadius: '10px' }}
+            style={{ borderRadius: "10px" }}
           />
-          <Typography component="h1" variant="h5">Sign Up</Typography>
+          <Typography component="h1" variant="h5">
+            Sign Up
+          </Typography>
           <TextField
             fullWidth
             margin="normal"
@@ -180,9 +186,7 @@ const SignUp = () => {
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
-                  <IconButton
-                    onClick={togglePasswordVisibility}
-                  >
+                  <IconButton onClick={togglePasswordVisibility}>
                     {showPassword ? <VisibilityOff /> : <Visibility />}
                   </IconButton>
                 </InputAdornment>
@@ -202,16 +206,21 @@ const SignUp = () => {
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
-                  <IconButton
-                    onClick={toggleConfirmPasswordVisibility}
-                  >
+                  <IconButton onClick={toggleConfirmPasswordVisibility}>
                     {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
                   </IconButton>
                 </InputAdornment>
               ),
             }}
           />
-          <Button fullWidth variant="contained" style={{ textTransform: 'none' }} color="secondary" type="submit" sx={{ mt: 2 }}>
+          <Button
+            fullWidth
+            variant="contained"
+            style={{ textTransform: "none" }}
+            color="secondary"
+            type="submit"
+            sx={{ mt: 2 }}
+          >
             Sign Up
           </Button>
           <Box textAlign="center" sx={{ mt: 2 }}>
