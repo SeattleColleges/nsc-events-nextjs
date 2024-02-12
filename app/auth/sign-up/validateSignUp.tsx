@@ -15,15 +15,9 @@ export const validateSignUp = (values: SignUpForm) => {
     if (!firstName) {
         errors.firstName = "First name is required";
     }
-    if (firstName.length > 30) {
-        errors.firstName = "First name must be less than 30 characters";
-    }
     
     if (!lastName) {
         errors.lastName = "Last name is required";
-    }
-    if (lastName.length > 30) {
-        errors.lastName = "Last name must be less than 30 characters";
     }
 
     if (!email) {
