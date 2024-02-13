@@ -1,5 +1,10 @@
-const URL = "http://localhost:3000/api/auth/signup";
-interface SignUpPayload {  name: string;  email: string;  password: string;  role: "user";}
+const URL = "http://159.223.203.135:3000/api/auth/signup";
+interface SignUpPayload {
+  name: string;
+  email: string;
+  password: string;
+  role: string;
+}
 
 interface SignUpSuccessResponse {
   status: "success";
@@ -17,7 +22,6 @@ type SignUpResponse = SignUpSuccessResponse | SignUpErrorResponse;
 export const signUp = async (
   payload: SignUpPayload
 ): Promise<SignUpResponse> => {
-  
   try {
     const response = await fetch(URL, {
       method: "POST",

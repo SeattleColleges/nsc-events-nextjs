@@ -1,6 +1,4 @@
-"use client";import { ChangeEventHandler, FormEventHandler, useState } from "react";
-import {
-  Container,
+"use client";import { ChangeEventHandler, FormEventHandler, use, useState } from "react";import {  Container,
   Paper,
   Box,
   TextField,
@@ -14,11 +12,17 @@ import Snackbar, { SnackbarOrigin } from "@mui/material/Snackbar";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Image from "next/image";
-import SignUpApi from "./signUpApi";
 // TODO determine if this is the correct logo
 import NorthSeattleLogo from "../../NorthSeattleLogo.png";
+import React from "react";
+import { signUp } from "./signupApi";
+
+interface State extends SnackbarOrigin {
+  open: boolean;
+}
 
 const SignUp = () => {
+
   // Set initial state for password visibility
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -48,6 +52,15 @@ const SignUp = () => {
     password: "",
     confirmPassword: "",
   });
+
+  // Set initial state for snackbar message
+  const [snackBarMessage, setSnackBarMessage] = useState("");
+  const [state, setState] = React.useState<State>({
+    open: false,
+    vertical: "bottom",
+    horizontal: "center",
+  });
+  const { vertical, horizontal, open } = state;
 
   const { firstName, lastName, email, password, confirmPassword } = userInfo;
 
@@ -119,14 +132,22 @@ const SignUp = () => {
       name: firstName + " " + lastName,
       email,
       password,
+      role: "user",
     };
 
     // Call the sign up API
-    let response = await SignUpApi(userInfo);
-    if (response === "Success") {
-
+    let response = await signUp(payload);
+    if (response.status === "success") {
+      setSnackBarMessage(response.message);
+      if (response.token) {
+        localStorage.setItem("token", response.token);
+      }
+      setTimeout(() => {
+        // TODO use router to navigate to home page
+        window.location.href = "/";
+      }, 2000);
     } else {
-      console.error(response);
+      setSnackBarMessage(response.message);
     }
   };
 
@@ -252,6 +273,13 @@ const SignUp = () => {
           </Box>
         </Box>
       </Paper>
+      <Snackbar
+        open={Boolean(snackBarMessage)}
+        autoHideDuration={6000}
+        onClose={() => setSnackBarMessage("")}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        message={snackBarMessage}
+      />
     </Container>
   );
 };
