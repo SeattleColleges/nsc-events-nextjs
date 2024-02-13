@@ -1,5 +1,4 @@
-"use client";
-import { ChangeEventHandler, FormEventHandler, useState } from "react";
+"use client";import { ChangeEventHandler, FormEventHandler, useState } from "react";
 import {
   Container,
   Paper,
@@ -11,10 +10,11 @@ import {
   Typography,
   Link as MuiLink,
 } from "@mui/material";
+import Snackbar, { SnackbarOrigin } from "@mui/material/Snackbar";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Image from "next/image";
-import signUpApi from "./signUpApi";
+import SignUpApi from "./signUpApi";
 // TODO determine if this is the correct logo
 import NorthSeattleLogo from "../../NorthSeattleLogo.png";
 
@@ -114,15 +114,17 @@ const SignUp = () => {
       return;
     }
 
+    // Generate payload for sign up
     const payload = {
       name: firstName + " " + lastName,
       email,
       password,
     };
 
-    let response = await signUpApi(userInfo);
+    // Call the sign up API
+    let response = await SignUpApi(userInfo);
     if (response === "Success") {
-      console.log("Sign up successful");
+
     } else {
       console.error(response);
     }

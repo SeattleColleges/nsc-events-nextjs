@@ -1,33 +1,57 @@
-interface signUpPayload {
-  name: string;
-  email: string;
-  password: string;
-  role: "user";
+const URL = "http://localhost:3000/api/auth/signup";
+interface SignUpPayload {  name: string;  email: string;  password: string;  role: "user";}
+
+interface SignUpSuccessResponse {
+  status: "success";
+  message: string;
+  token?: string;
 }
 
-type signUpResponse = string | { message: string };
+interface SignUpErrorResponse {
+  status: "error";
+  message: string;
+}
+
+type SignUpResponse = SignUpSuccessResponse | SignUpErrorResponse;
 
 export const signUp = async (
-  payload: signUpPayload
-): Promise<signUpResponse> => {
-  const URL = "http://localhost:3000/api/auth/signup";
+  payload: SignUpPayload
+): Promise<SignUpResponse> => {
+  
   try {
     const response = await fetch(URL, {
       method: "POST",
       body: JSON.stringify(payload),
-      headers: {
-        "Content-type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
     });
     const data = await response.json();
-    if (!response.ok) {
-      throw new Error(data.message || "Signup failed for an unknown reason");
+
+    if (response.ok) {
+      // Successful signup
+      return {
+        status: "success",
+        message: "Signup successful!",
+        token: data.token,
+      };
+    } else if (response.status === 409) {
+      // Email Already in Use
+      return {
+        status: "error",
+        message: "User with this email already exists.",
+      };
     } else {
-      localStorage.setItem("token", data.token);
-      return "Success";
+      // Other errors with a specific message from the backend
+      return {
+        status: "error",
+        message: data.error || "An error occurred during signup.",
+      };
     }
   } catch (error) {
     console.error("Error signing up:", error);
-    return "Signup failed";
+    // Handling unexpected errors, possibly network issues
+    return {
+      status: "error",
+      message: "Failed to connect to the signup service.",
+    };
   }
 };
