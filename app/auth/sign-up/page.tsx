@@ -9,15 +9,14 @@ import {
   IconButton,
   Button,
   Typography,
-  Link as MuiLink
+  Link as MuiLink,
 } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import Image from 'next/image';
-
+import Image from "next/image";
+import signUpApi from "./signUpApi";
 // TODO determine if this is the correct logo
 import NorthSeattleLogo from "../../NorthSeattleLogo.png";
-
 
 const SignUp = () => {
   // Set initial state for password visibility
@@ -115,56 +114,55 @@ const SignUp = () => {
       return;
     }
 
-    // TODO: handle role better - probably need a different route for users vs admins
     const payload = {
       name: firstName + " " + lastName,
       email,
       password,
-      role: "user",
     };
-    // send request to backend api then log the response
-    // TODO: Move this to a service file
-    // TODO: Use correct URL
-    // TODO: Check email is unique first then send request
-    const URL = "http://159.223.203.135:3000/api/auth/signup";
-    try {
-      const response = await fetch(URL, {
-        method: "POST",
-        body: JSON.stringify(payload),
-        headers: {
-          "Content-type": "application/json",
-        },
-      });
-      const data = await response.json();
-      if (!response.ok) {
-        throw new Error(data.message);
-      } else {
-        console.log("Response from server:", data);
-      }
-      // TODO Should this be a token or a cookie or something else?
-      localStorage.setItem("token", data.token);
-      console.log("Token:", data.token);
-      alert("Sign up successful!");
-      // TODO redirect to profile page or home page
-      // QUESTION: Are we using next.js routing or something else?
-    } catch (error) {
-      console.error("Error signing up:", error);
-      alert("Sign up failed!");
+
+    let response = await signUpApi(userInfo);
+    if (response === "Success") {
+      console.log("Sign up successful");
+    } else {
+      console.error(response);
     }
   };
 
   return (
-    <Container maxWidth="xs" sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', height: '100vh', justifyContent: 'center' }}>
-      <Paper elevation={6} sx={{ padding: 4, width: '100%', borderRadius: 2, mb: 2 }}>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+    <Container
+      maxWidth="xs"
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        height: "100vh",
+        justifyContent: "center",
+      }}
+    >
+      <Paper
+        elevation={6}
+        sx={{ padding: 4, width: "100%", borderRadius: 2, mb: 2 }}
+      >
+        <Box
+          component="form"
+          onSubmit={handleSubmit}
+          noValidate
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
           <Image
             src={NorthSeattleLogo.src}
             alt="North Seattle College Logo"
             width={150}
             height={50}
-            style={{ borderRadius: '10px' }}
+            style={{ borderRadius: "10px" }}
           />
-          <Typography component="h1" variant="h5">Sign Up</Typography>
+          <Typography component="h1" variant="h5">
+            Sign Up
+          </Typography>
           <TextField
             fullWidth
             margin="normal"
@@ -208,9 +206,7 @@ const SignUp = () => {
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
-                  <IconButton
-                    onClick={togglePasswordVisibility}
-                  >
+                  <IconButton onClick={togglePasswordVisibility}>
                     {showPassword ? <VisibilityOff /> : <Visibility />}
                   </IconButton>
                 </InputAdornment>
@@ -230,16 +226,21 @@ const SignUp = () => {
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
-                  <IconButton
-                    onClick={toggleConfirmPasswordVisibility}
-                  >
+                  <IconButton onClick={toggleConfirmPasswordVisibility}>
                     {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
                   </IconButton>
                 </InputAdornment>
               ),
             }}
           />
-          <Button fullWidth variant="contained" style={{ textTransform: 'none' }} color="secondary" type="submit" sx={{ mt: 2 }}>
+          <Button
+            fullWidth
+            variant="contained"
+            style={{ textTransform: "none" }}
+            color="secondary"
+            type="submit"
+            sx={{ mt: 2 }}
+          >
             Sign Up
           </Button>
           <Box textAlign="center" sx={{ mt: 2 }}>
