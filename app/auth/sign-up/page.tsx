@@ -1,5 +1,4 @@
-"use client";
-import { ChangeEventHandler, FormEventHandler, useState } from "react";
+"use client";import { ChangeEventHandler, FormEventHandler, useState } from "react";
 import {
   Container,
   Paper,
@@ -186,7 +185,10 @@ const SignUp = () => {
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
-                  <IconButton onClick={togglePasswordVisibility}>
+                  <IconButton
+                    aria-label="toggle passworld"
+                    onClick={togglePasswordVisibility}
+                  >
                     {showPassword ? <VisibilityOff /> : <Visibility />}
                   </IconButton>
                 </InputAdornment>
@@ -206,7 +208,10 @@ const SignUp = () => {
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
-                  <IconButton onClick={toggleConfirmPasswordVisibility}>
+                  <IconButton
+                    aria-label="toggle passworld"
+                    onClick={toggleConfirmPasswordVisibility}
+                  >
                     {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
                   </IconButton>
                 </InputAdornment>
