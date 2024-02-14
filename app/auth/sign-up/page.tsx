@@ -20,6 +20,7 @@ import { signUp } from "./signupApi";
 
 interface State extends SnackbarOrigin {
   open: boolean;
+}
 
 const SignUp = () => {
 
