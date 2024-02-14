@@ -12,6 +12,7 @@ import Snackbar, { SnackbarOrigin } from "@mui/material/Snackbar";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Image from "next/image";
+import { validateSignUp } from "./validateSignUp";
 // TODO determine if this is the correct logo
 import NorthSeattleLogo from "../../NorthSeattleLogo.png";
 import React from "react";
@@ -19,7 +20,6 @@ import { signUp } from "./signupApi";
 
 interface State extends SnackbarOrigin {
   open: boolean;
-}
 
 const SignUp = () => {
 
@@ -35,7 +35,7 @@ const SignUp = () => {
     setShowConfirmPassword(!showConfirmPassword);
   };
 
-  // Set initial state for user info and errors
+  // Set initial state for user info
   const [userInfo, setUserInfo] = useState({
     firstName: "",
     lastName: "",
@@ -45,7 +45,7 @@ const SignUp = () => {
   });
 
   // Set initial state for errors
-  const [errors, setErrors] = useState({
+  const [errors, setErrors] = useState<Partial<typeof userInfo>>({
     firstName: "",
     lastName: "",
     email: "",
@@ -70,59 +70,14 @@ const SignUp = () => {
     setUserInfo({ ...userInfo, [name]: value });
   };
 
-  // handle submit only fires when user clicks sign up
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
-    // Assume no errors initially
-    let newErrors = {
-      firstName: "",
-      lastName: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
-    };
 
-    // Validate inputs before form submission
-    // TODO add more validation
-    if (!firstName) {
-      newErrors.firstName = "First name is required";
-    }
-    if (!lastName) {
-      newErrors.lastName = "Last name is required";
-    }
-    if (!email) {
-      newErrors.email = "Email is required";
-    }
-    if (!password) {
-      newErrors.password = "Password is required";
-    }
-    if (!confirmPassword) {
-      newErrors.confirmPassword = "Confirm password is required";
-    } else if (password.length < 10) {
-      newErrors.password = "Password must be at least 8 characters";
-    } else if (password.length > 20) {
-      newErrors.password = "Password must be less than 20 characters";
-    } else if (password.search(/[a-z]/i) < 0) {
-      newErrors.password = "Password must contain at least one letter";
-    } else if (password.search(/[0-9]/) < 0) {
-      newErrors.password = "Password must contain at least one digit";
-    } else if (password.search(/[!@#$%^&*]/) < 0) {
-      newErrors.password =
-        "Password must contain at least one special character";
-    }
-    if (confirmPassword !== password) {
-      newErrors.confirmPassword = "Passwords do not match";
-    }
-
-    // Update the state with the new errors
-    setErrors(newErrors);
-
-    // Check if there are any errors
-    const hasErrors = Object.values(newErrors).some(
-      (errorMsg) => errorMsg !== ""
-    );
-
-    // If there are errors, prevent form submission
+    // Validate user input
+    let errors = validateSignUp(userInfo);
+    setErrors(errors);
+    const hasErrors = Object.values(errors).some((error) => error !== "");
+    // If there are errors, do not submit the form
     if (hasErrors) {
       return;
     }
