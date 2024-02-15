@@ -1,4 +1,4 @@
-const URL = "http://localhost:3001/api/auth/signup";
+const URL = "http://localhost:3000/api/auth/signup";
 interface SignUpPayload {
   firstName: string;
   lastName: string;
