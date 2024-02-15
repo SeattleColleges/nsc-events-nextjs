@@ -1,6 +1,7 @@
 const URL = "http://159.223.203.135:3000/api/auth/signup";
 interface SignUpPayload {
-  name: string;
+  firstName: string;
+  lastName: string;
   email: string;
   password: string;
   role: string;

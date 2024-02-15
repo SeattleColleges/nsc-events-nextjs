@@ -85,7 +85,8 @@ const SignUp = () => {
 
     // Generate payload for sign up
     const payload = {
-      name: firstName + " " + lastName,
+      firstName,
+      lastName,
       email,
       password,
       role: "user",
