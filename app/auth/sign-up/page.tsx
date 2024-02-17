@@ -1,4 +1,7 @@
-"use client";import { ChangeEventHandler, FormEventHandler, use, useState } from "react";import {  Container,
+"use client";
+
+import { ChangeEventHandler, FormEventHandler, use, useState } from "react";
+import {  Container,
   Paper,
   Box,
   TextField,
@@ -8,6 +11,7 @@
   Typography,
   Link as MuiLink,
 } from "@mui/material";
+import { textFieldStyle } from "@/components/InputFields"
 import Snackbar, { SnackbarOrigin } from "@mui/material/Snackbar";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
@@ -152,6 +156,8 @@ const SignUp = () => {
             onChange={handleChange}
             error={Boolean(errors.firstName)}
             helperText={errors.firstName}
+            InputProps={{ style: textFieldStyle.input }}
+            InputLabelProps={{ style: textFieldStyle.label }}
           />
           <TextField
             fullWidth
@@ -162,6 +168,8 @@ const SignUp = () => {
             onChange={handleChange}
             error={Boolean(errors.lastName)}
             helperText={errors.lastName}
+            InputProps={{ style: textFieldStyle.input }}
+            InputLabelProps={{ style: textFieldStyle.label }}
           />
           <TextField
             fullWidth
@@ -172,6 +180,8 @@ const SignUp = () => {
             onChange={handleChange}
             error={Boolean(errors.email)}
             helperText={errors.email}
+            InputProps={{ style: textFieldStyle.input }}
+            InputLabelProps={{ style: textFieldStyle.label }}
           />
           <TextField
             fullWidth
@@ -183,7 +193,9 @@ const SignUp = () => {
             onChange={handleChange}
             error={Boolean(errors.password)}
             helperText={errors.password}
+            InputLabelProps={{ style: textFieldStyle.label }} 
             InputProps={{
+              style: textFieldStyle.input, 
               endAdornment: (
                 <InputAdornment position="end">
                   <IconButton onClick={togglePasswordVisibility}>
@@ -203,7 +215,9 @@ const SignUp = () => {
             onChange={handleChange}
             error={Boolean(errors.confirmPassword)}
             helperText={errors.confirmPassword}
+            InputLabelProps={{ style: textFieldStyle.label }} 
             InputProps={{
+              style: textFieldStyle.input, 
               endAdornment: (
                 <InputAdornment position="end">
                   <IconButton onClick={toggleConfirmPasswordVisibility}>

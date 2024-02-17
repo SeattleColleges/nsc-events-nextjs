@@ -1,7 +1,8 @@
 "use client";
+
 import React, { ChangeEventHandler, FormEventHandler, useState } from "react";
 import { Box, Button, TextField, Typography, Container, Paper } from '@mui/material';
-
+import { textFieldStyle } from "@/components/InputFields"
 
 const ForgotPassword = () => {
   
@@ -43,12 +44,14 @@ const ForgotPassword = () => {
             autoFocus
             value={email}
             onChange={handleChange}
+            InputProps={{ style: textFieldStyle.input }}
+            InputLabelProps={{ style: textFieldStyle.label }}
           />
           <Button
             type="submit"
             fullWidth
             variant="contained"
-            color="secondary"
+            color="primary"
             sx={{ mt: 3, mb: 2 }}
             style={{ textTransform: 'none' }}
           >
