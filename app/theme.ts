@@ -11,6 +11,10 @@ const theme = createTheme({
     secondary: {
       main: green[500], 
     },
+    background: {
+      default: '#bec3c8', 
+      paper: '#FFFFFF', 
+    },
     // Add additional theme configurations as needed
   },
   // You can also customize other theme aspects like typography, breakpoints, etc.
