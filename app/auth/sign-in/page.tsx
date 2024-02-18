@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import logo from "../../logo.png";
 import { Container, Paper, Box, TextField, Button, Typography, Link as MuiLink } from "@mui/material";
-
+import { textFieldStyle } from "@/components/InputFields"
 
 // similar to sign-up page, but we're only handling email and password 
 const Signin = () => {
@@ -72,6 +72,8 @@ const Signin = () => {
             autoFocus
             value={userInfo.email}
             onChange={handleChange}
+            InputProps={{ style: textFieldStyle.input }}
+            InputLabelProps={{ style: textFieldStyle.label }}
           />
           <TextField
             margin="normal"
@@ -84,10 +86,12 @@ const Signin = () => {
             autoComplete="current-password"
             value={userInfo.password}
             onChange={handleChange}
+            InputProps={{ style: textFieldStyle.input }}
+            InputLabelProps={{ style: textFieldStyle.label }}
           />
           <Button
             style={{ textTransform: 'none' }}
-            color="secondary"
+            color="primary"
             type="submit"
             fullWidth
             variant="contained"

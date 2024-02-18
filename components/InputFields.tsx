@@ -3,6 +3,20 @@ import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
 
+export const textFieldStyle = {
+  input: {
+    color: 'black', 
+    backgroundColor: 'white', 
+    '&::placeholder': {
+      color: 'black', 
+    },
+  },
+  label: {
+    color: 'black', 
+    fontSize: '1.1rem', 
+  },
+};
+
 interface InputFieldProps {
   label: string;
   type: string;
