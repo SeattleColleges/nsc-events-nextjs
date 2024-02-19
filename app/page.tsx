@@ -1,4 +1,4 @@
-import React from "react";
+"use client";import React, { useEffect, useState } from "react";
 import styles from "./home.module.css";
 import Image from "next/image";
 import logo from "./logo.png";
@@ -6,14 +6,32 @@ import google_play from "./google_play.png";
 import EventsList from "../components/EventGetter";
 
 const Home = () => {
+  const [token, setToken] = useState<string | null>(null);
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    if (storedToken) {
+      setToken(storedToken);
+    }
+  }, []);
+
+  console.log(token);
+
   return (
-      <>
+    <>
+      {token ? (
+        <div>
+          <EventsList />
+        </div>
+      ) : (
         <div className={styles.container}>
           <div className={styles.formContainer}>
             <div className={styles.logoContainer}>
-              <Image src={logo} alt="logo"/>
+              <Image src={logo} alt="logo" />
             </div>
-            <h1 className={styles.title}>Welcome to North Seattle College Events</h1>
+            <h1 className={styles.title}>
+              Welcome to North Seattle College Events
+            </h1>
             <div className={styles.buttonContainer}>
               <a href="auth/sign-in">
                 <button className={styles.loginButton}>Sign In</button>
@@ -27,19 +45,16 @@ const Home = () => {
               <p className="textCenter">
                 <a href="" className={styles.link}>
                   <button className={styles.downloadButton}>
-                    <Image src={google_play} alt="google_play"/>
+                    <Image src={google_play} alt="google_play" />
                     Download App
                   </button>
                 </a>
               </p>
             </div>
           </div>
-
         </div>
-        <div>
-          <EventsList/>
-        </div>
-      </>
+      )}
+    </>
   );
 };
 
