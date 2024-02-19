@@ -1,21 +1,34 @@
-"use client";import React, { useEffect, useState } from "react";
-import styles from "./home.module.css";
+"use client";import React, { useEffect, useState } from "react";import styles from "./home.module.css";
 import Image from "next/image";
 import logo from "./logo.png";
+import CircularProgress from "@mui/material/CircularProgress";
 import google_play from "./google_play.png";
 import EventsList from "../components/EventGetter";
 
 const Home = () => {
   const [token, setToken] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
-    if (storedToken) {
-      setToken(storedToken);
-    }
+    setToken(storedToken);
+    setIsLoading(false);
   }, []);
 
-  console.log(token);
+  if (isLoading) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+        <CircularProgress />
+      </div>
+    );
+  }
 
   return (
     <>
