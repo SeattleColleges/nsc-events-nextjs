@@ -1,6 +1,6 @@
-"use client";import { ChangeEventHandler, FormEventHandler, useState } from "react";
-import {
-  Container,
+"use client";
+import { ChangeEventHandler, FormEventHandler, use, useState } from "react";
+import {  Container,
   Paper,
   Box,
   TextField,
@@ -10,15 +10,23 @@ import {
   Typography,
   Link as MuiLink,
 } from "@mui/material";
+import { textFieldStyle } from "@/components/InputFields"
+import Snackbar, { SnackbarOrigin } from "@mui/material/Snackbar";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Image from "next/image";
 import { validateSignUp } from "./validateSignUp";
-
 // TODO determine if this is the correct logo
 import NorthSeattleLogo from "../../NorthSeattleLogo.png";
+import React from "react";
+import { signUp } from "./signupApi";
+
+interface State extends SnackbarOrigin {
+  open: boolean;
+}
 
 const SignUp = () => {
+
   // Set initial state for password visibility
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -49,6 +57,15 @@ const SignUp = () => {
     confirmPassword: "",
   });
 
+  // Set initial state for snackbar message
+  const [snackBarMessage, setSnackBarMessage] = useState("");
+  const [state, setState] = React.useState<State>({
+    open: false,
+    vertical: "bottom",
+    horizontal: "center",
+  });
+  const { vertical, horizontal, open } = state;
+
   const { firstName, lastName, email, password, confirmPassword } = userInfo;
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = ({ target }) => {
@@ -69,41 +86,28 @@ const SignUp = () => {
       return;
     }
 
-    // TODO: handle role better - probably need a different route for users vs admins
+    // Generate payload for sign up
     const payload = {
-      name: firstName + " " + lastName,
+      firstName,
+      lastName,
       email,
       password,
       role: "user",
     };
-    // send request to backend api then log the response
-    // TODO: Move this to a service file
-    // TODO: Use correct URL
-    // TODO: Check email is unique first then send request
-    const URL = "http://159.223.203.135:3000/api/auth/signup";
-    try {
-      const response = await fetch(URL, {
-        method: "POST",
-        body: JSON.stringify(payload),
-        headers: {
-          "Content-type": "application/json",
-        },
-      });
-      const data = await response.json();
-      if (!response.ok) {
-        throw new Error(data.message);
-      } else {
-        console.log("Response from server:", data);
+
+    // Call the sign up API
+    let response = await signUp(payload);
+    if (response.status === "success") {
+      setSnackBarMessage(response.message);
+      if (response.token) {
+        localStorage.setItem("token", response.token);
       }
-      // TODO Should this be a token or a cookie or something else?
-      localStorage.setItem("token", data.token);
-      console.log("Token:", data.token);
-      alert("Sign up successful!");
-      // TODO redirect to profile page or home page
-      // QUESTION: Are we using next.js routing or something else?
-    } catch (error) {
-      console.error("Error signing up:", error);
-      alert("Sign up failed!");
+      setTimeout(() => {
+        // TODO use router to navigate to home page
+        window.location.href = "/";
+      }, 2000);
+    } else {
+      setSnackBarMessage(response.message);
     }
   };
 
@@ -151,6 +155,8 @@ const SignUp = () => {
             onChange={handleChange}
             error={Boolean(errors.firstName)}
             helperText={errors.firstName}
+            InputProps={{ style: textFieldStyle.input }}
+            InputLabelProps={{ style: textFieldStyle.label }}
           />
           <TextField
             fullWidth
@@ -161,6 +167,8 @@ const SignUp = () => {
             onChange={handleChange}
             error={Boolean(errors.lastName)}
             helperText={errors.lastName}
+            InputProps={{ style: textFieldStyle.input }}
+            InputLabelProps={{ style: textFieldStyle.label }}
           />
           <TextField
             fullWidth
@@ -171,6 +179,8 @@ const SignUp = () => {
             onChange={handleChange}
             error={Boolean(errors.email)}
             helperText={errors.email}
+            InputProps={{ style: textFieldStyle.input }}
+            InputLabelProps={{ style: textFieldStyle.label }}
           />
           <TextField
             fullWidth
@@ -182,7 +192,9 @@ const SignUp = () => {
             onChange={handleChange}
             error={Boolean(errors.password)}
             helperText={errors.password}
+            InputLabelProps={{ style: textFieldStyle.label }} 
             InputProps={{
+              style: textFieldStyle.input, 
               endAdornment: (
                 <InputAdornment position="end">
                   <IconButton
@@ -205,7 +217,9 @@ const SignUp = () => {
             onChange={handleChange}
             error={Boolean(errors.confirmPassword)}
             helperText={errors.confirmPassword}
+            InputLabelProps={{ style: textFieldStyle.label }} 
             InputProps={{
+              style: textFieldStyle.input, 
               endAdornment: (
                 <InputAdornment position="end">
                   <IconButton
@@ -235,6 +249,13 @@ const SignUp = () => {
           </Box>
         </Box>
       </Paper>
+      <Snackbar
+        open={Boolean(snackBarMessage)}
+        autoHideDuration={6000}
+        onClose={() => setSnackBarMessage("")}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        message={snackBarMessage}
+      />
     </Container>
   );
 };
