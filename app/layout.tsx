@@ -7,6 +7,7 @@ import ReactQueryProvider from "@/components/ReactQueryProvider";
 import { ThemeProvider } from '@mui/material/styles'; 
 import theme from './theme'; 
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter';
+import CssBaseline from '@mui/material/CssBaseline';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -24,6 +25,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <ReactQueryProvider>
               <SessionProvider>
                 <Navbar />
+                <CssBaseline /> {/* Ensures consistent baseline styles */}
                 {children}
               </SessionProvider>
             </ReactQueryProvider>
