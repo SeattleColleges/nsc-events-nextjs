@@ -1,5 +1,4 @@
 "use client";
-
 import { ChangeEventHandler, FormEventHandler, use, useState } from "react";
 import {  Container,
   Paper,
@@ -198,7 +197,10 @@ const SignUp = () => {
               style: textFieldStyle.input, 
               endAdornment: (
                 <InputAdornment position="end">
-                  <IconButton onClick={togglePasswordVisibility}>
+                  <IconButton
+                    aria-label="toggle password"
+                    onClick={togglePasswordVisibility}
+                  >
                     {showPassword ? <VisibilityOff /> : <Visibility />}
                   </IconButton>
                 </InputAdornment>
@@ -220,7 +222,10 @@ const SignUp = () => {
               style: textFieldStyle.input, 
               endAdornment: (
                 <InputAdornment position="end">
-                  <IconButton onClick={toggleConfirmPasswordVisibility}>
+                  <IconButton
+                    aria-label="toggle password"
+                    onClick={toggleConfirmPasswordVisibility}
+                  >
                     {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
                   </IconButton>
                 </InputAdornment>
