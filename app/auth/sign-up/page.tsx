@@ -99,6 +99,7 @@ const SignUp = () => {
     let response = await signUp(payload);
     if (response.status === "success") {
       setSnackBarMessage(response.message);
+      window.location.href = "/auth/sign-in";
       if (response.token) {
         localStorage.setItem("token", response.token);
       }
