@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { Typography, Card, CardContent, CardMedia, Box } from '@mui/material';
 import { useQueryClient } from "@tanstack/react-query";
 import { activityDatabase, ActivityDatabase } from "@/models/activityDatabase";
+import styles from "@/app/home.module.css";
 
 interface SearchParams {
   searchParams: {
@@ -27,14 +28,15 @@ const EventDetail = ({ searchParams }: SearchParams) => {
 
   )
   return (
+      <Box className={styles.container}>
+        <Box className={styles.formContainer } sx={{ minHeight: '69.95vh', maxHeight: '100vh', minWidth: '100vh', maxWidth: '100vh' , marginTop: '10vh' }}>
 
-      <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
-        <Card sx={{ maxWidth: 345 }}>
+        <Card sx={{ width: '37.04vh', marginBottom: '5vh' }}>
           <CardMedia
               component="img"
-              height="140"
               image={event.eventCoverPhoto}
               alt={event.eventTitle}
+              sx={{ height: '37.04vh' }}
           />
           <CardContent>
             <Typography gutterBottom variant="h5" component="div">
@@ -58,6 +60,8 @@ const EventDetail = ({ searchParams }: SearchParams) => {
           </CardContent>
         </Card>
       </Box>
+</Box>
+
   );
   
 };
