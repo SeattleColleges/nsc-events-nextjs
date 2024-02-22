@@ -43,6 +43,7 @@ const Signin = () => {
     }
     const { token } = await res.json();
     const userRole = JSON.parse(atob(token.split(".")[1])).role; // decode token to get user role
+    localStorage.setItem("token", token);
     // Redirect to user page
     if (userRole === "admin") {
       router.push("/admin");
