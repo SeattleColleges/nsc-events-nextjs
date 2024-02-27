@@ -28,8 +28,6 @@ interface State extends SnackbarOrigin {
 
 const SignUp = () => {
 
-  const router = useRouter();
-
   // Set initial state for password visibility
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -102,13 +100,12 @@ const SignUp = () => {
     let response = await signUp(payload);
     if (response.status === "success") {
       setSnackBarMessage(response.message);
-      router.push("/auth/sign-in");
       if (response.token) {
         localStorage.setItem("token", response.token);
       }
       setTimeout(() => {
         // TODO use router to navigate to home page
-        //window.location.href = "/";
+        window.location.href = "/";
       }, 2000);
     } else {
       setSnackBarMessage(response.message);
