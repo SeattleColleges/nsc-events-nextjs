@@ -2,7 +2,23 @@
 import { createTheme } from '@mui/material/styles';
 
 const theme = createTheme({
-  // Customize your theme here
+  //Customize your theme here 
+  components: {
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          '& label': { color: 'white' },
+          '& .MuiInputBase-input': { color: 'white' },
+          '& .MuiOutlinedInput-root': {
+            '& fieldset': { borderColor: 'white' },
+            '&:hover fieldset': { borderColor: 'white' },
+            '&.Mui-focused fieldset': { borderColor: 'white' },
+          },
+        },
+      },
+    },
+  },
+  
   palette: {
     primary: {
       main: '#08469f',
