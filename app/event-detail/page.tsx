@@ -1,10 +1,13 @@
 "use client"
 
 import React, { useEffect, useState } from 'react';
-import { Typography, Card, CardContent, CardMedia, Box } from '@mui/material';
+import { Typography, Card, CardContent, CardMedia, Box, Button } from '@mui/material';
 import { useQueryClient } from "@tanstack/react-query";
 import { activityDatabase, ActivityDatabase } from "@/models/activityDatabase";
 import styles from "@/app/home.module.css";
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import ArchiveIcon from '@mui/icons-material/Archive';
 
 interface SearchParams {
   searchParams: {
@@ -59,7 +62,15 @@ const EventDetail = ({ searchParams }: SearchParams) => {
             </Typography>
           </CardContent>
         </Card>
-      </Box>
+          <div style={ { width: '100vh', display: 'flex' }}>
+            <div style={ { display: 'flex', width: '100vh', gap: '25px',  justifyContent: 'center', alignItems: 'center', marginLeft: '13vh' } }>
+            <Button variant='contained' sx={{ color:'white', backgroundColor: '#2074d4' }}> <EditIcon> </EditIcon>  Edit </Button>
+            <Button variant='contained' sx={{ color:'white', backgroundColor: '#2074d4' }}> <DeleteIcon></DeleteIcon> Delete </Button>
+            <Button variant='contained' sx={{ color:'white', backgroundColor: '#2074d4' }}> <ArchiveIcon></ArchiveIcon> Archive </Button>
+            </div>
+            <Button variant='contained' sx={{ color:'white', backgroundColor: '#2074d4', marginRight: '50px' }}> Attend </Button>
+          </div>
+        </Box>
 </Box>
 
   );
