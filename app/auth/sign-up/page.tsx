@@ -43,6 +43,7 @@ const SignUp = () => {
   const [userInfo, setUserInfo] = useState({
     firstName: "",
     lastName: "",
+    pronouns: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -52,6 +53,7 @@ const SignUp = () => {
   const [errors, setErrors] = useState<Partial<typeof userInfo>>({
     firstName: "",
     lastName: "",
+    pronouns: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -66,7 +68,7 @@ const SignUp = () => {
   });
   const { vertical, horizontal, open } = state;
 
-  const { firstName, lastName, email, password, confirmPassword } = userInfo;
+  const { firstName, lastName, pronouns, email, password, confirmPassword } = userInfo;
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = ({ target }) => {
     const { name, value } = target;
@@ -90,6 +92,7 @@ const SignUp = () => {
     const payload = {
       firstName,
       lastName,
+      pronouns,
       email,
       password,
       role: "user",
@@ -167,6 +170,18 @@ const SignUp = () => {
             onChange={handleChange}
             error={Boolean(errors.lastName)}
             helperText={errors.lastName}
+            InputProps={{ style: textFieldStyle.input }}
+            InputLabelProps={{ style: textFieldStyle.label }}
+          />
+          <TextField
+            fullWidth
+            margin="normal"
+            label="Pronouns"
+            name="pronouns"
+            value={pronouns}
+            onChange={handleChange}
+            error={Boolean(errors.pronouns)}
+            helperText={errors.pronouns}
             InputProps={{ style: textFieldStyle.input }}
             InputLabelProps={{ style: textFieldStyle.label }}
           />
