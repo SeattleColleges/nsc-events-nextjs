@@ -36,7 +36,7 @@ const EventDetail = ({ searchParams }: SearchParams) => {
               component="img"
               image={event.eventCoverPhoto}
               alt={event.eventTitle}
-              sx={{ height: '37.04vh' }}
+              sx={{ height: '37vh' }}
           />
           <CardContent>
             <Typography gutterBottom variant="h5" component="div">
