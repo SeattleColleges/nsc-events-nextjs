@@ -29,9 +29,9 @@ const EventDetail = ({ searchParams }: SearchParams) => {
   )
   return (
       <Box className={styles.container}>
-        <Box className={styles.formContainer } sx={{ minHeight: '69.95vh', maxHeight: '100vh', width: '100vh' , marginTop: '10vh' }}>
+        <Box className={styles.formContainer } sx={{ minHeight: '69vh', maxHeight: '100vh', width: '100vh' , marginTop: '10vh' }}>
 
-        <Card sx={{ width: '45.67vh', minHeight: '59.56vh', maxHeight: '100vh', marginBottom: '5vh' }}>
+        <Card sx={{ width: '45vh', minHeight: '59vh', maxHeight: '100vh', marginBottom: '5vh' }}>
           <CardMedia
               component="img"
               image={event.eventCoverPhoto}
