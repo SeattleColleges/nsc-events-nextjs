@@ -1,17 +1,13 @@
 "use client";
 import TagSelector from "@/components/TagSelector";
 import activityAutofill from "@/models/activityAutofill";
-import Datepicker from "react-datepicker";
 import { useEventForm } from "@/hooks/useEventForm";
 import ImagePicker from "@/components/ImagePicker";
-import "react-datepicker/dist/react-datepicker.css";
-import "react-time-picker/dist/TimePicker.css";
-import "react-clock/dist/Clock.css";
-//import { LocalizationProvider, TimePicker } from '@mui/x-date-pickers';
-//import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-//import TextField, { TextFieldProps } from '@mui/material/TextField';
-// import { format, parse } from 'date-fns';
-import { TextField, Box, Button, Typography, Stack }  from '@mui/material';
+import { LocalizationProvider, TimePicker, DatePicker } from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import TextField, { TextFieldProps } from '@mui/material/TextField';
+import { format, parse } from 'date-fns';
+import { Box, Button, Typography, Stack }  from '@mui/material';
 import { textFieldStyle } from "@/components/InputFields"
 
 
@@ -32,23 +28,27 @@ const CreateEvent: React.FC = () => {
     timeError
   } = useEventForm(activityAutofill);
 
-    // // Convert startTime and endTime from string to Date for TimePicker
-    // const startTimeDate = startTime ? parse(startTime, 'HH:mm', new Date()) : null;
-    // const endTimeDate = endTime ? parse(endTime, 'HH:mm', new Date()) : null;
+    // Convert startTime and endTime from string to Date for TimePicker
+    const startTimeDate = startTime ? parse(startTime, 'HH:mm', new Date()) : null;
+    const endTimeDate = endTime ? parse(endTime, 'HH:mm', new Date()) : null;
   
-    // // Handlers for TimePicker changes, converting Date back to string
-    // const onStartTimeChange = (date: Date | null) => {
-    //   const timeStr = date ? format(date, 'HH:mm') : '';
-    //   handleStartTimeChange(timeStr);
-    // };
+    const handleDateChange = (newDate: Date | null) => {
+      setSelectedDate(newDate);
+    };
+
+    // Handlers for TimePicker changes, converting Date back to string
+    const onStartTimeChange = (date: Date | null) => {
+      const timeStr = date ? format(date, 'HH:mm') : '';
+      handleStartTimeChange(timeStr);
+    };
   
-    // const onEndTimeChange = (date: Date | null) => {
-    //   const timeStr = date ? format(date, 'HH:mm') : '';
-    //   handleEndTimeChange(timeStr);
-    // };
+    const onEndTimeChange = (date: Date | null) => {
+      const timeStr = date ? format(date, 'HH:mm') : '';
+      handleEndTimeChange(timeStr);
+    };
 
   return (
-   //<LocalizationProvider dateAdapter={AdapterDateFns}>
+   <LocalizationProvider dateAdapter={AdapterDateFns}>
       <Box component="form" onSubmit={handleSubmit} noValidate autoComplete="off" sx={{ p: 3 }}>
         <Typography variant="h5" component="h2" sx={{ fontWeight: 'bold', color: 'black', mb: 2 }}>
             Add Event
@@ -90,54 +90,22 @@ const CreateEvent: React.FC = () => {
             InputProps={{ style: textFieldStyle.input }}
             InputLabelProps={{ style: textFieldStyle.label }} 
           />
-          <div className="mt-1">
-            <label className="block text-sm font-medium text-white-700">
-              Event Date
-            </label>
-            <Datepicker
-              selected={selectedDate}
-              onChange={(date) => setSelectedDate(date)}
-              minDate={new Date()}
-              showMonthDropdown
-              showYearDropdown
-              dropdownMode="select"
-              dateFormat={"MM-dd-yyyy"}
-              placeholderText="Select Date"
-              className="custom-datepicker"
-            />
-          </div>
-
-          <TextField
-            label="Start Time"
-            type="time"
-            name="startTime"
-            value={startTime || ""}
-            onChange={(time) => handleStartTimeChange(time.target.value)}
-            InputProps={{ style: textFieldStyle.input }}
-            InputLabelProps={{ style: textFieldStyle.label }} 
+          <DatePicker
+            label="Event Date"
+            value={selectedDate}
+            onChange={handleDateChange}
+            minDate={new Date()}
           />
-          <TextField
-            label="End Time"
-            type="time"
-            name="endTime"
-            value={endTime || ""}
-            onChange={(time) => handleEndTimeChange(time.target.value)}
-            InputProps={{ style: textFieldStyle.input }}
-            InputLabelProps={{ style: textFieldStyle.label }} 
-          />
-
-          {/* <TimePicker
+          <TimePicker
             label="Start Time"
             value={startTimeDate}
             onChange={onStartTimeChange}
-            renderInput={(params: TextFieldProps) => <TextField {...params} error={!!timeError} helperText={timeError} />}
           />
           <TimePicker
             label="End Time"
             value={endTimeDate}
             onChange={onEndTimeChange}
-            renderInput={(params: TextFieldProps) => <TextField {...params} error={!!timeError} helperText={timeError} />}
-          /> */}
+          />
           {/* Time Error Message */}
           {timeError && (
             <div className="text-red-500 text-sm mt-2">{timeError}</div>
@@ -385,7 +353,7 @@ const CreateEvent: React.FC = () => {
           </Box>  
         </Stack> 
       </Box>  
-   // </LocalizationProvider>  
+    </LocalizationProvider>  
   );
 };
 
