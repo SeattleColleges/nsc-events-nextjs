@@ -146,11 +146,17 @@ const CreateEvent: React.FC = () => {
             selectedTags={eventData.eventTags}
             allTags={[
               "Professional Development",
+              "Club",
               "Social",
               "Tech",
+              "Cultural",
+              "Study",
+              "Art/Creative",
               "Conference",
+              "Craft",
               "Networking",
               "Pizza",
+              "Free Food",
               "LGBTQIA",
             ]}
             onTagClick={handleTagClick}
@@ -164,6 +170,18 @@ const CreateEvent: React.FC = () => {
             onChange={handleInputChange}
             error={!!errors.eventLocation}
             helperText={errors.eventLocation}
+            InputProps={{ style: textFieldStyle.input }}
+            InputLabelProps={{ style: textFieldStyle.label }}
+          />
+            <TextField
+            id="event-meeting-url"
+            label="Event Meeting URL"
+            variant="outlined"
+            name="eventMeetingUrl"
+            value={eventData.eventMeetingUrl}
+            onChange={handleInputChange}
+            error={!!errors.eventMeetingUrl}
+            helperText={errors.eventMeetingUrl}
             InputProps={{ style: textFieldStyle.input }}
             InputLabelProps={{ style: textFieldStyle.label }}
           />
@@ -182,18 +200,6 @@ const CreateEvent: React.FC = () => {
             helperText={errors.eventHost} 
             InputProps={{ style: textFieldStyle.input }}
             InputLabelProps={{ style: textFieldStyle.label }}
-          />
-          <TextField
-            id="event-website"
-            label="Event Website"
-            variant="outlined"
-            name="eventWebsite"
-            value={eventData.eventWebsite}
-            onChange={handleInputChange}
-            error={!!errors.eventWebsite}
-            helperText={errors.eventWebsite}
-            InputProps={{ style: textFieldStyle.input }}
-            InputLabelProps={{ style: textFieldStyle.label }} 
           />
           <TextField
             id="event-registration"
@@ -216,18 +222,6 @@ const CreateEvent: React.FC = () => {
             onChange={handleInputChange}
             error={!!errors.eventCapacity}
             helperText={errors.eventCapacity}
-            InputProps={{ style: textFieldStyle.input }}
-            InputLabelProps={{ style: textFieldStyle.label }}
-          />
-          <TextField
-            id="event-cost"
-            label="Event Cost"
-            variant="outlined"
-            name="eventCost"
-            value={eventData.eventCost}
-            onChange={handleInputChange}
-            error={!!errors.eventCost}
-            helperText={errors.eventCost}
             InputProps={{ style: textFieldStyle.input }}
             InputLabelProps={{ style: textFieldStyle.label }}
           />
@@ -360,6 +354,18 @@ const CreateEvent: React.FC = () => {
             onChange={handleInputChange}
             error={!!errors.eventAccessibility}
             helperText={errors.eventAccessibility}
+            InputProps={{ style: textFieldStyle.input }}
+            InputLabelProps={{ style: textFieldStyle.label }}
+          />
+          <TextField
+            id="event-note"
+            label="Event Note"
+            variant="outlined"
+            name="eventNote"
+            value={eventData.eventNote}
+            onChange={handleInputChange}
+            error={!!errors.eventNote}
+            helperText={errors.eventNote}
             InputProps={{ style: textFieldStyle.input }}
             InputLabelProps={{ style: textFieldStyle.label }}
           />

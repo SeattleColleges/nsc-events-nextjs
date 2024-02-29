@@ -8,6 +8,7 @@ export interface FormErrors {
     eventEndTime?: string;
     eventSchedule?: string;
     eventLocation?: string;
+    eventMeetingUrl?: string;
     eventCoverPhoto?: string;
     eventHost?: string;
     eventRegistration?: string;
@@ -22,6 +23,7 @@ export interface FormErrors {
     eventSocialMedia?: Partial<SocialMediaLinks>;
     eventPrivacy?: string;
     eventAccessibility?: string;
+    eventNote?: string;
   };
 
 // Additional states not directly related to formData might need their own handling.
@@ -51,6 +53,7 @@ export interface Activity {
     eventStartTime: string;
     eventEndTime: string;
     eventLocation: string;
+    eventMeetingUrl: string;
     eventCoverPhoto: string;
     eventHost: string;
     eventWebsite: string;
@@ -66,6 +69,7 @@ export interface Activity {
     eventSocialMedia: SocialMediaLinks;
     eventPrivacy: string;
     eventAccessibility: string;
+    eventNote: string;
 }
 
 export const activity: Activity = {
@@ -77,6 +81,7 @@ export const activity: Activity = {
     eventStartTime: "",
     eventEndTime: "",
     eventLocation: "",
+    eventMeetingUrl: "",
     eventCoverPhoto: "",
     eventHost: "",
     eventWebsite: "",
@@ -96,5 +101,6 @@ export const activity: Activity = {
         hashtag: ""
     },
     eventPrivacy: "",
-    eventAccessibility: ""
+    eventAccessibility: "",
+    eventNote: ""
 };
