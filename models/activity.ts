@@ -97,4 +97,4 @@ export const activity: Activity = {
     },
     eventPrivacy: "",
     eventAccessibility: ""
-};
+}; 
