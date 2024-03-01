@@ -151,6 +151,7 @@ const CreateEvent: React.FC = () => {
               "Tech",
               "Cultural",
               "Study",
+              "Coffee",
               "Art/Creative",
               "Conference",
               "Craft",
