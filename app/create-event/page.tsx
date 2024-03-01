@@ -1,17 +1,13 @@
 "use client";
 import TagSelector from "@/components/TagSelector";
-import activityAutofill from "@/models/activityAutofill";
-import Datepicker from "react-datepicker";
+import { activity } from "@/models/activity";
 import { useEventForm } from "@/hooks/useEventForm";
 import ImagePicker from "@/components/ImagePicker";
-import "react-datepicker/dist/react-datepicker.css";
-import "react-time-picker/dist/TimePicker.css";
-import "react-clock/dist/Clock.css";
-//import { LocalizationProvider, TimePicker } from '@mui/x-date-pickers';
-//import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-//import TextField, { TextFieldProps } from '@mui/material/TextField';
-// import { format, parse } from 'date-fns';
-import { TextField, Box, Button, Typography, Stack }  from '@mui/material';
+import { LocalizationProvider, TimePicker, DatePicker } from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import TextField, { TextFieldProps } from '@mui/material/TextField';
+import { format, parse } from 'date-fns';
+import { Box, Button, Typography, Stack }  from '@mui/material';
 import { textFieldStyle } from "@/components/InputFields"
 
 
@@ -30,25 +26,29 @@ const CreateEvent: React.FC = () => {
     endTime,
     handleEndTimeChange,
     timeError
-  } = useEventForm(activityAutofill);
+  } = useEventForm(activity);
 
-    // // Convert startTime and endTime from string to Date for TimePicker
-    // const startTimeDate = startTime ? parse(startTime, 'HH:mm', new Date()) : null;
-    // const endTimeDate = endTime ? parse(endTime, 'HH:mm', new Date()) : null;
+    // Convert startTime and endTime from string to Date for TimePicker
+    const startTimeDate = startTime ? parse(startTime, 'HH:mm', new Date()) : null;
+    const endTimeDate = endTime ? parse(endTime, 'HH:mm', new Date()) : null;
   
-    // // Handlers for TimePicker changes, converting Date back to string
-    // const onStartTimeChange = (date: Date | null) => {
-    //   const timeStr = date ? format(date, 'HH:mm') : '';
-    //   handleStartTimeChange(timeStr);
-    // };
+    const handleDateChange = (newDate: Date | null) => {
+      setSelectedDate(newDate);
+    };
+
+    // Handlers for TimePicker changes, converting Date back to string
+    const onStartTimeChange = (date: Date | null) => {
+      const timeStr = date ? format(date, 'HH:mm') : '';
+      handleStartTimeChange(timeStr);
+    };
   
-    // const onEndTimeChange = (date: Date | null) => {
-    //   const timeStr = date ? format(date, 'HH:mm') : '';
-    //   handleEndTimeChange(timeStr);
-    // };
+    const onEndTimeChange = (date: Date | null) => {
+      const timeStr = date ? format(date, 'HH:mm') : '';
+      handleEndTimeChange(timeStr);
+    };
 
   return (
-   //<LocalizationProvider dateAdapter={AdapterDateFns}>
+   <LocalizationProvider dateAdapter={AdapterDateFns}>
       <Box component="form" onSubmit={handleSubmit} noValidate autoComplete="off" sx={{ p: 3 }}>
         <Typography variant="h5" component="h2" sx={{ fontWeight: 'bold', color: 'black', mb: 2 }}>
             Add Event
@@ -65,6 +65,7 @@ const CreateEvent: React.FC = () => {
             helperText={errors.eventTitle}
             InputProps={{ style: textFieldStyle.input }}
             InputLabelProps={{ style: textFieldStyle.label }}
+            placeholder="Enter the title of the event"
           />
           <TextField
             id="event-description"
@@ -77,6 +78,7 @@ const CreateEvent: React.FC = () => {
             helperText={errors.eventDescription}
             InputProps={{ style: textFieldStyle.input }}
             InputLabelProps={{ style: textFieldStyle.label }}
+            placeholder="Enter the description of the event"
           />
           <TextField
             id="event-category"
@@ -89,55 +91,24 @@ const CreateEvent: React.FC = () => {
             helperText={errors.eventCategory}
             InputProps={{ style: textFieldStyle.input }}
             InputLabelProps={{ style: textFieldStyle.label }} 
+            placeholder="Enter the category of the event"
           />
-          <div className="mt-1">
-            <label className="block text-sm font-medium text-white-700">
-              Event Date
-            </label>
-            <Datepicker
-              selected={selectedDate}
-              onChange={(date) => setSelectedDate(date)}
-              minDate={new Date()}
-              showMonthDropdown
-              showYearDropdown
-              dropdownMode="select"
-              dateFormat={"MM-dd-yyyy"}
-              placeholderText="Select Date"
-              className="custom-datepicker"
-            />
-          </div>
-
-          <TextField
-            label="Start Time"
-            type="time"
-            name="startTime"
-            value={startTime || ""}
-            onChange={(time) => handleStartTimeChange(time.target.value)}
-            InputProps={{ style: textFieldStyle.input }}
-            InputLabelProps={{ style: textFieldStyle.label }} 
+          <DatePicker
+            label="Event Date"
+            value={selectedDate}
+            onChange={handleDateChange}
+            minDate={new Date()}
           />
-          <TextField
-            label="End Time"
-            type="time"
-            name="endTime"
-            value={endTime || ""}
-            onChange={(time) => handleEndTimeChange(time.target.value)}
-            InputProps={{ style: textFieldStyle.input }}
-            InputLabelProps={{ style: textFieldStyle.label }} 
-          />
-
-          {/* <TimePicker
+          <TimePicker
             label="Start Time"
             value={startTimeDate}
             onChange={onStartTimeChange}
-            renderInput={(params: TextFieldProps) => <TextField {...params} error={!!timeError} helperText={timeError} />}
           />
           <TimePicker
             label="End Time"
             value={endTimeDate}
             onChange={onEndTimeChange}
-            renderInput={(params: TextFieldProps) => <TextField {...params} error={!!timeError} helperText={timeError} />}
-          /> */}
+          />
           {/* Time Error Message */}
           {timeError && (
             <div className="text-red-500 text-sm mt-2">{timeError}</div>
@@ -173,6 +144,7 @@ const CreateEvent: React.FC = () => {
             helperText={errors.eventLocation}
             InputProps={{ style: textFieldStyle.input }}
             InputLabelProps={{ style: textFieldStyle.label }}
+            placeholder="Enter the location of the event"
           />
             <TextField
             id="event-meeting-url"
@@ -201,6 +173,20 @@ const CreateEvent: React.FC = () => {
             helperText={errors.eventHost} 
             InputProps={{ style: textFieldStyle.input }}
             InputLabelProps={{ style: textFieldStyle.label }}
+            placeholder="Enter the host of the event"
+          />
+          <TextField
+            id="event-website"
+            label="Event Website"
+            variant="outlined"
+            name="eventWebsite"
+            value={eventData.eventWebsite}
+            onChange={handleInputChange}
+            error={!!errors.eventWebsite}
+            helperText={errors.eventWebsite}
+            InputProps={{ style: textFieldStyle.input }}
+            InputLabelProps={{ style: textFieldStyle.label }} 
+            placeholder="Enter the website of the event"
           />
           <TextField
             id="event-registration"
@@ -213,6 +199,7 @@ const CreateEvent: React.FC = () => {
             helperText={errors.eventRegistration}
             InputProps={{ style: textFieldStyle.input }}
             InputLabelProps={{ style: textFieldStyle.label }}
+            placeholder="Enter the registration of the event"
           />
           <TextField
             id="event-capacity"
@@ -225,6 +212,20 @@ const CreateEvent: React.FC = () => {
             helperText={errors.eventCapacity}
             InputProps={{ style: textFieldStyle.input }}
             InputLabelProps={{ style: textFieldStyle.label }}
+            placeholder="Enter the capacity of the event"
+          />
+          <TextField
+            id="event-cost"
+            label="Event Cost"
+            variant="outlined"
+            name="eventCost"
+            value={eventData.eventCost}
+            onChange={handleInputChange}
+            error={!!errors.eventCost}
+            helperText={errors.eventCost}
+            InputProps={{ style: textFieldStyle.input }}
+            InputLabelProps={{ style: textFieldStyle.label }}
+            placeholder="Enter the cost of the event"
           />
           <TextField
             id="event-schedule"
@@ -237,6 +238,7 @@ const CreateEvent: React.FC = () => {
             helperText={errors.eventSchedule}
             InputProps={{ style: textFieldStyle.input }}
             InputLabelProps={{ style: textFieldStyle.label }}
+            placeholder="Enter the schedule of the event"
           />
           <TextField
             id="event-speakers"
@@ -249,6 +251,7 @@ const CreateEvent: React.FC = () => {
             helperText={errors.eventSpeakers}
             InputProps={{ style: textFieldStyle.input }}
             InputLabelProps={{ style: textFieldStyle.label }}
+            placeholder="Enter the speaker(s) of the event"
           />
           <TextField
             id="event-prerequisites"
@@ -260,7 +263,8 @@ const CreateEvent: React.FC = () => {
             error={!!errors.eventPrerequisites}
             helperText={errors.eventPrerequisites}
             InputProps={{ style: textFieldStyle.input }}
-            InputLabelProps={{ style: textFieldStyle.label }}                 
+            InputLabelProps={{ style: textFieldStyle.label }}  
+            placeholder="Enter the prerequisites of the event"               
           />
           <TextField
             id="event-cancellation-policy"
@@ -273,6 +277,7 @@ const CreateEvent: React.FC = () => {
             helperText={errors.eventCancellationPolicy}
             InputProps={{ style: textFieldStyle.input }}
             InputLabelProps={{ style: textFieldStyle.label }}
+            placeholder="Enter the cancellation policy of the event"
           />
           <TextField
             id="event-contact"
@@ -284,7 +289,8 @@ const CreateEvent: React.FC = () => {
             error={!!errors.eventContact}
             helperText={errors.eventContact}
             InputProps={{ style: textFieldStyle.input }}
-            InputLabelProps={{ style: textFieldStyle.label }}         
+            InputLabelProps={{ style: textFieldStyle.label }} 
+            placeholder="Enter the contact of the event"        
           />
           <TextField
             id="facebook"
@@ -296,7 +302,8 @@ const CreateEvent: React.FC = () => {
             error={!!errors.eventSocialMedia?.facebook}
             helperText={errors.eventSocialMedia?.facebook}
             InputProps={{ style: textFieldStyle.input }}
-            InputLabelProps={{ style: textFieldStyle.label }}          
+            InputLabelProps={{ style: textFieldStyle.label }}  
+            placeholder="Enter the Facebook link of the event"        
           />
           <TextField
             id="twitter"
@@ -309,6 +316,7 @@ const CreateEvent: React.FC = () => {
             helperText={errors.eventSocialMedia?.twitter}
             InputProps={{ style: textFieldStyle.input }}
             InputLabelProps={{ style: textFieldStyle.label }}
+            placeholder="Enter the Twitter link of the event"        
           />
           <TextField
             id="instagram"
@@ -321,6 +329,7 @@ const CreateEvent: React.FC = () => {
             helperText={errors.eventSocialMedia?.instagram}
             InputProps={{ style: textFieldStyle.input }}
             InputLabelProps={{ style: textFieldStyle.label }}
+            placeholder="Enter the Instagram link of the event"        
           />
           <TextField
             id="hashtag"
@@ -333,6 +342,7 @@ const CreateEvent: React.FC = () => {
             helperText={errors.eventSocialMedia?.hashtag}
             InputProps={{ style: textFieldStyle.input }}
             InputLabelProps={{ style: textFieldStyle.label }}
+            placeholder="Enter the hashtag of the event"        
           />
           <TextField
             id="event-privacy"
@@ -345,6 +355,7 @@ const CreateEvent: React.FC = () => {
             helperText={errors.eventPrivacy}
             InputProps={{ style: textFieldStyle.input }}
             InputLabelProps={{ style: textFieldStyle.label }}
+            placeholder="Enter the privacy of the event"        
           />
           <TextField
             id="event-accessibility"
@@ -357,6 +368,7 @@ const CreateEvent: React.FC = () => {
             helperText={errors.eventAccessibility}
             InputProps={{ style: textFieldStyle.input }}
             InputLabelProps={{ style: textFieldStyle.label }}
+            placeholder="Enter the accessibility of the event"        
           />
           <TextField
             id="event-note"
@@ -392,7 +404,7 @@ const CreateEvent: React.FC = () => {
           </Box>  
         </Stack> 
       </Box>  
-   // </LocalizationProvider>  
+    </LocalizationProvider>  
   );
 };
 
