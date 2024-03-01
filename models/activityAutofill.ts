@@ -9,6 +9,7 @@ const activityAutofill: Activity = {
     eventStartTime: "10:00 AM",
     eventEndTime: "4:00 PM",
     eventLocation: "123 Main Street, City",
+    eventMeetingUrl: "https://zoom.us/sample-url",
     eventCoverPhoto: "https://example.com/event-cover.jpg",
     eventHost: "Sample Organization",
     eventWebsite: "https://example.com/sample-event",
@@ -28,7 +29,8 @@ const activityAutofill: Activity = {
         hashtag: "#SampleEvent2023"
     },
     eventPrivacy: "Public",
-    eventAccessibility: "Wheelchair accessible venue."
+    eventAccessibility: "Wheelchair accessible venue.",
+    eventNote: "This is a sample note.",
 };
 
 export default activityAutofill;

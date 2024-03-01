@@ -117,11 +117,18 @@ const CreateEvent: React.FC = () => {
             selectedTags={eventData.eventTags}
             allTags={[
               "Professional Development",
+              "Club",
               "Social",
               "Tech",
+              "Cultural",
+              "Study",
+              "Coffee",
+              "Art/Creative",
               "Conference",
+              "Craft",
               "Networking",
               "Pizza",
+              "Free Food",
               "LGBTQIA",
             ]}
             onTagClick={handleTagClick}
@@ -138,6 +145,18 @@ const CreateEvent: React.FC = () => {
             InputProps={{ style: textFieldStyle.input }}
             InputLabelProps={{ style: textFieldStyle.label }}
             placeholder="Enter the location of the event"
+          />
+            <TextField
+            id="event-meeting-url"
+            label="Event Meeting URL"
+            variant="outlined"
+            name="eventMeetingUrl"
+            value={eventData.eventMeetingUrl}
+            onChange={handleInputChange}
+            error={!!errors.eventMeetingUrl}
+            helperText={errors.eventMeetingUrl}
+            InputProps={{ style: textFieldStyle.input }}
+            InputLabelProps={{ style: textFieldStyle.label }}
           />
           <label>
             Event Cover Photo
@@ -350,6 +369,18 @@ const CreateEvent: React.FC = () => {
             InputProps={{ style: textFieldStyle.input }}
             InputLabelProps={{ style: textFieldStyle.label }}
             placeholder="Enter the accessibility of the event"        
+          />
+          <TextField
+            id="event-note"
+            label="Event Note"
+            variant="outlined"
+            name="eventNote"
+            value={eventData.eventNote}
+            onChange={handleInputChange}
+            error={!!errors.eventNote}
+            helperText={errors.eventNote}
+            InputProps={{ style: textFieldStyle.input }}
+            InputLabelProps={{ style: textFieldStyle.label }}
           />
           <Box sx={{ display: 'flex', justifyContent: 'flex-start' }}>
             <Button type="submit" variant="contained" color="primary" style={{ textTransform: "none" }}>
