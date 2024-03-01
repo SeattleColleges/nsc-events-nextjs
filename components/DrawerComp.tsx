@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import { Drawer, List, ListItem, ListItemText, Button } from '@mui/material';
-import Link from 'next/link';
-import { signOut } from "next-auth/react";
+import React from 'react';
+import { Drawer, List, ListItem, ListItemText, Box, Link as MuiLink } from '@mui/material';
+import useAuth from '../hooks/useAuth';
+import { useRouter } from 'next/navigation';
 
 interface DrawerCompProps {
   isOpen: boolean;
@@ -9,34 +9,52 @@ interface DrawerCompProps {
   isAuth: boolean;
 }
 
-class DrawerComp extends Component<DrawerCompProps> {
-  render() {
-    const { isOpen, toggleDrawer, isAuth } = this.props;
+const DrawerComp: React.FC<DrawerCompProps> = ({ isOpen, toggleDrawer }) => {
+  const { isAuth } = useAuth(); // Using useAuth directly
+  const router = useRouter();
+  
+  const handleSignOut = () => {
+    // Remove the token from local storage
+    localStorage.removeItem('token');
+    // Dispatch an event to notify the app about the auth state change
+    window.dispatchEvent(new CustomEvent('auth-change'));
+    // Close the drawer
+    toggleDrawer(false);
+    // Redirect the user to the sign-in page
+    router.push('/auth/sign-in');
+  };
 
-    return (
-      <Drawer anchor="left" open={isOpen} onClose={toggleDrawer(false)}>
+  return (
+    <Drawer anchor="right" open={isOpen} onClose={() => toggleDrawer(false)}>
+      <Box
+        onClick={() => toggleDrawer(false)}
+        onKeyDown={() => toggleDrawer(false)}
+        sx={{ width: 150 }} // fixed width for the drawer
+      >
         <List>
-          <ListItem onClick={toggleDrawer(false)}>
-            <Link href="/" passHref>
-              <ListItemText primary={<Button color="inherit" style={{ textTransform: 'none' }}>Home</Button>} />
-            </Link>
+        <ListItem component={MuiLink} href="/">
+            <ListItemText primary="Home" />
           </ListItem>
-          {isAuth && (
-            <>
-              <ListItem onClick={toggleDrawer(false)}>
-                <Link href="/create-event" passHref>
-                  <ListItemText primary={<Button color="inherit" style={{ textTransform: 'none' }}>Create Event</Button>} />
-                </Link>
+          {isAuth ? (
+            // Authenticated user buttons
+            <Box display="flex" flexDirection="column" alignItems="start">
+              <ListItem component={MuiLink} href="/create-event">
+                <ListItemText primary="Create Event" />
               </ListItem>
-              <ListItem onClick={() => { toggleDrawer(false); signOut({ callbackUrl: "/" }); }}>
-                <ListItemText primary={<Button color="inherit" style={{ textTransform: 'none' }}>Sign out</Button>} />
+              <ListItem component={MuiLink} onClick={handleSignOut}>
+                <ListItemText primary="Sign Out" />
               </ListItem>
-            </>
+            </Box>
+          ) : (
+            // Unauthenticated user button
+            <ListItem component={MuiLink} href="/auth/sign-in">
+              <ListItemText primary="Sign In" />
+            </ListItem>
           )}
         </List>
-      </Drawer>
-    );
-  }
-}
+      </Box>
+    </Drawer>
+  );
+};
 
 export default DrawerComp;

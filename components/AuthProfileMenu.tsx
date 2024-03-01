@@ -1,18 +1,34 @@
 "use client";
-import { useSession, signOut } from "next-auth/react";
-import React from "react";
+import React from 'react';
+import { useRouter } from "next/navigation";
+import useAuth from '../hooks/useAuth'; 
+import { Button, Box } from '@mui/material';
+import Link from 'next/link';
 
 export default function AuthProfileMenu() {
-  const { data, status } = useSession();
-  // remove this comment
-  const isAuth = status === "authenticated";
+  const { user, isAuth } = useAuth();
+  const router = useRouter();
+
+  const handleSignOut = () => {
+    // Remove the token from local storage
+    localStorage.removeItem('token');
+    // Dispatch an event to notify the app about the auth state change
+    window.dispatchEvent(new CustomEvent('auth-change'));
+    // Redirect the user to the sign-in page
+    router.push('/auth/sign-in'); 
+  };
+
   if (isAuth) {
     return (
-        <div className="flex items-center justify-center">
-            <a href="/profile" className="hover:underline">Hi {data?.user?.name},</a>
-            <a className="ml-3 hover:underline" href="/create-event">Create Event</a>
-            <button className="ml-3 hover:underline" onClick={() => signOut({ callbackUrl: "/" })}>Sign out</button>
-        </div>
+      <Box display="flex" alignItems="center" justifyContent="center">
+        <Link href="/create-event" passHref>
+          <Button color="inherit" style={{ textTransform: 'none' }}>Create Event</Button>
+        </Link>
+        <Button color="inherit" style={{ textTransform: 'none', marginLeft: '8px' }} onClick={handleSignOut}>
+          Sign out
+        </Button>
+      </Box>
     );
   }
+  return null;
 }
