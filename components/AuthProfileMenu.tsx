@@ -21,9 +21,17 @@ export default function AuthProfileMenu() {
   if (isAuth) {
     return (
       <Box display="flex" alignItems="center" justifyContent="center">
-        <Link href="/create-event" passHref>
-          <Button color="inherit" style={{ textTransform: 'none' }}>Create Event</Button>
-        </Link>
+        {isAuth && user ? (
+          user.role === 'admin' ? (
+            <Link href="/admin" passHref>
+              <Button color="inherit" style={{ textTransform: 'none' }}>Dashboard</Button>
+            </Link>
+          ) : user.role === 'creator' ? (
+            <Link href="/creator" passHref>
+              <Button color="inherit" style={{ textTransform: 'none' }}>Dashboard</Button>
+            </Link>
+          ) : null
+        ) : null}
         <Button color="inherit" style={{ textTransform: 'none', marginLeft: '8px' }} onClick={handleSignOut}>
           Sign out
         </Button>

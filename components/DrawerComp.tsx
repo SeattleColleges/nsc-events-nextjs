@@ -10,7 +10,7 @@ interface DrawerCompProps {
 }
 
 const DrawerComp: React.FC<DrawerCompProps> = ({ isOpen, toggleDrawer }) => {
-  const { isAuth } = useAuth(); // Using useAuth directly
+  const { isAuth, user } = useAuth(); 
   const router = useRouter();
   
   const handleSignOut = () => {
@@ -35,18 +35,22 @@ const DrawerComp: React.FC<DrawerCompProps> = ({ isOpen, toggleDrawer }) => {
         <ListItem component={MuiLink} href="/">
             <ListItemText primary="Home" />
           </ListItem>
-          {isAuth ? (
-            // Authenticated user buttons
+          {isAuth && user ? (
             <Box display="flex" flexDirection="column" alignItems="start">
-              <ListItem component={MuiLink} href="/create-event">
-                <ListItemText primary="Create Event" />
-              </ListItem>
-              <ListItem component={MuiLink} onClick={handleSignOut}>
+              {user.role === 'admin' ? (
+                <ListItem component={MuiLink} href="/admin" onClick={() => toggleDrawer(false)}>
+                  <ListItemText primary="Dashboard" />
+                </ListItem>
+              ) : user.role === 'creator' ? (
+                <ListItem component={MuiLink} href="/creator" onClick={() => toggleDrawer(false)}>
+                  <ListItemText primary="Dashboard" />
+                </ListItem>
+              ) : null}
+              <ListItem component={MuiLink} href="/auth/sign-in" onClick={handleSignOut}>
                 <ListItemText primary="Sign Out" />
               </ListItem>
             </Box>
           ) : (
-            // Unauthenticated user button
             <ListItem component={MuiLink} href="/auth/sign-in">
               <ListItemText primary="Sign In" />
             </ListItem>

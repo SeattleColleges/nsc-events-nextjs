@@ -17,8 +17,6 @@ export default function Navbar() {
     setDrawerOpen(open);
   };
 
-  const homeHref = isAuth ? "/profile" : "/"; 
-
   return (
     <AppBar position="static">
       <Toolbar>
@@ -41,7 +39,7 @@ export default function Navbar() {
             <Grid container spacing={2} alignItems="center" sx={{ display: { xs: 'none', md: 'flex' } }}>
               {/* Home Link remains outside AuthProfileMenu for general access */}
               <Grid item>
-                <Link href={homeHref} passHref>{/* Dynamically set the Home link based on authentication status */}
+                <Link href="/" passHref>
                   <Button color="inherit" sx={{ textTransform: 'none' }}>Home</Button>
                 </Link>
               </Grid>
