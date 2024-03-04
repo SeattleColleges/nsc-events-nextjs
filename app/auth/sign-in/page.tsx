@@ -44,6 +44,7 @@ const Signin = () => {
     const { token } = await res.json();
     const userRole = JSON.parse(atob(token.split(".")[1])).role; // decode token to get user role
     localStorage.setItem("token", token);
+    window.dispatchEvent(new CustomEvent('auth-change')); // Dispatch an event to notify the app about the auth state change
     // Redirect to user page
     if (userRole === "admin") {
       router.push("/admin");

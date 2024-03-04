@@ -1,22 +1,19 @@
 "use client";
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { useSession, signOut } from "next-auth/react";
 import Image from 'next/image';
 import logo from '../app/logo.png';
 import MenuIcon from '@mui/icons-material/Menu';
 import { AppBar, Toolbar, IconButton, Grid, Button } from '@mui/material';
 import DrawerComp from './DrawerComp'; 
+import useAuth from '../hooks/useAuth'; 
+import AuthProfileMenu from './AuthProfileMenu'; 
 
 export default function Navbar() {
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const { status } = useSession();
-  const isAuth = status === "authenticated";
+  const { isAuth, user } = useAuth();
 
-  const toggleDrawer = (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
-    if (event.type === 'keydown' && (event as React.KeyboardEvent).key === 'Tab' || (event as React.KeyboardEvent).key === 'Shift') {
-      return;
-    }
+  const toggleDrawer = (open: boolean) => () => {
     setDrawerOpen(open);
   };
 
@@ -25,7 +22,9 @@ export default function Navbar() {
       <Toolbar>
         <Grid container justifyContent="space-between" alignItems="center">
           <Grid item>
-            <a href="/"><Image src={logo} alt="logo" width={40} height={40} /></a>
+            <Link href="/" passHref>
+              <Image src={logo} alt="logo" width={40} height={40} />
+            </Link>
           </Grid>
           <Grid item>
             <IconButton
@@ -33,27 +32,29 @@ export default function Navbar() {
               color="inherit"
               aria-label="menu"
               onClick={toggleDrawer(true)}
-              sx={{ display: { xs: 'block', md: 'none' } }}
+              sx={{ display: { xs: 'block', sm: 'none', md: 'none' } }} 
             >
               <MenuIcon />
             </IconButton>
-            <Grid container spacing={2} sx={{ display: { xs: 'none', md: 'flex' } }}>
+            <Grid container spacing={2} alignItems="center" sx={{ display: { xs: 'none', md: 'flex' } }}>
+              {/* Home Link remains outside AuthProfileMenu for general access */}
               <Grid item>
                 <Link href="/" passHref>
-                  <Button color="inherit" style={{ textTransform: 'none' }}>Home</Button>
+                  <Button color="inherit" sx={{ textTransform: 'none' }}>Home</Button>
                 </Link>
               </Grid>
+              {/* AuthProfileMenu contains Create Event and Sign Out actions */}
               {isAuth && (
-                <>
-                  <Grid item>
-                    <Link href="/create-event" passHref>
-                      <Button color="inherit" style={{ textTransform: 'none' }}>Create Event</Button>
-                    </Link>
-                  </Grid>
-                  <Grid item>
-                    <Button color="inherit" style={{ textTransform: 'none' }} onClick={() => signOut({ callbackUrl: "/" })}>Sign out</Button>
-                  </Grid>
-                </>
+                <Grid item>
+                  <AuthProfileMenu />
+                </Grid>
+              )}
+              {!isAuth && (
+                <Grid item>
+                  <Link href="/auth/sign-in" passHref>
+                    <Button color="inherit" sx={{ textTransform: 'none' }}>Sign In</Button>
+                  </Link>
+                </Grid>
               )}
             </Grid>
           </Grid>
