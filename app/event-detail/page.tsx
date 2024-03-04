@@ -17,7 +17,8 @@ interface SearchParams {
 
 const EventDetail = ({ searchParams }: SearchParams) => {
   const [event, setEvent] = useState(activityDatabase)
-  
+  const [isAuthed, setAuthed] = useState(false);
+
   const queryClient = useQueryClient();
   
   useEffect( () => {
@@ -27,6 +28,11 @@ const EventDetail = ({ searchParams }: SearchParams) => {
       setEvent(selectedEvent)
     }
 
+        const token = localStorage.getItem("token");
+        if(token) {
+          const userRole = JSON.parse(atob(token.split(".")[1])).role
+          setAuthed(userRole === "creator" || userRole === "admin")
+        }
       }, [queryClient, searchParams.id]
 
   )
@@ -64,9 +70,13 @@ const EventDetail = ({ searchParams }: SearchParams) => {
         </Card>
           <div style={ { width: '100vh', display: 'flex' }}>
             <div style={ { display: 'flex', width: '100vh', gap: '25px',  justifyContent: 'center', alignItems: 'center', marginLeft: '13vh' } }>
-            <Button variant='contained' sx={{ color:'white', backgroundColor: '#2074d4', width: '125px' }}> <EditIcon sx={ { marginRight: '5px' }}/> Edit </Button>
-            <Button variant='contained' sx={{ color:'white', backgroundColor: '#2074d4', width: '125px' }}> <DeleteIcon sx={ { marginRight: '5px' }}/> Delete </Button>
-            <Button variant='contained' sx={{ color:'white', backgroundColor: '#2074d4', width: '125px' }}> <ArchiveIcon sx={ { marginRight: '5px' }}/> Archive </Button>
+              {isAuthed && (
+                  <>
+                    <Button variant='contained' sx={{ color:'white', backgroundColor: '#2074d4', width: '125px' }}> <EditIcon sx={ { marginRight: '5px' }}/> Edit </Button>
+                    <Button variant='contained' sx={{ color:'white', backgroundColor: '#2074d4', width: '125px' }}> <DeleteIcon sx={ { marginRight: '5px' }}/> Delete </Button>
+                    <Button variant='contained' sx={{ color:'white', backgroundColor: '#2074d4', width: '125px' }}> <ArchiveIcon sx={ { marginRight: '5px' }}/> Archive </Button>
+                  </>)
+              }
             </div>
             <Button variant='contained' sx={{ color:'white', backgroundColor: '#2074d4', width: '125px', marginRight: '50px' }}> Attend </Button>
           </div>
