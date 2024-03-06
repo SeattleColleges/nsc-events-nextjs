@@ -7,6 +7,10 @@
   height: 100vh;
 }
 
+.homeEventsList {
+  flex: 1;
+}
+
 .formContainer {
   background-color: #dbdfe0;
   display: flex;

@@ -4,6 +4,7 @@ import logo from "./logo.png";
 import CircularProgress from "@mui/material/CircularProgress";
 import google_play from "./google_play.png";
 import EventsList from "../components/EventGetter";
+import HomeEventsList from "@/components/HomeEventGetter";
 
 const Home = () => {
   const [token, setToken] = useState<string | null>(null);
@@ -67,6 +68,11 @@ const Home = () => {
           </div>
         </div>
       )}
+       <div className={styles.container}>
+        <div className={styles.homeEventsList}>
+          <HomeEventsList />
+        </div>
+      </div>
     </>
   );
 };
