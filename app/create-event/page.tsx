@@ -128,10 +128,24 @@ const CreateEvent: React.FC = () => {
             InputLabelProps={{ style: textFieldStyle.label }}
             placeholder="Enter the location of the event"
           />
-          <label>
+
+          {/* <label>
             Event Cover Photo
           <ImagePicker />
-          </label>
+          </label> */}
+          <TextField
+            id="event-cover-photo"
+            label="Event Cover Photo"
+            variant="outlined"
+            name="eventCoverPhoto"
+            value={eventData.eventCoverPhoto}
+            onChange={handleInputChange}
+            error={!!errors.eventCoverPhoto}
+            helperText={errors.eventCoverPhoto} 
+            InputProps={{ style: textFieldStyle.input }}
+            InputLabelProps={{ style: textFieldStyle.label }}
+            placeholder="Enter the event cover photo of the event"
+          />
           <TextField
             id="event-host"
             label="Event Host"

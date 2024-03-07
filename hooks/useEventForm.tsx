@@ -104,11 +104,15 @@ export const useEventForm = (initialData: Activity) => {
   };
 
   const createActivity = async (activityData: any) => {
+    // retrieving the token from localStorage
+    const token = localStorage.getItem('token');
+
     try {
       const response = await fetch("http://localhost:3000/api/events/new", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
         },
         body: JSON.stringify(activityData),
       });
@@ -118,6 +122,8 @@ export const useEventForm = (initialData: Activity) => {
         console.log("Activity created:", data);
         setSuccessMessage(data.message || "Event  successfully created!");
         setErrorMessage("");
+        
+        // todo: navigate to a success page and clear form
       } else {
         console.log("Failed to create activity:", response.status);
         throw new Error(data.message || "Failed to create the event.");
