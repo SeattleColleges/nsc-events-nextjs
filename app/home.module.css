@@ -1,14 +1,31 @@
 /* Home page CSS */
-.container {
+.welcomeContainer {
+  background-color: #bec3c8;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 10vh;
+}
+
+.eventContainer {
   background-color: #bec3c8;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
 }
 
 .homeEventsList {
+  display: flex;
   flex: 1;
+  padding-left: 33vh;
+}
+
+.upcomingEvent {
+  display: flex;
+  flex: 1;
+  height: 73vh;
+  padding-left: 4vh;
 }
 
 .formContainer {
@@ -20,7 +37,7 @@
   padding: 2rem;
   border-radius: 15px;
   width: 800px;
-  margin-bottom: 30vh;
+  margin-bottom: 10vh;
 }
 
 .logoContainer {

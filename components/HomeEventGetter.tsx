@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Card, CardContent, CardMedia, Typography, Grid, Box, CardActions, Button } from '@mui/material';
+import { Card, CardContent, Typography, Grid, Box } from '@mui/material';
 import Link from "next/link";
 import { ActivityDatabase } from "@/models/activityDatabase";
 
@@ -10,6 +10,7 @@ const getEvents = async() => {
     const response = await fetch("http://localhost:3000/api/events");
     return response.json();
 }
+
 
 export function HomeEventsList(){
 
@@ -26,36 +27,29 @@ export function HomeEventsList(){
         return (
             <Grid container spacing={1}>
                 {data?.map((event: ActivityDatabase) => (
-                    <Grid item xs={12} sm={6} md={4} lg={3} key={event._id}>
-                        <Box sx={{ width: 450, height: 400 }}>
-                            <Card sx={{ display: 'flex', flexDirection: 'column' }}>
-                                <CardMedia
-                                    component="img"
-                                    sx={{ height: 200, objectFit: 'cover' }}
-                                    image={event.eventCoverPhoto}
-                                    alt={event.eventTitle}
-                                />
-                                <CardContent sx={{ flexGrow: 1 }}>
-                                    <Typography variant="h5" align="center" fontWeight={"bold"}>
-                                        {event.eventTitle}
-                                    </Typography>
-                                    
-                                </CardContent>
-                                <CardActions>
-                                    <Link href={
-                                        {
-                                            pathname: "/event-detail",
-                                            query: {
-                                                id: event._id,
-                                            },
-                                        }
+                    <Grid item xs={12} key={event._id}>
+                        <Link href={
+                            {
+                                pathname: "/event-detail",
+                                query: {
+                                    id: event._id,
+                                },
+                            }
 
-                                    } >
-                                    <Button   size={"small"}>Details</Button>
-                                    </Link>
-                                </CardActions>
-                            </Card>
-                        </Box>
+                        } >
+                            <Box sx={{ width: 700, height: 130 }}>
+                                <Card sx={{ display: 'flex', flexDirection: 'column' }}>
+                                    <CardContent sx={{ flexGrow: 1 }}>
+                                        <Typography variant="h5" align="left" fontWeight={"bold"}>
+                                            {event.eventTitle}
+                                        </Typography>
+                                        <Typography variant="body2" align="right" color="text.secondary">
+                                            Date: {event.eventDate}
+                                        </Typography>
+                                    </CardContent>
+                                </Card>
+                            </Box>
+                        </Link>
                     </Grid>
                 ))}
             </Grid>
