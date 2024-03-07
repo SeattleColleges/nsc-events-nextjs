@@ -35,6 +35,10 @@ export const useEventForm = (initialData: Activity) => {
   });
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
+  // success/error messages for event creation
+  const [successMessage, setSuccessMessage] = useState<String>("");
+  const [errorMessage, setErrorMessage] = useState<String>("");
+
   // Use useDateTimeSelection hook
   const {
     startTime,
@@ -101,7 +105,7 @@ export const useEventForm = (initialData: Activity) => {
 
   const createActivity = async (activityData: any) => {
     try {
-      const response = await fetch("http://localhost:3000/api/activity/add", {
+      const response = await fetch("http://localhost:3000/api/events/new", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -109,14 +113,24 @@ export const useEventForm = (initialData: Activity) => {
         body: JSON.stringify(activityData),
       });
 
+      const data = await response.json();
       if (response.ok) {
-        const data = await response.json();
         console.log("Activity created:", data);
+        setSuccessMessage(data.message || "Event  successfully created!");
+        setErrorMessage("");
       } else {
         console.log("Failed to create activity:", response.status);
+        throw new Error(data.message || "Failed to create the event.");
       }
     } catch (error) {
-      console.error("Error creating activity:", error);
+      // type guard to check if error is an instance of Error
+      if (error instanceof Error) {
+        console.error("Error creating activity:", error);
+        setErrorMessage(error.message);
+      } else {
+        setErrorMessage("An unexpected error occurred.");
+      }
+      setSuccessMessage("");
     }
   };
 
@@ -136,6 +150,8 @@ export const useEventForm = (initialData: Activity) => {
     endTime, 
     setEndTime, 
     handleEndTimeChange, 
-    timeError 
+    timeError,
+    successMessage, 
+    errorMessage
   };
 }

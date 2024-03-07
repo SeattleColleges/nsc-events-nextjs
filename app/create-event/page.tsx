@@ -25,9 +25,11 @@ const CreateEvent: React.FC = () => {
     handleStartTimeChange,
     endTime,
     handleEndTimeChange,
-    timeError
+    timeError,
+    successMessage, 
+    errorMessage
   } = useEventForm(activity);
-
+ 
     // Convert startTime and endTime from string to Date for TimePicker
     const startTimeDate = startTime ? parse(startTime, 'HH:mm', new Date()) : null;
     const endTimeDate = endTime ? parse(endTime, 'HH:mm', new Date()) : null;
@@ -113,26 +115,6 @@ const CreateEvent: React.FC = () => {
           {timeError && (
             <div className="text-red-500 text-sm mt-2">{timeError}</div>
           )}
-          <TagSelector
-            selectedTags={eventData.eventTags}
-            allTags={[
-              "Professional Development",
-              "Club",
-              "Social",
-              "Tech",
-              "Cultural",
-              "Study",
-              "Coffee",
-              "Art/Creative",
-              "Conference",
-              "Craft",
-              "Networking",
-              "Pizza",
-              "Free Food",
-              "LGBTQIA",
-            ]}
-            onTagClick={handleTagClick}
-          />
           <TextField
             id="event-location"
             label="Event Location"
@@ -145,18 +127,6 @@ const CreateEvent: React.FC = () => {
             InputProps={{ style: textFieldStyle.input }}
             InputLabelProps={{ style: textFieldStyle.label }}
             placeholder="Enter the location of the event"
-          />
-            <TextField
-            id="event-meeting-url"
-            label="Event Meeting URL"
-            variant="outlined"
-            name="eventMeetingUrl"
-            value={eventData.eventMeetingUrl}
-            onChange={handleInputChange}
-            error={!!errors.eventMeetingUrl}
-            helperText={errors.eventMeetingUrl}
-            InputProps={{ style: textFieldStyle.input }}
-            InputLabelProps={{ style: textFieldStyle.label }}
           />
           <label>
             Event Cover Photo
@@ -187,6 +157,18 @@ const CreateEvent: React.FC = () => {
             InputProps={{ style: textFieldStyle.input }}
             InputLabelProps={{ style: textFieldStyle.label }} 
             placeholder="Enter the website of the event"
+          />
+          <TextField
+            id="event-meeting-url"
+            label="Event Meeting URL"
+            variant="outlined"
+            name="eventMeetingUrl"
+            value={eventData.eventMeetingUrl}
+            onChange={handleInputChange}
+            error={!!errors.eventMeetingUrl}
+            helperText={errors.eventMeetingUrl}
+            InputProps={{ style: textFieldStyle.input }}
+            InputLabelProps={{ style: textFieldStyle.label }}
           />
           <TextField
             id="event-registration"
@@ -227,6 +209,26 @@ const CreateEvent: React.FC = () => {
             InputLabelProps={{ style: textFieldStyle.label }}
             placeholder="Enter the cost of the event"
           />
+          <TagSelector
+            selectedTags={eventData.eventTags}
+            allTags={[
+              "Professional Development",
+              "Club",
+              "Social",
+              "Tech",
+              "Cultural",
+              "Study",
+              "Coffee",
+              "Art/Creative",
+              "Conference",
+              "Craft",
+              "Networking",
+              "Pizza",
+              "Free Food",
+              "LGBTQIA",
+            ]}
+            onTagClick={handleTagClick}
+          />        
           <TextField
             id="event-schedule"
             label="Event Schedule"
@@ -403,6 +405,20 @@ const CreateEvent: React.FC = () => {
             </div>
           </Box>  
         </Stack> 
+        {/* Success/Error message upon button click */}
+        {successMessage && (
+            <Typography color="green" sx={{ mb: 2 }}>
+              {successMessage}
+            </Typography>
+          )
+        }
+
+        {errorMessage && (
+            <Typography color="error" sx={{ mb: 2 }}>
+              {errorMessage}
+            </Typography>
+          )
+        }
       </Box>  
     </LocalizationProvider>  
   );
