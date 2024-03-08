@@ -93,7 +93,10 @@ export const useEventForm = (initialData: Activity) => {
 
   // converting time format to 12hr 
   const to12HourTime = (time: string): string => {
-    if(!time) return ''; // returning an empty string if no time given
+     // returning an empty string if no time given
+    if (!time) {
+      return '';
+    }
 
     const [hour, minute] = time.split(':');
     const hh = parseInt(hour, 10);
