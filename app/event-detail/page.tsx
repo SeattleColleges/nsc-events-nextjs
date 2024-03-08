@@ -18,8 +18,9 @@ interface SearchParams {
 const EventDetail = ({ searchParams }: SearchParams) => {
   const [event, setEvent] = useState(activityDatabase)
   const [isAuthed, setAuthed] = useState(false);
-  const token = localStorage.getItem("token");
+  const [token, setToken] = useState("")
   const queryClient = useQueryClient();
+
 
   const deleteEvent = async (id: string) => {
     try {
@@ -47,7 +48,10 @@ const EventDetail = ({ searchParams }: SearchParams) => {
       setEvent(selectedEvent)
     }
 
-        const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token");
+    // Sets token state that is used by delete mutation outside of effect
+    setToken(token ?? "");
+
         if(token) {
           const userRole = JSON.parse(atob(token.split(".")[1])).role
           setAuthed(userRole === "creator" || userRole === "admin")
