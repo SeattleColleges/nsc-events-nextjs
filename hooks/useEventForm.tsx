@@ -50,7 +50,6 @@ export const useEventForm = (initialData: Activity) => {
     handleEndTimeChange,
   } = useDateTimeSelection("10:00", "11:00");
 
-
   const handleInputChange: ChangeEventHandler<HTMLInputElement> = ({
     target,
   }) => {
@@ -92,9 +91,21 @@ export const useEventForm = (initialData: Activity) => {
     });
   };
 
+  // converting time format to 12hr 
+  const to12HourTime = (time: string): string => {
+    if(!time) return ''; // returning an empty string if no time given
+
+    const [hour, minute] = time.split(':');
+    const hh = parseInt(hour, 10);
+    const suffix = hh >= 12 ? 'PM' : 'AM';
+    const adjustedHour = hh % 12 || 12;
+    const formattedHour = adjustedHour < 10 ? `0${adjustedHour}` : adjustedHour.toString();
+    return `${formattedHour}:${minute}${suffix}`;
+  }
+
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(eventData);
+    console.log("Event Data: ", eventData);
     const newErrors = validateFormData(eventData);
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -107,6 +118,24 @@ export const useEventForm = (initialData: Activity) => {
     // retrieving the token from localStorage
     const token = localStorage.getItem('token');
 
+    // applying necessary transformations for date, time, and speaker feilds
+    const dataToSend = { ...activityData };
+
+    if (selectedDate) {
+      dataToSend.eventDate = selectedDate.toISOString().split('T')[0];
+    }
+    if (startTime) {
+      dataToSend.eventStartTime = to12HourTime(startTime);
+    }
+    if (endTime) {
+      dataToSend.eventEndTime = to12HourTime(endTime);
+    }
+    if (typeof dataToSend.eventSpeakers === 'string') {
+      dataToSend.eventSpeakers = [dataToSend.eventSpeakers];
+    }
+    
+    console.log("Event data after applying transformation: ", dataToSend);
+
     try {
       const response = await fetch("http://localhost:3000/api/events/new", {
         method: "POST",
@@ -114,7 +143,7 @@ export const useEventForm = (initialData: Activity) => {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${token}`,
         },
-        body: JSON.stringify(activityData),
+        body: JSON.stringify(dataToSend),
       });
 
       const data = await response.json();

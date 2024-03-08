@@ -284,7 +284,7 @@ const CreateEvent: React.FC = () => {
           />
           <TextField
             id="event-cancellation-policy"
-            label="Event CancellationPolicy"
+            label="Event Cancellation Policy"
             variant="outlined"
             name="eventCancellationPolicy"
             value={eventData.eventCancellationPolicy}
