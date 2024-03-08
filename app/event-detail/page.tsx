@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { Typography, Card, CardContent, CardMedia, Box, Button } from '@mui/material';
-import { useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { activityDatabase, ActivityDatabase } from "@/models/activityDatabase";
 import styles from "@/app/home.module.css";
 import EditIcon from '@mui/icons-material/Edit';
@@ -18,9 +18,28 @@ interface SearchParams {
 const EventDetail = ({ searchParams }: SearchParams) => {
   const [event, setEvent] = useState(activityDatabase)
   const [isAuthed, setAuthed] = useState(false);
-
+  const token = localStorage.getItem("token");
   const queryClient = useQueryClient();
-  
+
+  const deleteEvent = async (id: string) => {
+    try {
+       const response = await fetch(`http://localhost:3000/api/events/remove/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+       return response.json();
+    } catch (error) {
+      console.error('error: ', error)
+    }
+  }
+
+  const { mutate: deleteEventMutation }  = useMutation({
+    mutationFn: deleteEvent,
+  })
+
   useEffect( () => {
     if(searchParams.id) {
       const selectedEvent = (queryClient.getQueryData<ActivityDatabase[]>(['event']) as ActivityDatabase[])
@@ -73,7 +92,7 @@ const EventDetail = ({ searchParams }: SearchParams) => {
               {isAuthed && (
                   <>
                     <Button variant='contained' sx={{ color:'white', backgroundColor: '#2074d4', width: '125px' }}> <EditIcon sx={ { marginRight: '5px' }}/> Edit </Button>
-                    <Button variant='contained' sx={{ color:'white', backgroundColor: '#2074d4', width: '125px' }}> <DeleteIcon sx={ { marginRight: '5px' }}/> Delete </Button>
+                    <Button variant='contained' sx={{ color:'white', backgroundColor: '#2074d4', width: '125px' }}   onClick={ () => deleteEventMutation(event._id)} > <DeleteIcon sx={ { marginRight: '5px' }}/> Delete </Button>
                     <Button variant='contained' sx={{ color:'white', backgroundColor: '#2074d4', width: '125px' }}> <ArchiveIcon sx={ { marginRight: '5px' }}/> Archive </Button>
                   </>)
               }
