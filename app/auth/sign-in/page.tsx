@@ -5,10 +5,12 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import logo from "../../logo.png";
 import { Container, Paper, Box, TextField, Button, Typography, Link as MuiLink } from "@mui/material";
-import { textFieldStyle } from "@/components/InputFields"
+import { textFieldStyle } from "@/components/InputFields";
+const URL = process.env.NSC_EVENTS_PUBLIC_API_URL || "http://localhost:3000/api";
 
 // similar to sign-up page, but we're only handling email and password 
 const Signin = () => {
+  
   const [error, setError] = useState("");
   const [userInfo, setUserInfo] = useState({
     email: "",
@@ -29,7 +31,7 @@ const Signin = () => {
     e.preventDefault();
 
     // Fetch sign in
-    const res = await fetch("http://localhost:3000/api/auth/login", {
+    const res = await fetch(`${URL}/auth/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

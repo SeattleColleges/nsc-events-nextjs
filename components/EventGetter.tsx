@@ -5,9 +5,10 @@ import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardMedia, Typography, Grid, Box, CardActions, Button } from '@mui/material';
 import Link from "next/link";
 import { ActivityDatabase } from "@/models/activityDatabase";
+const URL = process.env.NSC_EVENTS_PUBLIC_API_URL || "http://localhost:3000/api";
 
 const getEvents = async() => {
-    const response = await fetch("http://localhost:3000/api/events");
+    const response = await fetch(`${URL}/events`);
     return response.json();
 }
 
