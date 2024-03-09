@@ -160,19 +160,6 @@ const CreateEvent: React.FC = () => {
             placeholder="Enter the host of the event"
           />
           <TextField
-            id="event-website"
-            label="Event Website"
-            variant="outlined"
-            name="eventWebsite"
-            value={eventData.eventWebsite}
-            onChange={handleInputChange}
-            error={!!errors.eventWebsite}
-            helperText={errors.eventWebsite}
-            InputProps={{ style: textFieldStyle.input }}
-            InputLabelProps={{ style: textFieldStyle.label }} 
-            placeholder="Enter the website of the event"
-          />
-          <TextField
             id="event-meeting-url"
             label="Event Meeting URL"
             variant="outlined"
@@ -209,19 +196,6 @@ const CreateEvent: React.FC = () => {
             InputProps={{ style: textFieldStyle.input }}
             InputLabelProps={{ style: textFieldStyle.label }}
             placeholder="Enter the capacity of the event"
-          />
-          <TextField
-            id="event-cost"
-            label="Event Cost"
-            variant="outlined"
-            name="eventCost"
-            value={eventData.eventCost}
-            onChange={handleInputChange}
-            error={!!errors.eventCost}
-            helperText={errors.eventCost}
-            InputProps={{ style: textFieldStyle.input }}
-            InputLabelProps={{ style: textFieldStyle.label }}
-            placeholder="Enter the cost of the event"
           />
           <TagSelector
             selectedTags={eventData.eventTags}
