@@ -20,7 +20,7 @@
   background-color: #bec3c8;
   display: flex;
   justify-content: center;
-  align-items: center;
+  /* align-items: center; */
 }
 
 .homeEventsList {
@@ -32,7 +32,6 @@
 .upcomingEvent {
   display: flex;
   flex: 1;
-  height: 73vh;
   padding-left: 4vh;
 }
 
