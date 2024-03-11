@@ -35,6 +35,10 @@ export const useEventForm = (initialData: Activity) => {
   });
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
+  // success/error messages for event creation
+  const [successMessage, setSuccessMessage] = useState<String>("");
+  const [errorMessage, setErrorMessage] = useState<String>("");
+
   // Use useDateTimeSelection hook
   const {
     startTime,
@@ -45,7 +49,6 @@ export const useEventForm = (initialData: Activity) => {
     handleStartTimeChange,
     handleEndTimeChange,
   } = useDateTimeSelection("10:00", "11:00");
-
 
   const handleInputChange: ChangeEventHandler<HTMLInputElement> = ({
     target,
@@ -88,9 +91,24 @@ export const useEventForm = (initialData: Activity) => {
     });
   };
 
+  // converting time format to 12hr 
+  const to12HourTime = (time: string): string => {
+     // returning an empty string if no time given
+    if (!time) {
+      return '';
+    }
+
+    const [hour, minute] = time.split(':');
+    const hh = parseInt(hour, 10);
+    const suffix = hh >= 12 ? 'PM' : 'AM';
+    const adjustedHour = hh % 12 || 12;
+    const formattedHour = adjustedHour < 10 ? `0${adjustedHour}` : adjustedHour.toString();
+    return `${formattedHour}:${minute}${suffix}`;
+  }
+
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(eventData);
+    console.log("Event Data: ", eventData);
     const newErrors = validateFormData(eventData);
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -100,23 +118,57 @@ export const useEventForm = (initialData: Activity) => {
   };
 
   const createActivity = async (activityData: any) => {
+    // retrieving the token from localStorage
+    const token = localStorage.getItem('token');
+
+    // applying necessary transformations for date, time, and speaker feilds
+    const dataToSend = { ...activityData };
+
+    if (selectedDate) {
+      dataToSend.eventDate = selectedDate.toISOString().split('T')[0];
+    }
+    if (startTime) {
+      dataToSend.eventStartTime = to12HourTime(startTime);
+    }
+    if (endTime) {
+      dataToSend.eventEndTime = to12HourTime(endTime);
+    }
+    if (typeof dataToSend.eventSpeakers === 'string') {
+      dataToSend.eventSpeakers = [dataToSend.eventSpeakers];
+    }
+    
+    console.log("Event data after applying transformation: ", dataToSend);
+
     try {
-      const response = await fetch("http://localhost:3000/api/activity/add", {
+      const response = await fetch("http://localhost:3000/api/events/new", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
         },
-        body: JSON.stringify(activityData),
+        body: JSON.stringify(dataToSend),
       });
 
+      const data = await response.json();
       if (response.ok) {
-        const data = await response.json();
         console.log("Activity created:", data);
+        setSuccessMessage(data.message || "Event  successfully created!");
+        setErrorMessage("");
+        
+        // todo: navigate to a success page and clear form
       } else {
         console.log("Failed to create activity:", response.status);
+        throw new Error(data.message || "Failed to create the event.");
       }
     } catch (error) {
-      console.error("Error creating activity:", error);
+      // type guard to check if error is an instance of Error
+      if (error instanceof Error) {
+        console.error("Error creating activity:", error);
+        setErrorMessage(error.message);
+      } else {
+        setErrorMessage("An unexpected error occurred.");
+      }
+      setSuccessMessage("");
     }
   };
 
@@ -136,6 +188,8 @@ export const useEventForm = (initialData: Activity) => {
     endTime, 
     setEndTime, 
     handleEndTimeChange, 
-    timeError 
+    timeError,
+    successMessage, 
+    errorMessage
   };
 }

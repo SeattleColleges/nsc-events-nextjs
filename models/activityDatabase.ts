@@ -10,10 +10,8 @@ export interface ActivityDatabase {
     eventLocation: string;
     eventCoverPhoto: string;
     eventHost: string;
-    eventWebsite: string;
     eventRegistration: string;
     eventCapacity: number;
-    eventCost: string;
     eventTags: string[];
     eventSchedule: string;
     eventSpeakers: string[];
@@ -42,10 +40,8 @@ export const activityDatabase: ActivityDatabase = {
     eventLocation: "",
     eventCoverPhoto: "",
     eventHost: "",
-    eventWebsite: "",
     eventRegistration: "",
     eventCapacity: 0,
-    eventCost: "",
     eventTags: [],
     eventSchedule: "",
     eventSpeakers: [],
