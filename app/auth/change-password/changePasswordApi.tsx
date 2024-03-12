@@ -1,9 +1,9 @@
 const URL = "http://localhost:3000/api";
 
 interface ChangePasswordModel {
-    currentPassword: string;
-    newPassword: string;
-    newPasswordConfirm: string;
+  currentPassword: string;
+  newPassword: string;
+  newPasswordConfirm: string;
 }
 
 interface ChangePasswordSuccessResponse {
@@ -17,26 +17,28 @@ interface ChangePasswordErrorResponse {
   message: string;
 }
 
-type ChangePasswordResponse = ChangePasswordSuccessResponse | ChangePasswordErrorResponse;
+type ChangePasswordResponse =
+  | ChangePasswordSuccessResponse
+  | ChangePasswordErrorResponse;
 
 export const changePassword = async (
-  model: ChangePasswordModel, // password form will be passed into here 
+  model: ChangePasswordModel, // password form will be passed into here
   userToken: string // user token
 ): Promise<ChangePasswordResponse> => {
   try {
     const res = await fetch(`${URL}/auth/change-password`, {
       method: "POST",
-      headers: 
-      { 
+      headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${userToken}` //passing bearer token from local storage into headers
+        Authorization: `Bearer ${userToken}`, //passing bearer token from local storage into headers
       },
       body: JSON.stringify(model),
     });
 
     const data = await res.json(); //get response, expecting a successful message
 
-    if (res.ok) { //successful password change
+    if (res.ok) {
+      //successful password change
       return {
         status: "success",
         message: "Password Changed successful!",
