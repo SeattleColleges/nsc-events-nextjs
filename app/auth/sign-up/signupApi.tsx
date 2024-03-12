@@ -1,4 +1,4 @@
-const URL = "http://localhost:3000/api/auth/signup";
+const URL = process.env.NSC_EVENTS_PUBLIC_API_URL + "/auth/signup" || "http://localhost:3000/api/auth/signup";
 interface SignUpPayload {
   firstName: string;
   lastName: string;

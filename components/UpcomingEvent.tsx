@@ -5,21 +5,17 @@ import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardMedia, Typography, Grid, Box, CardActions, Button } from '@mui/material';
 import Link from "next/link";
 import { ActivityDatabase } from "@/models/activityDatabase";
-const URL = process.env.NSC_EVENTS_PUBLIC_API_URL || "http://localhost:3000/api";
 
 const getEvents = async() => {
-    const response = await fetch(`${URL}/events`);
+    const response = await fetch("http://localhost:3000/api/events");
     return response.json();
 }
 
-export function EventsList(){
+export function UpcomingEvent(){
 
     const { data, isLoading, isError } = useQuery<ActivityDatabase[]>({
         queryKey: ["event"],
-        queryFn: getEvents,
-        select: (data: ActivityDatabase[]) => {
-           return data.filter( (event) => event.isHidden?.valueOf() === false)
-        },
+        queryFn: getEvents
     });
 
     if(isLoading) {
@@ -29,9 +25,9 @@ export function EventsList(){
     } else {
         return (
             <Grid container spacing={1}>
-                {data?.map((event: ActivityDatabase) => (
-                    <Grid item xs={12} sm={6} md={4} lg={3} key={event._id}>
-                        <Box sx={{ width: 450, height: 400 }}>
+                {data?.slice(0, 1).map((event: ActivityDatabase) => (
+                    <Grid item xs={12} key={event._id}>
+                        <Box sx={{ width: 400, height: 130 }}>
                             <Card sx={{ display: 'flex', flexDirection: 'column' }}>
                                 <CardMedia
                                     component="img"
@@ -43,9 +39,11 @@ export function EventsList(){
                                     <Typography variant="h5" align="center" fontWeight={"bold"}>
                                         {event.eventTitle}
                                     </Typography>
-                                    
+                                    <Typography variant="body2" color="text.secondary">
+                                        Date: {event.eventDate}
+                                    </Typography>
                                 </CardContent>
-                                <CardActions>
+                                <CardActions >
                                     <Link href={
                                         {
                                             pathname: "/event-detail",
@@ -55,7 +53,7 @@ export function EventsList(){
                                         }
 
                                     } >
-                                    <Button   size={"small"}>Details</Button>
+                                    <Button size={"small"} >Details</Button>
                                     </Link>
                                 </CardActions>
                             </Card>
@@ -67,11 +65,4 @@ export function EventsList(){
     }
 }
 
-export default EventsList;
-
-
-
-
-
-
-
+export default UpcomingEvent;
