@@ -4,10 +4,18 @@ import React, { useEffect, useState } from 'react';
 import { Typography, Card, CardContent, CardMedia, Box, Button } from '@mui/material';
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { activityDatabase, ActivityDatabase } from "@/models/activityDatabase";
+import Snackbar from "@mui/material/Snackbar";
 import styles from "@/app/home.module.css";
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ArchiveIcon from '@mui/icons-material/Archive';
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogActions from "@mui/material/DialogActions";
+import { useRouter } from "next/navigation";
+
 
 interface SearchParams {
   searchParams: {
@@ -15,11 +23,53 @@ interface SearchParams {
   };
 }
 
+
+
 const EventDetail = ({ searchParams }: SearchParams) => {
+  const router = useRouter();
   const [event, setEvent] = useState(activityDatabase)
   const [isAuthed, setAuthed] = useState(false);
   const [token, setToken] = useState("")
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const  [snackbarMessage, setSnackbarMessage] = useState("")
   const queryClient = useQueryClient();
+
+
+  const DeleteDialog = () => {
+
+    return (
+        <>
+          <Dialog      open={dialogOpen}
+                       onClose={() => {
+                         setDialogOpen(false)
+                       }}
+                       aria-describedby="Dialogue to confirm event deletion">
+
+            <DialogTitle>
+              {"Delete Event?"}
+            </DialogTitle>
+            <DialogContent>
+              <DialogContentText id="alert-dialog-description">
+                Are you sure you want to delete this event?
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={() => {
+                setDialogOpen(false)
+              }}>Cancel</Button>
+              <Button onClick={() => {
+                deleteEventMutation(event._id)
+                setDialogOpen(false);
+              }} autoFocus>
+                Delete
+              </Button>
+            </DialogActions>
+
+          </Dialog>
+        </>
+    )
+
+  }
 
 
   const deleteEvent = async (id: string) => {
@@ -31,6 +81,7 @@ const EventDetail = ({ searchParams }: SearchParams) => {
           'Authorization': `Bearer ${token}`
         }
       });
+       console.log(response)
        return response.json();
     } catch (error) {
       console.error('error: ', error)
@@ -39,6 +90,16 @@ const EventDetail = ({ searchParams }: SearchParams) => {
 
   const { mutate: deleteEventMutation }  = useMutation({
     mutationFn: deleteEvent,
+     onSuccess: () => {
+      setSnackbarMessage("Successfully deleted event.");
+      setTimeout( () => {
+        router.push("/")
+      }, 1200)
+
+     },
+    onError: () => {
+      setSnackbarMessage("Failed to delete event.");
+    }
   })
 
   useEffect( () => {
@@ -60,6 +121,7 @@ const EventDetail = ({ searchParams }: SearchParams) => {
 
   )
   return (
+      <>
       <Box className={styles.container}>
         <Box className={styles.formContainer } sx={{ minHeight: '69vh', maxHeight: '100vh', width: '100vh' , marginTop: '10vh' }}>
 
@@ -96,7 +158,7 @@ const EventDetail = ({ searchParams }: SearchParams) => {
               {isAuthed && (
                   <>
                     <Button variant='contained' sx={{ color:'white', backgroundColor: '#2074d4', width: '125px' }}> <EditIcon sx={ { marginRight: '5px' }}/> Edit </Button>
-                    <Button variant='contained' sx={{ color:'white', backgroundColor: '#2074d4', width: '125px' }}   onClick={ () => deleteEventMutation(event._id)} > <DeleteIcon sx={ { marginRight: '5px' }}/> Delete </Button>
+                    <Button variant='contained' sx={{ color:'white', backgroundColor: '#2074d4', width: '125px' }}   onClick={ () => setDialogOpen(true)} > <DeleteIcon sx={ { marginRight: '5px' }}/> Delete </Button>
                     <Button variant='contained' sx={{ color:'white', backgroundColor: '#2074d4', width: '125px' }}> <ArchiveIcon sx={ { marginRight: '5px' }}/> Archive </Button>
                   </>)
               }
@@ -104,8 +166,20 @@ const EventDetail = ({ searchParams }: SearchParams) => {
             <Button variant='contained' sx={{ color:'white', backgroundColor: '#2074d4', width: '125px', marginRight: '50px' }}> Attend </Button>
           </div>
         </Box>
+        <DeleteDialog/>
+        <Snackbar
+            open={Boolean(snackbarMessage)}
+            onClose={() => {
+              setSnackbarMessage("")
+            }}
+            autoHideDuration={1200}
+            anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+            message={snackbarMessage}
+        />
+
 </Box>
 
+</>
   );
   
 };
