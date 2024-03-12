@@ -3,7 +3,8 @@ import Image from "next/image";
 import logo from "./logo.png";
 import CircularProgress from "@mui/material/CircularProgress";
 import google_play from "./google_play.png";
-import EventsList from "../components/EventGetter";
+import HomeEventsList from "@/components/HomeEventGetter";
+import UpcomingEvent from "@/components/UpcomingEvent";
 
 const Home = () => {
   const [token, setToken] = useState<string | null>(null);
@@ -33,11 +34,21 @@ const Home = () => {
   return (
     <>
       {token ? (
-        <div>
-          <EventsList />
+        <div className={styles.welcomeContainer}>
+          <h1 className={styles.title}>
+            Upcoming Events
+          </h1>
+          <div className={styles.eventContainer}>
+            <div className={styles.homeEventsList}>
+              <HomeEventsList />
+            </div>
+            <div className={styles.upcomingEvent}>
+              <UpcomingEvent />
+            </div>
+          </div>
         </div>
       ) : (
-        <div className={styles.container}>
+        <div className={styles.welcomeContainer}>
           <div className={styles.formContainer}>
             <div className={styles.logoContainer}>
               <Image src={logo} alt="logo" />
@@ -65,10 +76,21 @@ const Home = () => {
               </p>
             </div>
           </div>
+          <h1 className={styles.title}>
+            Upcoming Events
+          </h1>
+          <div className={styles.eventContainer}>
+            <div className={styles.homeEventsList}>
+              <HomeEventsList />
+            </div>
+            <div className={styles.upcomingEvent}>
+              <UpcomingEvent />
+            </div>
+          </div>
         </div>
       )}
     </>
   );
-};
+}; 
 
 export default Home;
