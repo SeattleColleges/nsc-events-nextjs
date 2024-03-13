@@ -13,10 +13,8 @@ export interface FormErrors {
     eventHost?: string;
     eventRegistration?: string;
     eventCapacity?: string;
-    eventCost?: string;
     eventTags?: string;
     eventSpeakers?: string;
-    eventWebsite?: string;
     eventPrerequisites?: string;
     eventContact?: string;
     eventCancellationPolicy?: string;
@@ -56,10 +54,8 @@ export interface Activity {
     eventMeetingUrl: string;
     eventCoverPhoto: string;
     eventHost: string;
-    eventWebsite: string;
     eventRegistration: string;
     eventCapacity: number;
-    eventCost: string;
     eventTags: string[];
     eventSchedule: string;
     eventSpeakers: string[];
@@ -84,10 +80,8 @@ export const activity: Activity = {
     eventMeetingUrl: "",
     eventCoverPhoto: "",
     eventHost: "",
-    eventWebsite: "",
     eventRegistration: "",
     eventCapacity: 0,
-    eventCost: "",
     eventTags: [],
     eventSchedule: "",
     eventSpeakers: [],
