@@ -26,6 +26,7 @@ export interface ActivityDatabase {
     };
     eventPrivacy: string;
     eventAccessibility: string;
+    isHidden?: boolean;
 }
 
 export const activityDatabase: ActivityDatabase = {
