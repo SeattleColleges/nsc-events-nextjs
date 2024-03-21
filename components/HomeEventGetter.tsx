@@ -16,7 +16,10 @@ export function HomeEventsList(){
 
     const { data, isLoading, isError } = useQuery<ActivityDatabase[]>({
         queryKey: ["event"],
-        queryFn: getEvents
+        queryFn: getEvents,
+        select: (data) => data.sort((event1, event2) => {
+            return new Date(event1.eventDate).getTime() - new Date(event2.eventDate).getTime();
+        }),
     });
 
     if(isLoading) {
