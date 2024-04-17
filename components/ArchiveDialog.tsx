@@ -11,7 +11,7 @@ import Snackbar from "@mui/material/Snackbar";
 
 interface ArchiveDialogProps {
     isOpen: boolean;
-    eventId: String;
+    eventId: string;
     dialogToggle: () => void;
 }
 
@@ -19,10 +19,10 @@ const ArchiveDialog = ({ isOpen, eventId, dialogToggle }: ArchiveDialogProps) =>
     const router = useRouter();
     const  [snackbarMessage, setSnackbarMessage] = useState("")
 
-    const archiveEvent = async () => {
+    const archiveEvent = async (id: string) => {
         const token = localStorage.getItem("token");
         try {
-            const response = await fetch(`http://localhost:3000/api/events/archive/${eventId}`, {
+            const response = await fetch(`http://localhost:3000/api/events/archive/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
