@@ -41,7 +41,7 @@ const ArchiveDialog = ({ isOpen, eventId, dialogToggle }: ArchiveDialogProps) =>
             setSnackbarMessage("Successfully archived event.");
             setTimeout( () => {
                 router.push("/");
-            }, 1200)
+            }, 1200);
 
         },
         onError: (error: String) => {
@@ -49,6 +49,10 @@ const ArchiveDialog = ({ isOpen, eventId, dialogToggle }: ArchiveDialogProps) =>
             console.error("Failed to archive event: ", error)
         }
     })
+
+    const handleClick = () => {
+        dialogToggle();
+    }
 
     return (
         <>
@@ -63,12 +67,12 @@ const ArchiveDialog = ({ isOpen, eventId, dialogToggle }: ArchiveDialogProps) =>
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={() => {
-                        dialogToggle()
-                    }}>Cancel</Button>
+                    <Button onClick={ () => {
+                        handleClick()
+                    } }>Cancel</Button>
                     <Button onClick={() => {
                         archiveEventMutation(eventId)
-                        dialogToggle()
+                        handleClick()
                     }} autoFocus>
                         Archive
                     </Button>
