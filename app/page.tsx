@@ -1,4 +1,7 @@
-"use client";import React, { useEffect, useState } from "react";import styles from "./home.module.css";
+"use client";
+import React, { useEffect, useState } from "react";
+import Head from "next/head"; // Import the Head component
+import styles from "./home.module.css";
 import Image from "next/image";
 import logo from "./logo.png";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -33,6 +36,14 @@ const Home = () => {
 
   return (
     <>
+      <Head>
+        <title>North Seattle College Events</title>
+        <meta name="description" content="Stay updated with the latest events and happenings at North Seattle College." />
+        <meta property="og:title" content="North Seattle College Events" />
+        <meta property="og:description" content="Discover events, connect with others, and engage in campus activities." />
+        <meta property="og:image" content="URL_TO_IMAGE_FOR_SOCIAL_MEDIA" />
+        <meta property="og:type" content="website" />
+      </Head>
       {token ? (
         <div className={styles.welcomeContainer}>
           <h1 className={styles.title}>
@@ -91,6 +102,6 @@ const Home = () => {
       )}
     </>
   );
-}; 
+};
 
 export default Home;
