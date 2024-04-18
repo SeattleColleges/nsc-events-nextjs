@@ -53,7 +53,7 @@ const Signin = () => {
     } else if (userRole === "creator") {
       router.push("/creator");
     } else {
-      router.push("/profile");
+      router.push("/");
     }
   };
 
