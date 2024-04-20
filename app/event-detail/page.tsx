@@ -103,8 +103,9 @@ const EventDetail = ({ searchParams }: SearchParams) => {
   })
 
   useEffect( () => {
-    if(searchParams.id) {
-      const selectedEvent = (queryClient.getQueryData<ActivityDatabase[]>(['event']) as ActivityDatabase[])
+    const events = queryClient.getQueryData<ActivityDatabase[]>(['event']);
+    if(searchParams.id && events != undefined) {
+      const selectedEvent = events
           .find(event => event._id === searchParams.id) as ActivityDatabase;
       setEvent(selectedEvent)
     }
