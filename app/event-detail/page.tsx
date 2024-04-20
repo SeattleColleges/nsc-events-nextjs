@@ -34,7 +34,6 @@ const EventDetail = ({ searchParams }: SearchParams) => {
   const  [snackbarMessage, setSnackbarMessage] = useState("")
   const queryClient = useQueryClient();
 
-console.log(searchParams)
   const DeleteDialog = () => {
 
     return (
