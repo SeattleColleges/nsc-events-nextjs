@@ -8,7 +8,7 @@ const createJestConfig = nextJest({
  
 // Add any custom config to be passed to Jest
 const config = {
-  coverageProvider: 'babel',
+  coverageProvider: 'v8',
   testEnvironment: 'jsdom',
   preset: 'ts-jest',
   // Add more setup options before each test is run
