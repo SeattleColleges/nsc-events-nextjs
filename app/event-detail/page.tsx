@@ -111,8 +111,9 @@ const EventDetail = ({ searchParams }: SearchParams) => {
           }
           else if (searchParams.id) {
               const response = await fetch(`http://localhost:3000/api/events/find/${searchParams.id}`);
-              if (response.ok)
+              if (response.ok) {
                   await response.json().then(evt => setEvent(evt));
+              }
           }
       }
       getEvents()
