@@ -124,7 +124,7 @@ const EventDetail = ({ searchParams }: SearchParams) => {
           const userRole = JSON.parse(atob(token.split(".")[1])).role
           setAuthed(userRole === "creator" || userRole === "admin")
         }
-      }, []
+      }, [queryClient, searchParams.id]
   )
   return (
       <>
