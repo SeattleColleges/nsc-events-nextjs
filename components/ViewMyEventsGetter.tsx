@@ -1,8 +1,9 @@
 'use client';
 
 import { ActivityDatabase } from "@/models/activityDatabase";
-import { Box, Card, CardContent, Grid, Link, Typography } from "@mui/material";
+import { Box, Card, CardContent, Grid, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 // decode the userId from localStorage
 const getUserId = () => {
@@ -45,6 +46,14 @@ export function MyEventsList() {
         <Grid container spacing={1}>
                 {events?.map((event: ActivityDatabase) => (
                     <Grid item xs={12} key={event._id}>
+                        <Link href={
+                            {
+                                pathname: "/event-detail",
+                                query: {
+                                    id: event._id,
+                                },
+                            }
+                        } >
                             <Box sx={{ width: 700, height: 130 }}>
                                 <Card sx={{ display: 'flex', flexDirection: 'column' }}>
                                     <CardContent sx={{ flexGrow: 1 }}>
@@ -57,6 +66,7 @@ export function MyEventsList() {
                                     </CardContent>
                                 </Card>
                             </Box>
+                        </Link>
                     </Grid>
                 ))}
             </Grid>
