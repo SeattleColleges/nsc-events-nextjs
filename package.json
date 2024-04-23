@@ -11,6 +11,7 @@
         "start": "next start",
         "lint": "next lint",
         "compile": "tsc",
+        "unit:test": "jest",
         "test": "jest",
         "test:watch": "jest --watch"
     },
