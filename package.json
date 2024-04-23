@@ -11,8 +11,8 @@
         "start": "next start",
         "lint": "next lint",
         "compile": "tsc",
-        "unit:tests": "jest tests/unit",
-        "test:coverage": "jest --coverage--"
+        "test": "jest",
+        "test:watch": "jest --watch"
     },
     "dependencies": {
         "@emotion/cache": "^11.11.0",
