@@ -36,7 +36,6 @@ const EventDetail = ({ searchParams }: SearchParams) => {
   const  [snackbarMessage, setSnackbarMessage] = useState("")
   const queryClient = useQueryClient();
 
-
   const DeleteDialog = () => {
 
     return (
@@ -104,13 +103,22 @@ const EventDetail = ({ searchParams }: SearchParams) => {
     }
   })
 
-  useEffect( () => {
-    if(searchParams.id) {
-      const selectedEvent = (queryClient.getQueryData<ActivityDatabase[]>(['event']) as ActivityDatabase[])
-          .find(event => event._id === searchParams.id) as ActivityDatabase;
-      setEvent(selectedEvent)
-    }
-
+  useEffect(() => {
+      const getEvents = async () => {
+          const events = queryClient.getQueryData<ActivityDatabase[]>(['event']);
+          if (events !== undefined) {
+              const selectedEvent = events
+                  .find(event => event._id === searchParams.id) as ActivityDatabase;
+              setEvent(selectedEvent)
+          }
+          else if (searchParams.id) {
+              const response = await fetch(`http://localhost:3000/api/events/find/${searchParams.id}`);
+              if (response.ok) {
+                  await response.json().then(evt => setEvent(evt));
+              }
+          }
+      }
+      getEvents()
     const token = localStorage.getItem("token");
     // Sets token state that is used by delete mutation outside of effect
     setToken(token ?? "");
@@ -120,7 +128,6 @@ const EventDetail = ({ searchParams }: SearchParams) => {
           setAuthed(userRole === "creator" || userRole === "admin")
         }
       }, [queryClient, searchParams.id]
-
   )
 
 const toggleArchiveDialog = () => {
@@ -189,7 +196,7 @@ const toggleArchiveDialog = () => {
 
 </>
   );
-  
+
 };
 
 export default EventDetail;
