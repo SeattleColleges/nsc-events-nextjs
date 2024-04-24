@@ -29,7 +29,7 @@ jobs:
       - name: Compile typescript
         run: npm run compile
       - name: Jest unit tests
-        run: npm run unit:test
+        run: npm run unit:tests
       - name: Test coverage
         run: npm run test:coverage
 
