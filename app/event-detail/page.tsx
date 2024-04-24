@@ -15,6 +15,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogActions from "@mui/material/DialogActions";
 import { useRouter } from "next/navigation";
+import ArchiveDialog from "@/components/ArchiveDialog";
 
 
 interface SearchParams {
@@ -31,9 +32,9 @@ const EventDetail = ({ searchParams }: SearchParams) => {
   const [isAuthed, setAuthed] = useState(false);
   const [token, setToken] = useState("")
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [archiveDialogOpen, setArchiveDialogOpen] = useState(false);
   const  [snackbarMessage, setSnackbarMessage] = useState("")
   const queryClient = useQueryClient();
-
 
   const DeleteDialog = () => {
 
@@ -102,13 +103,22 @@ const EventDetail = ({ searchParams }: SearchParams) => {
     }
   })
 
-  useEffect( () => {
-    if(searchParams.id) {
-      const selectedEvent = (queryClient.getQueryData<ActivityDatabase[]>(['event']) as ActivityDatabase[])
-          .find(event => event._id === searchParams.id) as ActivityDatabase;
-      setEvent(selectedEvent)
-    }
-
+  useEffect(() => {
+      const getEvents = async () => {
+          const events = queryClient.getQueryData<ActivityDatabase[]>(['event']);
+          if (events !== undefined) {
+              const selectedEvent = events
+                  .find(event => event._id === searchParams.id) as ActivityDatabase;
+              setEvent(selectedEvent)
+          }
+          else if (searchParams.id) {
+              const response = await fetch(`http://localhost:3000/api/events/find/${searchParams.id}`);
+              if (response.ok) {
+                  await response.json().then(evt => setEvent(evt));
+              }
+          }
+      }
+      getEvents()
     const token = localStorage.getItem("token");
     // Sets token state that is used by delete mutation outside of effect
     setToken(token ?? "");
@@ -118,8 +128,12 @@ const EventDetail = ({ searchParams }: SearchParams) => {
           setAuthed(userRole === "creator" || userRole === "admin")
         }
       }, [queryClient, searchParams.id]
-
   )
+
+const toggleArchiveDialog = () => {
+    setArchiveDialogOpen(!archiveDialogOpen);
+  }
+
   return (
       <>
       <Box className={styles.container}>
@@ -159,7 +173,7 @@ const EventDetail = ({ searchParams }: SearchParams) => {
                   <>
                     <Button variant='contained' sx={{ color:'white', backgroundColor: '#2074d4', width: '125px' }}> <EditIcon sx={ { marginRight: '5px' }}/> Edit </Button>
                     <Button variant='contained' sx={{ color:'white', backgroundColor: '#2074d4', width: '125px' }}   onClick={ () => setDialogOpen(true)} > <DeleteIcon sx={ { marginRight: '5px' }}/> Delete </Button>
-                    <Button variant='contained' sx={{ color:'white', backgroundColor: '#2074d4', width: '125px' }}> <ArchiveIcon sx={ { marginRight: '5px' }}/> Archive </Button>
+                    <Button variant='contained' sx={{ color:'white', backgroundColor: '#2074d4', width: '125px' }} onClick={ () => toggleArchiveDialog() }> <ArchiveIcon sx={ { marginRight: '5px' }}/> Archive </Button>
                   </>)
               }
             </div>
@@ -167,6 +181,7 @@ const EventDetail = ({ searchParams }: SearchParams) => {
           </div>
         </Box>
         <DeleteDialog/>
+        <ArchiveDialog isOpen={archiveDialogOpen} eventId={event._id} dialogToggle={toggleArchiveDialog}/>
         <Snackbar
             open={Boolean(snackbarMessage)}
             onClose={() => {
@@ -181,7 +196,7 @@ const EventDetail = ({ searchParams }: SearchParams) => {
 
 </>
   );
-  
+
 };
 
 export default EventDetail;
