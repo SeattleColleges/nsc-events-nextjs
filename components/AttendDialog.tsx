@@ -7,7 +7,6 @@ import Snackbar from "@mui/material/Snackbar";
 import IconButton from "@mui/material/IconButton";
 import InfoIcon from '@mui/icons-material/Info';
 import React, { useState } from "react";
-import { User } from "next-auth";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 
@@ -15,12 +14,13 @@ interface AttendDialogProps {
     isOpen: boolean,
     eventId: string,
     dialogToggle: () => void;
-    user?: User
 }
 
-const AttendDialog = ( { isOpen, eventId, dialogToggle, user }: AttendDialogProps) => {
+const AttendDialog = ( { isOpen, eventId, dialogToggle }: AttendDialogProps) => {
     const router = useRouter();
     const [checked, setChecked] = useState(false)
+    const [snackbarMessage, setSnackbarMessage ] = useState('')
+
     const toggleCheckBox = () => {
         setChecked(!checked);
     }
@@ -31,14 +31,28 @@ const AttendDialog = ( { isOpen, eventId, dialogToggle, user }: AttendDialogProp
 
     const attendEvent = async (id: string) => {
         const token = localStorage.getItem("token");
-        try {
-            const response = await fetch(`http://localhost:3000/api/events/attend/${id}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
+        let options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            }, body: ''
+
+        };
+
+        if(checked) {
+            const body = {
+                attendee: {
+                    firstName: JSON.parse(atob(token!!!.split(".")[1])).firstName,
+                    lastName: JSON.parse(atob(token!!!.split(".")[1])).lastName
                 }
-            });
+            }
+            options.body = JSON.stringify(body)
+            console.log(options)
+        }
+
+        try {
+            const response = await fetch(`http://localhost:3000/api/events/attend/${id}`, options );
             return response.json();
         } catch (error) {
             console.error('error: ', error)
@@ -48,24 +62,17 @@ const AttendDialog = ( { isOpen, eventId, dialogToggle, user }: AttendDialogProp
     const { mutate: attendEventMutation }  = useMutation({
         mutationFn: attendEvent,
         onSuccess: () => {
-            // setSnackbarMessage("Successfully archived event.");
+            setSnackbarMessage("Successfully added your attendance.");
             setTimeout( () => {
                 router.push("/");
             }, 1200)
 
         },
         onError: (error: String) => {
-            // setSnackbarMessage("Failed to archive event.");
-            console.error("Failed to archive event: ", error)
+            setSnackbarMessage("Failed to attend event.");
+            console.error("Failed to attend: ", error)
         }
     })
-
-
-
-
-
-
-
 
     return (
         <>
@@ -108,7 +115,7 @@ const AttendDialog = ( { isOpen, eventId, dialogToggle, user }: AttendDialogProp
                     <Divider/>
                     <Box>
                     <Button onClick={() => {
-                         attendEventMutation(eventId)
+                        attendEventMutation(eventId)
                         handleDialogBtnClick()
                     }} autoFocus>
                         Confirm
@@ -119,18 +126,14 @@ const AttendDialog = ( { isOpen, eventId, dialogToggle, user }: AttendDialogProp
             </Dialog>
             <Snackbar
                 open={
-                // Boolean(snackbarMessage)
-                    false
+                Boolean(snackbarMessage)
             }
                 onClose={() => {
-                    // setSnackbarMessage("")
+                    setSnackbarMessage("")
                 }}
                 autoHideDuration={1200}
                 anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-                message={
-                // snackbarMessage
-                    "Bing"
-            }
+                message={snackbarMessage}
             />
         </>
     )

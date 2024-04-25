@@ -15,6 +15,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogActions from "@mui/material/DialogActions";
 import { useRouter } from "next/navigation";
+import AttendDialog from "@/components/AttendDialog";
 
 
 interface SearchParams {
@@ -32,6 +33,7 @@ const EventDetail = ({ searchParams }: SearchParams) => {
   const [token, setToken] = useState("")
   const [dialogOpen, setDialogOpen] = useState(false);
   const  [snackbarMessage, setSnackbarMessage] = useState("")
+  const [attendDialogOpen, setAttendDialogOpen] = useState(false);
   const queryClient = useQueryClient();
 
 
@@ -120,6 +122,16 @@ const EventDetail = ({ searchParams }: SearchParams) => {
       }, [queryClient, searchParams.id]
 
   )
+
+
+
+
+
+
+
+  const toggleAttendDialog = () => {
+    setAttendDialogOpen(!attendDialogOpen);
+  }
   return (
       <>
       <Box className={styles.container}>
@@ -163,10 +175,11 @@ const EventDetail = ({ searchParams }: SearchParams) => {
                   </>)
               }
             </div>
-            <Button variant='contained' sx={{ color:'white', backgroundColor: '#2074d4', width: '125px', marginRight: '50px' }}> Attend </Button>
+            <Button variant='contained' sx={{ color:'white', backgroundColor: '#2074d4', width: '125px', marginRight: '50px' }} onClick={ () => { toggleAttendDialog()}}> Attend </Button>
           </div>
         </Box>
         <DeleteDialog/>
+        <AttendDialog isOpen={attendDialogOpen} eventId={event._id} dialogToggle={toggleAttendDialog}/>
         <Snackbar
             open={Boolean(snackbarMessage)}
             onClose={() => {
