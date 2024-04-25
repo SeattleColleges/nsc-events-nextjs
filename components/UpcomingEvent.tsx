@@ -1,25 +1,13 @@
 'use client';
 
 import React from "react";
-import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardMedia, Typography, Grid, Box, CardActions, Button } from '@mui/material';
 import Link from "next/link";
 import { ActivityDatabase } from "@/models/activityDatabase";
-
-const getEvents = async() => {
-    const response = await fetch("http://localhost:3000/api/events");
-    return response.json();
-}
-
+import { useFilteredEvents } from "@/components/HomeEventGetter";
 export function UpcomingEvent(){
 
-    const { data, isLoading, isError } = useQuery<ActivityDatabase[]>({
-        queryKey: ["event"],
-        queryFn: getEvents,
-        select: (data: ActivityDatabase[]) => {
-            return data.filter( (event) => event.isHidden?.valueOf() === false)
-        },
-    });
+    const { data, isLoading, isError } = useFilteredEvents();
 
     if(isLoading) {
         return <span>Loading events...</span>
