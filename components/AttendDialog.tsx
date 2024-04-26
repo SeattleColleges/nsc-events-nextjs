@@ -40,11 +40,11 @@ const AttendDialog = ( { isOpen, eventId, dialogToggle }: AttendDialogProps) => 
 
         };
 
-        if(checked) {
+        if(checked && token != null) {
             const body = {
                 attendee: {
-                    firstName: JSON.parse(atob(token!!!.split(".")[1])).firstName,
-                    lastName: JSON.parse(atob(token!!!.split(".")[1])).lastName
+                    firstName: JSON.parse(atob(token.split(".")[1])).firstName,
+                    lastName: JSON.parse(atob(token.split(".")[1])).lastName
                 }
             }
             options.body = JSON.stringify(body)
