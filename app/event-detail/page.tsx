@@ -134,7 +134,13 @@ const EventDetail = ({ searchParams }: SearchParams) => {
   )
 
   const toggleAttendDialog = () => {
-    setAttendDialogOpen(!attendDialogOpen);
+      if(token === '') {
+          console.log(token)
+          router.push("auth/sign-in")
+      } else {
+          setAttendDialogOpen(!attendDialogOpen);
+      }
+
   }
   
 const toggleArchiveDialog = () => {
