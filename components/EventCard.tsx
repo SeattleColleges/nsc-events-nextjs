@@ -1,11 +1,9 @@
-"use client"
-
 import { Box, Card, CardContent, Grid, Typography } from '@mui/material'
 import { ActivityDatabase } from "@/models/activityDatabase";
 import Link from "next/link";
 import React from 'react'
 
-// declare the event prop
+// declare the event prop that will get passed to the component
 interface EventCardProps {
     event: ActivityDatabase; 
   }
