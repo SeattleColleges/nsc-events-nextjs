@@ -45,7 +45,8 @@ export function MyEventsList() {
     return (
         <Grid container spacing={1}>
                 {events?.map((event: ActivityDatabase) => (
-                    <EventCard 
+                    <EventCard
+                        key={event._id} 
                         event={event} 
                     />
                 ))}

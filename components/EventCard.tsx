@@ -5,14 +5,15 @@ import React from 'react'
 
 // declare the event prop that will get passed to the component
 interface EventCardProps {
+    key: string;
     event: ActivityDatabase; 
   }
 
-function EventCard({ event }: EventCardProps) {
+function EventCard({ key, event }: EventCardProps) {
 
   return (
     <div>
-        <Grid item xs={12} key={event._id}>
+        <Grid item xs={12} key={key}>
             <Link href={
                 {
                     pathname: "/event-detail",

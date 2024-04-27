@@ -35,6 +35,7 @@ export function HomeEventsList(){
             <Grid container spacing={1}>
                 {data?.map((event: ActivityDatabase) => (
                     <EventCard 
+                        key={event._id}
                         event={event} 
                     />
                 ))}
