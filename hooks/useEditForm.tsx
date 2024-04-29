@@ -119,7 +119,7 @@ const to24HourTime  = (time: string) => {
     onSuccess: () => {
       setSuccessMessage( "Event successfully updated!");
       setTimeout( () => {
-        router.refresh();
+        window.location.reload()
       }, 1200)
 
     },
