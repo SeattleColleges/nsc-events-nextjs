@@ -1,6 +1,6 @@
 export interface ActivityDatabase {
     _id: string;
-    eventCreatorId: string;
+    createdByUser: string;
     eventTitle: string;
     eventDescription: string;
     eventCategory: string;
@@ -26,12 +26,14 @@ export interface ActivityDatabase {
     };
     eventPrivacy: string;
     eventAccessibility: string;
+    eventMeetingUrl: string;
+    eventNote: string;
     isHidden?: boolean;
 }
 
 export const activityDatabase: ActivityDatabase = {
     _id: "",
-    eventCreatorId: "",
+    createdByUser: "",
     eventTitle: "",
     eventDescription: "",
     eventCategory: "",
@@ -56,5 +58,7 @@ export const activityDatabase: ActivityDatabase = {
         hashtag: ""
     },
     eventPrivacy: "",
+    eventNote: "",
+    eventMeetingUrl: "",
     eventAccessibility: ""
 };
