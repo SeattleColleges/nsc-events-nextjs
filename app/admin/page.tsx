@@ -11,6 +11,7 @@ const Admin = () => {
           <button className={styles.button}>Edit User Role</button>
           <button className={styles.button}><Link href="/create-event">Create Event</Link></button>
           <button className={styles.button}><Link href="/my-events">View My Events</Link></button>
+          <button className={styles.button}><Link href="/archived-events">View Archived Events</Link></button>
           <button className={styles.button}><Link href="/">View All Events</Link></button>
       </div>
   );
