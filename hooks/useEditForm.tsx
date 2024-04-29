@@ -5,10 +5,8 @@ import { ActivityDatabase } from "@/models/activityDatabase";
 import { useMutation } from "@tanstack/react-query";
 import { useEventForm } from "@/hooks/useEventForm";
 import { format, parse } from "date-fns";
-import { useRouter } from "next/navigation";
 
 export const useEditForm = (initialData: ActivityDatabase) => {
-  const router = useRouter();
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
   const {
@@ -24,10 +22,10 @@ export const useEditForm = (initialData: ActivityDatabase) => {
     handleInputChange,
     handleSocialMediaChange,
     handleTagClick,
-  } = useEventForm(initialData);
+  } = useEventForm(initialData as ActivityDatabase);
 
   useEffect(() => {
-    setEventData(initialData)
+    setEventData(initialData as ActivityDatabase)
     setSelectedDate(new Date(eventData.eventDate))
   }, [eventData.eventDate, initialData, setEventData]);
 
@@ -45,7 +43,7 @@ export const useEditForm = (initialData: ActivityDatabase) => {
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
     } else {
-      editEventMutation(eventData);
+      editEventMutation(eventData as ActivityDatabase);
     }
   };
 
