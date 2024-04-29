@@ -1,8 +1,8 @@
 'use client';
 
-import React from "react";
+import React, {useState} from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Card, CardContent, Typography, Grid, Box } from '@mui/material';
+import {Card, CardContent, Typography, Grid, Box, Button} from '@mui/material';
 import Link from "next/link";
 import { ActivityDatabase } from "@/models/activityDatabase";
 
@@ -25,7 +25,9 @@ export function useFilteredEvents() {
 export function HomeEventsList(){
 
     const { data, isLoading, isError } = useFilteredEvents();
-
+    const handleLoadMoreEvents = () => {
+        
+    }
     if(isLoading) {
         return <span>Loading events...</span>
     } else if (isError) {
@@ -59,6 +61,9 @@ export function HomeEventsList(){
                         </Link>
                     </Grid>
                 ))}
+                <Button onClick={handleLoadMoreEvents} variant="contained" color="primary" style={{ textTransform: "none" }}>
+                    Load more events
+                </Button>
             </Grid>
         );
     }
