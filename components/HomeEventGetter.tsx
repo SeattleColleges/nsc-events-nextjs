@@ -11,16 +11,20 @@ const getEvents = async() => {
     return response.json();
 }
 
-
-export function HomeEventsList(){
-
-    const { data, isLoading, isError } = useQuery<ActivityDatabase[]>({
+export function useFilteredEvents() {
+    return useQuery({
         queryKey: ["event"],
         queryFn: getEvents,
-        select: (data) => data.sort((event1, event2) => {
+        select: (data: ActivityDatabase[]) => data.filter( event =>
+            !(event.isHidden) && !(event.isArchived))?.sort((event1, event2) => {
             return new Date(event1.eventDate).getTime() - new Date(event2.eventDate).getTime();
         }),
     });
+}
+
+export function HomeEventsList(){
+
+    const { data, isLoading, isError } = useFilteredEvents();
 
     if(isLoading) {
         return <span>Loading events...</span>

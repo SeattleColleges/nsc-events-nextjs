@@ -29,6 +29,7 @@ export interface ActivityDatabase {
     eventMeetingUrl: string;
     eventNote: string;
     isHidden?: boolean;
+    isArchived?: boolean;
 }
 
 export const activityDatabase: ActivityDatabase = {
