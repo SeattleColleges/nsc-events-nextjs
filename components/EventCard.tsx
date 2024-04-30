@@ -2,6 +2,7 @@ import { Box, Card, CardContent, Grid, Typography } from '@mui/material'
 import { ActivityDatabase } from "@/models/activityDatabase";
 import Link from "next/link";
 import React from 'react'
+import { formatDate } from "@/utility/dateUtils";
 
 // declare the event prop that will get passed to the component
 interface EventCardProps {
@@ -9,11 +10,10 @@ interface EventCardProps {
     event: ActivityDatabase; 
   }
 
-function EventCard({ key, event }: EventCardProps) {
-
+function EventCard({ event }: EventCardProps) {
   return (
     <div>
-        <Grid item xs={12} key={key}>
+        <Grid item xs={12} key={event._id}>
             <Link href={
                 {
                     pathname: "/event-detail",
@@ -29,7 +29,7 @@ function EventCard({ key, event }: EventCardProps) {
                                 {event.eventTitle}
                             </Typography>
                             <Typography variant="body2" align="right" color="text.secondary">
-                                Date: {event.eventDate}
+                                Date: { formatDate(event.eventDate) }
                             </Typography>
                         </CardContent>
                     </Card>
