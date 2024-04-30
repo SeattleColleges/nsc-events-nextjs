@@ -1,8 +1,8 @@
 'use client';
 
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import {Card, CardContent, Typography, Grid, Box, Button} from '@mui/material';
+import { Card, CardContent, Typography, Grid, Box, Button } from '@mui/material';
 import Link from "next/link";
 import { ActivityDatabase } from "@/models/activityDatabase";
 
