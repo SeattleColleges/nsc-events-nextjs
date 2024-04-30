@@ -1,6 +1,6 @@
 'use client';
 
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import { useQuery } from "@tanstack/react-query";
 import {Card, CardContent, Typography, Grid, Box, Button} from '@mui/material';
 import Link from "next/link";
@@ -23,11 +23,25 @@ export function useFilteredEvents() {
 }
 
 export function HomeEventsList(){
-
-    const { data, isLoading, isError } = useFilteredEvents();
-    const handleLoadMoreEvents = () => {
-        
+    const [numEvents, setNumEvents] = useState(5);
+    const [events, setEvents] = useState<ActivityDatabase[] | undefined>([]);
+    const [reachedMaxEvents, setReachedMaxEvents] = useState(false)
+    const { isLoading, isError } = useFilteredEvents();
+    useEffect(() => {
+        const eventData = getNumEvents(numEvents);
+        eventData.then(events => {
+            const newEvents = events.filter((event: { isArchived: boolean; isHidden: boolean; }) => !(event.isArchived || event.isHidden))
+            setEvents(newEvents)
+            setReachedMaxEvents(events.length < numEvents);
+        });
+    }, [numEvents]);
+    const getNumEvents = async(numEvents: number) => {
+        const response = await fetch(`http://localhost:3000/api/events/${numEvents}`);
+        return response.json();
     }
+    const handleLoadMoreEvents = () => {
+        setNumEvents(num => num + 5);
+    };
     if(isLoading) {
         return <span>Loading events...</span>
     } else if (isError) {
@@ -35,7 +49,7 @@ export function HomeEventsList(){
     } else {
         return (
             <Grid container spacing={1}>
-                {data?.map((event: ActivityDatabase) => (
+                {events?.map((event: ActivityDatabase) => (
                     <Grid item xs={12} key={event._id}>
                         <Link href={
                             {
@@ -61,9 +75,19 @@ export function HomeEventsList(){
                         </Link>
                     </Grid>
                 ))}
-                <Button onClick={handleLoadMoreEvents} variant="contained" color="primary" style={{ textTransform: "none" }}>
-                    Load more events
-                </Button>
+                {
+                    !reachedMaxEvents &&
+                    <Button onClick={handleLoadMoreEvents}
+                            type='button'
+                            variant="contained"
+                            color="primary"
+                            style={{
+                                textTransform: "none",
+                                margin: '1em auto',
+                            }}>
+                        Load more events
+                    </Button>
+                }
             </Grid>
         );
     }
