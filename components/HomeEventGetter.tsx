@@ -31,8 +31,9 @@ export function HomeEventsList(){
     useEffect(() => {
         const eventData = getNumEvents(numEvents);
         eventData.then(events => {
-            const newEvents = events.filter((event: { isArchived: boolean; isHidden: boolean; }) => !(event.isArchived || event.isHidden))
-            setEvents(newEvents)
+            // Filter out events where either isArchived or isHidden is true.
+            const activeEvents = events.filter((event: { isArchived: boolean; isHidden: boolean; }) => !(event.isArchived || event.isHidden))
+            setEvents(activeEvents)
             setReachedMaxEvents(events.length < numEvents);
         });
     }, [numEvents]);
