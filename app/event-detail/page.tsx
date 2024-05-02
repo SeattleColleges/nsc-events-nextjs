@@ -17,7 +17,7 @@ import DialogActions from "@mui/material/DialogActions";
 import { useRouter } from "next/navigation";
 import AttendDialog from "@/components/AttendDialog";
 import ArchiveDialog from "@/components/ArchiveDialog";
-
+import { formatDate } from "@/utility/dateUtils";
 
 
 interface SearchParams {
@@ -167,7 +167,7 @@ const toggleArchiveDialog = () => {
               {event.eventDescription}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              Date: {event.eventDate}
+              Date: {formatDate(event.eventDate)}
             </Typography>
             <Typography variant="body2" color="text.secondary">
               Start Time: {event.eventStartTime}
