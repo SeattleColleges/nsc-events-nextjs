@@ -15,8 +15,11 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogActions from "@mui/material/DialogActions";
 import { useRouter } from "next/navigation";
+import AttendDialog from "@/components/AttendDialog";
 import ArchiveDialog from "@/components/ArchiveDialog";
 import EditDialog from "@/components/EditDialog";
+
+import { formatDate } from "@/utility/dateUtils";
 
 interface SearchParams {
   searchParams: {
@@ -33,6 +36,7 @@ const EventDetail = ({ searchParams }: SearchParams) => {
   const [archiveDialogOpen, setArchiveDialogOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("")
   const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [attendDialogOpen, setAttendDialogOpen] = useState(false);
   const queryClient = useQueryClient();
 
   const DeleteDialog = () => {
@@ -134,6 +138,16 @@ const EventDetail = ({ searchParams }: SearchParams) => {
       }, [queryClient, searchParams.id]
   )
 
+  const toggleAttendDialog = () => {
+      if(token === '') {
+          console.log(token)
+          router.push("auth/sign-in")
+      } else {
+          setAttendDialogOpen(!attendDialogOpen);
+      }
+
+  }
+  
 const toggleArchiveDialog = () => {
     setArchiveDialogOpen(!archiveDialogOpen);
   }
@@ -158,7 +172,7 @@ const toggleArchiveDialog = () => {
               {event.eventDescription}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              Date: {event.eventDate}
+              Date: {formatDate(event.eventDate)}
             </Typography>
             <Typography variant="body2" color="text.secondary">
               Start Time: {event.eventStartTime}
@@ -181,10 +195,11 @@ const toggleArchiveDialog = () => {
                   </>)
               }
             </div>
-            <Button variant='contained' sx={{ color:'white', backgroundColor: '#2074d4', width: '125px', marginRight: '50px' }}> Attend </Button>
+            <Button variant='contained' sx={{ color:'white', backgroundColor: '#2074d4', width: '125px', marginRight: '50px' }} onClick={ () => { toggleAttendDialog()}}> Attend </Button>
           </div>
         </Box>
         <DeleteDialog/>
+        <AttendDialog isOpen={attendDialogOpen} eventId={event._id} dialogToggle={toggleAttendDialog}/>
         <ArchiveDialog isOpen={archiveDialogOpen} eventId={event._id} dialogToggle={toggleArchiveDialog}/>
         <EditDialog isOpen={ editDialogOpen } event={event} toggleEditDialog={toggleEditDialog}/>
         <Snackbar

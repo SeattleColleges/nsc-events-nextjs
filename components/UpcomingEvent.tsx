@@ -5,6 +5,7 @@ import { Card, CardContent, CardMedia, Typography, Grid, Box, CardActions, Butto
 import Link from "next/link";
 import { ActivityDatabase } from "@/models/activityDatabase";
 import { useFilteredEvents } from "@/components/HomeEventGetter";
+import { formatDate } from "@/utility/dateUtils";
 export function UpcomingEvent(){
 
     const { data, isLoading, isError } = useFilteredEvents();
@@ -31,7 +32,7 @@ export function UpcomingEvent(){
                                         {event.eventTitle}
                                     </Typography>
                                     <Typography variant="body2" color="text.secondary">
-                                        Date: {event.eventDate}
+                                        Date: {formatDate(event.eventDate)}
                                     </Typography>
                                 </CardContent>
                                 <CardActions >
