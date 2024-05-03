@@ -2,6 +2,7 @@ import React from "react";
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 
+
 type TagSelectorProps = {
     selectedTags: string[];
     allTags: string[];
@@ -12,7 +13,7 @@ const TagSelector: React.FC<TagSelectorProps> = ({ selectedTags, allTags, onTagC
     return (
         <label>
             Event Tags
-            <Stack direction="row" spacing={1} className="mt-2">
+            <Stack direction="row" spacing={1} className="mt-2" flexWrap="wrap" useFlexGap>
                 {allTags.map(tag => (
                     <Button
                         key={tag}
