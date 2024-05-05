@@ -30,7 +30,7 @@ function UserCard({ user }: { user: UserCardProps }) {
         justifyContent: "center",
         alignItems: "center",
         borderRadius: "10px",
-        bgcolor: "#12202d",
+        border: "1px solid #ccc",
         padding: "20px",
         margin: "20px",
       }}
