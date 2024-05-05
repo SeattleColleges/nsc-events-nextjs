@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import UserCard from "../../components/UserCard";
-import { Stack, Typography } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 
 /**
  * Represents a user.
@@ -18,12 +18,14 @@ interface User {
  * @param setUserInfo
  */
 async function fetchUser(setUserInfo: (userInfo: User[]) => void) {
-  const apiUrl = "http://localhost:3000/api/user";
+  const token = localStorage.getItem("token");
+  const apiUrl = "http://localhost:3000/api/users";
   try {
     const res = await fetch(apiUrl, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
     });
     if (!res.ok) {
@@ -50,14 +52,16 @@ const EditUserRolePage = () => {
   }, []);
 
   return (
+    <Box sx={{ display: "flex", justifyContent: "center" }}>
       <Stack>
-        <Typography component="h1" variant="h4">
+        <Typography component="h1" variant="h4" sx={{ textAlign: "center", mt: 2 }}>
           User Management
         </Typography>
         {userInfo.map((user, index) => (
           <UserCard user={user} key={index} />
         ))}
       </Stack>
+    </Box>
   );
 };
 
