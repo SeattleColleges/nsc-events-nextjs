@@ -74,7 +74,7 @@ export function ConfirmationDialogRaw(props: ConfirmationDialogRawProps & { user
     console.log('Token:', token);
     // TODO: Update user role in the database
     try {
-      const response = await fetch(`http://localhost:3000/api/user/update/${user.id}`, {
+      const response = await fetch(`http://localhost:3000/api/users/update/${user.id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
