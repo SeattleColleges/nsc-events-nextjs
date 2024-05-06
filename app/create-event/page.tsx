@@ -33,7 +33,7 @@ const CreateEvent: React.FC = () => {
     // Convert startTime and endTime from string to Date for TimePicker
     const startTimeDate = startTime ? parse(startTime, 'HH:mm', new Date()) : null;
     const endTimeDate = endTime ? parse(endTime, 'HH:mm', new Date()) : null;
-  
+
     const handleDateChange = (newDate: Date | null) => {
       setSelectedDate(newDate);
     };
@@ -216,7 +216,27 @@ const CreateEvent: React.FC = () => {
               "LGBTQIA",
             ]}
             onTagClick={handleTagClick}
-          />        
+          />      
+
+          <Box component="form" >
+            <TextField
+              id="add-custom-tag"
+              label="Add Tag"
+              variant="outlined"
+              name="addedTag"
+              // value={}
+              // onChange={}
+              error={!!errors.eventSchedule}
+              helperText={errors.eventSchedule}
+              InputProps={{ style: textFieldStyle.input }}
+              InputLabelProps={{ style: textFieldStyle.label }}
+              placeholder="Enter the tag of the event"
+            />  
+            <Button type="submit" variant="contained" color="primary" style={{ textTransform: "none", margin: 10 }}>
+              Add Tag
+            </Button>
+          </Box>
+
           <TextField
             id="event-schedule"
             label="Event Schedule"
