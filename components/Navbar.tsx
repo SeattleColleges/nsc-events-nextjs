@@ -40,7 +40,7 @@ export default function Navbar() {
               {/* Home Link remains outside AuthProfileMenu for general access */}
               <Grid item>
                 <Link href="/" passHref>
-                  <Button color="inherit" sx={{ textTransform: 'none' }}>Home</Button>
+                  <Button color="inherit" sx={{ textTransform: 'none' }}>Events</Button>
                 </Link>
               </Grid>
               {/* AuthProfileMenu contains Create Event and Sign Out actions */}
