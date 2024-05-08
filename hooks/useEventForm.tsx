@@ -2,10 +2,11 @@ import { ChangeEventHandler, FormEvent, useState } from "react";
 import { validateFormData } from "@/utility/validateFormData";
 import { Activity, FormErrors } from "@/models/activity";
 import useDateTimeSelection from "./useDateTimeSelection";
+import { ActivityDatabase } from "@/models/activityDatabase";
 
-export const useEventForm = (initialData: Activity) => {
+export const useEventForm = (initialData: Activity | ActivityDatabase) => {
 
-  const [eventData, setEventData] = useState<Activity>(initialData);
+  const [eventData, setEventData] = useState<Activity | ActivityDatabase>(initialData);
   const [errors, setErrors] = useState<FormErrors>({
     eventTitle: "",
     eventDescription: "",
@@ -113,11 +114,11 @@ export const useEventForm = (initialData: Activity) => {
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
     } else {
-      createActivity(eventData);
+      createActivity(eventData as Activity);
     }
   };
 
-  const createActivity = async (activityData: any) => {
+  const createActivity = async (activityData: Activity) => {
     // retrieving the token from localStorage
     const token = localStorage.getItem('token');
 
@@ -168,12 +169,14 @@ export const useEventForm = (initialData: Activity) => {
       } else {
         setErrorMessage("An unexpected error occurred.");
       }
-      setSuccessMessage("");
     }
   };
 
 
-  return { 
+  return {
+    setEventData,
+    setErrors,
+    to12HourTime,
     eventData, 
     handleInputChange, 
     handleSocialMediaChange,
@@ -190,6 +193,8 @@ export const useEventForm = (initialData: Activity) => {
     handleEndTimeChange, 
     timeError,
     successMessage, 
-    errorMessage
+    errorMessage,
+    setErrorMessage,
+    setSuccessMessage
   };
 }
