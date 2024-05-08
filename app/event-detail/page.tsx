@@ -17,16 +17,15 @@ import DialogActions from "@mui/material/DialogActions";
 import { useRouter } from "next/navigation";
 import AttendDialog from "@/components/AttendDialog";
 import ArchiveDialog from "@/components/ArchiveDialog";
-import { formatDate } from "@/utility/dateUtils";
+import EditDialog from "@/components/EditDialog";
 
+import { formatDate } from "@/utility/dateUtils";
 
 interface SearchParams {
   searchParams: {
     id: string;
   };
 }
-
-
 
 const EventDetail = ({ searchParams }: SearchParams) => {
   const router = useRouter();
@@ -36,6 +35,7 @@ const EventDetail = ({ searchParams }: SearchParams) => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [archiveDialogOpen, setArchiveDialogOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("")
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [attendDialogOpen, setAttendDialogOpen] = useState(false);
   const queryClient = useQueryClient();
 
@@ -75,6 +75,11 @@ const EventDetail = ({ searchParams }: SearchParams) => {
 
   }
 
+
+
+  const toggleEditDialog = () => {
+    setEditDialogOpen(!editDialogOpen);
+  }
 
   const deleteEvent = async (id: string) => {
     try {
@@ -184,7 +189,7 @@ const toggleArchiveDialog = () => {
             <div style={ { display: 'flex', width: '100vh', gap: '25px',  justifyContent: 'center', alignItems: 'center', marginLeft: '13vh' } }>
               {isAuthed && (
                   <>
-                    <Button variant='contained' sx={{ color:'white', backgroundColor: '#2074d4', width: '125px' }}> <EditIcon sx={ { marginRight: '5px' }}/> Edit </Button>
+                    <Button variant='contained' sx={{ color:'white', backgroundColor: '#2074d4', width: '125px' }} onClick={ () => { toggleEditDialog() }}> <EditIcon sx={ { marginRight: '5px' }}/> Edit </Button>
                     <Button variant='contained' sx={{ color:'white', backgroundColor: '#2074d4', width: '125px' }}   onClick={ () => setDialogOpen(true)} > <DeleteIcon sx={ { marginRight: '5px' }}/> Delete </Button>
                     <Button variant='contained' sx={{ color:'white', backgroundColor: '#2074d4', width: '125px' }} onClick={ () => toggleArchiveDialog() }> <ArchiveIcon sx={ { marginRight: '5px' }}/> Archive </Button>
                   </>)
@@ -196,6 +201,7 @@ const toggleArchiveDialog = () => {
         <DeleteDialog/>
         <AttendDialog isOpen={attendDialogOpen} eventId={event._id} dialogToggle={toggleAttendDialog}/>
         <ArchiveDialog isOpen={archiveDialogOpen} eventId={event._id} dialogToggle={toggleArchiveDialog}/>
+        <EditDialog isOpen={ editDialogOpen } event={event} toggleEditDialog={toggleEditDialog}/>
         <Snackbar
             open={Boolean(snackbarMessage)}
             onClose={() => {
