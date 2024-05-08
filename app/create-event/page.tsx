@@ -67,6 +67,7 @@ const CreateEvent: React.FC = () => {
       setNewTag(e.target.value);
     };
 
+    
   return (
    <LocalizationProvider dateAdapter={AdapterDateFns}>
       <Box component="form" onSubmit={handleSubmit} noValidate autoComplete="off" sx={{ p: 3, width: '75%', mx: 'auto' }}>
