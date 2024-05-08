@@ -1,7 +1,8 @@
 import { Activity, FormErrors } from "@/models/activity";
+import { ActivityDatabase } from "@/models/activityDatabase";
 
 
-export const validateFormData = (data: Activity): FormErrors => {
+export const validateFormData = (data: Activity | ActivityDatabase): FormErrors => {
   let newErrors: FormErrors = {};
   // basic validation rules, extend as needed
   if (!data.eventTitle) {
