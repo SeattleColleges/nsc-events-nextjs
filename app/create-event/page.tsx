@@ -9,6 +9,7 @@ import TextField, { TextFieldProps } from '@mui/material/TextField';
 import { format, parse } from 'date-fns';
 import { Box, Button, Typography, Stack }  from '@mui/material';
 import { textFieldStyle } from "@/components/InputFields"
+import { MouseEvent, ChangeEvent, useState, FormEvent } from "react";
 
 
 const CreateEvent: React.FC = () => {
@@ -47,6 +48,24 @@ const CreateEvent: React.FC = () => {
     const onEndTimeChange = (date: Date | null) => {
       const timeStr = date ? format(date, 'HH:mm') : '';
       handleEndTimeChange(timeStr);
+    };
+
+    // For holding useState of event tags and adding custom tags
+    const [customTags, setCustomTags] = useState<string[]>([]);
+    const [newTag, setNewTag] = useState("");
+
+    const addCustomTag = (e: MouseEvent<HTMLButtonElement>) => {
+      // e.stopPropagation();
+      console.log("addCustomTag Hit")
+      e.preventDefault(); //use this instead of stopPropagation to prevent form from submitting
+      if (newTag && !customTags.includes(newTag)) {
+        setCustomTags([...customTags, newTag]);
+        setNewTag(""); // Clear input after adding
+      }
+    };
+
+    const handleNewTagChange = (e: ChangeEvent<HTMLInputElement>) => {
+      setNewTag(e.target.value);
     };
 
   return (
@@ -200,7 +219,7 @@ const CreateEvent: React.FC = () => {
           <TagSelector
             selectedTags={eventData.eventTags}
             allTags={[
-              "Professional Development",
+              ...["Professional Development",
               "Club",
               "Social",
               "Tech",
@@ -214,29 +233,36 @@ const CreateEvent: React.FC = () => {
               "Pizza",
               "Free Food",
               "LGBTQIA",
+              ],
+              ...customTags
             ]}
             onTagClick={handleTagClick}
           />      
-
-          <Box component="form" >
+          <Box>
             <TextField
               id="add-custom-tag"
               label="Add Tag"
               variant="outlined"
               name="addedTag"
-              // value={}
-              // onChange={}
-              error={!!errors.eventSchedule}
-              helperText={errors.eventSchedule}
+              value={newTag}
+              onChange={handleNewTagChange}
+              // Need to figure out what can go in the following values, I commented out from other text-fields
+              // error={}
+              // helperText={}
               InputProps={{ style: textFieldStyle.input }}
               InputLabelProps={{ style: textFieldStyle.label }}
               placeholder="Enter the tag of the event"
             />  
-            <Button type="submit" variant="contained" color="primary" style={{ textTransform: "none", margin: 10 }}>
-              Add Tag
+            <Button 
+              type="button" 
+              variant="contained" 
+              color="primary" 
+              onClick={addCustomTag} 
+              style={{ textTransform: "none", margin: 10 }}
+            >
+                Add Tag
             </Button>
           </Box>
-
           <TextField
             id="event-schedule"
             label="Event Schedule"
