@@ -55,11 +55,10 @@ const CreateEvent: React.FC = () => {
     const [newTag, setNewTag] = useState("");
 
     const addCustomTag = (e: MouseEvent<HTMLButtonElement>) => {
-      // e.stopPropagation();
-      console.log("addCustomTag Hit")
+      const normalizedNewTag = newTag.toLowerCase();
       e.preventDefault(); //use this instead of stopPropagation to prevent form from submitting
-      if (newTag && !customTags.includes(newTag)) {
-        setCustomTags([...customTags, newTag]);
+      if (newTag && !customTags.includes(normalizedNewTag)) {
+        setCustomTags([...customTags, normalizedNewTag]);
         setNewTag(""); // Clear input after adding
       }
     };
