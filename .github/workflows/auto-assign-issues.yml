@@ -5,7 +5,7 @@ on:
     types: [opened]
 
 permissions:
-  issues: assign  # Grant permission to assign issues
+  issues: write
 
 jobs:
   auto-assign:
