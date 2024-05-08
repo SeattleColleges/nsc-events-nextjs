@@ -1,10 +1,16 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const useDateTimeSelection = (initialStartTime: string, initialEndTime: string) => {
   const [startTime, setStartTime] = useState<string>(initialStartTime);
   const [endTime, setEndTime] = useState<string>(initialEndTime);
   const [timeError, setTimeError] = useState<string | null>(null);
 
+  useEffect(() => {
+    if(initialStartTime != "" && initialEndTime != "") {
+      setStartTime(initialStartTime);
+      setEndTime(initialEndTime)
+    }
+  }, [initialEndTime, initialStartTime]);
 
   // handling logic for time selection
   const handleStartTimeChange = (time: string) => {
