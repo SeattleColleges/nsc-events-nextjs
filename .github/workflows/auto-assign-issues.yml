@@ -1,0 +1,17 @@
+name: Auto-assign Issues
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  auto-assign:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v6
+        with:
+          script: |
+            github.issues.addAssignees({
+              issue_number: context.issue.number,
+              assignees: [context.actor]
+            })
