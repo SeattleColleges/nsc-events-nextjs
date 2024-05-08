@@ -13,7 +13,7 @@ jobs:
     steps:
       - uses: actions/github-script@v7
         with:
-          github-token: ${{ secrets.MY_ACCESS_TOKEN }}
+          github-token: ${{ secrets.auto-assign-issues-token }}
           script: |
             github.issues.addAssignees({
               issue_number: context.issue.number,
