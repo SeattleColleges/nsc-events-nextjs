@@ -1,7 +1,9 @@
 export const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    // 8 hours ahead of Coordinated Universal Time (UTC)
-    date.setUTCHours(8, 0, 0, 0);
+    // PST is 8 hours behind Coordinated Universal Time (UTC).
+    // Therefore, we set hours to 16 since setUTCHours takes
+    // absolute hours values from 0-23.
+    date.setUTCHours(16, 0, 0, 0);
     const options: Intl.DateTimeFormatOptions = {
         timeZone: 'America/Los_Angeles',
         month: '2-digit',
