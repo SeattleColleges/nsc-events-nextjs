@@ -35,9 +35,18 @@ const closeMenu=() => {
                 <Link href="/" passHref>
                   <Button color="inherit" sx={{ textTransform: 'none' }}>Events</Button>
                 </Link>
-                <Link href="/auth/sign-in" passHref>
+                {isAuth && (
+                <Grid item>
+                  <AuthProfileMenu />
+                </Grid>
+              )}
+              {!isAuth && (
+                <Grid item>
+                  <Link href="/auth/sign-in" passHref>
                     <Button color="inherit" sx={{ textTransform: 'none' }}>Sign In</Button>
-                </Link>
+                  </Link>
+                </Grid>
+              )}
       </Box>
       <Box sx={{display:{xs:'flex', md:'none'}}}>
         <IconButton size='large' edge='start' color='inherit' onClick={openMenu}>
