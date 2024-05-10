@@ -4,7 +4,7 @@ import React from "react";
 import { Card, CardContent, CardMedia, Typography, Grid, Box, CardActions, Button } from '@mui/material';
 import Link from "next/link";
 import { ActivityDatabase } from "@/models/activityDatabase";
-import { useFilteredEvents } from "@/components/HomeEventGetter";
+import { useFilteredEvents } from "@/utility/queries";
 import { formatDate } from "@/utility/dateUtils";
 export function UpcomingEvent(){
 
