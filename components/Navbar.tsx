@@ -1,66 +1,65 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, MouseEvent } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import logo from '../app/logo.png';
 import MenuIcon from '@mui/icons-material/Menu';
-import { AppBar, Toolbar, IconButton, Grid, Button } from '@mui/material';
+import { AppBar, Toolbar, IconButton, Grid, Button, Typography, Box, Menu, MenuList } from '@mui/material';
 import DrawerComp from './DrawerComp'; 
 import useAuth from '../hooks/useAuth'; 
 import AuthProfileMenu from './AuthProfileMenu'; 
+import LocalLibraryIcon from '@mui/icons-material/LocalLibrary';
 
-export default function Navbar() {
-  const [drawerOpen, setDrawerOpen] = useState(false);
-  const { isAuth, user } = useAuth();
+const pages=['Events', 'Sign in'];
 
-  const toggleDrawer = (open: boolean) => () => {
-    setDrawerOpen(open);
-  };
+function App(){
+const [drawerOpen, setDrawerOpen] = useState<null | HTMLElement>(null);
+const openMenu = (event: MouseEvent<HTMLElement>)=>{
+  setDrawerOpen(event.currentTarget)
+}
+const closeMenu=() => {
+  setDrawerOpen(null);
+};
 
   return (
-    <AppBar position="static">
+
+    <AppBar position='static'>
       <Toolbar>
-        <Grid container justifyContent="space-between" alignItems="center">
-          <Grid item>
-            <Link href="/" passHref>
-              <Image src={logo} alt="logo" width={40} height={40} />
-            </Link>
-          </Grid>
-          <Grid item>
-            <IconButton
-              edge="start"
-              color="inherit"
-              aria-label="menu"
-              onClick={toggleDrawer(true)}
-              sx={{ display: { xs: 'block', sm: 'none', md: 'none' } }} 
-            >
-              <MenuIcon />
-            </IconButton>
-            <Grid container spacing={2} alignItems="center" sx={{ display: { xs: 'none', md: 'flex' } }}>
-              {/* Home Link remains outside AuthProfileMenu for general access */}
-              <Grid item>
+      <IconButton size='large' edge='start' color='inherit' aria-label='logo'sx={{display:{xs:'none', md:'f lex'}}}>
+        <LocalLibraryIcon/>
+      </IconButton>
+      <Typography variant='h6' component='div' sx={{flexGrow:1, display:{xs:'none', md:'flex'}}}>NSC EVENTS</Typography>
+      
+      <Box sx={{display:{xs:'none', md:'f lex'}}}>
                 <Link href="/" passHref>
                   <Button color="inherit" sx={{ textTransform: 'none' }}>Events</Button>
                 </Link>
-              </Grid>
-              {/* AuthProfileMenu contains Create Event and Sign Out actions */}
-              {isAuth && (
-                <Grid item>
-                  <AuthProfileMenu />
-                </Grid>
-              )}
-              {!isAuth && (
-                <Grid item>
-                  <Link href="/auth/sign-in" passHref>
+                <Link href="/auth/sign-in" passHref>
                     <Button color="inherit" sx={{ textTransform: 'none' }}>Sign In</Button>
-                  </Link>
-                </Grid>
-              )}
-            </Grid>
-          </Grid>
-        </Grid>
+                </Link>
+      </Box>
+      <Box sx={{display:{xs:'flex', md:'none'}}}>
+        <IconButton size='large' edge='start' color='inherit' onClick={openMenu}>
+          <MenuIcon/>
+        </IconButton>
+        <Menu open={Boolean(drawerOpen)} onClose={closeMenu}sx={{display:{xs:'flex', md:'none'}}}>
+          <MenuList>
+            {/* <MenuItem>Events</MenuItem>
+            <MenuItem>Sign in</MenuItem> */}
+          {pages.map((page)=> (
+            <Button color='inherit'>{page}</Button>
+          ))}  
+          </MenuList>
+        </Menu>
+      </Box>
+      <IconButton size='large' edge='start' color='inherit' aria-label='logo'sx={{display:{xs:'flex', md:'none'}}}>
+        <LocalLibraryIcon/>
+      </IconButton>
+      <Typography variant='h6' component='div' sx={{flexGrow:1, display:{xs:'flex', md:'none'}}}>NSC EVENTS</Typography>
       </Toolbar>
-      <DrawerComp isOpen={drawerOpen} toggleDrawer={toggleDrawer} isAuth={isAuth} />
     </AppBar>
+    
   );
-};
+}
+
+export default App;
