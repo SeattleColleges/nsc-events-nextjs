@@ -56,10 +56,10 @@ const CreateEvent: React.FC = () => {
 
     const addCustomTag = (e: MouseEvent<HTMLButtonElement>) => {
       const normalizedNewTag = newTag.toLowerCase();
-      e.preventDefault(); //use this instead of stopPropagation to prevent form from submitting
+      e.preventDefault();
       if (newTag && !customTags.includes(normalizedNewTag)) {
         setCustomTags([...customTags, normalizedNewTag]);
-        setNewTag(""); // Clear input after adding
+        setNewTag(""); 
       }
     };
 
@@ -246,7 +246,8 @@ const CreateEvent: React.FC = () => {
               name="addedTag"
               value={newTag}
               onChange={handleNewTagChange}
-              // Need to figure out what can go in the following values, I commented out from other text-fields
+              // Need to figure out what can go in the following values, 
+              // I commented out from other text-fields
               // error={}
               // helperText={}
               InputProps={{ style: textFieldStyle.input }}
