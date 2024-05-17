@@ -9,6 +9,10 @@ import DrawerComp from './DrawerComp';
 import useAuth from '../hooks/useAuth'; 
 import AuthProfileMenu from './AuthProfileMenu'; 
 import LocalLibraryIcon from '@mui/icons-material/LocalLibrary';
+import Avatar from '@mui/material/Avatar';
+import HomeEventsList from './HomeEventGetter';
+
+
 
 const pages=['Events', 'Sign in'];
 
@@ -22,6 +26,7 @@ const closeMenu=() => {
   setDrawerOpen(null);
 };
 
+
   return (
 
     <AppBar position='static'>
@@ -32,7 +37,7 @@ const closeMenu=() => {
       <Typography variant='h6' component='div' sx={{flexGrow:1, display:{xs:'none', md:'flex'}}}>NSC EVENTS</Typography>
       
       <Box sx={{display:{xs:'none', md:'flex'}}}>
-                <Link href="/" passHref>
+                <Link href='/' passHref>
                   <Button color="inherit" sx={{ textTransform: 'none' }}>Events</Button>
                 </Link>
                 {isAuth && (
@@ -50,7 +55,7 @@ const closeMenu=() => {
       </Box>
       <Box sx={{display:{xs:'flex', md:'none'}}}>
         <IconButton size='large' edge='start' color='inherit' onClick={openMenu}>
-          <MenuIcon/>
+        <Image src={logo} alt="logo" width={50} height={50} />
         </IconButton>
         <Menu open={Boolean(drawerOpen)} anchorEl={drawerOpen} onClose={closeMenu} sx={{ display: { xs: 'flex', md: 'none' } }}>
           <MenuList>
