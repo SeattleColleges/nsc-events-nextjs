@@ -1,6 +1,6 @@
 'use client';
 
-import {useFilteredEvents} from "@/utility/queries";
+import {useArchivedEvents, useFilteredEvents} from "@/utility/queries";
 import {ActivityDatabase} from "@/models/activityDatabase";
 import EventCard from "@/components/EventCard";
 import {Container, Grid} from "@mui/material";
@@ -8,7 +8,7 @@ import React from "react";
 import styles from '@/app/home.module.css'
 
 const ArchivedEvents = () => {
-    const {data} = useFilteredEvents()
+    const {data} = useArchivedEvents()
     return (
         <Container maxWidth={false} className={styles.container}>
             <p className={styles.title}>Archived Events</p>
