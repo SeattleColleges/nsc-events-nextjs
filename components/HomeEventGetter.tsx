@@ -8,24 +8,25 @@ import { ActivityDatabase } from "@/models/activityDatabase";
 import EventCard from "./EventCard";
 
 export function HomeEventsList(){
-    const [numEvents, setNumEvents] = useState(5);
+    // const [numEvents, setNumEvents] = useState(5);
+    const [page, setPage] = useState(1)
     const [events, setEvents] = useState<ActivityDatabase[] | undefined>([]);
     const [reachedMaxEvents, setReachedMaxEvents] = useState(false)
     const getNumEvents = async(numEvents: number) => {
-        const response = await fetch(`http://localhost:3000/api/events?numEvents=${numEvents}`);
+        const response = await fetch(`http://localhost:3000/api/events?page=${page}`);
         return response.json();
     }
     useEffect(() => {
-        const eventData = getNumEvents(numEvents);
+        const eventData = getNumEvents(page);
         eventData.then(events => {
             // Filter out events where either isArchived or isHidden is true.
             const activeEvents = events.filter((event: { isArchived: boolean; isHidden: boolean; }) => !(event.isArchived || event.isHidden))
-            setEvents(activeEvents)
-            setReachedMaxEvents(events.length < numEvents);
+            setEvents(existing => existing?.concat(activeEvents) )
+            // setReachedMaxEvents(events.length < page*5);
         });
-    }, [numEvents]);
+    }, [page]);
     const handleLoadMoreEvents = () => {
-        setNumEvents(num => num + 5);
+        setPage(num => num + 1);
     };
     // if(isLoading) {
     //     return <span>Loading events...</span>
