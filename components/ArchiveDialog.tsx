@@ -29,11 +29,16 @@ const ArchiveDialog = ({ isOpen, eventId, dialogToggle }: ArchiveDialogProps) =>
                     'Authorization': `Bearer ${token}`
                 }
             });
-            return response.json();
-        } catch (error) {
-            console.error('error: ', error)
-        }
-    }
+            if (!response.ok) {
+                throw new Error(`Failed to archive event: ${response.statusText}`);
+              }
+              return response.json();
+            } catch (error) {
+              console.error('error: ', error);
+              throw error;
+            }
+          }
+        
 
     const { mutate: archiveEventMutation }  = useMutation({
         mutationFn: archiveEvent,
