@@ -88,7 +88,7 @@ const ArchiveDialog = ({ isOpen, eventId, dialogToggle }: ArchiveDialogProps) =>
             >
                 <SnackbarContent
                     message={snackbarMessage}
-                    sx={{color: 'black'}}
+                    sx={{ color: 'black' }}
                 />
             </Snackbar>
         </>

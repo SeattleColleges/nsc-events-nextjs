@@ -132,7 +132,7 @@ const AttendDialog = ( { isOpen, eventId, dialogToggle }: AttendDialogProps) => 
             >
                 <SnackbarContent
                     message={snackbarMessage}
-                    sx={{color: 'black'}}
+                    sx={{ color: 'black' }}
                 />
             </Snackbar>
         </>
