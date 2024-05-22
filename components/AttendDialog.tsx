@@ -1,7 +1,7 @@
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
-import { Box, Button, Checkbox, DialogContentText, Divider, FormControlLabel, Tooltip, Typography } from "@mui/material";
+import { Box, Button, Checkbox, DialogContentText, Divider, FormControlLabel, SnackbarContent, Tooltip, Typography } from "@mui/material";
 import DialogActions from "@mui/material/DialogActions";
 import Snackbar from "@mui/material/Snackbar";
 import IconButton from "@mui/material/IconButton";
@@ -63,10 +63,6 @@ const AttendDialog = ( { isOpen, eventId, dialogToggle }: AttendDialogProps) => 
         mutationFn: attendEvent,
         onSuccess: () => {
             setSnackbarMessage("Successfully added your attendance.");
-            setTimeout( () => {
-                router.push("/");
-            }, 1200)
-
         },
         onError: (error: String) => {
             setSnackbarMessage("Failed to attend event.");
@@ -132,9 +128,13 @@ const AttendDialog = ( { isOpen, eventId, dialogToggle }: AttendDialogProps) => 
                     setSnackbarMessage("")
                 }}
                 autoHideDuration={1200}
-                anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-                message={snackbarMessage}
-            />
+                anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+            >
+                <SnackbarContent
+                    message={snackbarMessage}
+                    sx={{color: 'black'}}
+                />
+            </Snackbar>
         </>
     )
 }

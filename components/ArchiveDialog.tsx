@@ -3,7 +3,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogActions from "@mui/material/DialogActions";
-import { Button } from "@mui/material";
+import { Button, SnackbarContent } from "@mui/material";
 import React, { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
@@ -84,9 +84,13 @@ const ArchiveDialog = ({ isOpen, eventId, dialogToggle }: ArchiveDialogProps) =>
                     setSnackbarMessage("")
                 }}
                 autoHideDuration={1200}
-                anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-                message={snackbarMessage}
-            />
+                anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+            >
+                <SnackbarContent
+                    message={snackbarMessage}
+                    sx={{color: 'black'}}
+                />
+            </Snackbar>
         </>
     )
 }
