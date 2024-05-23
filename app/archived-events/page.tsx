@@ -9,15 +9,17 @@ import styles from '@/app/home.module.css'
 
 const ArchivedEvents = () => {
     const [page, setPage] = useState(1)
+    const [hasReachedLastPage, setHasReachedLastPage] = useState(false)
     const [events, setEvents] = useState<ActivityDatabase[]>([])
     const {data} = useArchivedEvents(page)
     useEffect(() => {
         if (data) {
             setEvents((prevEvents) => [...prevEvents, ...data]);
+            setHasReachedLastPage(data.length < 5)
         }
     }, [data]);
     const handleLoadMoreEvents = () => {
-        setPage(page=> page + 1)
+        setPage(page => page + 1)
     }
     return (
         <Container maxWidth={false} className={styles.container}>
@@ -37,16 +39,19 @@ const ArchivedEvents = () => {
                         />
                     ))
                 }
-                <Button onClick={handleLoadMoreEvents}
-                        type='button'
-                        variant="contained"
-                        color="primary"
-                        style={{
-                            textTransform: "none",
-                            margin: '1em auto',
-                        }}>
-                    Load more events
-                </Button>
+                {
+                    !hasReachedLastPage &&
+                    <Button onClick={handleLoadMoreEvents}
+                            type='button'
+                            variant="contained"
+                            color="primary"
+                            style={{
+                                textTransform: "none",
+                                margin: '1em auto',
+                            }}>
+                        Load more events
+                    </Button>
+                }
             </Grid>
         </Container>
     );
