@@ -16,17 +16,18 @@ export function useFilteredEvents() {
     });
 }
 
-const getArchivedEvents = async() => {
-    const response = await fetch(`http://localhost:3000/api/events?numEvents=0`);
+const getArchivedEvents = async(page: any) => {
+    const params = new URLSearchParams({
+        page: String(page),
+        numEvents: String(5),
+        isArchived: String(true)
+    });
+    const response = await fetch(`http://localhost:3000/api/events?${String(params)}`);
     return response.json();
 }
-export function useArchivedEvents() {
+export function useArchivedEvents(page: any) {
     return useQuery<ActivityDatabase[], Error>({
         queryKey: ["events"],
-        queryFn: getArchivedEvents,
-        select: (data: ActivityDatabase[]) => data.filter(event => event.isArchived)
-            ?.sort((event1, event2) => {
-            return new Date(event1.eventDate).getTime() - new Date(event2.eventDate).getTime();
-        }),
+        queryFn: async () => getArchivedEvents(page),
     });
 }
