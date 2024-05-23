@@ -1,5 +1,6 @@
 import {useQuery} from "@tanstack/react-query";
 import {ActivityDatabase} from "@/models/activityDatabase";
+import React from "react";
 
 const getEvents = async() => {
     const response = await fetch(`http://localhost:3000/api/events`);
@@ -27,7 +28,7 @@ const getArchivedEvents = async(page: any) => {
 }
 export function useArchivedEvents(page: any) {
     return useQuery<ActivityDatabase[], Error>({
-        queryKey: ["events"],
+        queryKey: ["events", page],
         queryFn: async () => getArchivedEvents(page),
     });
 }
