@@ -12,16 +12,19 @@ export function HomeEventsList(){
     const [page, setPage] = useState(1)
     const [events, setEvents] = useState<ActivityDatabase[] | undefined>([]);
     const [reachedMaxEvents, setReachedMaxEvents] = useState(false)
-    const getNumEvents = async(numEvents: number) => {
-        const response = await fetch(`http://localhost:3000/api/events?page=${page}`);
+    const getNumEvents = async (page:any) => {
+        const params = new URLSearchParams({
+            page: String(page),
+            isArchived: String(false),
+            isHidden: String(false)
+        });
+        const response = await fetch(`http://localhost:3000/api/events?${params.toString()}`);
         return response.json();
-    }
+    };
     useEffect(() => {
         const eventData = getNumEvents(page);
         eventData.then(events => {
-            // Filter out events where either isArchived or isHidden is true.
-            const activeEvents = events.filter((event: { isArchived: boolean; isHidden: boolean; }) => !(event.isArchived || event.isHidden))
-            setEvents(existing => existing?.concat(activeEvents) )
+            setEvents(existing => existing?.concat(events) )
             // setReachedMaxEvents(events.length < page*5);
         });
     }, [page]);
