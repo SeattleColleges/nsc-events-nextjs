@@ -45,6 +45,7 @@ const EventDetail = ({ searchParams }: SearchParams) => {
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [attendDialogOpen, setAttendDialogOpen] = useState(false);
+  const [moreDetailsDialogOpen, setMoreDetailsDialogOpen] = useState(false)
   const [userId, setUserId] = useState("");
   const [userRole, setUserRole] = useState("");
   const queryClient = useQueryClient();

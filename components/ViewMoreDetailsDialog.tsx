@@ -25,7 +25,9 @@ import { ActivityDatabase } from "@/models/activityDatabase";
 
 interface ViewMoreDetailsDialogProps {
   isOpen: boolean;
+  // prop to gain access to the current event being looked at
   event: ActivityDatabase;
+  // prop to gain access to the current user's role so we can display details based on role
   userRole: string;
   dialogToggle: () => void;
 }
@@ -51,13 +53,14 @@ function ViewMoreDetailsDialog({
       <Dialog open={isOpen}>
         <DialogTitle>{"More Details:"}</DialogTitle>
         <DialogContent dividers sx={{ height: "fit-content" }}>
+          {/* map out the moreDetails object as a ListItem for each */}
           {moreDetails.map((detail, id) => (
             <ListItem key={id}>
               <ListItemText primary={detail.title + ": " + detail.detail} />
             </ListItem>
           ))}
         </DialogContent>
-
+        {/* cancel button to leave the dialog box */}
         <DialogActions>
           <Button onClick={() => dialogToggle()}>Cancel</Button>
         </DialogActions>
