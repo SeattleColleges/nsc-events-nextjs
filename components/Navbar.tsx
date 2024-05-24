@@ -21,6 +21,7 @@ import { MenuList } from '@mui/material';
 import Image from 'next/image';
 import logo from '../app/logo.png';
 
+
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 function ResponsiveAppBar() {
