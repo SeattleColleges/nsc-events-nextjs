@@ -1,27 +1,22 @@
-import React from 'react';
-import { Drawer, List, ListItem, ListItemText, Box, Link as MuiLink } from '@mui/material';
-import useAuth from '../hooks/useAuth';
-import { useRouter } from 'next/navigation';
 
-interface DrawerCompProps {
+import React from 'react';
+import Link from 'next/link';
+import { Box, List, ListItem, ListItemText, Drawer, Link as MuiLink, Grid, Button } from '@mui/material';
+import { useRouter } from 'next/router';
+import useAuth from '../hooks/useAuth'; // Assuming you have a hook for authentication
+import AuthProfileMenu from './AuthProfileMenu';
+
+interface NavbarProps {
   isOpen: boolean;
   toggleDrawer: (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => void;
-  isAuth: boolean;
 }
 
-const DrawerComp: React.FC<DrawerCompProps> = ({ isOpen, toggleDrawer }) => {
-  const { isAuth, user } = useAuth(); 
+const Navbar: React.FC<NavbarProps> = ({ isOpen, toggleDrawer }) => {
+  const { isAuth, user } = useAuth(); // Assuming you have a custom hook for authentication
   const router = useRouter();
-  
+
   const handleSignOut = () => {
-    // Remove the token from local storage
-    localStorage.removeItem('token');
-    // Dispatch an event to notify the app about the auth state change
-    window.dispatchEvent(new CustomEvent('auth-change'));
-    // Close the drawer
-    toggleDrawer(false);
-    // Redirect the user to the sign-in page
-    router.push('/auth/sign-in');
+    
   };
 
   return (
@@ -29,29 +24,29 @@ const DrawerComp: React.FC<DrawerCompProps> = ({ isOpen, toggleDrawer }) => {
       <Box
         onClick={() => toggleDrawer(false)}
         onKeyDown={() => toggleDrawer(false)}
-        sx={{ width: 150 }} // fixed width for the drawer
+        sx={{ width: 150 }}
       >
         <List>
-        <ListItem component={MuiLink} href="/">
+          <ListItem component={Link} href="/">
             <ListItemText primary="Home" />
           </ListItem>
           {isAuth && user ? (
             <Box display="flex" flexDirection="column" alignItems="start">
               {user.role === 'admin' ? (
-                <ListItem component={MuiLink} href="/admin" onClick={() => toggleDrawer(false)}>
-                  <ListItemText primary="Dashboard" />
+                <ListItem component={Link} href="/admin">
+                  <ListItemText primary="Admin Event" />
                 </ListItem>
               ) : user.role === 'creator' ? (
-                <ListItem component={MuiLink} href="/creator" onClick={() => toggleDrawer(false)}>
-                  <ListItemText primary="Dashboard" />
+                <ListItem component={Link} href="/creator">
+                  <ListItemText primary="Creator Event" />
                 </ListItem>
               ) : null}
-              <ListItem component={MuiLink} href="/auth/sign-in" onClick={handleSignOut}>
+              <ListItem component={MuiLink} href="#" onClick={handleSignOut}>
                 <ListItemText primary="Sign Out" />
               </ListItem>
             </Box>
           ) : (
-            <ListItem component={MuiLink} href="/auth/sign-in">
+            <ListItem component={Link} href="/auth/sign-in">
               <ListItemText primary="Sign In" />
             </ListItem>
           )}
@@ -61,4 +56,7 @@ const DrawerComp: React.FC<DrawerCompProps> = ({ isOpen, toggleDrawer }) => {
   );
 };
 
-export default DrawerComp;
+export default Navbar;
+
+
+
