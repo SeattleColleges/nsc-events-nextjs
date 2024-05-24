@@ -16,6 +16,12 @@ const useAuth = () => {
       // Decode token, update user state
       const user = JSON.parse(atob(token.split('.')[1]));
       setUser(user);
+  
+      // Check if the user has the required role (admin or creator)
+      if (user.role !== 'admin' && user.role !== 'creator') {
+        setIsAuth(false);
+        setUser(null);
+      }
     } else {
       // Handle case where token is not present or invalid
       setUser(null);
@@ -36,8 +42,10 @@ const useAuth = () => {
       window.removeEventListener('auth-change', handleAuthChange);
     };
   }, []);
+  
 
   return { isAuth, user };
 };
+
 
 export default useAuth;
