@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useEffect, useState } from 'react';
-import { Typography, Card, CardContent, CardMedia, Box, Button } from '@mui/material';
+import { Typography, Card, CardContent, CardMedia, Box, Button, SnackbarContent } from '@mui/material';
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { activityDatabase, ActivityDatabase } from "@/models/activityDatabase";
 import Snackbar from "@mui/material/Snackbar";
@@ -215,9 +215,13 @@ const toggleArchiveDialog = () => {
               setSnackbarMessage("")
             }}
             autoHideDuration={1200}
-            anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-            message={snackbarMessage}
-        />
+            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        >
+            <SnackbarContent
+              message={snackbarMessage}
+              sx={{ color: 'black' }}
+            />
+        </Snackbar>
 
 </Box>
 
