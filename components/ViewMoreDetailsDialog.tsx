@@ -56,7 +56,7 @@ function ViewMoreDetailsDialog({
           {/* map out the moreDetails object as a ListItem for each */}
           {moreDetails.map((detail, id) => (
             <ListItem key={id}>
-              <ListItemText primary={detail.title + ": " + detail.detail} />
+              <ListItemText primary={`${detail.title}: ${detail.detail}`} />
             </ListItem>
           ))}
         </DialogContent>
