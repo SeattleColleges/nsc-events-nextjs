@@ -3,6 +3,7 @@ import { validateFormData } from "@/utility/validateFormData";
 import { Activity, FormErrors } from "@/models/activity";
 import useDateTimeSelection from "./useDateTimeSelection";
 import { ActivityDatabase } from "@/models/activityDatabase";
+import { useQueryClient } from "@tanstack/react-query";
 
 export const useEventForm = (initialData: Activity | ActivityDatabase) => {
 
@@ -141,6 +142,7 @@ export const useEventForm = (initialData: Activity | ActivityDatabase) => {
     console.log("Event data after applying transformation: ", dataToSend);
 
     try {
+      const queryClient = useQueryClient()
       const response = await fetch("http://localhost:3000/api/events/new", {
         method: "POST",
         headers: {
@@ -153,9 +155,9 @@ export const useEventForm = (initialData: Activity | ActivityDatabase) => {
       const data = await response.json();
       if (response.ok) {
         console.log("Activity created:", data);
+        await queryClient.refetchQueries({queryKey:['myEvents']})
         setSuccessMessage(data.message || "Event  successfully created!");
         setErrorMessage("");
-        
         // todo: navigate to a success page and clear form
       } else {
         console.log("Failed to create activity:", response.status);
