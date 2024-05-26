@@ -40,7 +40,7 @@ export const useEventForm = (initialData: Activity | ActivityDatabase) => {
   // success/error messages for event creation
   const [successMessage, setSuccessMessage] = useState<String>("");
   const [errorMessage, setErrorMessage] = useState<String>("");
-
+  const queryClient = useQueryClient()
   // Use useDateTimeSelection hook
   const {
     startTime,
@@ -93,7 +93,7 @@ export const useEventForm = (initialData: Activity | ActivityDatabase) => {
     });
   };
 
-  // converting time format to 12hr 
+  // converting time format to 12hr
   const to12HourTime = (time: string): string => {
      // returning an empty string if no time given
     if (!time) {
@@ -118,7 +118,6 @@ export const useEventForm = (initialData: Activity | ActivityDatabase) => {
       createActivity(eventData as Activity);
     }
   };
-
   const createActivity = async (activityData: Activity) => {
     // retrieving the token from localStorage
     const token = localStorage.getItem('token');
@@ -138,11 +137,10 @@ export const useEventForm = (initialData: Activity | ActivityDatabase) => {
     if (typeof dataToSend.eventSpeakers === 'string') {
       dataToSend.eventSpeakers = [dataToSend.eventSpeakers];
     }
-    
+
     console.log("Event data after applying transformation: ", dataToSend);
 
     try {
-      const queryClient = useQueryClient()
       const response = await fetch("http://localhost:3000/api/events/new", {
         method: "POST",
         headers: {
