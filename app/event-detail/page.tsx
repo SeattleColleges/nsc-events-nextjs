@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useEffect, useState } from 'react';
-import { Typography, Card, CardContent, CardMedia, Box, Button } from '@mui/material';
+import { Typography, Card, CardContent, CardMedia, Box, Button, SnackbarContent } from '@mui/material';
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { activityDatabase, ActivityDatabase } from "@/models/activityDatabase";
 import Snackbar from "@mui/material/Snackbar";
@@ -30,13 +30,14 @@ interface SearchParams {
 const EventDetail = ({ searchParams }: SearchParams) => {
   const router = useRouter();
   const [event, setEvent] = useState(activityDatabase)
-  const [isAuthed, setAuthed] = useState(false);
   const [token, setToken] = useState("")
   const [dialogOpen, setDialogOpen] = useState(false);
   const [archiveDialogOpen, setArchiveDialogOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("")
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [attendDialogOpen, setAttendDialogOpen] = useState(false);
+  const [userId, setUserId] = useState("");
+  const [userRole, setUserRole] = useState("");
   const queryClient = useQueryClient();
 
   const DeleteDialog = () => {
@@ -91,9 +92,13 @@ const EventDetail = ({ searchParams }: SearchParams) => {
         }
       });
        console.log(response)
-       return response.json();
+       if (!response.ok) {
+        throw new Error(`Failed to delete event: ${response.statusText}`);
+      }
+      return response.json();
     } catch (error) {
-      console.error('error: ', error)
+      console.error('error: ', error);
+      throw error;
     }
   }
 
@@ -132,10 +137,12 @@ const EventDetail = ({ searchParams }: SearchParams) => {
     setToken(token ?? "");
 
         if(token) {
-          const userRole = JSON.parse(atob(token.split(".")[1])).role
-          setAuthed(userRole === "creator" || userRole === "admin")
+          const role = JSON.parse(atob(token.split(".")[1])).role;
+          const id = JSON.parse(atob(token.split(".")[1])).id;
+          setUserRole(role);
+          setUserId(id);
         }
-      }, [queryClient, searchParams.id]
+      }, [queryClient, searchParams.id, token, userId]
   )
 
   const toggleAttendDialog = () => {
@@ -187,7 +194,7 @@ const toggleArchiveDialog = () => {
         </Card>
           <div style={ { width: '100vh', display: 'flex' }}>
             <div style={ { display: 'flex', width: '100vh', gap: '25px',  justifyContent: 'center', alignItems: 'center', marginLeft: '13vh' } }>
-              {isAuthed && (
+              {(userRole === "admin" || (userRole === "creator" && event?.createdByUser === userId)) && (
                   <>
                     <Button variant='contained' sx={{ color:'white', backgroundColor: '#2074d4', width: '125px' }} onClick={ () => { toggleEditDialog() }}> <EditIcon sx={ { marginRight: '5px' }}/> Edit </Button>
                     <Button variant='contained' sx={{ color:'white', backgroundColor: '#2074d4', width: '125px' }}   onClick={ () => setDialogOpen(true)} > <DeleteIcon sx={ { marginRight: '5px' }}/> Delete </Button>
@@ -208,9 +215,13 @@ const toggleArchiveDialog = () => {
               setSnackbarMessage("")
             }}
             autoHideDuration={1200}
-            anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-            message={snackbarMessage}
-        />
+            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        >
+            <SnackbarContent
+              message={snackbarMessage}
+              sx={{ color: 'black' }}
+            />
+        </Snackbar>
 
 </Box>
 
