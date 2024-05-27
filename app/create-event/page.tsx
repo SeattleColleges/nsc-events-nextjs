@@ -10,6 +10,11 @@ import { format, parse } from 'date-fns';
 import { Box, Button, Typography, Stack }  from '@mui/material';
 import { textFieldStyle } from "@/components/InputFields"
 import { MouseEvent, ChangeEvent, useState, FormEvent } from "react";
+import useAuth from "@/hooks/useAuth";
+
+ 
+
+
 
 
 const CreateEvent: React.FC = () => {
@@ -67,7 +72,19 @@ const CreateEvent: React.FC = () => {
       setNewTag(e.target.value);
     };
 
-    
+    const { isAuth, user } = useAuth();
+
+    if (!isAuth || (user && user.role !== 'admin' && user.role !== 'creator')) {
+      return (
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh' }}>
+          <Typography variant="h5" component="h2">
+            You are not authorized to access this page.
+          </Typography>
+        </Box>
+      );
+    }
+  
+  
   return (
    <LocalizationProvider dateAdapter={AdapterDateFns}>
       <Box component="form" onSubmit={handleSubmit} noValidate autoComplete="off" sx={{ p: 3, width: '75%', mx: 'auto' }}>
