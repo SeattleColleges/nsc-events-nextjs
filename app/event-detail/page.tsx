@@ -38,14 +38,14 @@ interface SearchParams {
 
 const EventDetail = ({ searchParams }: SearchParams) => {
   const router = useRouter();
-  const [event, setEvent] = useState(activityDatabase)
-  const [token, setToken] = useState("")
+  const [event, setEvent] = useState(activityDatabase);
+  const [token, setToken] = useState("");
   const [dialogOpen, setDialogOpen] = useState(false);
   const [archiveDialogOpen, setArchiveDialogOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [attendDialogOpen, setAttendDialogOpen] = useState(false);
-  const [moreDetailsDialogOpen, setMoreDetailsDialogOpen] = useState(false)
+  const [moreDetailsDialogOpen, setMoreDetailsDialogOpen] = useState(false);
   const [userId, setUserId] = useState("");
   const [userRole, setUserRole] = useState("");
   const queryClient = useQueryClient();
@@ -102,13 +102,13 @@ const EventDetail = ({ searchParams }: SearchParams) => {
           Authorization: `Bearer ${token}`,
         },
       });
-       console.log(response)
-       if (!response.ok) {
+      console.log(response);
+      if (!response.ok) {
         throw new Error(`Failed to delete event: ${response.statusText}`);
       }
       return response.json();
     } catch (error) {
-      console.error('error: ', error);
+      console.error("error: ", error);
       throw error;
     }
   };
@@ -146,14 +146,13 @@ const EventDetail = ({ searchParams }: SearchParams) => {
     // Sets token state that is used by delete mutation outside of effect
     setToken(token ?? "");
 
-        if(token) {
-          const role = JSON.parse(atob(token.split(".")[1])).role;
-          const id = JSON.parse(atob(token.split(".")[1])).id;
-          setUserRole(role);
-          setUserId(id);
-        }
-      }, [queryClient, searchParams.id, token, userId]
-  )
+    if (token) {
+      const role = JSON.parse(atob(token.split(".")[1])).role;
+      const id = JSON.parse(atob(token.split(".")[1])).id;
+      setUserRole(role);
+      setUserId(id);
+    }
+  }, [queryClient, searchParams.id, token, userId]);
 
   const toggleAttendDialog = () => {
     if (token === "") {
@@ -184,69 +183,110 @@ const EventDetail = ({ searchParams }: SearchParams) => {
               component="img"
               image={event.eventCoverPhoto}
               alt={event.eventTitle}
-              sx={{ height: '37vh' }}
-          />
-          <CardContent>
-            <Typography gutterBottom variant="h5" component="div">
-              {event.eventTitle}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              {event.eventDescription}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              Date: {formatDate(event.eventDate)}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              Start Time: {event.eventStartTime}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              End Time: {event.eventEndTime}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              Location: {event.eventLocation}
-            </Typography>
-          </CardContent>
-        </Card>
-          <div style={ { width: '100vh', display: 'flex' }}>
-            <div style={ { display: 'flex', width: '100vh', gap: '25px',  justifyContent: 'center', alignItems: 'center', marginLeft: '13vh' } }>
-              {(userRole === "admin" || (userRole === "creator" && event?.createdByUser === userId)) && (
-                  <>
-                    <Button variant='contained' sx={{ color:'white', backgroundColor: '#2074d4', width: '125px' }} onClick={ () => { toggleEditDialog() }}> <EditIcon sx={ { marginRight: '5px' }}/> Edit </Button>
-                    <Button variant='contained' sx={{ color:'white', backgroundColor: '#2074d4', width: '125px' }}   onClick={ () => setDialogOpen(true)} > <DeleteIcon sx={ { marginRight: '5px' }}/> Delete </Button>
-                    <Button variant='contained' sx={{ color:'white', backgroundColor: '#2074d4', width: '125px' }} onClick={ () => toggleArchiveDialog() }> <ArchiveIcon sx={ { marginRight: '5px' }}/> Archive </Button>
-                  </>)
-              }
+              sx={{ height: "37vh" }}
+            />
+            <CardContent>
+              <Typography gutterBottom variant="h5" component="div">
+                {event.eventTitle}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                {event.eventDescription}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Date: {formatDate(event.eventDate)}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Start Time: {event.eventStartTime}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                End Time: {event.eventEndTime}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Location: {event.eventLocation}
+              </Typography>
+            </CardContent>
+          </Card>
+          <div style={{ width: "100vh", display: "flex" }}>
+            <div
+              style={{
+                display: "flex",
+                width: "100vh",
+                gap: "25px",
+                justifyContent: "center",
+                alignItems: "center",
+                marginLeft: "13vh",
+              }}
+            >
+              {(userRole === "admin" ||
+                (userRole === "creator" && event?.createdByUser === userId)) && (
+                <>
+                  <Button
+                    variant="contained"
+                    sx={{ color: "white", backgroundColor: "#2074d4", width: "125px" }}
+                    onClick={() => {
+                      toggleEditDialog();
+                    }}
+                  >
+                    {" "}
+                    <EditIcon sx={{ marginRight: "5px" }} /> Edit{" "}
+                  </Button>
+                  <Button
+                    variant="contained"
+                    sx={{ color: "white", backgroundColor: "#2074d4", width: "125px" }}
+                    onClick={() => setDialogOpen(true)}
+                  >
+                    {" "}
+                    <DeleteIcon sx={{ marginRight: "5px" }} /> Delete{" "}
+                  </Button>
+                  <Button
+                    variant="contained"
+                    sx={{ color: "white", backgroundColor: "#2074d4", width: "125px" }}
+                    onClick={() => toggleArchiveDialog()}
+                  >
+                    {" "}
+                    <ArchiveIcon sx={{ marginRight: "5px" }} /> Archive{" "}
+                  </Button>
+                </>
+              )}
             </div>
-            <Button
-              variant="contained"
-              sx={{
-                color: "white",
-                backgroundColor: "#2074d4",
-                width: "125px",
-                marginRight: "50px",
-              }}
-              onClick={() => {
-                toggleViewMoreDetailsDialog();
+            <div
+              style={{
+                display: "flex",
+                width: "100vh",
+                gap: "25px",
+                justifyContent: "center",
+                alignItems: "center",
               }}
             >
-              {" "}
-              More Details{" "}
-            </Button>
-            <Button
-              variant="contained"
-              sx={{
-                color: "white",
-                backgroundColor: "#2074d4",
-                width: "125px",
-                marginRight: "50px",
-              }}
-              onClick={() => {
-                toggleAttendDialog();
-              }}
-            >
-              {" "}
-              Attend{" "}
-            </Button>
+              <Button
+                variant="contained"
+                sx={{
+                  color: "white",
+                  backgroundColor: "#2074d4",
+                  width: "140px",
+                }}
+                onClick={() => {
+                  toggleViewMoreDetailsDialog();
+                }}
+              >
+                {" "}
+                More Details{" "}
+              </Button>
+              <Button
+                variant="contained"
+                sx={{
+                  color: "white",
+                  backgroundColor: "#2074d4",
+                  width: "125px",
+                }}
+                onClick={() => {
+                  toggleAttendDialog();
+                }}
+              >
+                {" "}
+                Attend{" "}
+              </Button>
+            </div>
           </div>
         </Box>
         <DeleteDialog />
