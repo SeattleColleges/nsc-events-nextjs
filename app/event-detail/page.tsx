@@ -214,7 +214,6 @@ const EventDetail = ({ searchParams }: SearchParams) => {
                 gap: "25px",
                 justifyContent: "center",
                 alignItems: "center",
-                marginLeft: "13vh",
               }}
             >
               {(userRole === "admin" ||
@@ -246,46 +245,36 @@ const EventDetail = ({ searchParams }: SearchParams) => {
                     {" "}
                     <ArchiveIcon sx={{ marginRight: "5px" }} /> Archive{" "}
                   </Button>
+                  <Button
+                    variant="contained"
+                    sx={{
+                      color: "white",
+                      backgroundColor: "#2074d4",
+                      width: "140px",
+                    }}
+                    onClick={() => {
+                      toggleViewMoreDetailsDialog();
+                    }}
+                  >
+                    {" "}
+                    More Details{" "}
+                  </Button>
+                  <Button
+                    variant="contained"
+                    sx={{
+                      color: "white",
+                      backgroundColor: "#2074d4",
+                      width: "125px",
+                    }}
+                    onClick={() => {
+                      toggleAttendDialog();
+                    }}
+                  >
+                    {" "}
+                    Attend{" "}
+                  </Button>
                 </>
               )}
-            </div>
-            <div
-              style={{
-                display: "flex",
-                width: "100vh",
-                gap: "25px",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <Button
-                variant="contained"
-                sx={{
-                  color: "white",
-                  backgroundColor: "#2074d4",
-                  width: "140px",
-                }}
-                onClick={() => {
-                  toggleViewMoreDetailsDialog();
-                }}
-              >
-                {" "}
-                More Details{" "}
-              </Button>
-              <Button
-                variant="contained"
-                sx={{
-                  color: "white",
-                  backgroundColor: "#2074d4",
-                  width: "125px",
-                }}
-                onClick={() => {
-                  toggleAttendDialog();
-                }}
-              >
-                {" "}
-                Attend{" "}
-              </Button>
             </div>
           </div>
         </Box>
