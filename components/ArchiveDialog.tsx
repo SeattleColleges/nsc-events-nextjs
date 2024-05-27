@@ -5,7 +5,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogActions from "@mui/material/DialogActions";
 import { Button, SnackbarContent } from "@mui/material";
 import React, { useState } from "react";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import Snackbar from "@mui/material/Snackbar";
 
@@ -38,12 +38,12 @@ const ArchiveDialog = ({ isOpen, eventId, dialogToggle }: ArchiveDialogProps) =>
               throw error;
             }
           }
-        
-
+    const queryClient = useQueryClient();
     const { mutate: archiveEventMutation }  = useMutation({
         mutationFn: archiveEvent,
-        onSuccess: () => {
+        onSuccess: async () => {
             setSnackbarMessage("Successfully archived event.");
+            await queryClient.refetchQueries({ queryKey: ['events'] });
             setTimeout( () => {
                 router.push("/");
             }, 1200);
