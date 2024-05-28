@@ -116,7 +116,7 @@ const EventDetail = ({ searchParams }: SearchParams) => {
   const { mutate: deleteEventMutation } = useMutation({
     mutationFn: deleteEvent,
      onSuccess: async () => {
-      await queryClient.refetchQueries({queryKey:['myEvents', 'events']});
+      await queryClient.refetchQueries({ queryKey:['myEvents', 'events'] });
       setSnackbarMessage("Successfully deleted event.");
       setTimeout(() => {
         router.push("/");
