@@ -11,6 +11,7 @@ import { Box, Button, Typography, Stack }  from '@mui/material';
 import { textFieldStyle } from "@/components/InputFields"
 import { MouseEvent, ChangeEvent, useState, FormEvent } from "react";
 import useAuth from "@/hooks/useAuth";
+import UnauthorizedPages from "@/components/UnauthorizedPages";
 
  
 
@@ -75,15 +76,8 @@ const CreateEvent: React.FC = () => {
     const { isAuth, user } = useAuth();
 
     if (!isAuth || (user && user.role !== 'admin' && user.role !== 'creator')) {
-      return (
-        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh' }}>
-          <Typography variant="h5" component="h2">
-            You are not authorized to access this page.
-          </Typography>
-        </Box>
-      );
+      return <UnauthorizedPages />;
     }
-  
   
   return (
    <LocalizationProvider dateAdapter={AdapterDateFns}>
