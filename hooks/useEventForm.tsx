@@ -153,7 +153,7 @@ export const useEventForm = (initialData: Activity | ActivityDatabase) => {
       const data = await response.json();
       if (response.ok) {
         console.log("Activity created:", data);
-        await queryClient.refetchQueries({queryKey:['myEvents']})
+        await queryClient.refetchQueries({queryKey:['myEvents', 'events']});
         setSuccessMessage(data.message || "Event  successfully created!");
         setErrorMessage("");
         // todo: navigate to a success page and clear form
