@@ -1,14 +1,24 @@
+
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import { Typography, Card, CardContent, CardMedia, Box, Button } from '@mui/material';
+
+import React, { useEffect, useState } from "react";
+import {
+  Typography,
+  Card,
+  CardContent,
+  CardMedia,
+  Box,
+  Button,
+  SnackbarContent,
+} from "@mui/material";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { activityDatabase, ActivityDatabase } from "@/models/activityDatabase";
 import Snackbar from "@mui/material/Snackbar";
 import styles from "@/app/home.module.css";
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
-import ArchiveIcon from '@mui/icons-material/Archive';
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import ArchiveIcon from "@mui/icons-material/Archive";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
@@ -20,6 +30,7 @@ import ArchiveDialog from "@/components/ArchiveDialog";
 import EditDialog from "@/components/EditDialog";
 
 import { formatDate } from "@/utility/dateUtils";
+import ViewMoreDetailsDialog from "@/components/ViewMoreDetailsDialog";
 
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
@@ -32,15 +43,20 @@ interface SearchParams {
 
 const EventDetail = ({ searchParams }: SearchParams) => {
   const router = useRouter();
+
   const [event, setEvent] = useState<ActivityDatabase>(activityDatabase);
   const [events, setEvents] = useState<ActivityDatabase[]>([]);
   const [isAuthed, setAuthed] = useState(false);
+
   const [token, setToken] = useState("");
   const [dialogOpen, setDialogOpen] = useState(false);
   const [archiveDialogOpen, setArchiveDialogOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [attendDialogOpen, setAttendDialogOpen] = useState(false);
+  const [moreDetailsDialogOpen, setMoreDetailsDialogOpen] = useState(false);
+  const [userId, setUserId] = useState("");
+  const [userRole, setUserRole] = useState("");
   const queryClient = useQueryClient();
 
   const DeleteDialog = () => (
@@ -70,6 +86,7 @@ const EventDetail = ({ searchParams }: SearchParams) => {
     </Dialog>
   );
 
+
   const toggleEditDialog = () => {
     setEditDialogOpen(!editDialogOpen);
   };
@@ -78,14 +95,16 @@ const EventDetail = ({ searchParams }: SearchParams) => {
     try {
       const response = await fetch(`http://localhost:3000/api/events/remove/${id}`, {
         method: 'DELETE',
+
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        }
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
       });
       return response.json();
     } catch (error) {
       console.error('error: ', error);
+
     }
   };
 
@@ -108,6 +127,7 @@ const EventDetail = ({ searchParams }: SearchParams) => {
       if (events !== undefined) {
         setEvents(events);
         const selectedEvent = events.find(event => event._id === searchParams.id) as ActivityDatabase;
+
         setEvent(selectedEvent);
       } else if (searchParams.id) {
         const response = await fetch(`http://localhost:3000/api/events/find/${searchParams.id}`);
@@ -115,6 +135,7 @@ const EventDetail = ({ searchParams }: SearchParams) => {
           const evt = await response.json();
           setEvent(evt);
           setEvents([evt]); // assuming there's only one event in response
+
         }
       }
     };
@@ -227,6 +248,7 @@ const EventDetail = ({ searchParams }: SearchParams) => {
         <ArrowForwardIosIcon sx={{ color: 'white', fontSize: '100px' }} />
       </Button>
     </Box>
+
   );
 };
 

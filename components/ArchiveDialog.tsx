@@ -3,9 +3,9 @@ import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogActions from "@mui/material/DialogActions";
-import { Button } from "@mui/material";
+import { Button, SnackbarContent } from "@mui/material";
 import React, { useState } from "react";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import Snackbar from "@mui/material/Snackbar";
 
@@ -29,16 +29,21 @@ const ArchiveDialog = ({ isOpen, eventId, dialogToggle }: ArchiveDialogProps) =>
                     'Authorization': `Bearer ${token}`
                 }
             });
-            return response.json();
-        } catch (error) {
-            console.error('error: ', error)
-        }
-    }
-
+            if (!response.ok) {
+                throw new Error(`Failed to archive event: ${response.statusText}`);
+              }
+              return response.json();
+            } catch (error) {
+              console.error('error: ', error);
+              throw error;
+            }
+          }
+    const queryClient = useQueryClient();
     const { mutate: archiveEventMutation }  = useMutation({
         mutationFn: archiveEvent,
-        onSuccess: () => {
+        onSuccess: async () => {
             setSnackbarMessage("Successfully archived event.");
+            await queryClient.refetchQueries({ queryKey: ['events'] });
             setTimeout( () => {
                 router.push("/");
             }, 1200);
@@ -84,9 +89,13 @@ const ArchiveDialog = ({ isOpen, eventId, dialogToggle }: ArchiveDialogProps) =>
                     setSnackbarMessage("")
                 }}
                 autoHideDuration={1200}
-                anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-                message={snackbarMessage}
-            />
+                anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+            >
+                <SnackbarContent
+                    message={snackbarMessage}
+                    sx={{ color: 'black' }}
+                />
+            </Snackbar>
         </>
     )
 }

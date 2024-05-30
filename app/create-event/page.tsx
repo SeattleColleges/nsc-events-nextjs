@@ -9,6 +9,12 @@ import TextField, { TextFieldProps } from '@mui/material/TextField';
 import { format, parse } from 'date-fns';
 import { Box, Button, Typography, Stack }  from '@mui/material';
 import { textFieldStyle } from "@/components/InputFields"
+import { MouseEvent, ChangeEvent, useState, FormEvent } from "react";
+import useAuth from "@/hooks/useAuth";
+
+ 
+
+
 
 
 const CreateEvent: React.FC = () => {
@@ -33,7 +39,7 @@ const CreateEvent: React.FC = () => {
     // Convert startTime and endTime from string to Date for TimePicker
     const startTimeDate = startTime ? parse(startTime, 'HH:mm', new Date()) : null;
     const endTimeDate = endTime ? parse(endTime, 'HH:mm', new Date()) : null;
-  
+
     const handleDateChange = (newDate: Date | null) => {
       setSelectedDate(newDate);
     };
@@ -49,6 +55,36 @@ const CreateEvent: React.FC = () => {
       handleEndTimeChange(timeStr);
     };
 
+    // For holding useState of event tags and adding custom tags
+    const [customTags, setCustomTags] = useState<string[]>([]);
+    const [newTag, setNewTag] = useState("");
+
+    const addCustomTag = (e: MouseEvent<HTMLButtonElement>) => {
+      const normalizedNewTag = newTag.toLowerCase();
+      e.preventDefault();
+      if (newTag && !customTags.includes(normalizedNewTag)) {
+        setCustomTags([...customTags, normalizedNewTag]);
+        setNewTag(""); 
+      }
+    };
+
+    const handleNewTagChange = (e: ChangeEvent<HTMLInputElement>) => {
+      setNewTag(e.target.value);
+    };
+
+    const { isAuth, user } = useAuth();
+
+    if (!isAuth || (user && user.role !== 'admin' && user.role !== 'creator')) {
+      return (
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh' }}>
+          <Typography variant="h5" component="h2">
+            You are not authorized to access this page.
+          </Typography>
+        </Box>
+      );
+    }
+  
+  
   return (
    <LocalizationProvider dateAdapter={AdapterDateFns}>
       <Box component="form" onSubmit={handleSubmit} noValidate autoComplete="off" sx={{ p: 3, width: '75%', mx: 'auto' }}>
@@ -200,7 +236,7 @@ const CreateEvent: React.FC = () => {
           <TagSelector
             selectedTags={eventData.eventTags}
             allTags={[
-              "Professional Development",
+              ...["Professional Development",
               "Club",
               "Social",
               "Tech",
@@ -214,9 +250,37 @@ const CreateEvent: React.FC = () => {
               "Pizza",
               "Free Food",
               "LGBTQIA",
+              ],
+              ...customTags
             ]}
             onTagClick={handleTagClick}
-          />        
+          />      
+          <Box>
+            <TextField
+              id="add-custom-tag"
+              label="Add Tag"
+              variant="outlined"
+              name="addedTag"
+              value={newTag}
+              onChange={handleNewTagChange}
+              // Need to figure out what can go in the following values, 
+              // I commented out from other text-fields
+              // error={}
+              // helperText={}
+              InputProps={{ style: textFieldStyle.input }}
+              InputLabelProps={{ style: textFieldStyle.label }}
+              placeholder="Enter the tag of the event"
+            />  
+            <Button 
+              type="button" 
+              variant="contained" 
+              color="primary" 
+              onClick={addCustomTag} 
+              style={{ textTransform: "none", margin: 10 }}
+            >
+                Add Tag
+            </Button>
+          </Box>
           <TextField
             id="event-schedule"
             label="Event Schedule"

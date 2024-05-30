@@ -21,7 +21,7 @@ const TagSelector: React.FC<TagSelectorProps> = ({ selectedTags, allTags, onTagC
                         color="primary"
                         onClick={() => onTagClick(tag)}
                         size="small"
-                        style={{ textTransform: 'none' }}
+                        style={{ textTransform: 'capitalize' }}
                     >
                         {tag}
                     </Button>
