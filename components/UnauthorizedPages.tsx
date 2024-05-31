@@ -12,6 +12,5 @@ const UnauthorizedPages: React.FC = () => {
       </Typography>
     </Box>
   );
-};
-
+}
 export default UnauthorizedPages;
