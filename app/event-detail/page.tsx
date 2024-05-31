@@ -179,7 +179,9 @@ const EventDetail = ({ searchParams }: SearchParams) => {
         setEvents(events);
         const selectedEvent = events.find(event => event._id === searchParams.id) as ActivityDatabase;
         console.log("selectedEvent: ", selectedEvent);
-        if (selectedEvent) setEvent(selectedEvent);
+        if (selectedEvent) {
+          setEvent(selectedEvent);
+        }
       } else {
         const response = await fetch(`http://localhost:3000/api/events`);
         if (response.ok) {
@@ -187,8 +189,9 @@ const EventDetail = ({ searchParams }: SearchParams) => {
           console.log("Fetched event: ", evt);
           setEvents(evt);
           const selectedEvent = evt.find(event => event._id === searchParams.id);
-          if (selectedEvent) setEvent(selectedEvent); // assuming there's only one event in response
-  
+          if (selectedEvent) {
+            setEvent(selectedEvent); // assuming there's only one event in response
+          }
         }
       }
 
