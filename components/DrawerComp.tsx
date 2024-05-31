@@ -30,7 +30,7 @@ const Navbar: React.FC<NavbarProps> = ({ isOpen, toggleDrawer }) => {
           <ListItem component={Link} href="/">
             <ListItemText primary="Home" />
           </ListItem>
-          {isAuth && user ? (
+              {isAuth && user ? (
             <Box display="flex" flexDirection="column" alignItems="start">
               {user.role === 'admin' ? (
                 <ListItem component={Link} href="/admin">
@@ -42,7 +42,7 @@ const Navbar: React.FC<NavbarProps> = ({ isOpen, toggleDrawer }) => {
                 </ListItem>
               ) : null}
               <ListItem component={MuiLink} href="#" onClick={handleSignOut}>
-                <ListItemText primary="Sign Out" />
+                <ListItemText      primary="Sign Out" />
               </ListItem>
             </Box>
           ) : (

@@ -20,9 +20,10 @@ import Link from 'next/link';
 import { MenuList } from '@mui/material';
 import Image from 'next/image';
 import logo from '../app/logo.png';
+import Navbar from './DrawerComp';
 
 
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const settings = ['Profile', 'Sign Out'];
 
 function ResponsiveAppBar() {
   const [navBarOpen, setNavBarOpen] = React.useState<null | HTMLElement>(null);
@@ -66,7 +67,7 @@ function ResponsiveAppBar() {
           >
             NSC
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, alignItems: 'center' }}>
+          <Box sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center', ml: 'auto' }}>
             <Link href="/" passHref>
               <Button color="inherit" sx={{ textTransform: 'none' }}>EVENTS</Button>
             </Link>
@@ -74,7 +75,7 @@ function ResponsiveAppBar() {
               <AuthProfileMenu />
             ) : (
               <Link href="/auth/sign-in" passHref>
-                <Button color="inherit" sx={{ textTransform: 'none' }}>SIGN IN</Button>
+                <Button color="inherit" sx={{ textTransform: 'none' }}>Dashboard</Button>
               </Link>
             )}
           </Box>
@@ -100,6 +101,7 @@ function ResponsiveAppBar() {
                   ) : (
                     <Link href="/auth/sign-in" passHref>
                       <Button color="inherit" sx={{ textTransform: 'none' }}>Sign In</Button>
+                      
                     </Link>
                   )}
                 </MenuItem>
@@ -125,35 +127,37 @@ function ResponsiveAppBar() {
           >
             NSC
           </Typography>
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="User Avatar" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
+          {isAuth && (
+            <Box sx={{ flexGrow: 0 }}>
+              <Tooltip title="Open settings">
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <Avatar alt="User Avatar" src="/static/images/avatar/2.jpg" />
+                </IconButton>
+              </Tooltip>
+              <Menu
+                sx={{ mt: '45px' }}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
+              >
+                {settings.map((setting) => (
+                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                    <Typography textAlign="center">{setting}</Typography>
+                  </MenuItem>
+                ))}
+              </Menu>
+            </Box>
+          )}
         </Toolbar>
       </Container>
     </AppBar>
@@ -161,5 +165,3 @@ function ResponsiveAppBar() {
 }
 
 export default ResponsiveAppBar;
-
-
