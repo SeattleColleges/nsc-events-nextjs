@@ -3,6 +3,7 @@ import { validateFormData } from "@/utility/validateFormData";
 import { Activity, FormErrors } from "@/models/activity";
 import useDateTimeSelection from "./useDateTimeSelection";
 import { ActivityDatabase } from "@/models/activityDatabase";
+import { useQueryClient } from "@tanstack/react-query";
 
 export const useEventForm = (initialData: Activity | ActivityDatabase) => {
 
@@ -39,7 +40,7 @@ export const useEventForm = (initialData: Activity | ActivityDatabase) => {
   // success/error messages for event creation
   const [successMessage, setSuccessMessage] = useState<String>("");
   const [errorMessage, setErrorMessage] = useState<String>("");
-
+  const queryClient = useQueryClient()
   // Use useDateTimeSelection hook
   const {
     startTime,
@@ -92,7 +93,7 @@ export const useEventForm = (initialData: Activity | ActivityDatabase) => {
     });
   };
 
-  // converting time format to 12hr 
+  // converting time format to 12hr
   const to12HourTime = (time: string): string => {
      // returning an empty string if no time given
     if (!time) {
@@ -117,7 +118,6 @@ export const useEventForm = (initialData: Activity | ActivityDatabase) => {
       createActivity(eventData as Activity);
     }
   };
-
   const createActivity = async (activityData: Activity) => {
     // retrieving the token from localStorage
     const token = localStorage.getItem('token');
@@ -137,7 +137,7 @@ export const useEventForm = (initialData: Activity | ActivityDatabase) => {
     if (typeof dataToSend.eventSpeakers === 'string') {
       dataToSend.eventSpeakers = [dataToSend.eventSpeakers];
     }
-    
+
     console.log("Event data after applying transformation: ", dataToSend);
 
     try {
@@ -153,9 +153,9 @@ export const useEventForm = (initialData: Activity | ActivityDatabase) => {
       const data = await response.json();
       if (response.ok) {
         console.log("Activity created:", data);
+        await queryClient.refetchQueries({queryKey:['myEvents', 'events']});
         setSuccessMessage(data.message || "Event  successfully created!");
         setErrorMessage("");
-        
         // todo: navigate to a success page and clear form
       } else {
         console.log("Failed to create activity:", response.status);
