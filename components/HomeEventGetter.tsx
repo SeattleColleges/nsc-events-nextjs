@@ -12,7 +12,8 @@ export function HomeEventsList(){
     const [events, setEvents] = useState<ActivityDatabase[] | undefined>([]);
     const [reachedMaxEvents, setReachedMaxEvents] = useState(false)
     const getNumEvents = async(numEvents: number) => {
-        const response = await fetch(`http://localhost:3000/api/events?numEvents=${numEvents}`);
+        const apiUrl = process.env.NSC_EVENTS_PUBLIC_API_URL || `http://localhost:3000/api`;
+        const response = await fetch(`${apiUrl}/events?numEvents=${numEvents}`);
         return response.json();
     }
     useEffect(() => {

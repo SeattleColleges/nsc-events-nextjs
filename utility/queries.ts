@@ -1,9 +1,9 @@
-import {useQuery} from "@tanstack/react-query";
-import {ActivityDatabase} from "@/models/activityDatabase";
+import { useQuery } from "@tanstack/react-query";
+import { ActivityDatabase } from "@/models/activityDatabase";
 import React from "react";
-
+const apiUrl = process.env.NSC_EVENTS_PUBLIC_API_URL || "http://localhost:3000/api";
 const getEvents = async() => {
-    const response = await fetch(`http://localhost:3000/api/events`);
+    const response = await fetch(`${apiUrl}/events`);
     return response.json();
 }
 export function useFilteredEvents() {
@@ -23,7 +23,7 @@ const getArchivedEvents = async(page: any) => {
         numEvents: String(5),
         isArchived: String(true)
     });
-    const response = await fetch(`http://localhost:3000/api/events?${String(params)}`);
+    const response = await fetch(`${apiUrl}/events?${String(params)}`);
     return response.json();
 }
 export function useArchivedEvents(page: any) {

@@ -16,7 +16,8 @@ const getUserId = () => {
 }
 // fetch API endpoint that contains the user's created events
 const getMyEvents = async(userId: string) => {
-    const response = await fetch(`http://localhost:3000/api/events/user/${userId}`);
+    const apiUrl = process.env.NSC_EVENTS_PUBLIC_API_URL || `http://localhost:3000/api`;
+    const response = await fetch(`${apiUrl}/events/user/${userId}`);
     return response.json();
 }
 
