@@ -26,9 +26,10 @@ import { useRouter } from "next/navigation";
 import AttendDialog from "@/components/AttendDialog";
 import ArchiveDialog from "@/components/ArchiveDialog";
 import EditDialog from "@/components/EditDialog";
-
 import { formatDate } from "@/utility/dateUtils";
 import ViewMoreDetailsDialog from "@/components/ViewMoreDetailsDialog";
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 interface SearchParams {
   searchParams: {
@@ -38,7 +39,9 @@ interface SearchParams {
 
 const EventDetail = ({ searchParams }: SearchParams) => {
   const router = useRouter();
-  const [event, setEvent] = useState(activityDatabase);
+  const [event, setEvent] = useState<ActivityDatabase>(activityDatabase);
+  const [events, setEvents] = useState<ActivityDatabase[]>([]);
+  const [isAuthed, setAuthed] = useState(false);
   const [token, setToken] = useState("");
   const [dialogOpen, setDialogOpen] = useState(false);
   const [archiveDialogOpen, setArchiveDialogOpen] = useState(false);
@@ -58,7 +61,7 @@ const EventDetail = ({ searchParams }: SearchParams) => {
           onClose={() => {
             setDialogOpen(false);
           }}
-          aria-describedby="Dialogue to confirm event deletion"
+          autoFocus
         >
           <DialogTitle>{"Delete Event?"}</DialogTitle>
           <DialogContent>
@@ -130,14 +133,15 @@ const EventDetail = ({ searchParams }: SearchParams) => {
     const getEvents = async () => {
       const events = queryClient.getQueryData<ActivityDatabase[]>(["event"]);
       if (events !== undefined) {
-        const selectedEvent = events.find(
-          (event) => event._id === searchParams.id
-        ) as ActivityDatabase;
+        setEvents(events);
+        const selectedEvent = events.find(event => event._id === searchParams.id) as ActivityDatabase;
         setEvent(selectedEvent);
       } else if (searchParams.id) {
         const response = await fetch(`http://localhost:3000/api/events/find/${searchParams.id}`);
         if (response.ok) {
-          await response.json().then((evt) => setEvent(evt));
+          const evt = await response.json();
+          setEvent(evt);
+          setEvents([evt]); // assuming there's only one event in response
         }
       }
     };
@@ -152,7 +156,7 @@ const EventDetail = ({ searchParams }: SearchParams) => {
       setUserRole(role);
       setUserId(id);
     }
-  }, [queryClient, searchParams.id, token, userId]);
+  }, [queryClient, searchParams.id]);
 
   const toggleAttendDialog = () => {
     if (token === "") {
@@ -171,9 +175,28 @@ const EventDetail = ({ searchParams }: SearchParams) => {
     setArchiveDialogOpen(!archiveDialogOpen);
   };
 
+  const getNextEvent = () => {
+    const currentIndex = events.findIndex(e => e._id === event._id);
+    if (currentIndex < events.length - 1) {
+      const nextEvent = events[currentIndex + 1];
+      router.push(`/eventDetails?id=${nextEvent._id}`);
+    }
+  };
+
+  const getPrevEvent = () => {
+    const currentIndex = events.findIndex(e => e._id === event._id);
+    if (currentIndex > 0) {
+      const prevEvent = events[currentIndex - 1];
+      router.push(`/eventDetails?id=${prevEvent._id}`);
+    }
+  };
+
   return (
     <>
       <Box className={styles.container}>
+        <Button onClick={getPrevEvent}>
+          <ArrowBackIosIcon sx={{ color: 'white', fontSize: '100px' }} />
+        </Button>
         <Box
           className={styles.formContainer}
           sx={{ minHeight: "69vh", maxHeight: "100vh", width: "100vh", marginTop: "10vh" }}
@@ -306,6 +329,9 @@ const EventDetail = ({ searchParams }: SearchParams) => {
         >
           <SnackbarContent message={snackbarMessage} sx={{ color: "black" }} />
         </Snackbar>
+        <Button onClick={getNextEvent}>
+        <ArrowForwardIosIcon sx={{ color: 'white', fontSize: '100px' }} />
+        </Button>
       </Box>
     </>
   );
