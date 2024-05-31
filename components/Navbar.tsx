@@ -20,12 +20,46 @@ import Link from 'next/link';
 import { MenuList } from '@mui/material';
 import Image from 'next/image';
 import logo from '../app/logo.png';
-import Navbar from './DrawerComp';
+
+import { List, ListItem, ListItemText, Drawer, Link as MuiLink } from '@mui/material';
+import { useRouter } from 'next/router';
 
 
-const settings = ['Profile', 'Sign Out'];
 
-function ResponsiveAppBar() {
+const settings = ['Dashboard', 'Sign Out'];
+
+const ResponsiveAppBar = () => {
+//   const { data: session} = useSession();
+//   console.log({session});
+
+//   return (
+//     <Box>
+//       <Box>
+//         {session?.user ? (
+//           <>
+//             <Typography variant="body1">{session.user.name}</Typography>
+//             <Button
+//               variant="contained"
+//               color="secondary"
+//               onClick={() => signOut()}
+//             >
+//               Sign Out
+//             </Button>
+//           </>
+//         ) : (
+//           <Button
+//             variant="contained"
+//             color="primary"
+//             onClick={() => signIn()}
+//           >
+//             Sign In
+//           </Button>
+//         )}
+//       </Box>
+//     </Box>
+//   );
+// };
+
   const [navBarOpen, setNavBarOpen] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
   const { isAuth } = useAuth();
@@ -75,7 +109,7 @@ function ResponsiveAppBar() {
               <AuthProfileMenu />
             ) : (
               <Link href="/auth/sign-in" passHref>
-                <Button color="inherit" sx={{ textTransform: 'none' }}>Dashboard</Button>
+                <Button color="inherit" sx={{ textTransform: 'none' }}>Sign In</Button>
               </Link>
             )}
           </Box>
