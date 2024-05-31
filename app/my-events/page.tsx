@@ -15,9 +15,7 @@ const MyEvents = () => {
                     <h1>My Created Events</h1> 
                 </div>  
                 <div className={styles.eventContainer}>
-                    <div className={styles.homeEventsList}>
-                        <MyEventsList /> 
-                    </div>
+                    <MyEventsList />
                 </div>
             </div>   
         );
