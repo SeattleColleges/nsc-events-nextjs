@@ -11,7 +11,9 @@ import { Box, Button, Typography, Stack }  from '@mui/material';
 import { textFieldStyle } from "@/components/InputFields"
 import { MouseEvent, ChangeEvent, useState, FormEvent } from "react";
 import useAuth from "@/hooks/useAuth";
+
 import UnauthorizedPages from "@/components/UnauthorizedPages";
+
 
  
 
@@ -76,9 +78,7 @@ const CreateEvent: React.FC = () => {
     const { isAuth, user } = useAuth();
 
     if (!isAuth || (user && user.role !== 'admin' && user.role !== 'creator')) {
-      return <UnauthorizedPages />;
-    }
-  
+
   return (
    <LocalizationProvider dateAdapter={AdapterDateFns}>
       <Box component="form" onSubmit={handleSubmit} noValidate autoComplete="off" sx={{ p: 3, width: '75%', mx: 'auto' }}>
