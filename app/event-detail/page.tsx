@@ -245,7 +245,9 @@ const EventDetail = ({ searchParams }: SearchParams) => {
                     {" "}
                     <ArchiveIcon sx={{ marginRight: "5px" }} /> Archive{" "}
                   </Button>
-                  <Button
+                </>
+              )}
+              <Button
                     variant="contained"
                     sx={{
                       color: "white",
@@ -273,8 +275,6 @@ const EventDetail = ({ searchParams }: SearchParams) => {
                     {" "}
                     Attend{" "}
                   </Button>
-                </>
-              )}
             </div>
           </div>
         </Box>
