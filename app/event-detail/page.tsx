@@ -1,7 +1,6 @@
 
 'use client';
 
-
 import React, { useEffect, useState } from "react";
 import {
   Typography,
@@ -34,6 +33,18 @@ import ViewMoreDetailsDialog from "@/components/ViewMoreDetailsDialog";
 
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import { set } from "mongoose";
+
+interface Event {
+  _id: string;
+  eventCoverPhoto: string;
+  eventTitle: string;
+  eventDescription: string;
+  eventDate: Date;
+  eventStartTime: string;
+  eventEndTime: string;
+  eventLocation: string;
+}
 
 interface SearchParams {
   searchParams: {
@@ -121,33 +132,89 @@ const EventDetail = ({ searchParams }: SearchParams) => {
     }
   });
 
+
+
+/*
+    if (!searchParams.id) {
+      console.log("SearchParams id not available yet");
+      return;
+    }
+
+    const getEvents = async () => {
+      console.log("Fetching events with ID: ", searchParams.id);
+      try {
+        const response = await fetch(`http://localhost:3000/api/events`);
+        if (response.ok) {
+          const allEvents: ActivityDatabase[] = await response.json();
+          console.log("Fetched events: ", allEvents);
+          setEvents(allEvents);
+          const currEvent = allEvents.find(event => event._id === searchParams.id);
+          if (currEvent) {
+            setEvent(currEvent);
+          } else {
+            console.error("Current event not found: ", searchParams.id);
+          }
+        } else {
+          console.error("Failed to fetch events, HTTP status: ", response.status);
+        }
+      } catch (error) {
+        console.error("Error fetching events: ", error);
+      }
+      getEvents();
+
+      const token = localStorage.getItem("token");
+      setToken(token ?? "");
+      if (token) {
+        const userRole = JSON.parse(atob(token.split(".")[1])).role;
+        setAuthed(userRole === "creator" || userRole === "admin");
+      }
+    }
+*/
+
   useEffect(() => {
+
     const getEvents = async () => {
       const events = queryClient.getQueryData<ActivityDatabase[]>(['event']);
-      if (events !== undefined) {
+      if (events && events.length > 0) {
         setEvents(events);
         const selectedEvent = events.find(event => event._id === searchParams.id) as ActivityDatabase;
-
-        setEvent(selectedEvent);
-      } else if (searchParams.id) {
-        const response = await fetch(`http://localhost:3000/api/events/find/${searchParams.id}`);
+        console.log("selectedEvent: ", selectedEvent);
+        if (selectedEvent) setEvent(selectedEvent);
+      } else {
+        const response = await fetch(`http://localhost:3000/api/events`);
         if (response.ok) {
-          const evt = await response.json();
-          setEvent(evt);
-          setEvents([evt]); // assuming there's only one event in response
-
+          const evt: ActivityDatabase[] = await response.json();
+          console.log("Fetched event: ", evt);
+          setEvents(evt);
+          const selectedEvent = evt.find(event => event._id === searchParams.id);
+          if (selectedEvent) setEvent(selectedEvent); // assuming there's only one event in response
+  
         }
       }
+
+      // else if (searchParams.id) {
+      //   const response = await fetch(`http://localhost:3000/api/events/find/${searchParams.id}`);
+      //   if (response.ok) {
+      //     const evt = await response.json();
+      //     console.log("Fetched event: ", evt);
+      //     setEvent(evt);
+      //     setEvents([evt]); // assuming there's only one event in response
+  
+      //   }
+      // }
+
     };
+
     getEvents();
+    
     const token = localStorage.getItem("token");
     setToken(token ?? "");
-
     if (token) {
       const userRole = JSON.parse(atob(token.split(".")[1])).role;
       setAuthed(userRole === "creator" || userRole === "admin");
     }
   }, [queryClient, searchParams.id]);
+
 
   const toggleAttendDialog = () => {
     if (token === '') {
@@ -163,8 +230,9 @@ const EventDetail = ({ searchParams }: SearchParams) => {
 
   const getNextEvent = () => {
     const currentIndex = events.findIndex(e => e._id === event._id);
-    if (currentIndex < events.length - 1) {
+    if (currentIndex >= 0 && currentIndex < events.length - 1) {
       const nextEvent = events[currentIndex + 1];
+      console.log("Navigating to:", nextEvent._id);
       router.push(`/eventDetails?id=${nextEvent._id}`);
     }
   };
@@ -173,15 +241,24 @@ const EventDetail = ({ searchParams }: SearchParams) => {
     const currentIndex = events.findIndex(e => e._id === event._id);
     if (currentIndex > 0) {
       const prevEvent = events[currentIndex - 1];
+      console.log("Navigating to:", prevEvent._id);
       router.push(`/eventDetails?id=${prevEvent._id}`);
     }
   };
 
+  // Debugging console logs
+  useEffect(() => {
+    console.log("Events: ", events);
+    console.log("Current Event: ", event);
+  }, [events, event]);
+
   return (
     <Box className={styles.container}>
-      <Button onClick={getPrevEvent}>
-        <ArrowBackIosIcon sx={{ color: 'white', fontSize: '100px' }} />
-      </Button>
+      {events.length > 1 && events.findIndex(e => e._id === event._id) > 0 && (
+        <Button onClick={getPrevEvent}>
+          <ArrowBackIosIcon sx={{ color: 'white', fontSize: '100px' }} />
+        </Button>
+      )}
       <Box className={styles.formContainer} sx={{ minHeight: '69vh', maxHeight: '100vh', width: '100vh', marginTop: '10vh' }}>
         <Card sx={{ width: '45vh', minHeight: '59vh', maxHeight: '100vh', marginBottom: '5vh' }}>
           <CardMedia
@@ -244,9 +321,11 @@ const EventDetail = ({ searchParams }: SearchParams) => {
         message={snackbarMessage}
       />
 
-      <Button onClick={getNextEvent}>
-        <ArrowForwardIosIcon sx={{ color: 'white', fontSize: '100px' }} />
-      </Button>
+      {events.length > 1 && events.findIndex(e => e._id === event._id) < events.length - 1 && (
+        <Button onClick={getNextEvent}>
+          <ArrowForwardIosIcon sx={{ color: 'white', fontSize: '100px' }} />
+        </Button>
+      )}
     </Box>
 
   );
