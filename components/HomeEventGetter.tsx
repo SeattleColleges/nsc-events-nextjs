@@ -1,37 +1,25 @@
 'use client';
 
 import React, { useEffect, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
 import { Grid, Button } from '@mui/material';
-import Link from "next/link";
 import { ActivityDatabase } from "@/models/activityDatabase";
 import EventCard from "./EventCard";
+import { useFilteredEvents } from "@/utility/queries";
 
 export function HomeEventsList(){
-    const [numEvents, setNumEvents] = useState(5);
-    const [events, setEvents] = useState<ActivityDatabase[] | undefined>([]);
-    const [reachedMaxEvents, setReachedMaxEvents] = useState(false)
-    const getNumEvents = async(numEvents: number) => {
-        const response = await fetch(`http://localhost:3000/api/events?numEvents=${numEvents}`);
-        return response.json();
-    }
+    const [page, setPage] = useState(1)
+    const [events, setEvents] = useState<ActivityDatabase[]>([]);
+    const [reachedLastPage, setReachedLastPage] = useState(false);
+    const { data } = useFilteredEvents(page);
     useEffect(() => {
-        const eventData = getNumEvents(numEvents);
-        eventData.then(events => {
-            // Filter out events where either isArchived or isHidden is true.
-            const activeEvents = events.filter((event: { isArchived: boolean; isHidden: boolean; }) => !(event.isArchived || event.isHidden))
-            setEvents(activeEvents)
-            setReachedMaxEvents(events.length < numEvents);
-        });
-    }, [numEvents]);
+        if (data) {
+            setEvents((prevEvents) => [...prevEvents, ...data]);
+            setReachedLastPage(data.length < 5);
+        }
+    }, [data]);
     const handleLoadMoreEvents = () => {
-        setNumEvents(num => num + 5);
+        setPage(num => num + 1);
     };
-    // if(isLoading) {
-    //     return <span>Loading events...</span>
-    // } else if (isError) {
-    //     return <span>Error when fetching events...</span>
-    // } else {
     return (
         <Grid container spacing={1}>
             {
@@ -43,7 +31,7 @@ export function HomeEventsList(){
 
                 ))}
             {
-                !reachedMaxEvents &&
+                !reachedLastPage &&
                 <Button onClick={handleLoadMoreEvents}
                         type='button'
                         variant="contained"
@@ -57,7 +45,6 @@ export function HomeEventsList(){
             }
         </Grid>
     );
-    // }
 }
 
 export default HomeEventsList;
