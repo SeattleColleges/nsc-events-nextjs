@@ -1,44 +1,43 @@
+"use client"
 
+import { getCurrentUserId } from "@/utility/userUtils";
+import {Box, Stack, Typography} from "@mui/material";
+import React, {useEffect, useState} from "react";
+import CurrentUserCard from "@/components/CurrentUserCard";
+
+interface User {
+    firstName: string;
+    lastName: string;
+    email: string;
+    pronouns: string
+}
 const Profile = () => {
-    // Temporary boilerplate code to make it compile
+    const [user, setUser] = useState<User>()
+    const getUserFromId = async (userId: string) => {
+        const response = await fetch(`http://localhost:3000/api/users/find/${userId}`);
+        if (!response.ok) {
+            throw new Error();
+        }
+        const data = await response.json();
+        setUser(data)
+    }
+    useEffect(()=>{
+        const userId = getCurrentUserId();
+        getUserFromId(userId);
+    },[])
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen">
-            <h1>Placeholder Profile so npm run build compiles successfully.</h1>
-            <p>FIX: move to pages or use getSession from nextauth</p>
-        </div>
+        <Box sx={{ display: "flex", justifyContent: "center" }}>
+            <Stack>
+                <Typography component="h1" variant="h4" sx={{ mt: 2, mb: 3 }}>
+                    Welcome, {user?.firstName}
+                </Typography>
+                {
+                    user &&
+                    <CurrentUserCard user={user}/>
+                }
+            </Stack>
+        </Box>
     );
 };
 
 export default Profile;
-// todo: this will be the users profile page when they've signed in
-
-// import { useSession } from "next-auth/react";
-// import { useRouter } from "next/navigation";
-
-// const Profile = () => {
-//   const { data: session, status } = useSession();
-//   const router = useRouter();
-
-//   if (status === "loading") {
-//     // Handle loading state
-//     return <div>Loading...</div>;
-//   }
-
-//   if (!session) {
-//     // Redirect the user to the sign-in page if there is no active session
-//     router.replace("/auth/sign-in");
-//     return null;
-//   }
-
-//   const { user } = session;
-
-//   return (
-//     <div className="flex flex-col items-center justify-center min-h-screen">
-//       <h1>Welcome, {user?.name}!</h1>
-//       <p>Email: {user?.email}</p>
-//       <p>Profile information goes here...</p>
-//     </div>
-//   );
-// };
-
-// export default Profile;
