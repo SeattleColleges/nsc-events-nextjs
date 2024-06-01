@@ -32,3 +32,18 @@ export function useArchivedEvents(page: any) {
         queryFn: async () => getArchivedEvents(page),
     });
 }
+
+const getMyEvents = async(userId: string, page: any) => {
+    const params = new URLSearchParams({
+        page: String(page),
+        numEvents: String(5),
+    });
+    const response = await fetch(`http://localhost:3000/api/events/user/${userId}?${String(params)}`);
+    return response.json();
+}
+export function useMyEvents(userId: string, page: any) {
+    return useQuery<ActivityDatabase[], Error>({
+        queryKey: ["myEvents", page],
+        queryFn: async () => getMyEvents(userId, page),
+    });
+}
