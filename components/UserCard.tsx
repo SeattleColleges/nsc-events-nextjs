@@ -13,14 +13,23 @@ export interface UserCardProps {
 
 function UserCard({ user }: { user: UserCardProps }) {
   const [openDialog, setOpenDialog] = useState(false);
+  const [editCompleted, setEditCompleted] = useState(false);
 
   const handleEditClick = () => {
-    setOpenDialog(true);
+    if (editCompleted) {
+      window.location.reload();
+    } else {
+      setOpenDialog(true);
+    }
   };
 
-  const handleCloseDialog = () => {
+  const handleCloseDialog = (success: boolean) => {
     setOpenDialog(false);
+    if (success) {
+      setEditCompleted(true);
+    }
   };
+
   return (
     <Container
       fixed
@@ -65,11 +74,12 @@ function UserCard({ user }: { user: UserCardProps }) {
             startIcon={<EditIcon />}
             onClick={handleEditClick}
           >
-            Edit
+            {editCompleted ? "Done" : "Edit"}
           </Button>
         </Box>
       </Stack>
     </Container>
   );
 }
+
 export default UserCard;
