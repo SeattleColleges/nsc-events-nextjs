@@ -7,7 +7,6 @@ import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -15,58 +14,22 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import useAuth from '../hooks/useAuth'; 
-import AuthProfileMenu from './AuthProfileMenu';
 import Link from 'next/link';
-import { MenuList } from '@mui/material';
+import { ListItem, ListItemText, MenuList } from '@mui/material';
 import Image from 'next/image';
 import logo from '../app/logo.png';
-
-import { List, ListItem, ListItemText, Drawer, Link as MuiLink } from '@mui/material';
-import { useRouter } from 'next/router';
-
-
-
-const settings = ['Dashboard', 'Sign Out'];
+import { useRouter } from 'next/navigation';
 
 const ResponsiveAppBar = () => {
-//   const { data: session} = useSession();
-//   console.log({session});
-
-//   return (
-//     <Box>
-//       <Box>
-//         {session?.user ? (
-//           <>
-//             <Typography variant="body1">{session.user.name}</Typography>
-//             <Button
-//               variant="contained"
-//               color="secondary"
-//               onClick={() => signOut()}
-//             >
-//               Sign Out
-//             </Button>
-//           </>
-//         ) : (
-//           <Button
-//             variant="contained"
-//             color="primary"
-//             onClick={() => signIn()}
-//           >
-//             Sign In
-//           </Button>
-//         )}
-//       </Box>
-//     </Box>
-//   );
-// };
-
   const [navBarOpen, setNavBarOpen] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
-  const { isAuth } = useAuth();
+  const { user, isAuth } = useAuth();
+  const router = useRouter();
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setNavBarOpen(event.currentTarget);
   };
+
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
@@ -77,6 +40,29 @@ const ResponsiveAppBar = () => {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+
+  const handleSignOut = () => {
+    localStorage.removeItem('token');
+    window.dispatchEvent(new CustomEvent('auth-change'));
+    router.push('/auth/sign-in');
+  };
+
+  const profileLink = () => {
+    if (!user) {
+      return '/profile';
+    }
+    if (user.role === 'admin') {
+      return <ListItem component={Link} href="/admin">
+      <ListItemText primary="Admin Event" />
+    </ListItem>
+    } else if (user.role === 'creator') {
+      return <ListItem component={Link} href="/creator">
+      <ListItemText primary="Creator Event" />
+    </ListItem>;
+    } else {
+      return '/profile';
+    }
   };
 
   return (
@@ -105,13 +91,6 @@ const ResponsiveAppBar = () => {
             <Link href="/" passHref>
               <Button color="inherit" sx={{ textTransform: 'none' }}>EVENTS</Button>
             </Link>
-            {isAuth ? (
-              <AuthProfileMenu />
-            ) : (
-              <Link href="/auth/sign-in" passHref>
-                <Button color="inherit" sx={{ textTransform: 'none' }}>Sign In</Button>
-              </Link>
-            )}
           </Box>
           <Box sx={{ display: { xs: 'flex', md: 'none' }, flexGrow: 1 }}>
             <IconButton size="large" edge="start" color="inherit" onClick={handleOpenNavMenu}>
@@ -130,14 +109,6 @@ const ResponsiveAppBar = () => {
                   </Link>
                 </MenuItem>
                 <MenuItem onClick={handleCloseNavMenu}>
-                  {isAuth ? (
-                    <AuthProfileMenu />
-                  ) : (
-                    <Link href="/auth/sign-in" passHref>
-                      <Button color="inherit" sx={{ textTransform: 'none' }}>Sign In</Button>
-                      
-                    </Link>
-                  )}
                 </MenuItem>
               </MenuList>
             </Menu>
@@ -161,7 +132,7 @@ const ResponsiveAppBar = () => {
           >
             NSC
           </Typography>
-          {isAuth && (
+          {isAuth && user && (
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -184,11 +155,14 @@ const ResponsiveAppBar = () => {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
-                {settings.map((setting) => (
-                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center">{setting}</Typography>
-                  </MenuItem>
-                ))}
+                <MenuItem onClick={handleCloseUserMenu}>
+                  <Link href={profileLink()} passHref>
+                    <Typography textAlign="center">Profile</Typography>
+                  </Link>
+                </MenuItem>
+                <MenuItem onClick={() => { handleCloseUserMenu(); handleSignOut(); }}>
+                  <Typography textAlign="center">Sign Out</Typography>
+                </MenuItem>
               </Menu>
             </Box>
           )}
@@ -196,6 +170,6 @@ const ResponsiveAppBar = () => {
       </Container>
     </AppBar>
   );
-}
+};
 
 export default ResponsiveAppBar;
