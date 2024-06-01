@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import EventCard from "./EventCard";
 import styles from '@/app/home.module.css'
 import { useMyEvents } from "@/utility/queries";
-import {getCurrentUserId} from "@/utility/userUtils";
+import { getCurrentUserId } from "@/utility/userUtils";
 
 export function MyEventsList() {
     // useState to hold the events from the API call
