@@ -16,6 +16,13 @@ const getUserId = () => {
     }
     return null;
 }
+// fetch API endpoint that contains the user's created events
+const getMyEvents = async(userId: string) => {
+    const apiUrl = process.env.NSC_EVENTS_PUBLIC_API_URL || `http://localhost:3000/api`;
+    const response = await fetch(`${apiUrl}/events/user/${userId}`);
+    return response.json();
+}
+
 export function MyEventsList() {
     // useState to hold the events from the API call
     const [events, setEvents] = useState<ActivityDatabase[]>([]);

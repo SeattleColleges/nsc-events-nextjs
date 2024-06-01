@@ -52,7 +52,8 @@ const AttendDialog = ( { isOpen, eventId, dialogToggle }: AttendDialogProps) => 
         }
 
         try {
-            const response = await fetch(`http://localhost:3000/api/events/attend/${id}`, options );
+            const apiUrl = process.env.NSC_EVENTS_PUBLIC_API_URL || `http://localhost:3000/api`;
+            const response = await fetch(`${apiUrl}/events/attend/${id}`, options );
             return response.json();
         } catch (error) {
             console.error('error: ', error)

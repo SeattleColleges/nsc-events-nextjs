@@ -71,7 +71,8 @@ export function ConfirmationDialogRaw(props: ConfirmationDialogRawProps & { user
   const handleOk = async () => {
     const token = localStorage.getItem('token');
     try {
-      const response = await fetch(`http://localhost:3000/api/users/update/${user.id}`, {
+      const apiUrl = process.env.NSC_EVENTS_PUBLIC_API_URL || `http://localhost:3000/api`;
+      const response = await fetch(`${apiUrl}/users/update/${user.id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
