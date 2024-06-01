@@ -2,13 +2,13 @@ import { FormEvent, useEffect, useState } from "react";
 import { validateFormData } from "@/utility/validateFormData";
 import useDateTimeSelection from "./useDateTimeSelection";
 import { ActivityDatabase } from "@/models/activityDatabase";
-import { useMutation } from "@tanstack/react-query";
+import {useMutation, useQueryClient} from "@tanstack/react-query";
 import { useEventForm } from "@/hooks/useEventForm";
 import { format, parse } from "date-fns";
 
 export const useEditForm = (initialData: ActivityDatabase) => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-
+  const queryClient = useQueryClient();
   const {
     setEventData,
     setErrors,
@@ -114,7 +114,8 @@ const to24HourTime  = (time: string) => {
 
   const { mutate: editEventMutation }  = useMutation({
     mutationFn: editEvent,
-    onSuccess: () => {
+    onSuccess: async () => {
+      await queryClient.refetchQueries({queryKey:['myEvents', 'events']});
       setSuccessMessage( "Event successfully updated!");
       setTimeout( () => {
         window.location.reload()
