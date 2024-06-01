@@ -20,6 +20,7 @@ import Image from 'next/image';
 import logo from '../app/logo.png';
 import { useRouter } from 'next/navigation';
 
+
 const ResponsiveAppBar = () => {
   const [navBarOpen, setNavBarOpen] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
@@ -53,13 +54,17 @@ const ResponsiveAppBar = () => {
       return '/profile';
     }
     if (user.role === 'admin') {
-      return <ListItem component={Link} href="/admin">
-      <ListItemText primary="Admin Event" />
-    </ListItem>
+      return (
+        <ListItem component={Link} href="/admin">
+          <ListItemText primary="Admin Event" />
+        </ListItem>
+      );
     } else if (user.role === 'creator') {
-      return <ListItem component={Link} href="/creator">
-      <ListItemText primary="Creator Event" />
-    </ListItem>;
+      return (
+        <ListItem component={Link} href="/creator">
+          <ListItemText primary="Creator Event" />
+        </ListItem>
+      );
     } else {
       return '/profile';
     }
