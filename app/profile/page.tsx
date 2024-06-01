@@ -1,8 +1,8 @@
 "use client"
 
 import { getCurrentUserId } from "@/utility/userUtils";
-import {Box, Button, Stack, Typography} from "@mui/material";
-import React, {useEffect, useState} from "react";
+import { Box, Button, Stack, Typography } from "@mui/material";
+import React, { useEffect, useState } from "react";
 import CurrentUserCard from "@/components/CurrentUserCard";
 import { useRouter } from "next/navigation";
 
@@ -13,20 +13,20 @@ interface User {
     pronouns: string
 }
 const Profile = () => {
-    const [user, setUser] = useState<User>()
+    const [user, setUser] = useState<User>();
     const router = useRouter();
     const getUserFromId = async (userId: string) => {
         const response = await fetch(`http://localhost:3000/api/users/find/${userId}`);
         if (!response.ok) {
-            throw new Error();
+            throw new Error("Can't find user.");
         }
         const data = await response.json();
         setUser(data)
     }
-    useEffect(()=>{
+    useEffect(()=> {
         const userId = getCurrentUserId();
         getUserFromId(userId);
-    },[])
+    },[]);
     if (!user) {
         return (
             <Typography>
@@ -38,10 +38,10 @@ const Profile = () => {
         <Box sx={{ display: "flex", justifyContent: "center" }}>
             <Stack>
                 <Typography component="h1" variant="h4" sx={{ mt: 2, mb: 3 }}>
-                    Welcome, {user?.firstName}
+                    Welcome, { user?.firstName }
                 </Typography>
                 <CurrentUserCard user={user}/>
-                <Button onClick={() => router.replace('/auth/change-password')}>
+                <Button onClick={ () => router.replace('/auth/change-password') }>
                     Change Password
                 </Button>
             </Stack>
