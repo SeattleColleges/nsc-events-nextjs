@@ -93,7 +93,8 @@ const EventDetail = ({ searchParams }: SearchParams) => {
 
   const deleteEvent = async (id: string) => {
     try {
-      const response = await fetch(`http://localhost:3000/api/events/remove/${id}`, {
+      const apiUrl = process.env.NSC_EVENTS_PUBLIC_API_URL || `http://localhost:3000/api`;
+      const response = await fetch(`${apiUrl}/events/remove/${id}`, {
         method: 'DELETE',
 
         headers: {
@@ -131,7 +132,8 @@ const EventDetail = ({ searchParams }: SearchParams) => {
 
         setEvent(selectedEvent);
       } else if (searchParams.id) {
-        const response = await fetch(`http://localhost:3000/api/events/find/${searchParams.id}`);
+        const apiUrl = process.env.NSC_EVENTS_PUBLIC_API_URL || `http://localhost:3000/api`;
+        const response = await fetch(`${apiUrl}/events/find/${searchParams.id}`);
         if (response.ok) {
           const evt = await response.json();
           setEvent(evt);
