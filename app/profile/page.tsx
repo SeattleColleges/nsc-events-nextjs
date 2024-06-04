@@ -15,8 +15,8 @@ interface User {
 const URL = process.env.NSC_EVENTS_PUBLIC_API_URL || "http://localhost:3000/api";
 const Profile = () => {
     const [user, setUser] = useState<User>();
+    const [token, setToken] = useState<string | null>();
     const router = useRouter();
-    const token = localStorage.getItem('token');
     const getUserFromId = async (userId: string) => {
         const response = await fetch(`${URL}/users/find/${userId}`);
         if (response.ok) {
@@ -25,10 +25,11 @@ const Profile = () => {
         }
     }
     useEffect(()=> {
+        setToken(localStorage.getItem('token'))
         const userId = getCurrentUserId();
         getUserFromId(userId);
     },[]);
-    if (!token) {
+    if (token === null) {
         return (
             <Box sx={{ display: "flex", justifyContent: "center" }}>
                 <Typography>
