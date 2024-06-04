@@ -12,8 +12,8 @@ interface EventCardProps {
 
 function EventCard({ event }: EventCardProps) {
   return (
-    <Link href={{pathname: "/event-detail", query: {id: event._id}}} passHref >
-        <Box component='a' sx={{textDecoration: 'none', width: '100%', display: 'block' }}>
+    <Link href={{ pathname: "/event-detail", query: { id: event._id } }} passHref >
+        <Box component='a' sx={{ textDecoration: 'none', width: '100%', display: 'block' }}>
             <Card sx={{ width: '100%', height: 130, display: 'flex', flexDirection: 'column' }}>
                 <CardContent sx={{ flexGrow: 1 }}>
                         <Typography variant="h5" align="left" fontWeight="bold">
