@@ -141,7 +141,8 @@ export const useEventForm = (initialData: Activity | ActivityDatabase) => {
     console.log("Event data after applying transformation: ", dataToSend);
 
     try {
-      const response = await fetch("http://localhost:3000/api/events/new", {
+      const apiUrl = process.env.NSC_EVENTS_PUBLIC_API_URL || `http://localhost:3000/api`;
+      const response = await fetch("${apiUrl}/events/new", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
