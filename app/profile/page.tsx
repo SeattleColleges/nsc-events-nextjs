@@ -16,18 +16,27 @@ const URL = process.env.NSC_EVENTS_PUBLIC_API_URL || "http://localhost:3000/api"
 const Profile = () => {
     const [user, setUser] = useState<User>();
     const router = useRouter();
+    const token = localStorage.getItem('token');
     const getUserFromId = async (userId: string) => {
         const response = await fetch(`${URL}/users/find/${userId}`);
-        if (!response.ok) {
-            throw new Error("Can't find user.");
+        if (response.ok) {
+            const data = await response.json();
+            setUser(data)
         }
-        const data = await response.json();
-        setUser(data)
     }
     useEffect(()=> {
         const userId = getCurrentUserId();
         getUserFromId(userId);
     },[]);
+    if (!token) {
+        return (
+            <Box sx={{ display: "flex", justifyContent: "center" }}>
+                <Typography>
+                    Please sign in to view profile.
+                </Typography>
+            </Box>
+        )
+    }
     if (!user) {
         return (
             <Typography>
