@@ -136,13 +136,15 @@ const ChangePassword = () => {
             alignItems: "center",
           }}
         >
-          <Image
-            src={NorthSeattleLogo.src}
-            alt="North Seattle College Logo"
-            width={150}
-            height={50}
-            style={{ borderRadius: "10px" }}
-          />
+          <Box sx={{ display: 'flex', justifyContent: 'center', marginBottom: 2 }}>
+            <Image
+              src={NorthSeattleLogo.src}
+              alt="North Seattle College Logo"
+              width={150}
+              height={50}
+              style={{ borderRadius: "10px" }}
+            />
+          </Box>
           <Typography component="h2" variant="h6">
             Change Password
           </Typography>
