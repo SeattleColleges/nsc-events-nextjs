@@ -1,19 +1,20 @@
 import Link from "next/link";
+import { Button, Container } from '@mui/material';
 import styles from "./admin-page.module.css";
 
 const Admin = () => {
   // Temporary boilerplate code to make it compile
   return (
-      <div className={styles.container}>
+      <Container className={styles.container}>
           {/* <h1>Placeholder for the admin page so npm run build compiles successfully.</h1>
           <p>FIX: move to pages or use getSession from nextauth</p>
           <p>FIX: allow only users with admin role to be routed to this page</p> */}
-          <button className={styles.button}>Edit User Role</button>
-          <button className={styles.button}><Link href="/create-event">Create Event</Link></button>
-          <button className={styles.button}><Link href="/my-events">View My Events</Link></button>
-          <button className={styles.button}><Link href="/archived-events">View Archived Events</Link></button>
-          <button className={styles.button}><Link href="/">View All Events</Link></button>
-      </div>
+          <Button className={styles.button}>Edit User Role</Button>
+          <Button className={styles.button}><Link href="/create-event">Create Event</Link></Button>
+          <Button className={styles.button}><Link href="/my-events">View My Events</Link></Button>
+          <Button className={styles.button}><Link href="/archived-events">View Archived Events</Link></Button>
+          <Button className={styles.button}><Link href="/">View All Events</Link></Button>
+      </Container>
   );
 };
 
