@@ -12,11 +12,12 @@ interface User {
     email: string;
     pronouns: string
 }
+const URL = process.env.NSC_EVENTS_PUBLIC_API_URL || "http://localhost:3000/api";
 const Profile = () => {
     const [user, setUser] = useState<User>();
     const router = useRouter();
     const getUserFromId = async (userId: string) => {
-        const response = await fetch(`http://localhost:3000/api/users/find/${userId}`);
+        const response = await fetch(`${URL}/users/find/${userId}`);
         if (!response.ok) {
             throw new Error("Can't find user.");
         }
