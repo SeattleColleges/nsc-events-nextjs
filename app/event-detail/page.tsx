@@ -143,6 +143,7 @@ const EventDetail = ({ searchParams }: SearchParams) => {
         const response = await fetch(`${apiUrl}/events/find/${searchParams.id}`);
         if (response.ok) {
           const evt = await response.json();
+          console.log(evt)
           setEvent(evt);
           setEvents([evt]); // assuming there's only one event in response
         }
@@ -238,6 +239,7 @@ const EventDetail = ({ searchParams }: SearchParams) => {
                 display: "flex",
                 width: "100vh",
                 gap: "25px",
+                padding: 20,
                 justifyContent: "center",
                 alignItems: "center",
               }}

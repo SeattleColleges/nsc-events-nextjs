@@ -38,17 +38,16 @@ function ViewMoreDetailsDialog({
   userRole,
   dialogToggle,
 }: ViewMoreDetailsDialogProps) {
-
-  // Simple array to string function for handling activity details that are arrays
+  // Simple "array to string" function for handling activity details that are arrays
   const arrayToString = (arr: any[]) => arr.join(", ");
-  
+
   const moreDetails = [
-    { title: "Event Host", detail: event.eventHost },
+    { title: "Host", detail: event.eventHost },
     { title: "URL", detail: event.eventMeetingUrl },
     { title: "Registration", detail: event.eventRegistration },
     { title: "Tags", detail: arrayToString(event.eventTags) },
-    { title: "Event Speakers", detail: arrayToString(event.eventSpeakers) },
-    { title: "Event Contact", detail: event.eventContact },
+    { title: "Speakers", detail: arrayToString(event.eventSpeakers) },
+    { title: "Contact", detail: event.eventContact },
     { title: "Accessibility", detail: event.eventAccessibility },
   ];
 
@@ -59,19 +58,21 @@ function ViewMoreDetailsDialog({
     { title: "Prerequisites", detail: event.eventPrerequisites },
     { title: "Cancelation Policy", detail: event.eventCancellationPolicy },
     { title: "Social media", detail: event.eventSocialMedia },
-    // trouble accessing attendanceCount
-    // { title: "Attendance Count", detail: event.attendanceCount },
+    // trouble accessing attendanceCount, needs to be looked at
+    { title: "Attendance Count", detail: event.attendanceCount ?? 'Not Available' },
     { title: "Privacy", detail: event.eventPrivacy },
     { title: "Archived", detail: event.isHidden ? "Yes" : "No" },
   ];
 
   const adminDetails = [{ title: "Event Note", detail: event.eventNote }];
-  
-  // Simple function to check if the event details being mapped is an object 
+
+  // Simple function to check if the event details being mapped is an object
   const isObject = (value: any) => value && typeof value === "object" && !Array.isArray(value);
-  // 
+
+  // Map details function, parses detail objects (such as event.socialMedia) differently
   const mapDetails = (detailsArray: { title: string; detail: any }[]) => {
     return detailsArray.map((detail, id) => {
+      // handle/map activity detail objects
       if (isObject(detail.detail)) {
         return (
           <ListItem key={id}>
@@ -86,6 +87,7 @@ function ViewMoreDetailsDialog({
             />
           </ListItem>
         );
+        // Otherwise, map the detail normally
       } else {
         return (
           <ListItem key={id}>
@@ -96,19 +98,18 @@ function ViewMoreDetailsDialog({
     });
   };
 
-
   return (
     <>
       <Dialog open={isOpen}>
         <DialogTitle>{"More Details:"}</DialogTitle>
         <DialogContent dividers sx={{ height: "fit-content" }}>
-          {/* map out the moreDetails object as a ListItem for each */}
+          {/* map out the moreDetails object as a ListItem for each, handle each user role differently*/}
           {mapDetails(moreDetails)}
-          {userRole == "creator" && <>{mapDetails(creatorDetails)}</>}
+          {(userRole == "creator" || userRole == "admin") && <>{mapDetails(creatorDetails)}</>}
           {userRole == "admin" && <>{mapDetails(adminDetails)}</>}
         </DialogContent>
 
-        {/* cancel button to leave the dialog box */}
+        {/* cancel button to exit the dialog box */}
         <DialogActions>
           <Button onClick={() => dialogToggle()}>Cancel</Button>
         </DialogActions>
