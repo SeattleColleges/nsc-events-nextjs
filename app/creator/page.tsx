@@ -1,18 +1,19 @@
 import Link from "next/link";
+import { Button, Container } from '@mui/material';
 import styles from "./creator-page.module.css";
 
 const Creator = () => {
   // Temporary boilerplate code to make it compile
   return (
-    <div className={styles.container}>
+    <Container className={styles.container}>
         {/* <h1>Placeholder for the creator page so npm run build compiles successfully.</h1>
           <p>FIX: move to pages or use getSession from nextauth</p>
           <p>FIX: allow only users with creator role to be routed to this page</p> */}
-          <button className={styles.button}><Link href="/create-event">Create Event</Link></button>
-          <button className={styles.button}><Link href="/my-events">View My Events</Link></button>
-          <button className={styles.button}><Link href="/archived-events">View Archived Events</Link></button>
-          <button className={styles.button}><Link href="/">View All Events</Link></button>
-      </div>
+          <Button className={styles.button}><Link href="/create-event">Create Event</Link></Button>
+          <Button className={styles.button}><Link href="/my-events">View My Events</Link></Button>
+          <Button className={styles.button}><Link href="/archived-events">View Archived Events</Link></Button>
+          <Button className={styles.button}><Link href="/">View All Events</Link></Button>
+      </Container>
   );
 };
 
