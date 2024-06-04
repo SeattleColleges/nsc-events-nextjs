@@ -15,7 +15,6 @@ import useAuth from "@/hooks/useAuth";
  
 
 
-
 const CreateEvent: React.FC = () => {
   const {
     eventData,
