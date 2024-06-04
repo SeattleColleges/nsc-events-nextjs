@@ -19,9 +19,9 @@ interface User {
  */
 async function fetchUser(setUserInfo: (userInfo: User[]) => void) {
   const token = localStorage.getItem("token");
-  const apiUrl = "http://localhost:3000/api/users";
+  const apiUrl = process.env.NSC_EVENTS_PUBLIC_API_URL || `http://localhost:3000/api`;
   try {
-    const res = await fetch(apiUrl, {
+    const res = await fetch(`${apiUrl}/users`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
