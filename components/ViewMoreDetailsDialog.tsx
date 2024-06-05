@@ -58,8 +58,7 @@ function ViewMoreDetailsDialog({
     { title: "Prerequisites", detail: event.eventPrerequisites },
     { title: "Cancelation Policy", detail: event.eventCancellationPolicy },
     { title: "Social media", detail: event.eventSocialMedia },
-    // trouble accessing attendanceCount, needs to be looked at
-    { title: "Attendance Count", detail: event.attendanceCount ?? 'Not Available' },
+    { title: "Attendance Count", detail: event.attendanceCount ?? "Not Available" },
     { title: "Privacy", detail: event.eventPrivacy },
     { title: "Archived", detail: event.isHidden ? "Yes" : "No" },
   ];
