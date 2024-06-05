@@ -8,7 +8,7 @@ const Admin = () => {
           {/* <h1>Placeholder for the admin page so npm run build compiles successfully.</h1>
           <p>FIX: move to pages or use getSession from nextauth</p>
           <p>FIX: allow only users with admin role to be routed to this page</p> */}
-          <button className={styles.button}>Edit User Role</button>
+          <button className={styles.button}><Link href="/edit-user-role-page">Edit User Role</Link></button>
           <button className={styles.button}><Link href="/create-event">Create Event</Link></button>
           <button className={styles.button}><Link href="/my-events">View My Events</Link></button>
           <button className={styles.button}><Link href="/archived-events">View Archived Events</Link></button>
