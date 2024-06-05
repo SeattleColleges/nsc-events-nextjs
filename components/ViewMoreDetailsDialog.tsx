@@ -88,10 +88,17 @@ function ViewMoreDetailsDialog({
           </ListItem>
         );
         // Otherwise, map the detail normally
-      } else {
+      } else if (detail.detail !== undefined || detail.detail !== "") {
         return (
           <ListItem key={id}>
             <ListItemText primary={`${detail.title}: ${detail.detail}`} />
+          </ListItem>
+        );
+      } else {
+        // Handle the case where detail.detail is undefined
+        return (
+          <ListItem key={id}>
+            <ListItemText primary={`${detail.title}: Not Available`} />
           </ListItem>
         );
       }
