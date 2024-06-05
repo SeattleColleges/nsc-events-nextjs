@@ -207,7 +207,7 @@ const ChangePassword = () => {
             required
             fullWidth
             name="newPasswordConfirm"
-            label="New Password Confirm"
+            label="Confirm New Password"
             type={showNewPasswordConfirm ? "text" : "password"}
             id="newPasswordConfirm"
             autoComplete="new-password"
