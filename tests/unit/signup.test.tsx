@@ -2,28 +2,40 @@ import SignUp from '@/app/auth/sign-up/page'
 import { fireEvent, render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom'
 
-// Mock useRouter hook
-jest.mock('next/router', () => ({
-  ...jest.requireActual('next/router'), // Use actual implementation for useRouter
-  useRouter: jest.fn(),
-}))
+// Mocks router for jest testing
+jest.mock('next/navigation', () => jest.requireActual('next-router-mock'))
 
 describe('Sign up page tests', () => {
+  // Arrange
   beforeEach(() => {
-    // Mock the useRouter object
-    useRouter.mockReturnValue({
-      push: jest.fn(),
-    });
-
+    jest.clearAllMocks();
     render(<SignUp />)
   })
+  it('render contains title, submit button, and sign in link', () => {
+    const titleMap: Record<string, string> = {
+      heading: 'sign up',
+      button: 'sign up',
+      link: 'sign in',
+    }
 
-  it('sign in link directs to localhost /auth/sign-in route', () => {
+    for (const type in titleMap) {
+      // Act
+      const component = screen.queryByRole(type, {
+        name: new RegExp(titleMap[type], 'i'),
+      })
+      // Assert
+      expect(component).toBeInTheDocument()
+    }
+  })
+
+  it('sign in link direct to localhost /auth/sign-up route', () => {
+    // Arrange
+    const signinLink = screen.getByRole('link', { name: /sign in/i })
+
     // Act
-    const signInLink = screen.getByRole('link', { name: /Log In/i })
-    fireEvent.click(signInLink)
+    fireEvent.click(signinLink)
 
     // Assert
-    expect(require('next/router').useRouter().push).toHaveBeenCalledWith('/auth/sign-in')
+    expect(signinLink).toHaveProperty('href', 'http://localhost/auth/sign-in')
   })
 })
