@@ -66,5 +66,3 @@ const ArchivedEvents = () => {
 };
 
 export default ArchivedEvents;
-
-//kai manassee
