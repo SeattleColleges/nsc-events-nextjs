@@ -8,6 +8,7 @@ import { AppBar, Toolbar, IconButton, Grid, Button } from '@mui/material';
 import DrawerComp from './DrawerComp'; 
 import useAuth from '../hooks/useAuth'; 
 import AuthProfileMenu from './AuthProfileMenu'; 
+import ThemeToggle from './ThemeToggle';
 
 export default function Navbar() {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -56,6 +57,9 @@ export default function Navbar() {
                   </Link>
                 </Grid>
               )}
+              <Grid item>
+                <ThemeToggle />
+              </Grid>
             </Grid>
           </Grid>
         </Grid>
