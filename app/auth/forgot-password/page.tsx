@@ -2,13 +2,15 @@
 
 import React, { ChangeEventHandler, FormEventHandler, useState } from "react";
 import { Box, Button, TextField, Typography, Container, Paper } from '@mui/material';
-import { textFieldStyle } from "@/components/InputFields"
+import { textFieldStyle } from "@/components/InputFields";
+import Image from "next/image";
+import NorthSeattleLogo from "../../NorthSeattleLogo.png";
 
 const ForgotPassword = () => {
-  
+
   // user email state
   const [userEmail, setUserEmail] = useState({ email: "" });
-  
+
   // destructure email from userEmail state
   const { email } = userEmail;
 
@@ -17,17 +19,26 @@ const ForgotPassword = () => {
     const { name, value } = target;
     setUserEmail({ ...userEmail, [name]: value });
   };
-  
+
   // handle submit event
   const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
 
-  // TODO: send email to user with reset password link
+    // TODO: send email to user with reset password link
   };
-  
+
   return (
     <Container component="main" maxWidth="xs" sx={{ display: 'flex', alignItems: 'center', height: '100vh' }}>
       <Paper elevation={6} sx={{ padding: 4, width: '100%', borderRadius: 2, mb: 2 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'center', marginBottom: 2 }}>
+        <Image
+            src={NorthSeattleLogo.src}
+            alt="North Seattle College Logo"
+            width={150}
+            height={50}
+            style={{ borderRadius: "10px" }}
+          />
+        </Box>
         <Typography component="h1" variant="h5" textAlign="center" sx={{ mb: 2 }}>
           Forgot Password
         </Typography>

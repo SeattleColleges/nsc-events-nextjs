@@ -3,20 +3,20 @@
 import { ChangeEventHandler, FormEventHandler, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import logo from "../../logo.png";
+import NorthSeattleLogo from "../../NorthSeattleLogo.png";
 import { Container, Paper, Box, TextField, Button, Typography, Link as MuiLink } from "@mui/material";
 import { textFieldStyle } from "@/components/InputFields";
 const URL = process.env.NSC_EVENTS_PUBLIC_API_URL || "http://localhost:3000/api";
 
 // similar to sign-up page, but we're only handling email and password 
 const Signin = () => {
-  
+
   const [error, setError] = useState("");
   const [userInfo, setUserInfo] = useState({
     email: "",
     password: "",
   });
-  
+
   const router = useRouter();
 
   const { email, password } = userInfo;
@@ -60,7 +60,15 @@ const Signin = () => {
   return (
     <Container maxWidth="xs" sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', height: '100vh', justifyContent: 'center' }}>
       <Paper elevation={6} sx={{ padding: 4, width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', borderRadius: 2, mb: 2 }}>
-        <Image src={logo} alt="logo" width={100} height={30} style={{ marginBottom: '20px', borderRadius: '10px' }} />
+        <Box sx={{ display: 'flex', justifyContent: 'center', marginBottom: 2 }}>
+          <Image
+            src={NorthSeattleLogo.src}
+            alt="North Seattle College Logo"
+            width={150}
+            height={50}
+            style={{ borderRadius: "10px" }}
+          />
+        </Box>
         <Typography component="h1" variant="h5">
           Sign In
         </Typography>
