@@ -23,19 +23,13 @@ const Creator = () => {
         <Box
             display="flex"
             justifyContent="center"
-            alignItems="flex-start"
-            height="100vh"
-            paddingTop="2em"
-          >
-            <Box
-                display="flex"
-                justifyContent="center"
-            >
+            alignItems="center"
+            height='100vh'
+        >
             <CreatorButton path={"/create-event"} text={"Create Event"}/>
             <CreatorButton path={"/my-events"} text={"View My Events"}/>
             <CreatorButton path={"/archived-events"} text={"View Archived Events"}/>
             <CreatorButton path={"/"} text={"View All Events"}/>
-            </Box>
         </Box>
         {/* <h1>Placeholder for the creator page so npm run build compiles successfully.</h1>
           <p>FIX: move to pages or use getSession from nextauth</p>
