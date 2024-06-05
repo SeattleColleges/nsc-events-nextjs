@@ -1,44 +1,63 @@
+"use client"
 
+import { getCurrentUserId } from "@/utility/userUtils";
+import { Box, Button, Stack, Typography } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import CurrentUserCard from "@/components/CurrentUserCard";
+import { useRouter } from "next/navigation";
+
+interface User {
+    firstName: string;
+    lastName: string;
+    email: string;
+    pronouns: string
+}
+const URL = process.env.NSC_EVENTS_PUBLIC_API_URL || "http://localhost:3000/api";
 const Profile = () => {
-    // Temporary boilerplate code to make it compile
+    const [user, setUser] = useState<User>();
+    const [token, setToken] = useState<string | null>();
+    const router = useRouter();
+    const getUserFromId = async (userId: string) => {
+        const response = await fetch(`${URL}/users/find/${userId}`);
+        if (response.ok) {
+            const data = await response.json();
+            setUser(data)
+        }
+    }
+    useEffect(()=> {
+        setToken(localStorage.getItem('token'))
+        const userId = getCurrentUserId();
+        getUserFromId(userId);
+    },[]);
+    if (token === null) {
+        return (
+            <Box sx={{ display: "flex", justifyContent: "center" }}>
+                <Typography>
+                    Please sign in to view profile.
+                </Typography>
+            </Box>
+        )
+    }
+    if (!user) {
+        return (
+            <Typography>
+                Loading...
+            </Typography>
+        )
+    }
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen">
-            <h1>Placeholder Profile so npm run build compiles successfully.</h1>
-            <p>FIX: move to pages or use getSession from nextauth</p>
-        </div>
+        <Box sx={{ display: "flex", justifyContent: "center" }}>
+            <Stack>
+                <Typography component="h1" variant="h4" sx={{ mt: 2, mb: 3 }}>
+                    Welcome, { user?.firstName }
+                </Typography>
+                <CurrentUserCard user={user}/>
+                <Button onClick={ () => router.replace('/auth/change-password') }>
+                    Change Password
+                </Button>
+            </Stack>
+        </Box>
     );
 };
 
 export default Profile;
-// todo: this will be the users profile page when they've signed in
-
-// import { useSession } from "next-auth/react";
-// import { useRouter } from "next/navigation";
-
-// const Profile = () => {
-//   const { data: session, status } = useSession();
-//   const router = useRouter();
-
-//   if (status === "loading") {
-//     // Handle loading state
-//     return <div>Loading...</div>;
-//   }
-
-//   if (!session) {
-//     // Redirect the user to the sign-in page if there is no active session
-//     router.replace("/auth/sign-in");
-//     return null;
-//   }
-
-//   const { user } = session;
-
-//   return (
-//     <div className="flex flex-col items-center justify-center min-h-screen">
-//       <h1>Welcome, {user?.name}!</h1>
-//       <p>Email: {user?.email}</p>
-//       <p>Profile information goes here...</p>
-//     </div>
-//   );
-// };
-
-// export default Profile;
