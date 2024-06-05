@@ -1,10 +1,14 @@
-"use client";import React, { useEffect, useState } from "react";import styles from "./home.module.css";
+"use client";
+
+import React, { useEffect, useState } from "react";
+import styles from "./home.module.css";
 import Image from "next/image";
 import logo from "./logo.png";
 import CircularProgress from "@mui/material/CircularProgress";
 import google_play from "./google_play.png";
 import HomeEventsList from "@/components/HomeEventGetter";
 import UpcomingEvent from "@/components/UpcomingEvent";
+import {Box, Typography} from "@mui/material";
 
 const Home = () => {
   const [token, setToken] = useState<string | null>(null);
@@ -18,7 +22,7 @@ const Home = () => {
 
   if (isLoading) {
     return (
-      <div
+      <Box
         style={{
           display: "flex",
           justifyContent: "center",
@@ -27,26 +31,32 @@ const Home = () => {
         }}
       >
         <CircularProgress />
-      </div>
+      </Box>
     );
   }
 
   return (
     <>
       {token ? (
-        <div className={styles.welcomeContainer}>
-          <h1 className={styles.title}>
+        <Box
+            className={styles.welcomeContainer}
+        >
+          <Typography
+              variant='h2'
+              fontSize={'xxx-large'}
+              marginBottom={'0.75em'}
+          >
             Upcoming Events
-          </h1>
-          <div className={styles.eventContainer}>
-            <div className={styles.homeEventsList}>
+          </Typography>
+          <Box className={styles.eventContainer}>
+            <Box className={styles.homeEventsList}>
               <HomeEventsList />
-            </div>
-            <div className={styles.upcomingEvent}>
+            </Box>
+            <Box className={styles.upcomingEvent}>
               <UpcomingEvent />
-            </div>
-          </div>
-        </div>
+            </Box>
+          </Box>
+        </Box>
       ) : (
         <div className={styles.welcomeContainer}>
           <div className={styles.formContainer}>
