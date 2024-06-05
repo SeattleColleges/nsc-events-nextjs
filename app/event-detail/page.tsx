@@ -238,6 +238,7 @@ const EventDetail = ({ searchParams }: SearchParams) => {
                 display: "flex",
                 width: "100vh",
                 gap: "25px",
+                padding: 20,
                 justifyContent: "center",
                 alignItems: "center",
               }}
