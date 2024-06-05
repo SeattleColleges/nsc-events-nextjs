@@ -23,14 +23,20 @@ const Admin = () => {
           <Box
               display="flex"
               justifyContent="center"
-              alignItems="center"
+              alignItems="flex-start"
               height="100vh"
+              paddingTop="2em"
           >
+            <Box
+                display="flex"
+                justifyContent="center"
+            >
               <AdminButton path={'/edit-user-role-page'} text={"Edit User Role"}/>
               <AdminButton path={'/create-event'} text={"Create Event"}/>
               <AdminButton path={'/my-events'} text={"View My Events"}/>
               <AdminButton path={'/archived-events'} text={"View Archived Events"}/>
               <AdminButton path={'/'} text={"View All Events"}/>
+              </Box>
           </Box>
       </Container>
   );
