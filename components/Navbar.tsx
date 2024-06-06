@@ -15,7 +15,7 @@ import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import useAuth from '../hooks/useAuth'; 
 import Link from 'next/link';
-import { Grid, ListItem, ListItemText, MenuList } from '@mui/material';
+import { ListItem, ListItemText, MenuList } from '@mui/material';
 import Image from 'next/image';
 import logo from '../app/logo.png';
 import { useRouter } from 'next/navigation';
@@ -54,14 +54,21 @@ const ResponsiveAppBar = () => {
       return '/profile';
     }
     if (user.role === 'admin') {
-      return '/admin';
+      return (
+        <ListItem component={Link} href="/admin">
+          <ListItemText primary="Admin Event" />
+        </ListItem>
+      );
     } else if (user.role === 'creator') {
-      return '/creator';
+      return (
+        <ListItem component={Link} href="/creator">
+          <ListItemText primary="Creator Event" />
+        </ListItem>
+      );
     } else {
       return '/profile';
     }
   };
-  
 
   return (
     <AppBar position="static">
@@ -155,10 +162,9 @@ const ResponsiveAppBar = () => {
               >
                 <MenuItem onClick={handleCloseUserMenu}>
                   <Link href={profileLink()} passHref>
-                    <Typography textAlign="center" component="a">Profile</Typography>
+                    <Typography textAlign="center">Profile</Typography>
                   </Link>
                 </MenuItem>
-
                 <MenuItem onClick={() => { handleCloseUserMenu(); handleSignOut(); }}>
                   <Typography textAlign="center">Sign Out</Typography>
                 </MenuItem>
