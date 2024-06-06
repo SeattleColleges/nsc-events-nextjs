@@ -22,6 +22,9 @@ import { useRouter } from 'next/navigation';
 import Profile from '@/app/profile/page';
 import Admin from '@/app/admin/page';
 import Creator from '@/app/creator/page';
+import MenuIcon from '@mui/icons-material/Menu';
+import EventDetail from '@/app/event-detail/page';
+
 
 const ResponsiveAppBar = () => {
   const [navBarOpen, setNavBarOpen] = React.useState<null | HTMLElement>(null);
@@ -73,7 +76,7 @@ const ResponsiveAppBar = () => {
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+          <Image src={logo} alt="logo" width={50} height={50} style={{ marginRight: '16px' }} />
           <Typography
             variant="h6"
             noWrap
@@ -92,13 +95,13 @@ const ResponsiveAppBar = () => {
             NSC
           </Typography>
           <Box sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center', ml: 'auto' }}>
-            <Link href="/" passHref>
+            <Link href="/event-detail" passHref>
               <Button color="inherit" sx={{ textTransform: 'none' }}>EVENTS</Button>
             </Link>
           </Box>
           <Box sx={{ display: { xs: 'flex', md: 'none' }, flexGrow: 1 }}>
             <IconButton size="large" edge="start" color="inherit" onClick={handleOpenNavMenu}>
-              <Image src={logo} alt="logo" width={50} height={50} />
+              <MenuIcon/>
             </IconButton>
             <Menu
               open={Boolean(navBarOpen)}
@@ -108,14 +111,13 @@ const ResponsiveAppBar = () => {
             >
               <MenuList>
                 <MenuItem onClick={handleCloseNavMenu}>
-                  <Link href="/" passHref>
+                  <Link href="/event-detail" passHref>
                     <Button color="inherit" sx={{ textTransform: 'none' }}>Events</Button>
                   </Link>
                 </MenuItem>
               </MenuList>
             </Menu>
           </Box>
-          <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
           <Typography
             variant="h5"
             noWrap
