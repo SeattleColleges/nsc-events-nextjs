@@ -19,7 +19,9 @@ import { ListItem, ListItemText, MenuList } from '@mui/material';
 import Image from 'next/image';
 import logo from '../app/logo.png';
 import { useRouter } from 'next/navigation';
-
+import Profile from '@/app/profile/page';
+import Admin from '@/app/admin/page';
+import Creator from '@/app/creator/page';
 
 const ResponsiveAppBar = () => {
   const [navBarOpen, setNavBarOpen] = React.useState<null | HTMLElement>(null);
@@ -54,20 +56,17 @@ const ResponsiveAppBar = () => {
       return '/profile';
     }
     if (user.role === 'admin') {
-      return (
-        <ListItem component={Link} href="/admin">
-          <ListItemText primary="Admin Event" />
-        </ListItem>
-      );
+      return '/admin';
     } else if (user.role === 'creator') {
-      return (
-        <ListItem component={Link} href="/creator">
-          <ListItemText primary="Creator Event" />
-        </ListItem>
-      );
+      return '/creator';
     } else {
       return '/profile';
     }
+  };
+
+  const handleProfileClick = () => {
+    router.push(profileLink());
+    handleCloseUserMenu();
   };
 
   return (
@@ -112,8 +111,6 @@ const ResponsiveAppBar = () => {
                   <Link href="/" passHref>
                     <Button color="inherit" sx={{ textTransform: 'none' }}>Events</Button>
                   </Link>
-                </MenuItem>
-                <MenuItem onClick={handleCloseNavMenu}>
                 </MenuItem>
               </MenuList>
             </Menu>
@@ -160,10 +157,8 @@ const ResponsiveAppBar = () => {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
-                <MenuItem onClick={handleCloseUserMenu}>
-                  <Link href={profileLink()} passHref>
-                    <Typography textAlign="center">Profile</Typography>
-                  </Link>
+                <MenuItem onClick={handleProfileClick}>
+                  <Typography textAlign="center">Profile</Typography>
                 </MenuItem>
                 <MenuItem onClick={() => { handleCloseUserMenu(); handleSignOut(); }}>
                   <Typography textAlign="center">Sign Out</Typography>
@@ -178,3 +173,4 @@ const ResponsiveAppBar = () => {
 };
 
 export default ResponsiveAppBar;
+
