@@ -66,6 +66,7 @@ const Home = () => {
             </Box>
             <Typography
                 className={styles.title}
+                style={{ marginBottom: '0.5em' }}
                 variant='h1'
                 fontSize={'xx-large'}
             >
