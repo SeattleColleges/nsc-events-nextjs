@@ -223,7 +223,7 @@ const EventDetail = ({ searchParams }: SearchParams) => {
           }}
         >
         <Button onClick={getPrevEvent}>
-          <ArrowBackIosIcon sx={{ color: 'white', fontSize: '100px' }} />
+          <ArrowBackIosIcon sx={{ color: 'white', fontSize: '100px', filter: 'drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2))' }} />
         </Button>
         <Box
           className={styles.formContainer}
@@ -359,7 +359,7 @@ const EventDetail = ({ searchParams }: SearchParams) => {
           <SnackbarContent message={snackbarMessage} sx={{ color: "black" }} />
         </Snackbar>
         <Button onClick={getNextEvent}>
-        <ArrowForwardIosIcon sx={{ color: 'white', fontSize: '100px' }} />
+        <ArrowForwardIosIcon sx={{ color: 'white', fontSize: '100px', filter: 'drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2))' }} />
         </Button>
       </Box>
       </Box>
