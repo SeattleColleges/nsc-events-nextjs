@@ -261,10 +261,8 @@ const CreateEvent: React.FC = () => {
               name="addedTag"
               value={newTag}
               onChange={handleNewTagChange}
-              // Need to figure out what can go in the following values, 
-              // I commented out from other text-fields
-              // error={}
-              // helperText={}
+              error={!!errors.eventTags}
+              helperText={errors.eventTags}
               InputProps={{ style: textFieldStyle.input }}
               InputLabelProps={{ style: textFieldStyle.label }}
               placeholder="Enter the tag of the event"
