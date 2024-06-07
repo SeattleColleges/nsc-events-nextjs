@@ -19,7 +19,7 @@ const Creator = () => {
         )
     } 
   return (
-    <Container>
+    <Container style={{ backgroundColor: "#bec3c8" }}>
         <Box
             display="flex"
             justifyContent="center"
