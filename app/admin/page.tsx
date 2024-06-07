@@ -7,12 +7,12 @@ const Admin = () => {
         path: string;
         text: string;
     }
-    const AdminButton: FC<AdminButtonProps> = ({path, text}) => {
+    const AdminButton: FC<AdminButtonProps> = ({ path, text }) => {
         return (
             <Button
                 variant="contained"
                 color="primary"
-                style={{margin: 'auto 0.25em'}}
+                style={{ margin: 'auto 0.25em' }}
             >
                 <Link href={ path }>{ text }</Link>
             </Button>

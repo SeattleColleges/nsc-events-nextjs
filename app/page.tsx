@@ -62,7 +62,7 @@ const Home = () => {
         <Box className={styles.welcomeContainer}>
           <Box className={styles.formContainer}>
             <Box className={styles.logoContainer}>
-              <Image src={logo} alt="logo" />
+              <Image src={blue_logo} alt="logo" />
             </Box>
             <Typography
                 className={styles.title}
@@ -94,7 +94,7 @@ const Home = () => {
               </Link>
             </Box>
             {/* download mobile app link */}
-            <Box style={{ marginBottom:"1em"}}>
+            <Box style={{ marginBottom:"1em" }}>
                 <Link href=""
                       className={styles.link}
                 >
@@ -111,7 +111,7 @@ const Home = () => {
                 className={styles.title}
                 variant='h2'
                 fontSize={'xxx-large'}
-                style={{marginBottom:"1em"}}
+                style={{ marginBottom:"1em" }}
             >
                 Upcoming Events
             </Typography>
