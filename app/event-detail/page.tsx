@@ -196,7 +196,32 @@ const EventDetail = ({ searchParams }: SearchParams) => {
 
   return (
     <>
-      <Box className={styles.container}>
+      <Box className={styles.container}
+        sx={{
+          position: "relative",
+          zIndex: 0,
+          overflow: "hidden",
+          "&:before": {
+            content: "''",
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundImage: `url(${event.eventCoverPhoto})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            filter: "blur(8px)",
+            opacity: 0.3
+          }
+        }}
+      >
+        <Box className={styles.container}
+          sx={{ 
+            backgroundColor: "rgba(0, 0, 0, 0)",
+            zIndex: 1,
+          }}
+        >
         <Button onClick={getPrevEvent}>
           <ArrowBackIosIcon sx={{ color: 'white', fontSize: '100px' }} />
         </Button>
@@ -336,6 +361,7 @@ const EventDetail = ({ searchParams }: SearchParams) => {
         <Button onClick={getNextEvent}>
         <ArrowForwardIosIcon sx={{ color: 'white', fontSize: '100px' }} />
         </Button>
+      </Box>
       </Box>
     </>
   );
