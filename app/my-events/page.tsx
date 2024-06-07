@@ -11,11 +11,14 @@ const MyEvents = () => {
     // check if user is authorized to access page
     if (isAuth && (user?.role == 'admin' || user?.role == 'creator')){
         return(
-            <Box className={styles.welcomeContainer}>
+            <Container maxWidth={false} className={styles.container}>
                 <Box className={styles.title}>
                     <Typography
-                        fontSize={"xxx-large"}
+                        variant={"h2"}
+                        fontSize={"xx-large"}
                         textAlign={"center"}
+                        padding={"1rem"}
+                        marginBottom={"1rem"}
                     >
                         My Created Events
                     </Typography>
@@ -23,7 +26,7 @@ const MyEvents = () => {
                 <Box className={styles.eventContainer}>
                     <MyEventsList />
                 </Box>
-            </Box>
+            </Container>
         );
     }
 };

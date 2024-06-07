@@ -24,8 +24,8 @@ const ArchivedEvents = () => {
     return (
         <Container maxWidth={false} className={styles.container}>
             <Typography
-                variant={"h1"}
-                fontSize={"xxx-large"}
+                variant={"h2"}
+                fontSize={"xx-large"}
                 textAlign={"center"}
                 padding={"1rem"}
                 marginBottom={"1rem"}
