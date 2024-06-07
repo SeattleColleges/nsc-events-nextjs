@@ -19,7 +19,7 @@ const Admin = () => {
         )
     }
   return (
-      <Container style={{ backgroundColor: "#bec3c8" }}>
+      <Container maxWidth={false} style={{ backgroundColor: "#bec3c8" }}>
           <Box
               display="flex"
               justifyContent="center"
