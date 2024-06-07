@@ -16,7 +16,7 @@ export const useEventForm = (initialData: Activity | ActivityDatabase) => {
     eventStartTime: "",
     eventEndTime: "",
     eventLocation: "",
-    eventMeetingUrl: "",
+    eventMeetingURL: "",
     eventCoverPhoto: "",
     eventHost: "",
     eventRegistration: "",
@@ -142,7 +142,7 @@ export const useEventForm = (initialData: Activity | ActivityDatabase) => {
 
     try {
       const apiUrl = process.env.NSC_EVENTS_PUBLIC_API_URL || `http://localhost:3000/api`;
-      const response = await fetch("${apiUrl}/events/new", {
+      const response = await fetch(`${apiUrl}/events/new`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
