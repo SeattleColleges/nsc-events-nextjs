@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "./home.module.css";
 import Image from "next/image";
-import logo from "./logo.png";
+import blue_logo from "./blue_logo.png";
 import CircularProgress from "@mui/material/CircularProgress";
 import google_play from "./google_play.png";
 import HomeEventsList from "@/components/HomeEventGetter";

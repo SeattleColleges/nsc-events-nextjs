@@ -24,9 +24,10 @@ export interface ActivityDatabase {
         instagram: string;
         hashtag: string;
     };
+    attendanceCount: number;
     eventPrivacy: string;
     eventAccessibility: string;
-    eventMeetingUrl: string;
+    eventMeetingURL: string;
     eventNote: string;
     isHidden?: boolean;
     isArchived?: boolean;
@@ -42,6 +43,7 @@ export const activityDatabase: ActivityDatabase = {
     eventStartTime: "",
     eventEndTime: "",
     eventLocation: "",
+    eventMeetingURL: "",
     eventCoverPhoto: "",
     eventHost: "",
     eventRegistration: "",
@@ -58,8 +60,8 @@ export const activityDatabase: ActivityDatabase = {
         instagram: "",
         hashtag: ""
     },
+    attendanceCount: 0,
     eventPrivacy: "",
     eventNote: "",
-    eventMeetingUrl: "",
     eventAccessibility: ""
 };
