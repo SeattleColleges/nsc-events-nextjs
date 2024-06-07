@@ -18,6 +18,7 @@ import Link from 'next/link';
 import { ListItem, ListItemText, MenuList } from '@mui/material';
 import Image from 'next/image';
 import logo from '../app/logo.png';
+import H_Logo_White from '../app/H_Logo_White.png'
 import { useRouter } from 'next/navigation';
 import Profile from '@/app/profile/page';
 import Admin from '@/app/admin/page';
@@ -76,7 +77,7 @@ const ResponsiveAppBar = () => {
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <Image src={logo} alt="logo" width={50} height={50} style={{ marginRight: '16px' }} />
+          <Image src={H_Logo_White} alt="logo" width={50} height={50} style={{ marginRight: '16px' }} />
           <Typography
             variant="h6"
             noWrap
@@ -160,7 +161,7 @@ const ResponsiveAppBar = () => {
                 onClose={handleCloseUserMenu}
               >
                 <MenuItem onClick={handleProfileClick}>
-                  <Typography textAlign="center">Profile</Typography>
+                  <Typography textAlign="center">My Account</Typography>
                 </MenuItem>
                 <MenuItem onClick={() => { handleCloseUserMenu(); handleSignOut(); }}>
                   <Typography textAlign="center">Sign Out</Typography>
