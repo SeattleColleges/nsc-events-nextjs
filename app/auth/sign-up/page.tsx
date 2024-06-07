@@ -262,7 +262,7 @@ const SignUp = () => {
           </Button>
           <Box textAlign="center" sx={{ mt: 2 }}>
             <MuiLink href="/auth/sign-in" variant="body2">
-              Already have an account? Log In
+              Already have an account? Sign In
             </MuiLink>
           </Box>
         </Box>
