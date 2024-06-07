@@ -3,11 +3,11 @@
 import useAuth from "@/hooks/useAuth";
 import styles from "@/app/home.module.css";
 import EventCard from "@/components/EventCard";
-import UnauthorizedPages from "@/components/UnauthorizedPages";
 import { useArchivedEvents } from "@/utility/queries";
 import { ActivityDatabase } from "@/models/activityDatabase";
 import { Button, Container, Grid } from "@mui/material";
 import React, { useEffect, useState } from "react";
+import UnauthorizedPageMessage from "@/components/UnauthorizedPageMessage";
 
 const ArchivedEvents = () => {
   const { isAuth, user } = useAuth();
@@ -61,7 +61,7 @@ const ArchivedEvents = () => {
       </Container>
     );
   } else {
-    return <UnauthorizedPages />;
+    return <UnauthorizedPageMessage />;
   }
 };
 
