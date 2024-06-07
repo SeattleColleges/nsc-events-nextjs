@@ -43,7 +43,7 @@ function ViewMoreDetailsDialog({
 
   const moreDetails = [
     { title: "Host", detail: event.eventHost },
-    { title: "URL", detail: event.eventMeetingUrl },
+    { title: "URL", detail: event.eventMeetingURL },
     { title: "Registration", detail: event.eventRegistration },
     { title: "Tags", detail: arrayToString(event.eventTags) },
     { title: "Speakers", detail: arrayToString(event.eventSpeakers) },
