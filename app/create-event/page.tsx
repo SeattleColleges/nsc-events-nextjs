@@ -464,5 +464,5 @@ const CreateEvent: React.FC = () => {
       return <UnauthorizedPageMessage />;
     }
 };
-};
+
 export default CreateEvent;
