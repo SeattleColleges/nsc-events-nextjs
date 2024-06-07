@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import logo from '../app/logo.png';
+import white_logo from '../app/white_logo.png'
 import MenuIcon from '@mui/icons-material/Menu';
 import { AppBar, Toolbar, IconButton, Grid, Button, Drawer, List, ListItem, ListItemText, useTheme, useMediaQuery } from '@mui/material';
 import DrawerComp from './DrawerComp'; 
@@ -50,7 +50,7 @@ export default function Navbar() {
         <Grid container justifyContent="space-between" alignItems="center">
           <Grid item>
             <Link href="/" passHref>
-              <Image src={logo} alt="logo" width={40} height={40} />
+              <Image src={white_logo} alt="logo" width={40} height={40} />
             </Link>
           </Grid>
           <Grid item>

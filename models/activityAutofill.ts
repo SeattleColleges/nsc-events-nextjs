@@ -9,7 +9,7 @@ const activityAutofill: Activity = {
     eventStartTime: "10:00 AM",
     eventEndTime: "4:00 PM",
     eventLocation: "123 Main Street, City",
-    eventMeetingUrl: "https://zoom.us/sample-url",
+    eventMeetingURL: "https://zoom.us/sample-url",
     eventCoverPhoto: "https://example.com/event-cover.jpg",
     eventHost: "Sample Organization",
     eventRegistration: "Register at https://example.com/registration",
