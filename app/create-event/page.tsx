@@ -197,11 +197,11 @@ const CreateEvent: React.FC = () => {
             id="event-meeting-url"
             label="Event Meeting URL"
             variant="outlined"
-            name="eventMeetingUrl"
-            value={eventData.eventMeetingUrl}
+            name="eventMeetingURL"
+            value={eventData.eventMeetingURL}
             onChange={handleInputChange}
-            error={!!errors.eventMeetingUrl}
-            helperText={errors.eventMeetingUrl}
+            error={!!errors.eventMeetingURL}
+            helperText={errors.eventMeetingURL}
             InputProps={{ style: textFieldStyle.input }}
             InputLabelProps={{ style: textFieldStyle.label }}
           />
