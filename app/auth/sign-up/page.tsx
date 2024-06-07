@@ -1,6 +1,7 @@
 "use client";
 import { ChangeEventHandler, FormEventHandler, use, useState } from "react";
-import {  Container,
+import {
+  Container,
   Paper,
   Box,
   TextField,
@@ -139,13 +140,15 @@ const SignUp = () => {
             alignItems: "center",
           }}
         >
-          <Image
-            src={NorthSeattleLogo.src}
-            alt="North Seattle College Logo"
-            width={150}
-            height={50}
-            style={{ borderRadius: "10px" }}
-          />
+          <Box sx={{ display: 'flex', justifyContent: 'center', marginBottom: 2 }}>
+            <Image
+              src={NorthSeattleLogo.src}
+              alt="North Seattle College Logo"
+              width={150}
+              height={50}
+              style={{ borderRadius: "10px" }}
+            />
+          </Box>
           <Typography component="h1" variant="h5">
             Sign Up
           </Typography>
@@ -207,9 +210,9 @@ const SignUp = () => {
             onChange={handleChange}
             error={Boolean(errors.password)}
             helperText={errors.password}
-            InputLabelProps={{ style: textFieldStyle.label }} 
+            InputLabelProps={{ style: textFieldStyle.label }}
             InputProps={{
-              style: textFieldStyle.input, 
+              style: textFieldStyle.input,
               endAdornment: (
                 <InputAdornment position="end">
                   <IconButton
@@ -232,9 +235,9 @@ const SignUp = () => {
             onChange={handleChange}
             error={Boolean(errors.confirmPassword)}
             helperText={errors.confirmPassword}
-            InputLabelProps={{ style: textFieldStyle.label }} 
+            InputLabelProps={{ style: textFieldStyle.label }}
             InputProps={{
-              style: textFieldStyle.input, 
+              style: textFieldStyle.input,
               endAdornment: (
                 <InputAdornment position="end">
                   <IconButton
@@ -259,7 +262,7 @@ const SignUp = () => {
           </Button>
           <Box textAlign="center" sx={{ mt: 2 }}>
             <MuiLink href="/auth/sign-in" variant="body2">
-              Already have an account? Log In
+              Already have an account? Sign In
             </MuiLink>
           </Box>
         </Box>

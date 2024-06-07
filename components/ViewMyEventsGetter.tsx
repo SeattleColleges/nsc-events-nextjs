@@ -1,56 +1,58 @@
 'use client';
 
 import { ActivityDatabase } from "@/models/activityDatabase";
-import { Grid } from "@mui/material";
+import { Button, Container, Grid } from "@mui/material";
 import { useEffect, useState } from "react";
 import EventCard from "./EventCard";
-
-// decode the userId from localStorage
-const getUserId = () => {
-    const token = localStorage.getItem('token');
-    if (token !== null){
-        const userId = JSON.parse(atob(token.split(".")[1])).id;
-        return userId;
-    }
-    return null;
-}
-// fetch API endpoint that contains the user's created events
-const getMyEvents = async(userId: string) => {
-    const response = await fetch(`http://localhost:3000/api/events/user/${userId}`);
-    return response.json();
-}
+import styles from '@/app/home.module.css'
+import { useMyEvents } from "@/utility/queries";
+import { getCurrentUserId } from "@/utility/userUtils";
 
 export function MyEventsList() {
     // useState to hold the events from the API call
     const [events, setEvents] = useState<ActivityDatabase[]>([]);
-    
+    const [page, setPage] = useState(1);
+    const [hasReachedLastPage, setHasReachedLastPage] = useState(false)
+    const { data } = useMyEvents(getCurrentUserId(), page);
     useEffect(() => {
-        const fetchEvents = async () => {
-            try {
-                // decode and grab the logged-in userId from localStorage
-                const userId = getUserId() 
-                if (userId){
-                    // pull user's events from endpoint 
-                    const myEvents = await getMyEvents(userId); 
-                    // set them to the useState hook
-                    setEvents(myEvents)
-                }
-            } catch (error) {
-                console.error("Error fetching user's events:", error);
-            }
-        };
-        fetchEvents();
-    }, []);
-
+        if (data) {
+            setEvents((prevEvents) => [...prevEvents, ...data]);
+            setHasReachedLastPage(data.length < 5)
+        }
+    }, [data]);
+    const handleLoadMoreEvents = () => {
+        setPage(page => page + 1)
+    }
     return (
-        <Grid container spacing={1}>
-                {events?.map((event: ActivityDatabase) => (
-                    <EventCard
-                        key={event._id} 
-                        event={event} 
-                    />
-                ))}
-        </Grid>
+        <Container maxWidth={false} className={styles.container}>
+            <Grid
+                container
+                direction={'column'}
+                spacing={1}
+                alignItems={'center'}
+                justifyItems={'center'}
+            >
+                    {events?.map((event: ActivityDatabase) => (
+                        <EventCard
+                            key={event._id}
+                            event={event}
+                        />
+                    ))}
+                {
+                    !hasReachedLastPage &&
+                    <Button onClick={handleLoadMoreEvents}
+                            type='button'
+                            variant="contained"
+                            color="primary"
+                            style={{
+                                textTransform: "none",
+                                margin: '1em auto',
+                            }}>
+                        Load more events
+                    </Button>
+                }
+            </Grid>
+        </Container>
     );
 }
 

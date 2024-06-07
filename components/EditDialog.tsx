@@ -40,7 +40,7 @@ const EditDialog = ({ isOpen, event, toggleEditDialog }: EditDialogProps) => {
 
     return (
         <>
-            <Dialog open={ isOpen } maxWidth={"xl"} fullWidth={ true }>
+            <Dialog open={ isOpen } maxWidth={"md"} fullWidth={ true }>
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                     <Box component="form" onSubmit={handleSubmit} noValidate autoComplete="off" sx={{ p: 3 }}>
                         <Typography variant="h5" component="h2" sx={{ fontWeight: 'bold', color: 'black', mb: 2 }}>
@@ -154,11 +154,11 @@ const EditDialog = ({ isOpen, event, toggleEditDialog }: EditDialogProps) => {
                                 id="event-meeting-url"
                                 label="Event Meeting URL"
                                 variant="outlined"
-                                name="eventMeetingUrl"
-                                value={eventData.eventMeetingUrl || ""}
+                                name="eventMeetingURL"
+                                value={eventData.eventMeetingURL || ""}
                                 onChange={handleInputChange}
-                                error={!!errors.eventMeetingUrl}
-                                helperText={errors.eventMeetingUrl}
+                                error={!!errors.eventMeetingURL}
+                                helperText={errors.eventMeetingURL}
                                 InputProps={{ style: textFieldStyle.input }}
                                 InputLabelProps={{ style: textFieldStyle.label }}
                             />

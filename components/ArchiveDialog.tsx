@@ -22,7 +22,8 @@ const ArchiveDialog = ({ isOpen, eventId, dialogToggle }: ArchiveDialogProps) =>
     const archiveEvent = async (id: string) => {
         const token = localStorage.getItem("token");
         try {
-            const response = await fetch(`http://localhost:3000/api/events/archive/${id}`, {
+            const apiUrl = process.env.NSC_EVENTS_PUBLIC_API_URL || `http://localhost:3000/api`;
+            const response = await fetch(`${apiUrl}/events/archive/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -43,7 +44,7 @@ const ArchiveDialog = ({ isOpen, eventId, dialogToggle }: ArchiveDialogProps) =>
         mutationFn: archiveEvent,
         onSuccess: async () => {
             setSnackbarMessage("Successfully archived event.");
-            await queryClient.refetchQueries({ queryKey: ['events'] });
+            await queryClient.refetchQueries({ queryKey: ['events', 'myEvents'] });
             setTimeout( () => {
                 router.push("/");
             }, 1200);

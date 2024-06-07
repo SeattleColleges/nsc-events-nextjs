@@ -1,6 +1,6 @@
 "use client";import React, { useEffect, useState } from "react";import styles from "./home.module.css";
 import Image from "next/image";
-import logo from "./logo.png";
+import blue_logo from "./blue_logo.png";
 import CircularProgress from "@mui/material/CircularProgress";
 import google_play from "./google_play.png";
 import HomeEventsList from "@/components/HomeEventGetter";
@@ -51,7 +51,7 @@ const Home = () => {
         <div className={styles.welcomeContainer}>
           <div className={styles.formContainer}>
             <div className={styles.logoContainer}>
-              <Image src={logo} alt="logo" />
+              <Image src={blue_logo} alt="logo" />
             </div>
             <h1 className={styles.title}>
               Welcome to North Seattle College Events
