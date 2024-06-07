@@ -8,7 +8,7 @@ export interface FormErrors {
     eventEndTime?: string;
     eventSchedule?: string;
     eventLocation?: string;
-    eventMeetingUrl?: string;
+    eventMeetingURL?: string;
     eventCoverPhoto?: string;
     eventHost?: string;
     eventRegistration?: string;
@@ -51,7 +51,7 @@ export interface Activity {
     eventStartTime: string;
     eventEndTime: string;
     eventLocation: string;
-    eventMeetingUrl: string;
+    eventMeetingURL: string;
     eventCoverPhoto: string;
     eventHost: string;
     eventRegistration: string;
@@ -77,7 +77,7 @@ export const activity: Activity = {
     eventStartTime: "",
     eventEndTime: "",
     eventLocation: "",
-    eventMeetingUrl: "",
+    eventMeetingURL: "",
     eventCoverPhoto: "",
     eventHost: "",
     eventRegistration: "",

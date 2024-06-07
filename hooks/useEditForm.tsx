@@ -2,13 +2,13 @@ import { FormEvent, useEffect, useState } from "react";
 import { validateFormData } from "@/utility/validateFormData";
 import useDateTimeSelection from "./useDateTimeSelection";
 import { ActivityDatabase } from "@/models/activityDatabase";
-import { useMutation } from "@tanstack/react-query";
+import {useMutation, useQueryClient} from "@tanstack/react-query";
 import { useEventForm } from "@/hooks/useEventForm";
 import { format, parse } from "date-fns";
 
 export const useEditForm = (initialData: ActivityDatabase) => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-
+  const queryClient = useQueryClient();
   const {
     setEventData,
     setErrors,
@@ -89,7 +89,8 @@ const to24HourTime  = (time: string) => {
 
 
     try {
-      const response = await fetch(`http://localhost:3000/api/events/update/${dataToSend._id}`, {
+      const apiUrl = process.env.NSC_EVENTS_PUBLIC_API_URL || `http://localhost:3000/api`;
+      const response = await fetch(`${apiUrl}/events/update/${dataToSend._id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -114,7 +115,8 @@ const to24HourTime  = (time: string) => {
 
   const { mutate: editEventMutation }  = useMutation({
     mutationFn: editEvent,
-    onSuccess: () => {
+    onSuccess: async () => {
+      await queryClient.refetchQueries({queryKey:['myEvents', 'events']});
       setSuccessMessage( "Event successfully updated!");
       setTimeout( () => {
         window.location.reload()
