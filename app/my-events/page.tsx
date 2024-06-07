@@ -11,7 +11,7 @@ const MyEvents = () => {
     // check if user is authorized to access page
     if (isAuth && (user?.role == 'admin' || user?.role == 'creator')){
         return(
-            <Container className={styles.welcomeContainer}>
+            <Box className={styles.welcomeContainer}>
                 <Box className={styles.title}>
                     <Typography
                         fontSize={"xxx-large"}
@@ -23,7 +23,7 @@ const MyEvents = () => {
                 <Box className={styles.eventContainer}>
                     <MyEventsList />
                 </Box>
-            </Container>
+            </Box>
         );
     }
 };
