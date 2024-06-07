@@ -3,7 +3,7 @@
 import useAuth from "@/hooks/useAuth";
 import styles from "../home.module.css";
 import MyEventsList from "@/components/ViewMyEventsGetter";
-import UnauthorizedPages from "@/components/UnauthorizedPages";
+import UnauthorizedPageMessage from "@/components/UnauthorizedPageMessage";
 
 // Page to view logged-in user's created events (Admin/Creator ONLY)
 const MyEvents = () => {
@@ -21,7 +21,7 @@ const MyEvents = () => {
             </div>   
         );
     } else {
-      return <UnauthorizedPages />;
+      return <UnauthorizedPageMessage />;
     }
 };
 

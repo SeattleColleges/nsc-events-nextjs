@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 
-const UnauthorizedPages: React.FC = () => {
+const UnauthorizedPageMessage: React.FC = () => {
   return (
     <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh', flexDirection: 'column' }}>
       <Typography variant="h5" component="h2">
@@ -13,4 +13,4 @@ const UnauthorizedPages: React.FC = () => {
     </Box>
   );
 }
-export default UnauthorizedPages;
+export default UnauthorizedPageMessage;

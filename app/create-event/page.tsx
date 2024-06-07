@@ -11,7 +11,7 @@ import { Box, Button, Typography, Stack }  from '@mui/material';
 import { textFieldStyle } from "@/components/InputFields"
 import { MouseEvent, ChangeEvent, useState, FormEvent } from "react";
 import useAuth from "@/hooks/useAuth";
-import UnauthorizedPages from "@/components/UnauthorizedPages";
+import UnauthorizedPageMessage from "@/components/UnauthorizedPageMessage";
 
 const CreateEvent: React.FC = () => {
   const {
@@ -461,7 +461,7 @@ const CreateEvent: React.FC = () => {
         </LocalizationProvider>  
       );
     } else {
-      return <UnauthorizedPages />;
+      return <UnauthorizedPageMessage />;
     }
 };
 
