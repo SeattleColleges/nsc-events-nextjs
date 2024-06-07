@@ -469,4 +469,6 @@ const CreateEvent: React.FC = () => {
     </LocalizationProvider>  
   );
 };
+};
+
 export default CreateEvent;
