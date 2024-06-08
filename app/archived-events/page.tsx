@@ -11,25 +11,23 @@ import UnauthorizedPageMessage from "@/components/UnauthorizedPageMessage";
 
 const ArchivedEvents = () => {
   const { isAuth, user } = useAuth();
+  const [page, setPage] = useState(1);
+  const [hasReachedLastPage, setHasReachedLastPage] = useState(false);
+  const [events, setEvents] = useState<ActivityDatabase[]>([]);
+  const { data } = useArchivedEvents(page);
 
-  // check if user is authorized to access page
+  useEffect(() => {
+    if (data) {
+      setEvents((prevEvents) => [...prevEvents, ...data]);
+      setHasReachedLastPage(data.length < 5);
+    }
+  }, [data]);
+
+  const handleLoadMoreEvents = () => {
+    setPage((page) => page + 1);
+  };
+
   if (isAuth && (user?.role === 'admin' || user?.role === 'creator')) {
-    const [page, setPage] = useState(1);
-    const [hasReachedLastPage, setHasReachedLastPage] = useState(false);
-    const [events, setEvents] = useState<ActivityDatabase[]>([]);
-    const { data } = useArchivedEvents(page);
-
-    useEffect(() => {
-      if (data) {
-        setEvents((prevEvents) => [...prevEvents, ...data]);
-        setHasReachedLastPage(data.length < 5);
-      }
-    }, [data]);
-
-    const handleLoadMoreEvents = () => {
-      setPage((page) => page + 1);
-    };
-
     return (
       <Container maxWidth={false} className={styles.container}>
         <p className={styles.title}>Archived Events</p>
