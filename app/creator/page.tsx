@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { Box, Button, Container } from '@mui/material';
 import { FC } from "react";
+import styles from "../home.module.css";
+import '../globals.css';
 
 const Creator = () => {
     interface CreatorButtonProps {
@@ -19,8 +21,8 @@ const Creator = () => {
         )
     } 
   return (
-    <Container maxWidth={false} style={{ backgroundColor: "#bec3c8" }}>
-        <Box
+    <Container maxWidth={false} className="bg-solid">
+        <Box className={styles.title}
             display="flex"
             justifyContent="center"
             alignItems="center"
