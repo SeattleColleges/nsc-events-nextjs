@@ -17,8 +17,7 @@ const MyEvents = () => {
             <Container maxWidth={false} className="bg-solid">
                 <Box className={styles.title}>
                     <Typography
-                        variant={"h2"}
-                        fontSize={"xx-large"}
+                        variant={"h3"}
                         textAlign={"center"}
                         padding={"1rem"}
                         marginBottom={"1rem"}
@@ -26,9 +25,7 @@ const MyEvents = () => {
                         My Created Events
                     </Typography>
                 </Box>
-                <Box className={styles.eventContainer}>
-                    <MyEventsList />
-                </Box>
+                <MyEventsList />
             </Container>
         );
     } else {
