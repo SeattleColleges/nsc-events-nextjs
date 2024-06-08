@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { Box, Button, Container } from '@mui/material';
 import { FC } from "react";
+import styles from "../home.module.css";
+import '../globals.css';
 
 const Admin = () => {
     interface AdminButtonProps {
@@ -12,6 +14,7 @@ const Admin = () => {
             <Button
                 variant="contained"
                 color="primary"
+                className={styles.loginButton}
                 style={{ margin: 'auto 0.25em' }}
             >
                 <Link href={ path }>{ text }</Link>
@@ -19,8 +22,8 @@ const Admin = () => {
         )
     }
   return (
-      <Container maxWidth={false} style={{ backgroundColor: "#bec3c8" }}>
-          <Box
+      <Container maxWidth={false} className="bg-solid">
+          <Box className={styles.title}
               display="flex"
               justifyContent="center"
               alignContent="center"
