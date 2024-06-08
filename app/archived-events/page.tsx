@@ -5,7 +5,7 @@ import { ActivityDatabase } from "@/models/activityDatabase";
 import EventCard from "@/components/EventCard";
 import { Button, Container, Grid, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import styles from '@/app/home.module.css'
+import styles from "../home.module.css";
 
 const ArchivedEvents = () => {
     const [page, setPage] = useState(1)
@@ -22,7 +22,7 @@ const ArchivedEvents = () => {
         setPage(page => page + 1)
     }
     return (
-        <Container maxWidth={false} className={styles.container}>
+        <Container maxWidth={false} className="bg-solid">
             <Typography
                 variant={"h2"}
                 fontSize={"xx-large"}
