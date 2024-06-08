@@ -22,7 +22,7 @@
         "@emotion/styled": "^11.11.0",
         "@mui/icons-material": "5.15.5",
         "@mui/lab": "^5.0.0-alpha.165",
-        "@mui/material": "^5.15.9",
+        "@mui/material": "^5.15.19",
         "@mui/material-nextjs": "^5.15.9",
         "@mui/utils": "^5.15.9",
         "@mui/x-date-pickers": "^6.19.4",
