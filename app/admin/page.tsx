@@ -14,7 +14,6 @@ const Admin = () => {
             <Button
                 variant="contained"
                 color="primary"
-                className={styles.loginButton}
                 style={{ margin: 'auto 0.25em' }}
             >
                 <Link href={ path }>{ text }</Link>
