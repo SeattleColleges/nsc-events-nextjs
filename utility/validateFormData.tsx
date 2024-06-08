@@ -1,5 +1,5 @@
-import { Activity, FormErrors } from "@/models/activity";
-import { ActivityDatabase } from "@/models/activityDatabase";
+import { Activity, FormErrors, activity } from "@/models/activity";
+import { ActivityDatabase, activityDatabase } from "@/models/activityDatabase";
 
 
 export const validateFormData = (data: Activity | ActivityDatabase): FormErrors => {
@@ -60,15 +60,6 @@ export const validateFormData = (data: Activity | ActivityDatabase): FormErrors 
     };
   }
   // todo: add more error validation rules
-
-  if (data.eventDate || !data.eventDate) {
-    try {
-      new Date(data.eventDate).toISOString();
-    } catch {
-      newErrors = { ...newErrors, eventDate: "Event date should be in valid date format 'MM/DD/YYYY' (e.g. 01/01/2000)" };
-    }
-  }
-  
   if (data.eventCoverPhoto || !data.eventCoverPhoto) {
     try {
       new URL(data.eventCoverPhoto);
@@ -98,9 +89,12 @@ export const validateFormData = (data: Activity | ActivityDatabase): FormErrors 
     newErrors = { ...newErrors, eventSpeakers: "Must specify at least one event speaker"  };
   }
 
-  // Simple email check, does not verify if it exists or not
-  if (data.eventContact && !data.eventContact.includes("@")) {
-    newErrors = { ...newErrors, eventContact: "Must be a valid email address"  };
+  // Tests if email is valid by using regex
+  if (data.eventContact) {
+    const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    if (!regex.test(data.eventContact)) {
+      newErrors = { ...newErrors, eventContact: "Must be a valid email address"  };
+    }
   }
 
   if (data.eventPrivacy.length < 1) {
