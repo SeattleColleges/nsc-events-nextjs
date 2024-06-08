@@ -29,7 +29,7 @@ const getArchivedEvents = async(page: any) => {
 }
 export function useArchivedEvents(page: any) {
     return useQuery<ActivityDatabase[], Error>({
-        queryKey: ["events", page],
+        queryKey: ["archivedEvents", page],
         queryFn: async () => getArchivedEvents(page),
     });
 }

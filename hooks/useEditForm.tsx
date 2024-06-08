@@ -116,7 +116,7 @@ const to24HourTime  = (time: string) => {
   const { mutate: editEventMutation }  = useMutation({
     mutationFn: editEvent,
     onSuccess: async () => {
-      await queryClient.refetchQueries({queryKey:['myEvents', 'events']});
+      await queryClient.refetchQueries({queryKey:['events', 'myEvents', 'archivedEvents']});
       setSuccessMessage( "Event successfully updated!");
       setTimeout( () => {
         window.location.reload()

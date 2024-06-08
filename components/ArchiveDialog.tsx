@@ -44,7 +44,7 @@ const ArchiveDialog = ({ isOpen, eventId, dialogToggle }: ArchiveDialogProps) =>
         mutationFn: archiveEvent,
         onSuccess: async () => {
             setSnackbarMessage("Successfully archived event.");
-            await queryClient.refetchQueries({ queryKey: ['events', 'myEvents'] });
+            await queryClient.refetchQueries({ queryKey: ['events', 'myEvents', 'archivedEvents'] });
             setTimeout( () => {
                 router.push("/");
             }, 1200);
