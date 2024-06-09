@@ -5,8 +5,7 @@ import styles from "@/app/home.module.css";
 import EventCard from "@/components/EventCard";
 import { useArchivedEvents } from "@/utility/queries";
 import { ActivityDatabase } from "@/models/activityDatabase";
-import EventCard from "@/components/EventCard";
-import { Button, Container, Grid } from "@mui/material";
+import { Button, Container, Grid, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import UnauthorizedPageMessage from "@/components/UnauthorizedPageMessage";
 
