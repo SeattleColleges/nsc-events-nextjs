@@ -103,7 +103,7 @@ const Home = () => {
                   <Button
                       variant="contained"
                       color="secondary">
-                    <Image src={google_play} alt="google_play" />
+                    <Image src={google_play} alt="google_play" style={{ marginRight: "8px" }} />
                     Download App
                   </Button>
                 </Link>
