@@ -39,13 +39,11 @@ const Home = () => {
   return (
     <>
       {token ? (
-        <Box
-            className={styles.welcomeContainer}
-        >
+        <Box>
           <Typography
-              variant='h2'
-              fontSize={'xxx-large'}
-              marginBottom={'0.75em'}
+              variant='h3'
+              margin={'0.5em auto'}
+              textAlign={'center'}
           >
             Upcoming Events
           </Typography>
@@ -67,7 +65,7 @@ const Home = () => {
             <Typography
                 className={styles.title}
                 style={{ marginBottom: '0.5em' }}
-                fontSize={'xxx-large'}
+                variant={'h2'}
             >
               Welcome to North Seattle College Events
             </Typography>

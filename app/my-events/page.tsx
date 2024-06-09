@@ -1,7 +1,6 @@
 "use client";
 
 import useAuth from "@/hooks/useAuth";
-import styles from "../home.module.css";
 import '../globals.css';
 import MyEventsList from "@/components/ViewMyEventsGetter";
 import { Box, Container, Typography } from "@mui/material";
@@ -15,16 +14,14 @@ const MyEvents = () => {
     if (isAuth && (user?.role == 'admin' || user?.role == 'creator')) {
         return(
             <Container maxWidth={false} className="bg-solid">
-                <Box className={styles.title}>
-                    <Typography
-                        variant={"h3"}
-                        textAlign={"center"}
-                        padding={"1rem"}
-                        marginBottom={"1rem"}
-                    >
-                        My Created Events
-                    </Typography>
-                </Box>
+                <Typography
+                    variant={"h3"}
+                    textAlign={"center"}
+                    padding={"1rem"}
+                    marginBottom={"1rem"}
+                >
+                    My Created Events
+                </Typography>
                 <MyEventsList />
             </Container>
         );

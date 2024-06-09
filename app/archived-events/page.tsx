@@ -5,7 +5,6 @@ import { ActivityDatabase } from "@/models/activityDatabase";
 import EventCard from "@/components/EventCard";
 import { Button, Container, Grid, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import styles from "../home.module.css";
 
 const ArchivedEvents = () => {
     const [page, setPage] = useState(1)
