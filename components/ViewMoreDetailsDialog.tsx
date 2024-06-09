@@ -60,7 +60,7 @@ function ViewMoreDetailsDialog({
     { title: "Social media", detail: event.eventSocialMedia },
     { title: "Attendance Count", detail: event.attendanceCount ?? "Not Available" },
     { title: "Privacy", detail: event.eventPrivacy },
-    { title: "Archived", detail: event.isHidden ? "Yes" : "No" },
+    { title: "Archived", detail: event.isArchived ? "Yes" : "No" },
   ];
 
   const adminDetails = [{ title: "Event Note", detail: event.eventNote }];
