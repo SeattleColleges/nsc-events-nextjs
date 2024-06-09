@@ -21,20 +21,18 @@ export default function AuthProfileMenu() {
   if (isAuth) {
     return (
       <Box display="flex" alignItems="center" justifyContent="center">
-        {isAuth && user ? (
+        {user ? (
           user.role === 'admin' ? (
             <Link href="/admin" passHref>
-              <Button color="inherit" style={{ textTransform: 'none' }}>Dashboard</Button>
+              <Button color="inherit" style={{ textTransform: 'none', marginRight: '10px' }}>Dashboard</Button>
             </Link>
           ) : user.role === 'creator' ? (
             <Link href="/creator" passHref>
-              <Button color="inherit" style={{ textTransform: 'none' }}>Dashboard</Button>
+              <Button color="inherit" style={{ textTransform: 'none', marginRight: '10px' }}>Dashboard</Button>
             </Link>
           ) : null
         ) : null}
-        <Button color="inherit" style={{ textTransform: 'none', marginLeft: '8px' }} onClick={handleSignOut}>
-          Sign out
-        </Button>
+        <Button color="inherit" style={{ textTransform: 'none' }} onClick={handleSignOut}>Sign out</Button>
       </Box>
     );
   }
