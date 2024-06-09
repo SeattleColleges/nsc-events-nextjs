@@ -21,6 +21,7 @@ const Home = () => {
   const darkImagePath = white_nsc_logo;
   const lightImagePath = blue_nsc_logo;
   const imagePath = palette.mode === "dark" ? darkImagePath : lightImagePath;
+  const containerColor = palette.mode === "dark" ? "#333" : "#fff";
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
@@ -66,7 +67,7 @@ const Home = () => {
         </Box>
       ) : (
         <Box className={styles.welcomeContainer}>
-          <Box className={styles.formContainer}>
+          <Box className={styles.formContainer} sx={{ backgroundColor: containerColor }}>
             <Box className={styles.logoContainer}>
             <Image src={imagePath} title={"NSC Logo"} alt={"NSC Logo"} width={100} height={100} />
             </Box>
