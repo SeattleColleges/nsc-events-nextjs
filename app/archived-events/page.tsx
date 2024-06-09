@@ -5,6 +5,7 @@ import styles from "@/app/home.module.css";
 import EventCard from "@/components/EventCard";
 import { useArchivedEvents } from "@/utility/queries";
 import { ActivityDatabase } from "@/models/activityDatabase";
+import EventCard from "@/components/EventCard";
 import { Button, Container, Grid } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import UnauthorizedPageMessage from "@/components/UnauthorizedPageMessage";
@@ -29,8 +30,14 @@ const handleLoadMoreEvents = () => {
 
 if (isAuth && (user?.role === 'admin' || user?.role === 'creator')) {
     return (
-        <Container maxWidth={false} className={styles.container}>
-        <p className={styles.title}>Archived Events</p>
+        <Container maxWidth={false} className="bg-solid">
+            <Typography
+                fontSize={"2.25rem"}
+                textAlign={"center"}
+                padding={"1rem"}
+                marginTop={"1rem"}
+                marginBottom={"1rem"}
+            >Archived Events</Typography>
         <Grid
           container
           direction={'column'}

@@ -1,19 +1,40 @@
 import Link from "next/link";
-import styles from "./admin-page.module.css";
+import { Box, Button, Container } from '@mui/material';
+import { FC } from "react";
+import styles from "../home.module.css";
+import '../globals.css';
 
 const Admin = () => {
-  // Temporary boilerplate code to make it compile
+    interface AdminButtonProps {
+        path: string;
+        text: string;
+    }
+    const AdminButton: FC<AdminButtonProps> = ({ path, text }) => {
+        return (
+            <Button
+                variant="contained"
+                color="primary"
+                style={{ margin: 'auto 0.25em' }}
+            >
+                <Link href={ path }>{ text }</Link>
+            </Button>
+        )
+    }
   return (
-      <div className={styles.container}>
-          {/* <h1>Placeholder for the admin page so npm run build compiles successfully.</h1>
-          <p>FIX: move to pages or use getSession from nextauth</p>
-          <p>FIX: allow only users with admin role to be routed to this page</p> */}
-          <button className={styles.button}><Link href="/edit-user-role-page">Edit User Role</Link></button>
-          <button className={styles.button}><Link href="/create-event">Create Event</Link></button>
-          <button className={styles.button}><Link href="/my-events">View My Events</Link></button>
-          <button className={styles.button}><Link href="/archived-events">View Archived Events</Link></button>
-          <button className={styles.button}><Link href="/">View All Events</Link></button>
-      </div>
+      <Container maxWidth={false} className="bg-solid">
+          <Box className={styles.title}
+              display="flex"
+              justifyContent="center"
+              alignContent="center"
+              height="100vh"
+          >
+              <AdminButton path={'/edit-user-role-page'} text={"Edit User Role"}/>
+              <AdminButton path={'/create-event'} text={"Create Event"}/>
+              <AdminButton path={'/my-events'} text={"View My Events"}/>
+              <AdminButton path={'/archived-events'} text={"View Archived Events"}/>
+              <AdminButton path={'/'} text={"View All Events"}/>
+          </Box>
+      </Container>
   );
 };
 
