@@ -113,7 +113,6 @@ const Home = () => {
                 fontSize={"2.25rem"}
                 textAlign={"center"}
                 padding={"1rem"}
-                marginTop={"1rem"}
                 marginBottom={"1rem"}
             >Upcoming Events
             </Typography>
