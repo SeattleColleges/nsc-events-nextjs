@@ -295,7 +295,7 @@ const EventDetail = ({ searchParams }: SearchParams) => {
                     onClick={() => toggleArchiveDialog()}
                   >
                     {" "}
-                    <ArchiveIcon sx={{ marginRight: "5px" }} /> Archive{" "}
+                    <ArchiveIcon sx={{ marginRight: "5px" }} /> { !event.isArchived ? "Archive" : "Unarchive" }{" "}
                   </Button>
                 </>
               )}
@@ -344,7 +344,7 @@ const EventDetail = ({ searchParams }: SearchParams) => {
         />
         <ArchiveDialog
           isOpen={archiveDialogOpen}
-          eventId={event._id}
+          event={event}
           dialogToggle={toggleArchiveDialog}
         />
         <EditDialog isOpen={editDialogOpen} event={event} toggleEditDialog={toggleEditDialog} />
