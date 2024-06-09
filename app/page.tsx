@@ -72,10 +72,10 @@ const Home = () => {
             <Image src={imagePath} title={"NSC Logo"} alt={"NSC Logo"} width={100} height={100} />
             </Box>
             <Typography
-                fontSize={"3rem"}
+                fontSize={"2.25rem"}
                 textAlign={"center"}
                 padding={"1rem"}
-                marginBottom={"1rem"}
+                marginBottom={"1.5rem"}
             >Welcome to North Seattle College Events
             </Typography>
             <Box
