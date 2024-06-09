@@ -1,6 +1,6 @@
 /* Home page CSS */
 .container {
-  background-color: #bec3c8;
+  /*background-color: #bec3c8;*/
   display: flex;
   justify-content: center;
   align-items: center;
@@ -8,16 +8,16 @@
 }
 
 .welcomeContainer {
-  background-color: #bec3c8;
+  /*background-color: #bec3c8;*/
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding-top: 10vh;
+  padding-top: 5vh;
 }
 
 .eventContainer {
-  background-color: #bec3c8;
+  /*background-color: #bec3c8;*/
   display: flex;
   justify-content: center;
   /* align-items: center; */
@@ -36,7 +36,7 @@
 }
 
 .formContainer {
-  background-color: #dbdfe0;
+  /*background-color: #dbdfe0;*/
   display: flex;
   flex-direction: column;
   justify-content: center;

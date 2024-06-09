@@ -3,9 +3,8 @@
 import { useArchivedEvents } from "@/utility/queries";
 import { ActivityDatabase } from "@/models/activityDatabase";
 import EventCard from "@/components/EventCard";
-import { Button, Container, Grid } from "@mui/material";
+import { Button, Container, Grid, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import styles from '@/app/home.module.css'
 
 const ArchivedEvents = () => {
     const [page, setPage] = useState(1)
@@ -22,8 +21,13 @@ const ArchivedEvents = () => {
         setPage(page => page + 1)
     }
     return (
-        <Container maxWidth={false} className={styles.container}>
-            <p className={styles.title}>Archived Events</p>
+        <Container maxWidth={false} className="bg-solid">
+            <Typography
+                variant={"h3"}
+                textAlign={"center"}
+                padding={"1rem"}
+                marginBottom={"1rem"}
+            >Archived Events</Typography>
             <Grid
                 container
                 direction={'column'}

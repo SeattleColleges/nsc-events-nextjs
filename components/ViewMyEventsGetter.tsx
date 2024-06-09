@@ -24,7 +24,7 @@ export function MyEventsList() {
         setPage(page => page + 1)
     }
     return (
-        <Container maxWidth={false} className={styles.container}>
+        <Container maxWidth={false}>
             <Grid
                 container
                 direction={'column'}
