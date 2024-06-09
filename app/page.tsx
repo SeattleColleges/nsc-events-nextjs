@@ -64,11 +64,11 @@ const Home = () => {
               <Image src={blue_logo} alt="logo" />
             </Box>
             <Typography
-                className={styles.title}
-                style={{ marginBottom: '0.5em' }}
-                variant={'h2'}
-            >
-              Welcome to North Seattle College Events
+                fontSize={"3rem"}
+                textAlign={"center"}
+                padding={"1rem"}
+                marginBottom={"1rem"}
+            >Welcome to North Seattle College Events
             </Typography>
             <Box
                 flex={1}
@@ -77,25 +77,21 @@ const Home = () => {
                 marginBottom={"1em"}
             >
               <Link href="auth/sign-in">
-                <Button className={styles.loginButton}
-                        variant="contained"
-                        color="primary">
-                    Sign In
+                <Button
+                    variant="contained"
+                    color="primary">Sign In
                 </Button>
               </Link>
               <Link href="auth/sign-up">
-                  <Button className={styles.loginButton}
-                          variant="contained"
-                          color="primary">
-                      Sign Up
+                  <Button 
+                      variant="contained"
+                      color="primary">Sign Up
                   </Button>
               </Link>
             </Box>
             {/* download mobile app link */}
             <Box style={{ marginBottom:"1em" }}>
-                <Link href=""
-                      className={styles.link}
-                >
+                <Link href="">
                   <Button
                       variant="contained"
                       color="secondary">
@@ -106,12 +102,12 @@ const Home = () => {
             </Box>
           </Box>
             <Typography
-                className={styles.title}
-                variant='h2'
-                fontSize={'xxx-large'}
-                style={{ marginBottom:"1em" }}
-            >
-                Upcoming Events
+                fontSize={"2.25rem"}
+                textAlign={"center"}
+                padding={"1rem"}
+                marginTop={"1rem"}
+                marginBottom={"1rem"}
+            >Upcoming Events
             </Typography>
           <Box className={styles.eventContainer}>
             <Box className={styles.homeEventsList}>
