@@ -28,7 +28,7 @@ export function UpcomingEvent(){
                                     alt={event.eventTitle}
                                 />
                                 <CardContent sx={{ flexGrow: 1 }}>
-                                    <Typography variant="h5" align="center" fontWeight={"bold"}>
+                                    <Typography variant="h5" align="center">
                                         {event.eventTitle}
                                     </Typography>
                                     <Typography variant="body2" color="text.secondary">

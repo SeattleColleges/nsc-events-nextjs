@@ -183,8 +183,10 @@ export default function EditUserRoleDialog({
       sx={{
         width: "100%",
         maxWidth: 800,
-        bgcolor: "background.paper",
+        bgcolor: "#fff",
         color: "#000",
+        boxShadow: 1,
+        borderRadius: "8px"
       }}
     >
       <List component="div" role="group">
@@ -195,7 +197,7 @@ export default function EditUserRoleDialog({
           aria-label="User role"
           onClick={handleClickListItem}
         >
-          <ListItemText primary="Select User Role" secondary={value} />
+          <ListItemText primary="Select User Role" secondary={value} secondaryTypographyProps={{ sx: { color: "#333" } }}/>
         </ListItemButton>
         <ConfirmationDialogRaw
           id="role-menu"
