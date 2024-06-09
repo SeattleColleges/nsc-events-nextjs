@@ -41,11 +41,12 @@ const Home = () => {
       {token ? (
         <Box>
           <Typography
-              variant='h3'
-              margin={'0.5em auto'}
-              textAlign={'center'}
-          >
-            Upcoming Events
+              fontSize={"2.25rem"}
+              textAlign={"center"}
+              padding={"1rem"}
+              marginTop={"1rem"}
+              marginBottom={"1rem"}
+          >Upcoming Events
           </Typography>
           <Box className={styles.eventContainer}>
             <Box className={styles.homeEventsList}>
