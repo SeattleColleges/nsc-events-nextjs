@@ -108,7 +108,7 @@ export function ConfirmationDialogRaw(props: ConfirmationDialogRawProps & { user
 
   return (
     <Dialog
-      sx={{ "& .MuiDialog-paper": { width: "50%", maxHeight: 435} }}
+      sx={{ "& .MuiDialog-paper": { width: "50%", maxHeight: 435 } }}
       maxWidth="xs"
       TransitionProps={{ onEntering: handleEntering }}
       open={open}
