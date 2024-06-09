@@ -3,17 +3,24 @@
 import React, { useEffect, useState } from "react";
 import styles from "./home.module.css";
 import Image from "next/image";
-import blue_logo from "./blue_logo.png";
 import CircularProgress from "@mui/material/CircularProgress";
 import google_play from "./google_play.png";
 import HomeEventsList from "@/components/HomeEventGetter";
 import UpcomingEvent from "@/components/UpcomingEvent";
 import { Box, Button, Typography } from "@mui/material";
 import Link from "next/link";
+import blue_nsc_logo from 'public/images/blue_nsc_logo.png'
+import white_nsc_logo from 'public/images/white_nsc_logo.png'
+import { useTheme } from "@mui/material";
 
 const Home = () => {
   const [token, setToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const { palette } = useTheme();
+
+  const darkImagePath = white_nsc_logo;
+  const lightImagePath = blue_nsc_logo;
+  const imagePath = palette.mode === "dark" ? darkImagePath : lightImagePath;
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
@@ -61,7 +68,7 @@ const Home = () => {
         <Box className={styles.welcomeContainer}>
           <Box className={styles.formContainer}>
             <Box className={styles.logoContainer}>
-              <Image src={blue_logo} alt="logo" />
+            <Image src={imagePath} title={"NSC Logo"} alt={"NSC Logo"} width={100} height={100} />
             </Box>
             <Typography
                 fontSize={"3rem"}
