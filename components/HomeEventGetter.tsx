@@ -13,7 +13,14 @@ export function HomeEventsList(){
     const { data } = useFilteredEvents(page);
     useEffect(() => {
         if (data) {
-            setEvents((prevEvents) => [...prevEvents, ...data]);
+            setEvents((prevEvents) => {
+                const newEvents = [...prevEvents, ...data];
+                // filter events to avoid duplicates (fixes Unarchive Event bug)
+                const uniqueEvents = newEvents.filter((event, index, self) =>
+                    index === self.findIndex((e) => e._id === event._id)
+                );
+                return uniqueEvents;
+            });
             setReachedLastPage(data.length < 5);
         }
     }, [data]);

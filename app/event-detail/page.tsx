@@ -30,6 +30,7 @@ import { formatDate } from "@/utility/dateUtils";
 import ViewMoreDetailsDialog from "@/components/ViewMoreDetailsDialog";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import { useTheme } from "@mui/material";
 
 interface SearchParams {
   searchParams: {
@@ -52,6 +53,9 @@ const EventDetail = ({ searchParams }: SearchParams) => {
   const [userId, setUserId] = useState("");
   const [userRole, setUserRole] = useState("");
   const queryClient = useQueryClient();
+  const { palette } = useTheme();
+
+  const containerColor = palette.mode === "dark" ? "#333" : "#fff";
 
   const DeleteDialog = () => {
     return (
@@ -227,7 +231,7 @@ const EventDetail = ({ searchParams }: SearchParams) => {
         </Button>
         <Box
           className={styles.formContainer}
-          sx={{ minHeight: "69vh", maxHeight: "100vh", width: "100vh", marginTop: "10vh" }}
+          sx={{ minHeight: "69vh", maxHeight: "100vh", width: "100vh", marginTop: "10vh", backgroundColor: containerColor  }}
         >
           <Card sx={{ width: "45vh", minHeight: "59vh", maxHeight: "100vh", marginBottom: "5vh" }}>
             <CardMedia
@@ -295,7 +299,7 @@ const EventDetail = ({ searchParams }: SearchParams) => {
                     onClick={() => toggleArchiveDialog()}
                   >
                     {" "}
-                    <ArchiveIcon sx={{ marginRight: "5px" }} /> Archive{" "}
+                    <ArchiveIcon sx={{ marginRight: "5px" }} /> { !event.isArchived ? "Archive" : "Unarchive" }{" "}
                   </Button>
                 </>
               )}
@@ -344,7 +348,7 @@ const EventDetail = ({ searchParams }: SearchParams) => {
         />
         <ArchiveDialog
           isOpen={archiveDialogOpen}
-          eventId={event._id}
+          event={event}
           dialogToggle={toggleArchiveDialog}
         />
         <EditDialog isOpen={editDialogOpen} event={event} toggleEditDialog={toggleEditDialog} />
