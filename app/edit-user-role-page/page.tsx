@@ -53,9 +53,12 @@ const EditUserRolePage = () => {
 
   return (
     <Box sx={{ display: "flex", justifyContent: "center" }}>
-      <Stack>
-        <Typography component="h1" variant="h4" sx={{ textAlign: "center", mt: 2 }}>
-          User Management
+      <Stack alignItems="center">
+        <Typography
+            fontSize={"2.25rem"}
+            textAlign={"center"}
+            marginTop={"2rem"}
+        >User Management
         </Typography>
         {userInfo.map((user, index) => (
           <UserCard user={user} key={index} />
