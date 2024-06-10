@@ -28,29 +28,30 @@ export function MyEventsList() {
             <Grid
                 container
                 direction={'column'}
-                spacing={1}
+                spacing={2}
                 alignItems={'center'}
-                justifyItems={'center'}
+                
             >
-                    {events?.map((event: ActivityDatabase) => (
+                {events?.map((event: ActivityDatabase) => (
+                    <Grid item xs={12} key={event._id}>
                         <EventCard
-                            key={event._id}
-                            event={event}
-                        />
-                    ))}
-                {
-                    !hasReachedLastPage &&
-                    <Button onClick={handleLoadMoreEvents}
-                            type='button'
-                            variant="contained"
-                            color="primary"
-                            style={{
-                                textTransform: "none",
-                                margin: '1em auto',
-                            }}>
-                        Load more events
-                    </Button>
-                }
+                            event={event} key={""}                        />
+                    </Grid>
+                ))}
+                {!hasReachedLastPage && (
+                    <Grid item>
+                        <Button onClick={handleLoadMoreEvents}
+                                type='button'
+                                variant="contained"
+                                color="primary"
+                                style={{
+                                    textTransform: "none",
+                                    margin: '1em auto',
+                                }}>
+                            Load more events
+                        </Button>
+                        </Grid>
+                    )}
             </Grid>
         </Container>
     );
