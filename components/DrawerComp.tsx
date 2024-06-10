@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Drawer, List, ListItem, ListItemText, Box, Link as MuiLink } from '@mui/material';
 import useAuth from '../hooks/useAuth';
 import { useRouter } from 'next/navigation';
@@ -12,6 +12,26 @@ interface DrawerCompProps {
 const DrawerComp: React.FC<DrawerCompProps> = ({ isOpen, toggleDrawer }) => {
   const { isAuth, user } = useAuth(); 
   const router = useRouter();
+
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if ((event.target as HTMLElement).closest('.MuiDrawer-root')) {
+        return;
+      }
+      toggleDrawer(false)(event as unknown as React.MouseEvent);
+    }
+    if (isOpen) {
+      document.addEventListener('click', handleClickOutside);
+    } else {
+      document.removeEventListener('click', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    }
+  }, [isOpen, toggleDrawer]);
+
   
   const handleSignOut = () => {
     // Remove the token from local storage
@@ -25,7 +45,7 @@ const DrawerComp: React.FC<DrawerCompProps> = ({ isOpen, toggleDrawer }) => {
   };
 
   return (
-    <Drawer anchor="right" open={isOpen} onClose={() => toggleDrawer(false)}>
+    <Drawer anchor="right" open={isOpen} onClose={(toggleDrawer(false))}>
       <Box
         onClick={() => toggleDrawer(false)}
         onKeyDown={() => toggleDrawer(false)}
@@ -33,7 +53,9 @@ const DrawerComp: React.FC<DrawerCompProps> = ({ isOpen, toggleDrawer }) => {
       >
         <List>
         <ListItem component={MuiLink} href="/">
-            <ListItemText primary="Home" />
+            <MuiLink>
+              <ListItemText primary="Home" />
+            </MuiLink>
           </ListItem>
           {isAuth && user ? (
             <Box display="flex" flexDirection="column" alignItems="start">

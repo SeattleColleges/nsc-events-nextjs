@@ -4,7 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import white_nsc_logo from 'public/images/white_nsc_logo.png'
 import MenuIcon from '@mui/icons-material/Menu';
-import { AppBar, Toolbar, IconButton, Grid, Button } from '@mui/material';
+import { AppBar, Toolbar, IconButton, Grid, Button, Drawer, List, ListItem, ListItemText, useTheme, useMediaQuery } from '@mui/material';
 import DrawerComp from './DrawerComp'; 
 import useAuth from '../hooks/useAuth'; 
 import AuthProfileMenu from './AuthProfileMenu'; 
@@ -13,10 +13,36 @@ import ThemeToggle from './ThemeToggle';
 export default function Navbar() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const { isAuth, user } = useAuth();
+  const theme = useTheme();
+  const isMediumScreen = useMediaQuery(theme.breakpoints.between('sm', 'md'));
 
-  const toggleDrawer = (open: boolean) => () => {
+  const toggleDrawer = (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
+    if (event.type === 'keydown' && 'key' in event && (event.key === 'Tab' || event.key === 'Shift')) {
+      return;
+    }
     setDrawerOpen(open);
   };
+
+
+  const list = () => (
+    <div role='presentation' onClick={toggleDrawer(false)} onKeyDown={toggleDrawer(false)}>
+      <List>
+        <ListItem component={Link} href='/'>
+          <ListItemText primary="Events" />
+        </ListItem>
+        {isAuth ? (
+          <ListItem button>
+            <AuthProfileMenu />
+          </ListItem>
+        ) : (
+          <ListItem component={Link} href='/auth/sign-in'>
+            <ListItemText primary="Sign In" />
+          </ListItem>
+        )}
+      </List>
+    </div>
+  );
+
 
   return (
     <AppBar position="static">
@@ -33,7 +59,7 @@ export default function Navbar() {
               color="inherit"
               aria-label="menu"
               onClick={toggleDrawer(true)}
-              sx={{ display: { xs: 'block', sm: 'none', md: 'none' } }} 
+              sx={{ display: { xs: 'block', sm: 'block', md: 'none' } }} 
             >
               <MenuIcon />
             </IconButton>
