@@ -96,9 +96,10 @@ const ArchiveDialog = ({ isOpen, event, dialogToggle }: ArchiveDialogProps) => {
         autoHideDuration={1200}
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
       >
-        <SnackbarContent message={snackbarMessage} sx={{ color: "black" }} />
+        <SnackbarContent message={snackbarMessage} sx={{ backgroundColor: "white", color: "black" }} />
       </Snackbar>
     </>
   );
 };
+
 export default ArchiveDialog;
