@@ -25,7 +25,7 @@ function EventCard({ event }: EventCardProps) {
             <Box sx={{ width: 700, height: 130 }}>
                 <Card sx={{ display: 'flex', flexDirection: 'column' }}>
                     <CardContent sx={{ flexGrow: 1 }}>
-                        <Typography variant="h5" align="left" fontWeight={"bold"}>
+                        <Typography variant="h5" align="left">
                             {event.eventTitle}
                         </Typography>
                         <Typography variant="body2" align="right" color="text.secondary">
