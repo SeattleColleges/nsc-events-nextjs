@@ -8,3 +8,4 @@ test('add function adds two numbers correctly', () => {
 test('subtract function subtracts two numbers correctly', () => {
     expect(subtract(2, 3)).toBe(-1);
 });
+
