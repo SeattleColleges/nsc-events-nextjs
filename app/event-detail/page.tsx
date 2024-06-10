@@ -360,7 +360,7 @@ const EventDetail = ({ searchParams }: SearchParams) => {
           autoHideDuration={1200}
           anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
         >
-          <SnackbarContent message={snackbarMessage} sx={{ color: "black" }} />
+          <SnackbarContent message={snackbarMessage} sx={{ backgroundColor: "white", color: "black" }} />
         </Snackbar>
         <Button onClick={getNextEvent}>
         <ArrowForwardIosIcon sx={{ color: 'white', fontSize: '100px', filter: 'drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2))' }} />
