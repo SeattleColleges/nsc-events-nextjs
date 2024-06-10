@@ -5,14 +5,9 @@ import IconButton from '@mui/material/IconButton';
 
 export const textFieldStyle = {
   input: {
-    color: 'black', 
-    backgroundColor: 'white', 
-    '&::placeholder': {
-      color: 'black', 
-    },
+    fontSize: '1.1rem',
   },
   label: {
-    color: 'black', 
     fontSize: '1.1rem', 
   },
 };
