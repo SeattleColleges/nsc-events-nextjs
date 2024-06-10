@@ -38,29 +38,84 @@ function ViewMoreDetailsDialog({
   userRole,
   dialogToggle,
 }: ViewMoreDetailsDialogProps) {
+  // Simple "array to string" function for handling activity details that are arrays
+  const arrayToString = (arr: any[]) => arr.join(", ");
+
   const moreDetails = [
-    { title: "Event Host", detail: event.eventHost },
-    { title: "URL", detail: event.eventMeetingUrl },
+    { title: "Host", detail: event.eventHost },
+    { title: "URL", detail: event.eventMeetingURL },
     { title: "Registration", detail: event.eventRegistration },
-    { title: "Tags", detail: event.eventTags },
-    { title: "Event Speakers", detail: event.eventSpeakers },
-    { title: "Event Contact", detail: event.eventContact },
+    { title: "Tags", detail: arrayToString(event.eventTags) },
+    { title: "Speakers", detail: arrayToString(event.eventSpeakers) },
+    { title: "Contact", detail: event.eventContact },
     { title: "Accessibility", detail: event.eventAccessibility },
   ];
+
+  const creatorDetails = [
+    { title: "Category", detail: event.eventCategory },
+    { title: "Capacity", detail: event.eventCapacity },
+    { title: "Schedule", detail: event.eventSchedule },
+    { title: "Prerequisites", detail: event.eventPrerequisites },
+    { title: "Cancelation Policy", detail: event.eventCancellationPolicy },
+    { title: "Social media", detail: event.eventSocialMedia },
+    { title: "Attendance Count", detail: event.attendanceCount ?? "Not Available" },
+    { title: "Privacy", detail: event.eventPrivacy },
+    { title: "Archived", detail: event.isArchived ? "Yes" : "No" },
+  ];
+
+  const adminDetails = [{ title: "Event Note", detail: event.eventNote }];
+
+  // Simple function to check if the event details being mapped is an object
+  const isObject = (value: any) => value && typeof value === "object" && !Array.isArray(value);
+
+  // Map details function, parses detail objects (such as event.socialMedia) differently
+  const mapDetails = (detailsArray: { title: string; detail: any }[]) => {
+    return detailsArray.map((detail, id) => {
+      // handle/map activity detail objects
+      if (isObject(detail.detail)) {
+        return (
+          <ListItem key={id}>
+            <ListItemText
+              primary={`${detail.title}:`}
+              secondary={Object.keys(detail.detail).map((key, idx) => (
+                <React.Fragment key={idx}>
+                  {`${key}: ${detail.detail[key]}`}
+                  <br />
+                </React.Fragment>
+              ))}
+            />
+          </ListItem>
+        );
+        // Otherwise, map the detail normally
+      } else if (detail.detail !== undefined || detail.detail !== "") {
+        return (
+          <ListItem key={id}>
+            <ListItemText primary={`${detail.title}: ${detail.detail}`} />
+          </ListItem>
+        );
+      } else {
+        // Handle the case where detail.detail is undefined
+        return (
+          <ListItem key={id}>
+            <ListItemText primary={`${detail.title}: Not Available`} />
+          </ListItem>
+        );
+      }
+    });
+  };
 
   return (
     <>
       <Dialog open={isOpen}>
         <DialogTitle>{"More Details:"}</DialogTitle>
         <DialogContent dividers sx={{ height: "fit-content" }}>
-          {/* map out the moreDetails object as a ListItem for each */}
-          {moreDetails.map((detail, id) => (
-            <ListItem key={id}>
-              <ListItemText primary={`${detail.title}: ${detail.detail}`} />
-            </ListItem>
-          ))}
+          {/* map out the moreDetails object as a ListItem for each, handle each user role differently*/}
+          {mapDetails(moreDetails)}
+          {(userRole == "creator" || userRole == "admin") && <>{mapDetails(creatorDetails)}</>}
+          {userRole == "admin" && <>{mapDetails(adminDetails)}</>}
         </DialogContent>
-        {/* cancel button to leave the dialog box */}
+
+        {/* cancel button to exit the dialog box */}
         <DialogActions>
           <Button onClick={() => dialogToggle()}>Cancel</Button>
         </DialogActions>

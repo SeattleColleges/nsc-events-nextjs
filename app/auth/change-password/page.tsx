@@ -20,14 +20,23 @@ import { changePassword } from "./changePasswordApi";
 import React from "react";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import NorthSeattleLogo from "../../NorthSeattleLogo.png";
 import { useRouter } from "next/navigation";
+import blue_vertical_nsc_logo from 'public/images/blue_vertical_nsc_logo.png'
+import white_vertical_nsc_logo from 'public/images/white_vertical_nsc_logo.png'
+import { useTheme } from "@mui/material";
+
 interface State extends SnackbarOrigin {
   open: boolean;
 }
 
 const ChangePassword = () => {
   const router = useRouter();
+  const { palette } = useTheme();
+  
+  const darkImagePath = white_vertical_nsc_logo;
+  const lightImagePath = blue_vertical_nsc_logo;
+  const imagePath = palette.mode === "dark" ? darkImagePath : lightImagePath;
+
   // Set initial state for password visibility
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
@@ -136,13 +145,15 @@ const ChangePassword = () => {
             alignItems: "center",
           }}
         >
-          <Image
-            src={NorthSeattleLogo.src}
-            alt="North Seattle College Logo"
-            width={150}
-            height={50}
-            style={{ borderRadius: "10px" }}
-          />
+          <Box sx={{ display: 'flex', justifyContent: 'center', marginBottom: 2 }}>
+            <Image
+              src={imagePath.src}
+              alt="North Seattle College Logo"
+              width={150}
+              height={50}
+              style={{ borderRadius: "10px" }}
+            />
+          </Box>
           <Typography component="h2" variant="h6">
             Change Password
           </Typography>
@@ -207,7 +218,7 @@ const ChangePassword = () => {
             required
             fullWidth
             name="newPasswordConfirm"
-            label="New Password Confirm"
+            label="Confirm New Password"
             type={showNewPasswordConfirm ? "text" : "password"}
             id="newPasswordConfirm"
             autoComplete="new-password"

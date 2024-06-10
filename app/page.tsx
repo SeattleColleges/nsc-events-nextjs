@@ -1,14 +1,27 @@
-"use client";import React, { useEffect, useState } from "react";import styles from "./home.module.css";
+"use client";
+
+import React, { useEffect, useState } from "react";
+import styles from "./home.module.css";
 import Image from "next/image";
-import logo from "./logo.png";
 import CircularProgress from "@mui/material/CircularProgress";
 import google_play from "./google_play.png";
 import HomeEventsList from "@/components/HomeEventGetter";
 import UpcomingEvent from "@/components/UpcomingEvent";
+import { Box, Button, Typography } from "@mui/material";
+import Link from "next/link";
+import blue_nsc_logo from 'public/images/blue_nsc_logo.png'
+import white_nsc_logo from 'public/images/white_nsc_logo.png'
+import { useTheme } from "@mui/material";
 
 const Home = () => {
   const [token, setToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const { palette } = useTheme();
+
+  const darkImagePath = white_nsc_logo;
+  const lightImagePath = blue_nsc_logo;
+  const imagePath = palette.mode === "dark" ? darkImagePath : lightImagePath;
+  const containerColor = palette.mode === "dark" ? "#333" : "#fff";
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
@@ -18,7 +31,7 @@ const Home = () => {
 
   if (isLoading) {
     return (
-      <div
+      <Box
         style={{
           display: "flex",
           justifyContent: "center",
@@ -27,70 +40,94 @@ const Home = () => {
         }}
       >
         <CircularProgress />
-      </div>
+      </Box>
     );
   }
 
   return (
     <>
       {token ? (
-        <div className={styles.welcomeContainer}>
-          <h1 className={styles.title}>
-            Upcoming Events
-          </h1>
-          <div className={styles.eventContainer}>
-            <div className={styles.homeEventsList}>
+        <Box>
+          <Typography
+              fontSize={"2.25rem"}
+              textAlign={"center"}
+              padding={"1rem"}
+              marginTop={"1rem"}
+              marginBottom={"1rem"}
+          >Upcoming Events
+          </Typography>
+          <Box className={styles.eventContainer}>
+            <Box className={styles.homeEventsList}>
               <HomeEventsList />
-            </div>
-            <div className={styles.upcomingEvent}>
+            </Box>
+            <Box className={styles.upcomingEvent}>
               <UpcomingEvent />
-            </div>
-          </div>
-        </div>
+            </Box>
+          </Box>
+        </Box>
       ) : (
-        <div className={styles.welcomeContainer}>
-          <div className={styles.formContainer}>
-            <div className={styles.logoContainer}>
-              <Image src={logo} alt="logo" />
-            </div>
-            <h1 className={styles.title}>
-              Welcome to North Seattle College Events
-            </h1>
-            <div className={styles.buttonContainer}>
-              <a href="auth/sign-in">
-                <button className={styles.loginButton}>Sign In</button>
-              </a>
-              <a href="auth/sign-up">
-                <button className={styles.signUpButton}>Sign Up</button>
-              </a>
-            </div>
+        <Box className={styles.welcomeContainer}>
+          <Box className={styles.formContainer} sx={{ backgroundColor: containerColor }}>
+            <Box className={styles.logoContainer}>
+            <Image src={imagePath} title={"NSC Logo"} alt={"NSC Logo"} width={100} height={100} />
+            </Box>
+            <Typography
+                fontSize={"2.25rem"}
+                textAlign={"center"}
+                padding={"1rem"}
+                marginBottom={"1.5rem"}
+            >Welcome to North Seattle College Events
+            </Typography>
+            <Box
+                flex={1}
+                display={"flex"}
+                gap={1}
+                marginBottom={"1em"}
+            >
+              <Link href="auth/sign-in">
+                <Button
+                    variant="contained"
+                    color="primary">Sign In
+                </Button>
+              </Link>
+              <Link href="auth/sign-up">
+                  <Button 
+                      variant="contained"
+                      color="primary">Sign Up
+                  </Button>
+              </Link>
+            </Box>
             {/* download mobile app link */}
-            <div className={styles.downloadContainer}>
-              <p className="textCenter">
-                <a href="" className={styles.link}>
-                  <button className={styles.downloadButton}>
-                    <Image src={google_play} alt="google_play" />
+            <Box style={{ marginBottom:"1em" }}>
+                <Link href="">
+                  <Button
+                      variant="contained"
+                      color="secondary">
+                    <Image src={google_play} alt="google_play" style={{ marginRight: "8px" }} />
                     Download App
-                  </button>
-                </a>
-              </p>
-            </div>
-          </div>
-          <h1 className={styles.title}>
-            Upcoming Events
-          </h1>
-          <div className={styles.eventContainer}>
-            <div className={styles.homeEventsList}>
+                  </Button>
+                </Link>
+            </Box>
+          </Box>
+            <Typography
+                fontSize={"2.25rem"}
+                textAlign={"center"}
+                padding={"1rem"}
+                marginBottom={"1rem"}
+            >Upcoming Events
+            </Typography>
+          <Box className={styles.eventContainer}>
+            <Box className={styles.homeEventsList}>
               <HomeEventsList />
-            </div>
-            <div className={styles.upcomingEvent}>
+            </Box>
+            <Box className={styles.upcomingEvent}>
               <UpcomingEvent />
-            </div>
-          </div>
-        </div>
+            </Box>
+          </Box>
+        </Box>
       )}
     </>
   );
-}; 
+};
 
 export default Home;

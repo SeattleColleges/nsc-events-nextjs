@@ -6,22 +6,14 @@ import { useEffect, useState } from "react";
 import EventCard from "./EventCard";
 import styles from '@/app/home.module.css'
 import { useMyEvents } from "@/utility/queries";
+import { getCurrentUserId } from "@/utility/userUtils";
 
-// decode the userId from localStorage
-const getUserId = () => {
-    const token = localStorage.getItem('token');
-    if (token !== null){
-        const userId = JSON.parse(atob(token.split(".")[1])).id;
-        return userId;
-    }
-    return null;
-}
 export function MyEventsList() {
     // useState to hold the events from the API call
     const [events, setEvents] = useState<ActivityDatabase[]>([]);
     const [page, setPage] = useState(1);
     const [hasReachedLastPage, setHasReachedLastPage] = useState(false)
-    const { data } = useMyEvents(getUserId(), page);
+    const { data } = useMyEvents(getCurrentUserId(), page);
     useEffect(() => {
         if (data) {
             setEvents((prevEvents) => [...prevEvents, ...data]);
@@ -32,7 +24,7 @@ export function MyEventsList() {
         setPage(page => page + 1)
     }
     return (
-        <Container maxWidth={false} className={styles.container}>
+        <Container maxWidth={false}>
             <Grid
                 container
                 direction={'column'}

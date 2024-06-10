@@ -71,7 +71,8 @@ export function ConfirmationDialogRaw(props: ConfirmationDialogRawProps & { user
   const handleOk = async () => {
     const token = localStorage.getItem('token');
     try {
-      const response = await fetch(`http://localhost:3000/api/users/update/${user.id}`, {
+      const apiUrl = process.env.NSC_EVENTS_PUBLIC_API_URL || `http://localhost:3000/api`;
+      const response = await fetch(`${apiUrl}/users/update/${user.id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -182,8 +183,10 @@ export default function EditUserRoleDialog({
       sx={{
         width: "100%",
         maxWidth: 800,
-        bgcolor: "background.paper",
+        bgcolor: "#fff",
         color: "#000",
+        boxShadow: 1,
+        borderRadius: "8px"
       }}
     >
       <List component="div" role="group">
@@ -194,7 +197,7 @@ export default function EditUserRoleDialog({
           aria-label="User role"
           onClick={handleClickListItem}
         >
-          <ListItemText primary="Select User Role" secondary={value} />
+          <ListItemText primary="Select User Role" secondary={value} secondaryTypographyProps={{ sx: { color: "#333" } }}/>
         </ListItemButton>
         <ConfirmationDialogRaw
           id="role-menu"

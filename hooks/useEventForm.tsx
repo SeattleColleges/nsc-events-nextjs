@@ -16,7 +16,7 @@ export const useEventForm = (initialData: Activity | ActivityDatabase) => {
     eventStartTime: "",
     eventEndTime: "",
     eventLocation: "",
-    eventMeetingUrl: "",
+    eventMeetingURL: "",
     eventCoverPhoto: "",
     eventHost: "",
     eventRegistration: "",
@@ -141,7 +141,8 @@ export const useEventForm = (initialData: Activity | ActivityDatabase) => {
     console.log("Event data after applying transformation: ", dataToSend);
 
     try {
-      const response = await fetch("http://localhost:3000/api/events/new", {
+      const apiUrl = process.env.NSC_EVENTS_PUBLIC_API_URL || `http://localhost:3000/api`;
+      const response = await fetch(`${apiUrl}/events/new`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -153,7 +154,7 @@ export const useEventForm = (initialData: Activity | ActivityDatabase) => {
       const data = await response.json();
       if (response.ok) {
         console.log("Activity created:", data);
-        await queryClient.refetchQueries({queryKey:['myEvents', 'events']});
+        await queryClient.refetchQueries({queryKey:['events', 'myEvents', 'archivedEvents']});
         setSuccessMessage(data.message || "Event  successfully created!");
         setErrorMessage("");
         // todo: navigate to a success page and clear form

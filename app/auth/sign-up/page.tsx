@@ -1,6 +1,7 @@
 "use client";
 import { ChangeEventHandler, FormEventHandler, use, useState } from "react";
-import {  Container,
+import {
+  Container,
   Paper,
   Box,
   TextField,
@@ -16,16 +17,22 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Image from "next/image";
 import { validateSignUp } from "./validateSignUp";
-// TODO determine if this is the correct logo
-import NorthSeattleLogo from "../../NorthSeattleLogo.png";
 import React from "react";
 import { signUp } from "./signupApi";
+import blue_vertical_nsc_logo from 'public/images/blue_vertical_nsc_logo.png'
+import white_vertical_nsc_logo from 'public/images/white_vertical_nsc_logo.png'
+import { useTheme } from "@mui/material";
 
 interface State extends SnackbarOrigin {
   open: boolean;
 }
 
 const SignUp = () => {
+  const { palette } = useTheme();
+
+  const darkImagePath = white_vertical_nsc_logo;
+  const lightImagePath = blue_vertical_nsc_logo;
+  const imagePath = palette.mode === "dark" ? darkImagePath : lightImagePath;
 
   // Set initial state for password visibility
   const [showPassword, setShowPassword] = useState(false);
@@ -139,13 +146,15 @@ const SignUp = () => {
             alignItems: "center",
           }}
         >
-          <Image
-            src={NorthSeattleLogo.src}
-            alt="North Seattle College Logo"
-            width={150}
-            height={50}
-            style={{ borderRadius: "10px" }}
-          />
+          <Box sx={{ display: 'flex', justifyContent: 'center', marginBottom: 2 }}>
+            <Image
+              src={imagePath.src}
+              alt="North Seattle College Logo"
+              width={150}
+              height={50}
+              style={{ borderRadius: "10px" }}
+            />
+          </Box>
           <Typography component="h1" variant="h5">
             Sign Up
           </Typography>
@@ -207,9 +216,9 @@ const SignUp = () => {
             onChange={handleChange}
             error={Boolean(errors.password)}
             helperText={errors.password}
-            InputLabelProps={{ style: textFieldStyle.label }} 
+            InputLabelProps={{ style: textFieldStyle.label }}
             InputProps={{
-              style: textFieldStyle.input, 
+              style: textFieldStyle.input,
               endAdornment: (
                 <InputAdornment position="end">
                   <IconButton
@@ -232,9 +241,9 @@ const SignUp = () => {
             onChange={handleChange}
             error={Boolean(errors.confirmPassword)}
             helperText={errors.confirmPassword}
-            InputLabelProps={{ style: textFieldStyle.label }} 
+            InputLabelProps={{ style: textFieldStyle.label }}
             InputProps={{
-              style: textFieldStyle.input, 
+              style: textFieldStyle.input,
               endAdornment: (
                 <InputAdornment position="end">
                   <IconButton
@@ -259,7 +268,7 @@ const SignUp = () => {
           </Button>
           <Box textAlign="center" sx={{ mt: 2 }}>
             <MuiLink href="/auth/sign-in" variant="body2">
-              Already have an account? Log In
+              Already have an account? Sign In
             </MuiLink>
           </Box>
         </Box>
