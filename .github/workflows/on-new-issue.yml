@@ -2,7 +2,7 @@ name: send-issue-smartsheet
 run-name: ${{ github.actor }} created an issue
 on:
   issues:
-    types: [opened, reopened] # TODO: Create on: issues: [edited] to connect to Smartsheet PUT request to update issues when edited
+    types: [opened] # TODO: Create on: issues: [edited] to connect to Smartsheet PUT request to update issues when edited
 
 env:
   SMART_ACCESS_TOKEN: ${{ secrets.SMARTSHEET_ACCESS_TOKEN }}
