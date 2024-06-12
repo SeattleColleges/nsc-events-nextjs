@@ -47,5 +47,5 @@ jobs:
             npm run build
             # Install and restart the application with PM2
             npm install pm2 -g
-            pm2 restart nscEventsNextFrontend
+            pm2 restart nsc_events_nextjs
           EOF

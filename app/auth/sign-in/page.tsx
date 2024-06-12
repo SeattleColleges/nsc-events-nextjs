@@ -11,7 +11,7 @@ import { useTheme } from "@mui/material";
 
 const URL = process.env.NSC_EVENTS_PUBLIC_API_URL || "http://localhost:3000/api";
 
-// similar to sign-up page, but we're only handling email and password 
+// similar to sign-up page, but we're only handling email and password. 
 const Signin = () => {
   const { palette } = useTheme();
 
