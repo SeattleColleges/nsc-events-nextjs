@@ -212,7 +212,7 @@ const EventDetail = () => {
     if (currentIndex >= 0 && currentIndex < events.length - 1) {
       const nextEvent = events[currentIndex + 1];
       console.log("Navigating to:", nextEvent._id);
-      router.push(`/event-detail?page.tsx?id=${nextEvent._id}`);
+      router.push(`/event-detail?id=${nextEvent._id}`);
     }
   };
 
@@ -221,7 +221,7 @@ const EventDetail = () => {
     if (currentIndex > 0) {
       const prevEvent = events[currentIndex - 1];
       console.log("Navigating to:", prevEvent._id);
-      router.push(`/event-detail?page.tsx?id=${prevEvent._id}`);
+      router.push(`/event-detail?id=${prevEvent._id}`);
     }
   };
 
