@@ -22,7 +22,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogActions from "@mui/material/DialogActions";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import AttendDialog from "@/components/AttendDialog";
 import ArchiveDialog from "@/components/ArchiveDialog";
 import EditDialog from "@/components/EditDialog";
@@ -38,9 +38,12 @@ interface SearchParams {
   };
 }
 
-const EventDetail = ({ searchParams }: SearchParams) => {
+const EventDetail = () => {
   const router = useRouter();
-  const [event, setEvent] = useState<ActivityDatabase>(activityDatabase);
+  const searchParams = useSearchParams();
+  const id = searchParams.get("id");
+  const queryClient = useQueryClient();
+  const [event, setEvent] = useState<ActivityDatabase | null>(null);
   const [events, setEvents] = useState<ActivityDatabase[]>([]);
   const [isAuthed, setAuthed] = useState(false);
   const [token, setToken] = useState("");
@@ -52,9 +55,7 @@ const EventDetail = ({ searchParams }: SearchParams) => {
   const [moreDetailsDialogOpen, setMoreDetailsDialogOpen] = useState(false);
   const [userId, setUserId] = useState("");
   const [userRole, setUserRole] = useState("");
-  const queryClient = useQueryClient();
   const { palette } = useTheme();
-
   const containerColor = palette.mode === "dark" ? "#333" : "#fff";
 
   const DeleteDialog = () => {
@@ -83,7 +84,9 @@ const EventDetail = ({ searchParams }: SearchParams) => {
             </Button>
             <Button
               onClick={() => {
-                deleteEventMutation(event._id);
+                if (event && event._id) {
+                  deleteEventMutation(event._id);
+                }
                 setDialogOpen(false);
               }}
               autoFocus
@@ -135,35 +138,57 @@ const EventDetail = ({ searchParams }: SearchParams) => {
     },
   });
 
+
   useEffect(() => {
     const getEvents = async () => {
-      const events = queryClient.getQueryData<ActivityDatabase[]>(["event"]);
-      if (events !== undefined) {
+      const events = queryClient.getQueryData<ActivityDatabase[]>(["events"]);
+      if (events) {
         setEvents(events);
-        const selectedEvent = events.find(event => event._id === searchParams.id) as ActivityDatabase;
+        const selectedEvent = events.find(event => event._id === id) as ActivityDatabase;
         setEvent(selectedEvent);
-      } else if (searchParams.id) {
+      } else {
         const apiUrl = process.env.NSC_EVENTS_PUBLIC_API_URL || `http://localhost:3000/api`;
-        const response = await fetch(`${apiUrl}/events/find/${searchParams.id}`);
+        const response = await fetch(`${apiUrl}/events`);
         if (response.ok) {
-          const evt = await response.json();
-          setEvent(evt);
-          setEvents([evt]); // assuming there's only one event in response
+          const allEvts = await response.json();
+          setEvents(allEvts);
+          const selectedEvent = allEvts.find((event: { _id: string; }) => event._id === id);
+          setEvent(selectedEvent); // assuming there's only one event in response
         }
       }
+
+      // if (events !== undefined) {
+      //   setEvents(events);
+      //   const selectedEvent = events.find(event => event._id === searchParams.id) as ActivityDatabase;
+      //   setEvent(selectedEvent);
+      // } else if (searchParams.id) {
+      //   const apiUrl = process.env.NSC_EVENTS_PUBLIC_API_URL || `http://localhost:3000/api`;
+      //   const response = await fetch(`${apiUrl}/events/find/${searchParams.id}`);
+      //   if (response.ok) {
+      //     const evt = await response.json();
+      //     setEvent(evt);
+      //     setEvents([evt]); 
+      //   }
+      // }
     };
-    getEvents();
+
+    if (id) {
+      setEvent(null);  // Reset event before fetching new data
+      console.log("Fetching event with ID: ", id);
+      getEvents();
+    }
+    
     const token = localStorage.getItem("token");
     // Sets token state that is used by delete mutation outside of effect
     setToken(token ?? "");
-
     if (token) {
       const role = JSON.parse(atob(token.split(".")[1])).role;
       const id = JSON.parse(atob(token.split(".")[1])).id;
       setUserRole(role);
       setUserId(id);
     }
-  }, [queryClient, searchParams.id]);
+  }, [queryClient, id]);
+
 
   const toggleAttendDialog = () => {
     if (token === "") {
@@ -183,20 +208,32 @@ const EventDetail = ({ searchParams }: SearchParams) => {
   };
 
   const getNextEvent = () => {
-    const currentIndex = events.findIndex(e => e._id === event._id);
-    if (currentIndex < events.length - 1) {
+    const currentIndex = events.findIndex(e => e._id === event?._id);
+    if (currentIndex >= 0 && currentIndex < events.length - 1) {
       const nextEvent = events[currentIndex + 1];
-      router.push(`/eventDetails?id=${nextEvent._id}`);
+      console.log("Navigating to:", nextEvent._id);
+      router.push(`/event-detail?id=${nextEvent._id}`);
     }
   };
 
   const getPrevEvent = () => {
-    const currentIndex = events.findIndex(e => e._id === event._id);
+    const currentIndex = events.findIndex(e => e._id === event?._id);
     if (currentIndex > 0) {
       const prevEvent = events[currentIndex - 1];
-      router.push(`/eventDetails?id=${prevEvent._id}`);
+      console.log("Navigating to:", prevEvent._id);
+      router.push(`/event-detail?id=${prevEvent._id}`);
     }
   };
+
+  // Debugging console logs
+  useEffect(() => {
+    console.log("Events: ", events);
+    console.log("Current Event: ", event);
+  }, [events, event]);
+
+  if (!event) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>
@@ -226,9 +263,11 @@ const EventDetail = ({ searchParams }: SearchParams) => {
             zIndex: 1,
           }}
         >
-        <Button onClick={getPrevEvent}>
-          <ArrowBackIosIcon sx={{ color: 'white', fontSize: '100px', filter: 'drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2))' }} />
-        </Button>
+          {events.length > 1 && events.findIndex(e => e._id === event._id) > 0 && (
+            <Button onClick={getPrevEvent}>
+              <ArrowBackIosIcon sx={{ color: 'white', fontSize: '100px', filter: 'drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2))' }} />
+            </Button>
+          )}
         <Box
           className={styles.formContainer}
           sx={{ minHeight: "69vh", maxHeight: "100vh", width: "100vh", marginTop: "10vh", backgroundColor: containerColor  }}
@@ -362,9 +401,11 @@ const EventDetail = ({ searchParams }: SearchParams) => {
         >
           <SnackbarContent message={snackbarMessage} sx={{ backgroundColor: "white", color: "black" }} />
         </Snackbar>
-        <Button onClick={getNextEvent}>
-        <ArrowForwardIosIcon sx={{ color: 'white', fontSize: '100px', filter: 'drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2))' }} />
-        </Button>
+        {events.length > 1 && events.findIndex(e => e._id === event._id) < events.length - 1 &&  (
+          <Button onClick={getNextEvent}>
+            <ArrowForwardIosIcon sx={{ color: 'white', fontSize: '100px', filter: 'drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2))' }} />
+          </Button>
+        )}
       </Box>
       </Box>
     </>
