@@ -2,10 +2,11 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import white_nsc_logo from 'public/images/white_nsc_logo.png'
+import white_nsc_logo from 'public/images/white_nsc_logo.png';
+import blue_vertical_nsc_logo from 'public/images/blue_vertical_nsc_logo.png'
 import MenuIcon from '@mui/icons-material/Menu';
 import { AppBar, Toolbar, IconButton, Button, Menu, MenuList, MenuItem, Tooltip, Avatar, Box, Container, Typography } from '@mui/material';
-import useAuth from '../hooks/useAuth'; 
+import useAuth from '../hooks/useAuth';
 import { useRouter } from 'next/navigation';
 import ThemeToggle from './ThemeToggle';
 
@@ -77,12 +78,15 @@ export default function Navbar() {
               open={Boolean(navBarOpen)}
               anchorEl={navBarOpen}
               onClose={handleCloseNavMenu}
-              sx={{ display: { xs: 'flex', md: 'none' } }}
+              sx={{ display: { xs: 'flex', md: 'none' }, flexDirection: 'column', alignItems: 'center', width: '100%' }}
             >
-              <MenuList>
+              <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%', my: 2 }}>
+                <Image src={blue_vertical_nsc_logo} alt="logo" width={40} height={100} />
+              </Box>
+              <MenuList sx={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <MenuItem onClick={handleCloseNavMenu}>
                   <Link href="/" passHref>
-                    <Button color="inherit" sx={{ textTransform: 'none' }}>Events</Button>                 
+                    <Button color="inherit" sx={{ textTransform: 'none' }}>Events</Button>
                   </Link>
                 </MenuItem>
               </MenuList>
