@@ -5,7 +5,7 @@ import Image from 'next/image';
 import white_nsc_logo from 'public/images/white_nsc_logo.png';
 import blue_vertical_nsc_logo from 'public/images/blue_vertical_nsc_logo.png'
 import MenuIcon from '@mui/icons-material/Menu';
-import { AppBar, Toolbar, IconButton, Button, Menu, MenuList, MenuItem, Tooltip, Avatar, Box, Container, Typography } from '@mui/material';
+import { AppBar, Toolbar, IconButton, Button, Menu, MenuList, MenuItem, Tooltip, Avatar, Box, Container, Typography, Paper } from '@mui/material';
 import useAuth from '../hooks/useAuth';
 import { useRouter } from 'next/navigation';
 import ThemeToggle from './ThemeToggle';
@@ -69,29 +69,50 @@ export default function Navbar() {
               <Button color="inherit" sx={{ textTransform: 'none' }}>EVENTS</Button>
             </Link>
           </Box>
+          <Box sx={{
+  display: { xs: 'flex', md: 'none' },
+  ml: 'auto',
+  justifyContent: 'center',
+  alignItems: 'center',
+  width: '100%',
+}}>
+  <IconButton size="large" edge="end" color="inherit" onClick={handleOpenNavMenu}>
+    <MenuIcon />
+  </IconButton>
+  <Menu
+    open={Boolean(navBarOpen)}
+    anchorEl={navBarOpen}
+    onClose={handleCloseNavMenu}
+    PaperProps={{
+      elevation: 0,
+      sx: {
+        width: '100%',
+        mt: 2,
+      },
+    }}
+    transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+    anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+  >
+    <Paper sx={{ width: '100%' }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', p: 2 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%', my: 2 }}>
+          <Image src={blue_vertical_nsc_logo} alt="logo" width={80} height={200} /> {/* Adjust width and height here */}
+        </Box>
+        <MenuList sx={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <MenuItem onClick={handleCloseNavMenu}>
+            <Link href="/" passHref>
+              <Button color="inherit" sx={{ textTransform: 'none' }}>Events</Button>
+            </Link>
+          </MenuItem>
+          {/* Add more MenuItems as needed */}
+        </MenuList>
+      </Box>
+    </Paper>
+  </Menu>
+</Box>
+
           
-          <Box sx={{ display: { xs: 'flex', md: 'none' }, ml: 'auto', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
-            <IconButton size="large" edge="end" color="inherit" onClick={handleOpenNavMenu}>
-              <MenuIcon />
-            </IconButton>
-            <Menu
-              open={Boolean(navBarOpen)}
-              anchorEl={navBarOpen}
-              onClose={handleCloseNavMenu}
-              sx={{ display: { xs: 'flex', md: 'none' }, flexDirection: 'column', alignItems: 'center', width: '100%' }}
-            >
-              <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%', my: 2 }}>
-                <Image src={blue_vertical_nsc_logo} alt="logo" width={40} height={100} />
-              </Box>
-              <MenuList sx={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <MenuItem onClick={handleCloseNavMenu}>
-                  <Link href="/" passHref>
-                    <Button color="inherit" sx={{ textTransform: 'none' }}>Events</Button>
-                  </Link>
-                </MenuItem>
-              </MenuList>
-            </Menu>
-          </Box>
+
           
           <Box sx={{ display: 'flex', alignItems: 'center', mr: 2 }}>
             <ThemeToggle />
