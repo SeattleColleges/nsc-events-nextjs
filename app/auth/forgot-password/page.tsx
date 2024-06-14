@@ -4,15 +4,13 @@ import React, { ChangeEventHandler, FormEventHandler, useState } from "react";
 import { Box, Button, TextField, Typography, Container, Paper } from '@mui/material';
 import { textFieldStyle } from "@/components/InputFields";
 import Image from "next/image";
-import blue_vertical_nsc_logo from 'public/images/blue_vertical_nsc_logo.png'
-import white_vertical_nsc_logo from 'public/images/white_vertical_nsc_logo.png'
 import { useTheme } from "@mui/material";
 
 const ForgotPassword = () => {
   const { palette } = useTheme();
   
-  const darkImagePath = white_vertical_nsc_logo;
-  const lightImagePath = blue_vertical_nsc_logo;
+  const darkImagePath = '/images/white_vertical_nsc_logo.png';
+  const lightImagePath = '/images/blue_vertical_nsc_logo.png';
   const imagePath = palette.mode === "dark" ? darkImagePath : lightImagePath;
 
   // user email state
@@ -38,8 +36,8 @@ const ForgotPassword = () => {
     <Container component="main" maxWidth="xs" sx={{ display: 'flex', alignItems: 'center', height: '100vh' }}>
       <Paper elevation={6} sx={{ padding: 4, width: '100%', borderRadius: 2, mb: 2 }}>
         <Box sx={{ display: 'flex', justifyContent: 'center', marginBottom: 2 }}>
-        <Image
-            src={imagePath.src}
+          <Image
+            src={imagePath}
             alt="North Seattle College Logo"
             width={150}
             height={50}

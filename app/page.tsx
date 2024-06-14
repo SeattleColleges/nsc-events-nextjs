@@ -9,8 +9,6 @@ import HomeEventsList from "@/components/HomeEventGetter";
 import UpcomingEvent from "@/components/UpcomingEvent";
 import { Box, Button, Typography } from "@mui/material";
 import Link from "next/link";
-import blue_nsc_logo from 'public/images/blue_nsc_logo.png'
-import white_nsc_logo from 'public/images/white_nsc_logo.png'
 import { useTheme } from "@mui/material";
 
 const Home = () => {
@@ -18,8 +16,8 @@ const Home = () => {
   const [isLoading, setIsLoading] = useState(true);
   const { palette } = useTheme();
 
-  const darkImagePath = white_nsc_logo;
-  const lightImagePath = blue_nsc_logo;
+  const darkImagePath = '/images/white_nsc_logo.png';
+  const lightImagePath = '/images/blue_nsc_logo.png';
   const imagePath = palette.mode === "dark" ? darkImagePath : lightImagePath;
   const containerColor = palette.mode === "dark" ? "#333" : "#fff";
 
