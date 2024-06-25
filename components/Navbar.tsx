@@ -110,14 +110,14 @@ export default function Navbar() {
             </Paper>
           </Menu>
           </Box>
-          <Box sx={{ display: 'flex', alignItems: 'center', mr: 2, p: 2 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', p: 2 }}>
             <ThemeToggle />
           </Box>
 
           {isAuth && user && (
             <Box sx={{ flexGrow: 0, display: 'flex', alignItems: 'center' }}>
               <Tooltip title="Open settings">
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0, mr: 2 }}>
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0, ml: 1 }}>
                   <Avatar alt="User Avatar" src="/static/images/avatar/2.jpg" />
                 </IconButton>
               </Tooltip>
