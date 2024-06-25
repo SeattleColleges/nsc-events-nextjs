@@ -68,6 +68,11 @@ export default function Navbar() {
             <Link href="/" passHref>
               <Button color="inherit" sx={{ textTransform: 'none' }}>Events</Button>
             </Link>
+            {user === null && (
+              <Link href="/auth/sign-in" passHref>
+                <Button color="inherit" sx={{ textTransform: 'none', pl: 2 }}>Sign In</Button>
+              </Link>
+            )}
           </Box>
           <Box sx={{
             display: { xs: 'flex', md: 'none' },
