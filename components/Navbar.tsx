@@ -103,7 +103,7 @@ export default function Navbar() {
               {/* AuthProfileMenu contains Create Event and Sign Out actions */}
               {isAuth && user && (
                 <Box sx={{ flexGrow: 0, display: 'flex', alignItems: 'center' }}>
-                  <Tooltip title="Open settings">
+                  <Tooltip title="Open user menu">
                     <IconButton onClick={handleOpenUserMenu} sx={{ p: 0, ml: 1, mt: 2, color: "white" }}>
                       <AccountCircleIcon />
                     </IconButton>
@@ -122,9 +122,9 @@ export default function Navbar() {
                       horizontal: 'right',
                     }}
                     open={Boolean(anchorElUser)}
-                    onClose={toggleDrawer(false)}
+                    onClose={handleCloseUserMenu}
                   >
-                    <MenuItem onClick={handleProfileClick}>
+                    <MenuItem onClick={() => { handleProfileClick(); handleCloseUserMenu(); }}>
                       <Typography textAlign="center">My Account</Typography>
                     </MenuItem>
                     <MenuItem onClick={() => { handleCloseUserMenu(); handleSignOut(); }}>
