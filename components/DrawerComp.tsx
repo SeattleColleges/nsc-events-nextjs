@@ -68,7 +68,7 @@ const DrawerComp: React.FC<DrawerCompProps> = ({ isOpen, toggleDrawer }) => {
             alt="North Seattle College Logo"
             width={150}
             height={50}
-            style={{ borderRadius: "10px"}}
+            style={{ borderRadius: "10px" }}
           />
         </Box>
         <List sx={{ m: 1 }}>
@@ -88,12 +88,12 @@ const DrawerComp: React.FC<DrawerCompProps> = ({ isOpen, toggleDrawer }) => {
                   <ListItemText primary="My Account" />
                 </ListItem>
               ) : null}
-              <ListItem component={MuiLink} href="/auth/sign-in" onClick={handleSignOut} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', }}>
+              <ListItem component={MuiLink} href="/auth/sign-in" onClick={handleSignOut} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
                 <ListItemText primary="Sign Out" />
               </ListItem>
             </Box>
           ) : (
-            <ListItem component={MuiLink} href="/auth/sign-in" sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', }}>
+            <ListItem component={MuiLink} href="/auth/sign-in" sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
               <ListItemText primary="Sign In" />
             </ListItem>
           )}

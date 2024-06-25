@@ -10,6 +10,7 @@ import DrawerComp from './DrawerComp';
 import useAuth from '../hooks/useAuth'; 
 import AuthProfileMenu from './AuthProfileMenu'; 
 import ThemeToggle from './ThemeToggle';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 export default function Navbar() {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -103,8 +104,8 @@ export default function Navbar() {
               {isAuth && user && (
                 <Box sx={{ flexGrow: 0, display: 'flex', alignItems: 'center' }}>
                   <Tooltip title="Open settings">
-                    <IconButton onClick={handleOpenUserMenu} sx={{ p: 0, ml: 1, mt: 2 }}>
-                      <Avatar alt="User Avatar" src="/static/images/avatar/2.jpg" />
+                    <IconButton onClick={handleOpenUserMenu} sx={{ p: 0, ml: 1, mt: 2, color: "white" }}>
+                      <AccountCircleIcon />
                     </IconButton>
                   </Tooltip>
                   <Menu
