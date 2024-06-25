@@ -46,9 +46,7 @@ export default function Navbar() {
       router.push('/admin');
     } else if (user?.role === 'creator') {
       router.push('/creator');
-    } else {
-      router.push('/profile');
-    }
+    } 
     toggleDrawer(false);
   };
 
@@ -104,7 +102,7 @@ export default function Navbar() {
               {isAuth && user && (
                 <Box sx={{ flexGrow: 0, display: 'flex', alignItems: 'center' }}>
                   <Tooltip title="Open user menu">
-                    <IconButton onClick={handleOpenUserMenu} sx={{ p: 0, ml: 1, mt: 2, color: "white" }}>
+                    <IconButton onClick={handleOpenUserMenu} sx={{ p: 0, ml: 3, mr: 1, mt: 2, color: "white" }}>
                       <AccountCircleIcon />
                     </IconButton>
                   </Tooltip>
@@ -125,9 +123,11 @@ export default function Navbar() {
                     onClose={handleCloseUserMenu}
                     disableScrollLock
                   >
-                    <MenuItem onClick={() => { handleProfileClick(); handleCloseUserMenu(); }}>
-                      <Typography textAlign="center">My Account</Typography>
-                    </MenuItem>
+                    {isAuth && user && (user.role === "admin" || user.role === "creator") && (
+                      <MenuItem onClick={() => { handleProfileClick(); handleCloseUserMenu(); }}>
+                        <Typography textAlign="center">My Account</Typography>
+                      </MenuItem>
+                    )}
                     <MenuItem onClick={() => { handleCloseUserMenu(); handleSignOut(); }}>
                       <Typography textAlign="center">Sign Out</Typography>
                     </MenuItem>
@@ -141,7 +141,7 @@ export default function Navbar() {
                   </Link>
                 </Grid>
               )}
-              <Grid item>
+              <Grid item sx={{ ml: 1, mr: 1 }}>
                 <ThemeToggle />
               </Grid>
             </Grid>
