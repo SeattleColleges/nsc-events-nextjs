@@ -2,30 +2,32 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import white_nsc_logo from 'public/images/white_nsc_logo.png';
-import blue_vertical_nsc_logo from 'public/images/blue_vertical_nsc_logo.png'
+import white_nsc_logo from 'public/images/white_nsc_logo.png'
 import MenuIcon from '@mui/icons-material/Menu';
-import { AppBar, Toolbar, IconButton, Button, Menu, MenuList, MenuItem, Tooltip, Avatar, Box, Container, Typography, Paper } from '@mui/material';
-import useAuth from '../hooks/useAuth';
+import { AppBar, Toolbar, IconButton, Grid, Button, Drawer, List, ListItem, ListItemText, useTheme, useMediaQuery, Box, Tooltip, Avatar, Menu, Typography, MenuItem } from '@mui/material';
 import { useRouter } from 'next/navigation';
+import DrawerComp from './DrawerComp'; 
+import useAuth from '../hooks/useAuth'; 
+import AuthProfileMenu from './AuthProfileMenu'; 
 import ThemeToggle from './ThemeToggle';
 
 export default function Navbar() {
-  const [navBarOpen, setNavBarOpen] = useState<null | HTMLElement>(null);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const { isAuth, user } = useAuth();
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
-  const { user, isAuth } = useAuth();
   const router = useRouter();
+  const theme = useTheme();
+  const isMediumScreen = useMediaQuery(theme.breakpoints.between('sm', 'md'));
 
-  const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setNavBarOpen(event.currentTarget);
+  const toggleDrawer = (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
+    if (event.type === 'keydown' && 'key' in event && (event.key === 'Tab' || event.key === 'Shift')) {
+      return;
+    }
+    setDrawerOpen(open);
   };
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
-  };
-
-  const handleCloseNavMenu = () => {
-    setNavBarOpen(null);
   };
 
   const handleCloseUserMenu = () => {
@@ -38,121 +40,113 @@ export default function Navbar() {
     router.push('/auth/sign-in');
   };
 
-  const profileLink = () => {
-    if (!user) {
-      return '/profile';
-    }
-    if (user.role === 'admin') {
-      return '/admin';
-    } else if (user.role === 'creator') {
-      return '/creator';
+  const handleProfileClick = () => {
+    if (user?.role === 'admin') {
+      router.push('/admin');
+    } else if (user?.role === 'creator') {
+      router.push('/creator');
     } else {
-      return '/profile';
+      router.push('/profile');
     }
+    toggleDrawer(false);
   };
 
-  const handleProfileClick = () => {
-    router.push(profileLink());
-    handleCloseUserMenu();
-  };
+
+  const list = () => (
+    <div role='presentation' onClick={toggleDrawer(false)} onKeyDown={toggleDrawer(false)}>
+      <List>
+        <ListItem component={Link} href='/'>
+          <ListItemText primary="Events" />
+        </ListItem>
+        {isAuth ? (
+          <ListItem button>
+            <AuthProfileMenu />
+          </ListItem>
+        ) : (
+          <ListItem component={Link} href='/auth/sign-in'>
+            <ListItemText primary="Sign In" />
+          </ListItem>
+        )}
+      </List>
+    </div>
+  );
+
 
   return (
     <AppBar position="static">
-      <Container maxWidth="xl">
-        <Toolbar disableGutters>
-          <Link href="/" passHref>
-            <Image src={white_nsc_logo} alt="logo" width={40} height={40} />
-          </Link>
-          
-          <Box sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center', ml: 'auto' }}>
+      <Toolbar>
+        <Grid container justifyContent="space-between" alignItems="center">
+          <Grid item>
             <Link href="/" passHref>
-              <Button color="inherit" sx={{ textTransform: 'none' }}>Events</Button>
+              <Image src={white_nsc_logo} alt="logo" width={40} height={40} />
             </Link>
-            {user === null && (
-              <Link href="/auth/sign-in" passHref>
-                <Button color="inherit" sx={{ textTransform: 'none', pl: 2 }}>Sign In</Button>
-              </Link>
-            )}
-          </Box>
-          <Box sx={{
-            display: { xs: 'flex', md: 'none' },
-            ml: 'auto',
-            justifyContent: 'center',
-            alignItems: 'center',
-            width: '100%',
-          }}>
-          <IconButton size="large" edge="end" color="inherit" onClick={handleOpenNavMenu}>
-            <MenuIcon />
-          </IconButton>
-          <Menu
-            open={Boolean(navBarOpen)}
-            anchorEl={navBarOpen}
-            onClose={handleCloseNavMenu}
-            PaperProps={{
-              elevation: 0,
-              sx: {
-                width: '100%',
-                mt: 2,
-              },
-            }}
-            transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-            anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-          >
-            <Paper sx={{ width: '100%' }}>
-              <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', p: 2 }}>
-                <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%', my: 2 }}>
-                  <Image src={blue_vertical_nsc_logo} alt="logo" width={80} height={200} /> {/* Adjust width and height here */}
-                </Box>
-                <MenuList sx={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                  <MenuItem onClick={handleCloseNavMenu}>
-                    <Link href="/" passHref>
-                      <Button color="inherit" sx={{ textTransform: 'none' }}>Events</Button>
-                    </Link>
-                  </MenuItem>
-                  {/* Add more MenuItems as needed */}
-                </MenuList>
-              </Box>
-            </Paper>
-          </Menu>
-          </Box>
-          <Box sx={{ display: 'flex', alignItems: 'center', p: 2 }}>
-            <ThemeToggle />
-          </Box>
+          </Grid>
+          <Grid item>
+            <IconButton
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+              onClick={toggleDrawer(true)}
+              sx={{ display: { xs: 'block', sm: 'block', md: 'none' } }} 
+            >
+              <MenuIcon />
+            </IconButton>
+            <Grid container spacing={2} alignItems="center" sx={{ display: { xs: 'none', md: 'flex' } }}>
+              {/* Events Link remains outside AuthProfileMenu for general access */}
+              <Grid item>
+                <Link href="/" passHref>
+                  <Button color="inherit" sx={{ textTransform: 'none' }}>Events</Button>
+                </Link>
+              </Grid>
 
-          {isAuth && user && (
-            <Box sx={{ flexGrow: 0, display: 'flex', alignItems: 'center' }}>
-              <Tooltip title="Open settings">
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0, ml: 1 }}>
-                  <Avatar alt="User Avatar" src="/static/images/avatar/2.jpg" />
-                </IconButton>
-              </Tooltip>
-              <Menu
-                sx={{ mt: '45px' }}
-                id="menu-appbar"
-                anchorEl={anchorElUser}
-                anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                open={Boolean(anchorElUser)}
-                onClose={handleCloseUserMenu}
-              >
-                <MenuItem onClick={handleProfileClick}>
-                  <Typography textAlign="center">My Account</Typography>
-                </MenuItem>
-                <MenuItem onClick={() => { handleCloseUserMenu(); handleSignOut(); }}>
-                  <Typography textAlign="center">Sign Out</Typography>
-                </MenuItem>
-              </Menu>
-            </Box>
-          )}
-        </Toolbar>
-      </Container>
+              {/* AuthProfileMenu contains Create Event and Sign Out actions */}
+              {isAuth && user && (
+                <Box sx={{ flexGrow: 0, display: 'flex', alignItems: 'center' }}>
+                  <Tooltip title="Open settings">
+                    <IconButton onClick={handleOpenUserMenu} sx={{ p: 0, ml: 1, mt: 2 }}>
+                      <Avatar alt="User Avatar" src="/static/images/avatar/2.jpg" />
+                    </IconButton>
+                  </Tooltip>
+                  <Menu
+                    sx={{ mt: '45px' }}
+                    id="menu-appbar"
+                    anchorEl={anchorElUser}
+                    anchorOrigin={{
+                      vertical: 'top',
+                      horizontal: 'right',
+                    }}
+                    keepMounted
+                    transformOrigin={{
+                      vertical: 'top',
+                      horizontal: 'right',
+                    }}
+                    open={Boolean(anchorElUser)}
+                    onClose={toggleDrawer(false)}
+                  >
+                    <MenuItem onClick={handleProfileClick}>
+                      <Typography textAlign="center">My Account</Typography>
+                    </MenuItem>
+                    <MenuItem onClick={() => { handleCloseUserMenu(); handleSignOut(); }}>
+                      <Typography textAlign="center">Sign Out</Typography>
+                    </MenuItem>
+                  </Menu>
+                </Box>
+              )}
+              {!isAuth && (
+                <Grid item>
+                  <Link href="/auth/sign-in" passHref>
+                    <Button color="inherit" sx={{ textTransform: 'none' }}>Sign In</Button>
+                  </Link>
+                </Grid>
+              )}
+              <Grid item>
+                <ThemeToggle />
+              </Grid>
+            </Grid>
+          </Grid>
+        </Grid>
+      </Toolbar>
+      <DrawerComp isOpen={drawerOpen} toggleDrawer={toggleDrawer} isAuth={isAuth} />
     </AppBar>
   );
 };
