@@ -123,6 +123,7 @@ export default function Navbar() {
                     }}
                     open={Boolean(anchorElUser)}
                     onClose={handleCloseUserMenu}
+                    disableScrollLock
                   >
                     <MenuItem onClick={() => { handleProfileClick(); handleCloseUserMenu(); }}>
                       <Typography textAlign="center">My Account</Typography>
