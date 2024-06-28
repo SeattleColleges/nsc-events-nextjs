@@ -36,7 +36,7 @@ export const useEventForm = (initialData: Activity | ActivityDatabase) => {
     eventAccessibility: ""
   });
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-
+  const [fixingErrors, setFixingErrors] = useState(false);
   // success/error messages for event creation
   const [successMessage, setSuccessMessage] = useState<String>("");
   const [errorMessage, setErrorMessage] = useState<String>("");
@@ -60,7 +60,10 @@ export const useEventForm = (initialData: Activity | ActivityDatabase) => {
       ...prevEventData,
       [name]: value,
     }));
-    
+    if (fixingErrors) {
+      const newErrors = validateFormData(eventData);
+      setErrors(newErrors);
+    }
   };
 
   // handling changes to the social media fields
@@ -112,7 +115,9 @@ export const useEventForm = (initialData: Activity | ActivityDatabase) => {
     e.preventDefault();
     console.log("Event Data: ", eventData);
     const newErrors = validateFormData(eventData);
-    if (Object.keys(newErrors).length > 0) {
+    const numNewErrors = Object.keys(newErrors).length;
+    setFixingErrors(numNewErrors > 0);
+    if (numNewErrors > 0) {
       setErrors(newErrors);
     } else {
       createActivity(eventData as Activity);
