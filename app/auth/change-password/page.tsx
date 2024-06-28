@@ -104,6 +104,8 @@ const ChangePassword = () => {
           setSnackBarMessage(response.message);
           // Handle success
           if (response.status === "success") {
+            localStorage.removeItem('token');
+            window.dispatchEvent(new CustomEvent('auth-change'));
             setTimeout(() => {
               router.push("/auth/sign-in");
             }, 2000); // Navigate back to the sign-in page after 2 seconds
