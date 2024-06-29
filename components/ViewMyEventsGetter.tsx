@@ -7,6 +7,7 @@ import EventCard from "./EventCard";
 import styles from '@/app/home.module.css'
 import { useMyEvents } from "@/utility/queries";
 import { getCurrentUserId } from "@/utility/userUtils";
+import Link from "next/link";
 
 export function MyEventsList() {
     // useState to hold the events from the API call
@@ -24,33 +25,39 @@ export function MyEventsList() {
         setPage(page => page + 1)
     }
     return (
-        <Container maxWidth={false} className={styles.container}>
+        <Container maxWidth={false}>
             <Grid
                 container
                 direction={'column'}
-                spacing={1}
+                spacing={2}
                 alignItems={'center'}
-                justifyItems={'center'}
+                
             >
-                    {events?.map((event: ActivityDatabase) => (
+                {events?.map((event: ActivityDatabase) => (
+                    <Grid item xs={12} key={event._id}>
                         <EventCard
-                            key={event._id}
-                            event={event}
-                        />
-                    ))}
-                {
-                    !hasReachedLastPage &&
-                    <Button onClick={handleLoadMoreEvents}
-                            type='button'
-                            variant="contained"
-                            color="primary"
-                            style={{
-                                textTransform: "none",
-                                margin: '1em auto',
-                            }}>
-                        Load more events
-                    </Button>
-                }
+                            event={event} key={""}                        />
+                    </Grid>
+                ))}
+                {/* {events.map(event => (
+                <Link key={event._id} href={`/eventDetails?id=${event._id}`} passHref>
+                    <a>{event.eventTitle}</a>
+                </Link>
+                ))} */}
+                {!hasReachedLastPage && (
+                    <Grid item>
+                        <Button onClick={handleLoadMoreEvents}
+                                type='button'
+                                variant="contained"
+                                color="primary"
+                                style={{
+                                    textTransform: "none",
+                                    margin: '1em auto',
+                                }}>
+                            Load more events
+                        </Button>
+                        </Grid>
+                    )}
             </Grid>
         </Container>
     );

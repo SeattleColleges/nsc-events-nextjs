@@ -11,9 +11,7 @@ import { Box, Button, Typography, Stack }  from '@mui/material';
 import { textFieldStyle } from "@/components/InputFields"
 import { MouseEvent, ChangeEvent, useState, FormEvent } from "react";
 import useAuth from "@/hooks/useAuth";
-
- 
-
+import UnauthorizedPageMessage from "@/components/UnauthorizedPageMessage";
 
 const CreateEvent: React.FC = () => {
   const {
@@ -72,96 +70,90 @@ const CreateEvent: React.FC = () => {
 
     const { isAuth, user } = useAuth();
 
-    if (!isAuth || (user && user.role !== 'admin' && user.role !== 'creator')) {
+    if (isAuth && (user?.role === 'admin' || user?.role === 'creator')) {
       return (
-        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh' }}>
-          <Typography variant="h5" component="h2">
-            You are not authorized to access this page.
-          </Typography>
-        </Box>
-      );
-    }
-  
-  
-  return (
-   <LocalizationProvider dateAdapter={AdapterDateFns}>
-      <Box component="form" onSubmit={handleSubmit} noValidate autoComplete="off" sx={{ p: 3, width: '75%', mx: 'auto' }}>
-        <Typography variant="h5" component="h2" sx={{ fontWeight: 'bold', color: 'black', mb: 2 }}>
-            Add Event
-        </Typography>
-        <Stack spacing={2}> 
-          <TextField
-            id="event-title"
-            label="Event Title"
-            variant="outlined"
-            name="eventTitle"
-            value={eventData.eventTitle}
-            onChange={handleInputChange}
-            error={!!errors.eventTitle}
-            helperText={errors.eventTitle}
-            InputProps={{ style: textFieldStyle.input }}
-            InputLabelProps={{ style: textFieldStyle.label }}
-            placeholder="Enter the title of the event"
-          />
-          <TextField
-            id="event-description"
-            label="Event Description"
-            variant="outlined"
-            name="eventDescription"
-            value={eventData.eventDescription}
-            onChange={handleInputChange}
-            error={!!errors.eventDescription}
-            helperText={errors.eventDescription}
-            InputProps={{ style: textFieldStyle.input }}
-            InputLabelProps={{ style: textFieldStyle.label }}
-            placeholder="Enter the description of the event"
-          />
-          <TextField
-            id="event-category"
-            label="Event Category"
-            variant="outlined"
-            name="eventCategory"
-            value={eventData.eventCategory}
-            onChange={handleInputChange}
-            error={!!errors.eventCategory}
-            helperText={errors.eventCategory}
-            InputProps={{ style: textFieldStyle.input }}
-            InputLabelProps={{ style: textFieldStyle.label }} 
-            placeholder="Enter the category of the event"
-          />
-          <DatePicker
-            label="Event Date"
-            value={selectedDate}
-            onChange={handleDateChange}
-            minDate={new Date()}
-          />
-          <TimePicker
-            label="Start Time"
-            value={startTimeDate}
-            onChange={onStartTimeChange}
-          />
-          <TimePicker
-            label="End Time"
-            value={endTimeDate}
-            onChange={onEndTimeChange}
-          />
-          {/* Time Error Message */}
-          {timeError && (
-            <div className="text-red-500 text-sm mt-2">{timeError}</div>
-          )}
-          <TextField
-            id="event-location"
-            label="Event Location"
-            variant="outlined"
-            name="eventLocation"
-            value={eventData.eventLocation}
-            onChange={handleInputChange}
-            error={!!errors.eventLocation}
-            helperText={errors.eventLocation}
-            InputProps={{ style: textFieldStyle.input }}
-            InputLabelProps={{ style: textFieldStyle.label }}
-            placeholder="Enter the location of the event"
-          />
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <Box component="form" onSubmit={handleSubmit} noValidate autoComplete="off" sx={{ p: 3, width: '75%', mx: 'auto' }}>
+          <Typography
+              fontSize={"2.25rem"}
+              textAlign={"center"}
+              marginTop={"0.5rem"}
+              marginBottom={"1rem"}
+            >Add Event
+            </Typography>
+            <Stack spacing={2}> 
+              <TextField
+                id="event-title"
+                label="Event Title"
+                variant="outlined"
+                name="eventTitle"
+                value={eventData.eventTitle}
+                onChange={handleInputChange}
+                error={!!errors.eventTitle}
+                helperText={errors.eventTitle}
+                InputProps={{ style: textFieldStyle.input }}
+                InputLabelProps={{ style: textFieldStyle.label }}
+                placeholder="Enter the title of the event"
+              />
+              <TextField
+                id="event-description"
+                label="Event Description"
+                variant="outlined"
+                name="eventDescription"
+                value={eventData.eventDescription}
+                onChange={handleInputChange}
+                error={!!errors.eventDescription}
+                helperText={errors.eventDescription}
+                InputProps={{ style: textFieldStyle.input }}
+                InputLabelProps={{ style: textFieldStyle.label }}
+                placeholder="Enter the description of the event"
+              />
+              <TextField
+                id="event-category"
+                label="Event Category"
+                variant="outlined"
+                name="eventCategory"
+                value={eventData.eventCategory}
+                onChange={handleInputChange}
+                error={!!errors.eventCategory}
+                helperText={errors.eventCategory}
+                InputProps={{ style: textFieldStyle.input }}
+                InputLabelProps={{ style: textFieldStyle.label }} 
+                placeholder="Enter the category of the event"
+              />
+              <DatePicker
+                label="Event Date"
+                value={selectedDate}
+                onChange={handleDateChange}
+                minDate={new Date()}
+              />
+              <TimePicker
+                label="Start Time"
+                value={startTimeDate}
+                onChange={onStartTimeChange}
+              />
+              <TimePicker
+                label="End Time"
+                value={endTimeDate}
+                onChange={onEndTimeChange}
+              />
+              {/* Time Error Message */}
+              {timeError && (
+                <div className="text-red-500 text-sm mt-2">{timeError}</div>
+              )}
+              <TextField
+                id="event-location"
+                label="Event Location"
+                variant="outlined"
+                name="eventLocation"
+                value={eventData.eventLocation}
+                onChange={handleInputChange}
+                error={!!errors.eventLocation}
+                helperText={errors.eventLocation}
+                InputProps={{ style: textFieldStyle.input }}
+                InputLabelProps={{ style: textFieldStyle.label }}
+                placeholder="Enter the location of the event"
+              />
 
           {/* <label>
             Event Cover Photo
@@ -261,6 +253,8 @@ const CreateEvent: React.FC = () => {
               name="addedTag"
               value={newTag}
               onChange={handleNewTagChange}
+              // Need to figure out what can go in the following values, 
+              // I commented out from other text-fields
               error={!!errors.eventTags}
               helperText={errors.eventTags}
               InputProps={{ style: textFieldStyle.input }}
@@ -461,15 +455,18 @@ const CreateEvent: React.FC = () => {
           )
         }
 
-        {errorMessage && (
-            <Typography color="error" sx={{ mb: 2 }}>
-              {errorMessage}
-            </Typography>
-          )
-        }
-      </Box>  
-    </LocalizationProvider>  
-  );
+                {errorMessage && (
+                    <Typography color="error" sx={{ mb: 2 }}>
+                      {errorMessage}
+                    </Typography>
+                  )
+                }
+          </Box>  
+        </LocalizationProvider>  
+      );
+    } else {
+      return <UnauthorizedPageMessage />;
+    }
 };
 
 export default CreateEvent;

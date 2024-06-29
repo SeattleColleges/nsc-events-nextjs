@@ -17,16 +17,22 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Image from "next/image";
 import { validateSignUp } from "./validateSignUp";
-// TODO determine if this is the correct logo
-import NorthSeattleLogo from "../../NorthSeattleLogo.png";
 import React from "react";
 import { signUp } from "./signupApi";
+import blue_vertical_nsc_logo from 'public/images/blue_vertical_nsc_logo.png'
+import white_vertical_nsc_logo from 'public/images/white_vertical_nsc_logo.png'
+import { useTheme } from "@mui/material";
 
 interface State extends SnackbarOrigin {
   open: boolean;
 }
 
 const SignUp = () => {
+  const { palette } = useTheme();
+
+  const darkImagePath = white_vertical_nsc_logo;
+  const lightImagePath = blue_vertical_nsc_logo;
+  const imagePath = palette.mode === "dark" ? darkImagePath : lightImagePath;
 
   // Set initial state for password visibility
   const [showPassword, setShowPassword] = useState(false);
@@ -142,7 +148,7 @@ const SignUp = () => {
         >
           <Box sx={{ display: 'flex', justifyContent: 'center', marginBottom: 2 }}>
             <Image
-              src={NorthSeattleLogo.src}
+              src={imagePath.src}
               alt="North Seattle College Logo"
               width={150}
               height={50}
