@@ -1,5 +1,5 @@
-import { Activity, FormErrors } from "@/models/activity";
-import { ActivityDatabase } from "@/models/activityDatabase";
+import { Activity, FormErrors, activity } from "@/models/activity";
+import { ActivityDatabase, activityDatabase } from "@/models/activityDatabase";
 
 
 export const validateFormData = (data: Activity | ActivityDatabase): FormErrors => {
@@ -60,5 +60,46 @@ export const validateFormData = (data: Activity | ActivityDatabase): FormErrors 
     };
   }
   // todo: add more error validation rules
+  if (data.eventCoverPhoto || !data.eventCoverPhoto) {
+    try {
+      new URL(data.eventCoverPhoto);
+    } catch {
+      newErrors = { ...newErrors, eventCoverPhoto: "Event cover photo needs to be a valid URL"  };
+    }
+  }
+
+  if (data.eventMeetingURL || !data.eventMeetingURL) {
+    try {
+      new URL(data.eventMeetingURL);
+    } catch {
+      newErrors = { ...newErrors, eventMeetingURL: "Event meeting URL needs to be a valid URL"  };
+    }
+  }
+
+  // Overrides previous eventCapacity error check
+  if (data.eventCapacity && isNaN(data.eventCapacity) || data.eventCapacity < 1) {
+    newErrors = { ...newErrors, eventCapacity: "Event capacity should be a number greater than 0"  };
+  }
+
+  if (data.eventTags.length < 1) {
+    newErrors = { ...newErrors, eventTags: "Please select an event tag" };
+  }
+
+  if (data.eventSpeakers.length < 1) {
+    newErrors = { ...newErrors, eventSpeakers: "Must specify at least one event speaker"  };
+  }
+
+  // Tests if email is valid by using regex
+  if (data.eventContact) {
+    const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    if (!regex.test(data.eventContact)) {
+      newErrors = { ...newErrors, eventContact: "Must be a valid email address"  };
+    }
+  }
+
+  if (data.eventPrivacy.length < 1) {
+    newErrors = { ...newErrors, eventPrivacy: "Must include event privacy details"  };
+  }
+
   return newErrors;
 };
