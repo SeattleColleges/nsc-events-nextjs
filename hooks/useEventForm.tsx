@@ -33,7 +33,8 @@ export const useEventForm = (initialData: Activity | ActivityDatabase) => {
         hashtag: ""
     },
     eventPrivacy: "",
-    eventAccessibility: ""
+    eventAccessibility: "",
+    eventCapacity: ""
   });
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [fixingErrors, setFixingErrors] = useState(false);
