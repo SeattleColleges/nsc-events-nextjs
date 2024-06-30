@@ -3,7 +3,6 @@ import { render, screen } from '@testing-library/react'
 import Page from '../../app/admin/page';
 import useAuth from '@/hooks/useAuth'
 
-
 jest.mock('@/hooks/useAuth', () => ({
     __esModule: true,
     default: jest.fn(),
