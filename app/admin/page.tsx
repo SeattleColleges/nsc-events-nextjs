@@ -1,10 +1,14 @@
+"use client";
 import Link from "next/link";
 import { Box, Button, Container } from '@mui/material';
 import { FC } from "react";
 import styles from "../home.module.css";
 import '../globals.css';
+import UnauthorizedPageMessage from "@/components/UnauthorizedPageMessage";
+import useAuth from "@/hooks/useAuth";
 
 const Admin = () => {
+    const { isAuth, user } = useAuth();
     interface AdminButtonProps {
         path: string;
         text: string;
@@ -20,22 +24,27 @@ const Admin = () => {
             </Button>
         )
     }
-  return (
-      <Container maxWidth={false} className="bg-solid">
-          <Box className={styles.title}
-              display="flex"
-              justifyContent="center"
-              alignContent="center"
-              height="100vh"
-          >
-              <AdminButton path={'/edit-user-role-page'} text={"Edit User Role"}/>
-              <AdminButton path={'/create-event'} text={"Create Event"}/>
-              <AdminButton path={'/my-events'} text={"View My Events"}/>
-              <AdminButton path={'/archived-events'} text={"View Archived Events"}/>
-              <AdminButton path={'/'} text={"View All Events"}/>
-          </Box>
-      </Container>
-  );
+
+    if (isAuth && (user?.role === 'admin')) {
+        return (
+            <Container maxWidth={false} className="bg-solid">
+                <Box className={styles.title}
+                    display="flex"
+                    justifyContent="center"
+                    alignContent="center"
+                    height="100vh"
+                >
+                    <AdminButton path={'/edit-user-role-page'} text={"Edit User Role"}/>
+                    <AdminButton path={'/create-event'} text={"Create Event"}/>
+                    <AdminButton path={'/my-events'} text={"View My Events"}/>
+                    <AdminButton path={'/archived-events'} text={"View Archived Events"}/>
+                    <AdminButton path={'/'} text={"View All Events"}/>
+                </Box>
+            </Container>
+        );
+    } else {
+        return <UnauthorizedPageMessage/>
+    }
 };
 
 export default Admin;
