@@ -1,7 +1,14 @@
 // tests/unit/edit-user-role-page.test.tsx
 import '@testing-library/jest-dom'
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen, waitFor, act } from '@testing-library/react'
 import EditUserRolePage from '../../app/edit-user-role-page/page'
+import useAuth from '@/hooks/useAuth'
+
+// Mock the useAuth hook
+jest.mock('@/hooks/useAuth', () => ({
+  __esModule: true,
+  default: jest.fn(),
+}))
 
 // Mock the UserCard component
 jest.mock('../../components/UserCard', () => ({ user }: any) => (
@@ -28,14 +35,30 @@ describe('EditUserRolePage', () => {
     jest.restoreAllMocks()
   })
 
-  it('renders the page title', () => {
-    render(<EditUserRolePage />)
+  it('renders the page title', async () => {
+    (useAuth as jest.Mock).mockReturnValue({
+      isAuth: true,
+      user: { role: 'admin' }
+    })
+
+    await act(async () => {
+      render(<EditUserRolePage />)
+    })
+
     const title = screen.getByText('User Management')
     expect(title).toBeInTheDocument()
   })
 
   it('fetches and displays user information', async () => {
-    render(<EditUserRolePage />)
+    // Mock the useAuth hook to return an authenticated admin user
+    (useAuth as jest.Mock).mockReturnValue({
+      isAuth: true,
+      user: { role: 'admin' }
+    })
+
+    await act(async () => {
+      render(<EditUserRolePage />)
+    })
 
     await waitFor(() => {
       const userCards = screen.getAllByTestId('user-card')
