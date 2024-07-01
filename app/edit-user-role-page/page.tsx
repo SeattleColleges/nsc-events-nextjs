@@ -2,6 +2,8 @@
 import React, { useState, useEffect } from "react";
 import UserCard from "../../components/UserCard";
 import { Box, Stack, Typography } from "@mui/material";
+import useAuth from "@/hooks/useAuth";
+import UnauthorizedPageMessage from "@/components/UnauthorizedPageMessage";
 
 /**
  * Represents a user.
@@ -51,21 +53,27 @@ const EditUserRolePage = () => {
     fetchUser(setUserInfo);
   }, []);
 
-  return (
-    <Box sx={{ display: "flex", justifyContent: "center" }}>
-      <Stack alignItems="center">
-        <Typography
-            fontSize={"2.25rem"}
-            textAlign={"center"}
-            marginTop={"2rem"}
-        >User Management
-        </Typography>
-        {userInfo.map((user, index) => (
-          <UserCard user={user} key={index} />
-        ))}
-      </Stack>
-    </Box>
-  );
+  const { isAuth, user } = useAuth();
+
+  if (isAuth && (user?.role === 'admin')) {
+    return (
+      <Box sx={{ display: "flex", justifyContent: "center" }}>
+        <Stack alignItems="center">
+          <Typography
+              fontSize={"2.25rem"}
+              textAlign={"center"}
+              marginTop={"2rem"}
+          >User Management
+          </Typography>
+          {userInfo.map((user, index) => (
+            <UserCard user={user} key={index} />
+          ))}
+        </Stack>
+      </Box>
+    );
+ } else {
+  return <UnauthorizedPageMessage/>
+  }
 };
 
 export default EditUserRolePage;
