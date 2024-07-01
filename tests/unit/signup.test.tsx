@@ -39,3 +39,4 @@ describe('Sign up page tests', () => {
     expect(signinLink).toHaveProperty('href', 'http://localhost/auth/sign-in')
   })
 })
+
