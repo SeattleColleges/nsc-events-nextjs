@@ -1,4 +1,4 @@
-import { ChangeEventHandler, FormEvent, useState } from "react";
+import {ChangeEventHandler, FormEvent, useEffect, useState} from "react";
 import { validateFormData } from "@/utility/validateFormData";
 import { Activity, FormErrors } from "@/models/activity";
 import useDateTimeSelection from "./useDateTimeSelection";
@@ -53,6 +53,13 @@ export const useEventForm = (initialData: Activity | ActivityDatabase) => {
     handleEndTimeChange,
   } = useDateTimeSelection("10:00", "11:00");
 
+  useEffect(() => {
+    if (fixingErrors) {
+      const newErrors = validateFormData(eventData);
+      setErrors(newErrors);
+    }
+  }, [eventData]);
+
   const handleInputChange: ChangeEventHandler<HTMLInputElement> = ({
     target,
   }) => {
@@ -61,10 +68,6 @@ export const useEventForm = (initialData: Activity | ActivityDatabase) => {
       ...prevEventData,
       [name]: value,
     }));
-    if (fixingErrors) {
-      const newErrors = validateFormData(eventData);
-      setErrors(newErrors);
-    }
   };
 
   // handling changes to the social media fields
