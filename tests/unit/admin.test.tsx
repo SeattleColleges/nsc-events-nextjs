@@ -18,7 +18,7 @@ jest.mock('next/router', () => ({
 
 describe('Admin', () => {
     const renderComponent = () => {
-        render(<Admin />);
+        render(<Page />);
     };
 
     it('renders the buttons', () => {
