@@ -6,15 +6,17 @@
         "node": "18.x"
     },
     "scripts": {
+        "check-integrity": "shasum -a 256 -c checksums.sha256",
         "dev": "next dev -p 8080",
         "build": "next build",
-        "start": "next start -p 8080",
+        "start": "next start",
         "lint": "next lint",
         "compile": "tsc",
         "unit:test": "jest",
         "test": "jest",
         "test:watch": "jest --watch",
-        "test:coverage": "jest --coverage"
+        "test:coverage": "jest --coverage",
+        "security-check": "snyk test"
     },
     "dependencies": {
         "@emotion/cache": "^11.11.0",
@@ -22,9 +24,9 @@
         "@emotion/styled": "^11.11.0",
         "@mui/icons-material": "5.15.5",
         "@mui/lab": "^5.0.0-alpha.165",
-        "@mui/material": "^5.15.19",
+        "@mui/material": "^5.15.9",
         "@mui/material-nextjs": "^5.15.9",
-        "@mui/utils": "^5.15.9",
+        "@mui/utils": "^5.15.20",
         "@mui/x-date-pickers": "^6.19.4",
         "@tanstack/react-query": "5.17.15",
         "@types/bcrypt": "^5.0.0",
@@ -34,17 +36,17 @@
         "autoprefixer": "10.4.14",
         "bcrypt": "^5.1.0",
         "date-fns": "^2.25.0",
-        "eslint": "8.43.0",
-        "eslint-config-next": "13.4.7",
+        "eslint": "^8.0.0",
+        "eslint-config-next": "^14.1.0",
         "mongoose": "^7.4.2",
-        "next": "13.4.7",
+        "next": "^14.2.3",
         "next-auth": "^4.24.7",
-        "postcss": "8.4.24",
+        "postcss": "^8.4.38",
         "react": "18.2.0",
         "react-dom": "18.2.0",
         "react-icons": "^5.2.1",
         "react-time-picker-typescript": "^1.2.3",
-        "tailwindcss": "3.3.2",
+        "tailwindcss": "^3.4.4",
         "typescript": "5.1.3"
     },
     "devDependencies": {
@@ -59,5 +61,8 @@
         "jest-environment-jsdom": "^29.7.0",
         "next-router-mock": "^0.9.13",
         "ts-jest": "29.1.0"
+    },
+    "overrides": {
+        "micromatch": "4.0.6"
     }
 }
