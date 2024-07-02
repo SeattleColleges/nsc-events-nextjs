@@ -19,6 +19,8 @@ function UserCard({ user }: { user: UserCardProps }) {
   const handleEditClick = () => {
     if (editCompleted) {
       window.location.reload();
+    } else if (openDialog) {
+      setOpenDialog(false);
     } else {
       setOpenDialog(true);
     }
@@ -72,10 +74,10 @@ function UserCard({ user }: { user: UserCardProps }) {
           <Button
             variant="contained"
             color="primary"
-            endIcon={editCompleted ? <CheckIcon /> : <EditIcon /> }
+            endIcon={openDialog ? "" : editCompleted ? <CheckIcon /> : <EditIcon /> }
             onClick={handleEditClick}
           >
-            {editCompleted ? "Done" : "Edit"}
+            {openDialog ? "Cancel" : editCompleted ? "Done" : "Edit"}
           </Button>
         </Box>
       </Stack>
