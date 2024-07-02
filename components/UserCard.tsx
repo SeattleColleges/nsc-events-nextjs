@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Box, Button, Container, Stack, Typography } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
+import CheckIcon from '@mui/icons-material/Check';
 import EditUserRoleDialog from "./EditUserRoleDialog";
 
 export interface UserCardProps {
@@ -71,11 +72,19 @@ function UserCard({ user }: { user: UserCardProps }) {
           <Button
             variant="contained"
             color="primary"
-            startIcon={<EditIcon />}
+            endIcon={editCompleted ? <CheckIcon /> : <EditIcon /> }
             onClick={handleEditClick}
           >
             {editCompleted ? "Done" : "Edit"}
           </Button>
+          {/* <Button
+            variant="contained"
+            color="primary"
+            startIcon={<EditIcon />}
+            onClick={handleEditClick}
+          >
+            {editCompleted ? "Done" : "Cancel"}
+          </Button> */}
         </Box>
       </Stack>
     </Container>
