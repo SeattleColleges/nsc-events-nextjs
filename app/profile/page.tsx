@@ -5,17 +5,21 @@ import { Box, Button, Stack, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import CurrentUserCard from "@/components/CurrentUserCard";
 import { useRouter } from "next/navigation";
+import EditUserDetailsDialog, { User } from "@/components/EditUserDetailsDialog";
 
-interface User {
-    firstName: string;
-    lastName: string;
-    email: string;
-    pronouns: string
-}
+// interface User {
+//     firstName: string;
+//     lastName: string;
+//     email: string;
+//     pronouns: string
+// }
+
 const URL = process.env.NSC_EVENTS_PUBLIC_API_URL || "http://localhost:3000/api";
+
 const Profile = () => {
     const [user, setUser] = useState<User>();
     const [token, setToken] = useState<string | null>();
+    const [openEditDialog, setOpenEditDialog] = useState(false);
     const router = useRouter();
     const getUserFromId = async (userId: string) => {
         const response = await fetch(`${URL}/users/find/${userId}`);
@@ -29,6 +33,18 @@ const Profile = () => {
         const userId = getCurrentUserId();
         getUserFromId(userId);
     },[]);
+
+    const handleEditClick = () => {
+        setOpenEditDialog(true);
+      };
+    
+      const handleCloseEditDialog = (updatedUser?: User) => {
+        setOpenEditDialog(false);
+        if (updatedUser) {
+          setUser(updatedUser);
+        }
+      };    
+
     if (token === null) {
         return (
             <Box sx={{ display: "flex", justifyContent: "center" }}>
@@ -45,6 +61,8 @@ const Profile = () => {
             </Typography>
         )
     }
+
+
     return (
         <Box sx={{ display: "flex", justifyContent: "center" }}>
             <Stack>
@@ -52,9 +70,13 @@ const Profile = () => {
                     Welcome, { user?.firstName }
                 </Typography>
                 <CurrentUserCard user={user}/>
+                <Button onClick={handleEditClick}>Edit</Button>
                 <Button onClick={ () => router.replace('/auth/change-password') }>
                     Change Password
                 </Button>
+                {openEditDialog && (
+                    <EditUserDetailsDialog open={openEditDialog} onClose={handleCloseEditDialog} user={user} />
+                )}
             </Stack>
         </Box>
     );
