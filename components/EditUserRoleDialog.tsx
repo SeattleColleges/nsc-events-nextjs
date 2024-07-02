@@ -69,6 +69,11 @@ export function ConfirmationDialogRaw(props: ConfirmationDialogRawProps & { user
    * @returns {void}
    */
   const handleOk = async () => {
+    if (value === valueProp) {
+      onClose();
+      return;
+    }
+    
     const token = localStorage.getItem('token');
     try {
       const apiUrl = process.env.NSC_EVENTS_PUBLIC_API_URL || `http://localhost:3000/api`;
