@@ -77,14 +77,6 @@ function UserCard({ user }: { user: UserCardProps }) {
           >
             {editCompleted ? "Done" : "Edit"}
           </Button>
-          {/* <Button
-            variant="contained"
-            color="primary"
-            startIcon={<EditIcon />}
-            onClick={handleEditClick}
-          >
-            {editCompleted ? "Done" : "Cancel"}
-          </Button> */}
         </Box>
       </Stack>
     </Container>
