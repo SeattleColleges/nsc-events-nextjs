@@ -20,7 +20,6 @@ export interface User {
 const EditUserDetailsDialog: React.FC<EditUserDetailsDialogProps> = ({ open, onClose, user }) => {
   const [firstName, setFirstName] = useState(user.firstName);
   const [lastName, setLastName] = useState(user.lastName);
-  const [email, setEmail] = useState(user.email);
   const [pronouns, setPronouns] = useState(user.pronouns);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
@@ -29,7 +28,6 @@ const EditUserDetailsDialog: React.FC<EditUserDetailsDialogProps> = ({ open, onC
   useEffect(() => {
     setFirstName(user.firstName);
     setLastName(user.lastName);
-    setEmail(user.email);
     setPronouns(user.pronouns);
   }, [user]);
 
@@ -43,8 +41,9 @@ const EditUserDetailsDialog: React.FC<EditUserDetailsDialogProps> = ({ open, onC
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify({ firstName, lastName, email, pronouns })
+        body: JSON.stringify({ firstName, lastName, pronouns })
       });
+      console.log(response.body)
       if (response.ok) {
         const updatedUser = await response.json();
         onClose(updatedUser);
@@ -78,11 +77,6 @@ const EditUserDetailsDialog: React.FC<EditUserDetailsDialogProps> = ({ open, onC
               label="Last Name"
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
-            />
-            <TextField
-              label="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
             />
             <TextField
               label="Pronouns"

@@ -7,13 +7,6 @@ import CurrentUserCard from "@/components/CurrentUserCard";
 import { useRouter } from "next/navigation";
 import EditUserDetailsDialog, { User } from "@/components/EditUserDetailsDialog";
 
-// interface User {
-//     firstName: string;
-//     lastName: string;
-//     email: string;
-//     pronouns: string
-// }
-
 const URL = process.env.NSC_EVENTS_PUBLIC_API_URL || "http://localhost:3000/api";
 
 const Profile = () => {
@@ -61,7 +54,6 @@ const Profile = () => {
             </Typography>
         )
     }
-
 
     return (
         <Box sx={{ display: "flex", justifyContent: "center" }}>
