@@ -62,7 +62,7 @@ const Profile = () => {
                     Welcome, { user?.firstName }
                 </Typography>
                 <CurrentUserCard user={user}/>
-                <Button onClick={handleEditClick}>Edit</Button>
+                <Button onClick={handleEditClick} sx={{ mt: 2 }}>Edit Profile</Button>
                 <Button onClick={ () => router.replace('/auth/change-password') }>
                     Change Password
                 </Button>

@@ -14,7 +14,7 @@ function CurrentUserCard({ user }: { user: CurrentUserCardProps }) {
   return (
     <Box
         sx={{
-            border: '1px solid black',
+            border: '1px solid #ccc',
             borderRadius: 1,
             padding: 2,
             display: 'flex',

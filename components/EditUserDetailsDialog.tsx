@@ -21,6 +21,7 @@ const EditUserDetailsDialog: React.FC<EditUserDetailsDialogProps> = ({ open, onC
   const [firstName, setFirstName] = useState(user.firstName);
   const [lastName, setLastName] = useState(user.lastName);
   const [pronouns, setPronouns] = useState(user.pronouns);
+  const [isUpdated, setIsUpdated] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarSeverity, setSnackbarSeverity] = useState<AlertColor>('success');
@@ -29,7 +30,17 @@ const EditUserDetailsDialog: React.FC<EditUserDetailsDialogProps> = ({ open, onC
     setFirstName(user.firstName);
     setLastName(user.lastName);
     setPronouns(user.pronouns);
+    setIsUpdated(false);
   }, [user]);
+
+  const handleInputChange = (setter: React.Dispatch<React.SetStateAction<string>>, value: string, initialValue: string) => {
+    setter(value);
+    if (value !== initialValue) {
+      setIsUpdated(true);
+    } else {
+      setIsUpdated(false);
+    }
+  };
 
   const handleSave = async () => {
     const token = localStorage.getItem('token');
@@ -46,13 +57,15 @@ const EditUserDetailsDialog: React.FC<EditUserDetailsDialogProps> = ({ open, onC
       console.log(response.body)
       if (response.ok) {
         const updatedUser = await response.json();
-        onClose(updatedUser);
+        setTimeout(() => onClose(updatedUser), 1000);
         setSnackbarSeverity('success');
         setSnackbarMessage('Profile updated successfully!');
+        setSnackbarOpen(true);
       } else {
         console.error('Failed to update profile:', response.statusText);
         setSnackbarSeverity('error');
         setSnackbarMessage('Failed to update profile');
+        setSnackbarOpen(true);
       }
     } catch (error) {
       console.error('Error updating profile:', error);
@@ -71,26 +84,27 @@ const EditUserDetailsDialog: React.FC<EditUserDetailsDialogProps> = ({ open, onC
             <TextField
               label="First Name"
               value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
+              onChange={(e) => handleInputChange(setFirstName, e.target.value, user.firstName)}
             />
             <TextField
               label="Last Name"
               value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
+              onChange={(e) => handleInputChange(setLastName, e.target.value, user.lastName)}
             />
             <TextField
               label="Pronouns"
               value={pronouns}
-              onChange={(e) => setPronouns(e.target.value)}
+              onChange={(e) => handleInputChange(setPronouns, e.target.value, user.pronouns)}
             />
           </Box>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => onClose()}>Cancel</Button>
-          <Button onClick={handleSave}>Save</Button>
+          <Button onClick={handleSave} disabled={!isUpdated}>Save</Button>
         </DialogActions>
       </Dialog>
-      <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={() => setSnackbarOpen(false)}>
+      <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={() => setSnackbarOpen(false)}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
         <Alert onClose={() => setSnackbarOpen(false)} severity={snackbarSeverity} sx={{ width: '100%' }}>
           {snackbarMessage}
         </Alert>
