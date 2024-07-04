@@ -14,7 +14,7 @@ function CurrentUserCard({ user }: { user: CurrentUserCardProps }) {
   return (
     <Box
         sx={{
-            border: '1px solid black',
+            border: '1px solid #ccc',
             borderRadius: 1,
             padding: 2,
             display: 'flex',
@@ -28,7 +28,10 @@ function CurrentUserCard({ user }: { user: CurrentUserCardProps }) {
         spacing={1}
       >
         <Typography variant="body1" gutterBottom>
-          Full Name: { user.firstName } { user.lastName }
+          First Name: { user.firstName }
+        </Typography>
+        <Typography variant="body1" gutterBottom>
+          Last Name: { user.lastName }
         </Typography>
         <Typography variant="body1" gutterBottom>
             Email: { user.email }
