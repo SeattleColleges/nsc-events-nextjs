@@ -35,13 +35,18 @@ export default function Navbar() {
     setAnchorElUser(null);
   };
 
+  const handleProfileClick = () => {
+    router.push('/profile');
+    toggleDrawer(false);
+  };
+
   const handleSignOut = () => {
     localStorage.removeItem('token');
     window.dispatchEvent(new CustomEvent('auth-change'));
     router.push('/auth/sign-in');
   };
 
-  const handleProfileClick = () => {
+  const handleAccountClick = () => {
     if (user?.role === 'admin') {
       router.push('/admin');
     } else if (user?.role === 'creator') {
@@ -123,8 +128,13 @@ export default function Navbar() {
                     onClose={handleCloseUserMenu}
                     disableScrollLock
                   >
-                    {isAuth && user && (user.role === "admin" || user.role === "creator") && (
+                    {isAuth && user && (
                       <MenuItem onClick={() => { handleProfileClick(); handleCloseUserMenu(); }}>
+                        <Typography textAlign="center">Profile</Typography>
+                      </MenuItem>
+                    )}
+                    {isAuth && user && (user.role === "admin" || user.role === "creator") && (
+                      <MenuItem onClick={() => { handleAccountClick(); handleCloseUserMenu(); }}>
                         <Typography textAlign="center">My Account</Typography>
                       </MenuItem>
                     )}
