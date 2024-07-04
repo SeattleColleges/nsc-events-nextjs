@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { ActivityDatabase } from "@/models/activityDatabase";
 import Dialog from "@mui/material/Dialog";
 import { DatePicker, LocalizationProvider, TimePicker } from "@mui/x-date-pickers";
@@ -34,9 +34,21 @@ const EditDialog = ({ isOpen, event, toggleEditDialog }: EditDialogProps) => {
         errorMessage
     } = useEditForm(event);
 
+    const [initialEventData, setInitialEventData] = useState(event);
+
     // Convert startTime and endTime from string to Date for TimePicker
     const startTimeDate = to24HourTime(eventData.eventStartTime);
     const endTimeDate = to24HourTime(eventData.eventEndTime)
+
+    useEffect(() => {
+        if (isOpen) {
+            setInitialEventData(event);
+        }
+    }, [isOpen, event]);
+
+    const isFormUpdated = () => {
+        return JSON.stringify(initialEventData) !== JSON.stringify(eventData);
+    };
 
     return (
         <>
@@ -365,7 +377,7 @@ const EditDialog = ({ isOpen, event, toggleEditDialog }: EditDialogProps) => {
                             />
                             <Box sx={{ display: 'flex', justifyContent: 'space-between' }} >
                                 <Box>
-                                <Button type="submit" variant="contained" color="primary" style={{ textTransform: "none" }}>
+                                <Button type="submit" variant="contained" color="primary" style={{ textTransform: "none" }} disabled={!isFormUpdated()}>
                                     Confirm Edit
                                 </Button>
                                 <div className="error-messages">
