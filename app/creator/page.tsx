@@ -1,10 +1,15 @@
+'use client';
+
 import Link from "next/link";
 import { Box, Button, Container } from '@mui/material';
 import { FC } from "react";
 import styles from "../home.module.css";
 import '../globals.css';
+import useAuth from "@/hooks/useAuth";
+import UnauthorizedPageMessage from "@/components/UnauthorizedPageMessage";
 
 const Creator = () => {
+    const { isAuth, user } = useAuth();
     interface CreatorButtonProps {
       path: string;
       text: string;
@@ -19,26 +24,31 @@ const Creator = () => {
                 <Link href={ path }>{ text }</Link>
             </Button>
         )
-    } 
-  return (
-    <Container maxWidth={false} className="bg-solid">
-        <Box className={styles.title}
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            height='100vh'
-        >
-            <CreatorButton path={"/create-event"} text={"Create Event"}/>
-            <CreatorButton path={"/my-events"} text={"View My Events"}/>
-            <CreatorButton path={"/archived-events"} text={"View Archived Events"}/>
-            <CreatorButton path={"/"} text={"View All Events"}/>
-        </Box>
-        {/* <h1>Placeholder for the creator page so npm run build compiles successfully.</h1>
+    }
+
+    if (isAuth && user?.role === 'creator') {
+        return (
+            <Container maxWidth={false} className="bg-solid">
+                <Box className={styles.title}
+                     display="flex"
+                     justifyContent="center"
+                     alignItems="center"
+                     height='100vh'
+                >
+                    <CreatorButton path={"/create-event"} text={"Create Event"}/>
+                    <CreatorButton path={"/my-events"} text={"View My Events"}/>
+                    <CreatorButton path={"/archived-events"} text={"View Archived Events"}/>
+                    <CreatorButton path={"/"} text={"View All Events"}/>
+                </Box>
+                {/* <h1>Placeholder for the creator page so npm run build compiles successfully.</h1>
           <p>FIX: move to pages or use getSession from nextauth</p>
           <p>FIX: allow only users with creator role to be routed to this page</p> */}
-          
-      </Container>
-  );
+
+            </Container>
+        );
+    } else {
+        return <UnauthorizedPageMessage/>
+    }
 };
 
 export default Creator;
