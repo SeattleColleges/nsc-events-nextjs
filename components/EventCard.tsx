@@ -1,4 +1,4 @@
-import { Box, Card, CardContent, Grid, Typography, useMediaQuery } from '@mui/material'
+import { Box, Card, CardContent, CardMedia, Grid, Typography, useMediaQuery } from '@mui/material'
 import { ActivityDatabase } from "@/models/activityDatabase";
 import Link from "next/link";
 import React from 'react'
@@ -26,10 +26,18 @@ function EventCard({ event }: EventCardProps) {
                 },
             }
         } >
-            <Box sx={{ height: 130, width: isMobile ? 260 : isTablet ? 500 : 700, display: "block" }}>
+            <Box sx={{ height: isMobile ? 325 : 130, width: isMobile ? 260 : isTablet ? 500 : 700, display: "block" }}>
                 <Card sx={{ display: 'flex', flexDirection: 'column' }}>
                     <CardContent sx={{ flexGrow: 1 }}>
-                        <Typography variant="h5" align={isMobile ? "center" : "left"} pb={isMobile ? 1 : 0}>
+                        {isMobile && (
+                          <CardMedia
+                            component="img"
+                            sx={{ height: 200, objectFit: "cover" }}
+                            image={event.eventCoverPhoto}
+                            alt={event.eventTitle}
+                          />
+                        )}
+                        <Typography variant="h5" align={isMobile ? "center" : "left"} pb={isMobile ? 1 : 0} pt={isMobile ? 2 : 0}>
                             {event.eventTitle}
                         </Typography>
                         <Typography variant="body2" align={isMobile ? "center" : "right"} color="text.secondary">
