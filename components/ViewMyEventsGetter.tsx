@@ -30,7 +30,6 @@ export function MyEventsList() {
                 container
                 direction={'column'}
                 alignItems={'center'}
-                
             >
                 {events?.map((event: ActivityDatabase) => (
                     <Grid item xs={12} key={event._id}>
