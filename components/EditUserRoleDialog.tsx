@@ -25,11 +25,13 @@ interface ConfirmationDialogRawProps {
 export function ConfirmationDialogRaw(props: ConfirmationDialogRawProps) {
   const { onClose, value: valueProp, open, ...other } = props;
   const [value, setValue] = useState(valueProp);
+  const [roleUpdated, setRoleUpdated] = useState(false);
   const radioGroupRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     if (!open) {
       setValue(valueProp);
+      setRoleUpdated(false);
     }
   }, [valueProp, open]);
 
@@ -51,8 +53,18 @@ export function ConfirmationDialogRaw(props: ConfirmationDialogRawProps) {
     }
   };
 
+  // const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   setValue((event.target as HTMLInputElement).value);
+  // };
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValue((event.target as HTMLInputElement).value);
+    const newValue = (event.target as HTMLInputElement).value;
+    setValue(newValue);
+    if (newValue !== valueProp) {
+      setRoleUpdated(true);
+    } else {
+      setRoleUpdated(false);
+    }
   };
 
   return (
@@ -86,7 +98,7 @@ export function ConfirmationDialogRaw(props: ConfirmationDialogRawProps) {
         <Button autoFocus onClick={handleCancel}>
           Cancel
         </Button>
-        <Button onClick={handleOk}>Ok</Button>
+        <Button onClick={handleOk} disabled={!roleUpdated}>Ok</Button>
       </DialogActions>
     </Dialog>
   );
