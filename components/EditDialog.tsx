@@ -46,7 +46,7 @@ const EditDialog = ({ isOpen, event, toggleEditDialog }: EditDialogProps) => {
         }
     }, [isOpen, event]);
 
-    const isFormUpdated = () => {
+    const isEventUpdated = () => {
         return JSON.stringify(initialEventData) !== JSON.stringify(eventData);
     };
 
@@ -377,7 +377,7 @@ const EditDialog = ({ isOpen, event, toggleEditDialog }: EditDialogProps) => {
                             />
                             <Box sx={{ display: 'flex', justifyContent: 'space-between' }} >
                                 <Box>
-                                <Button type="submit" variant="contained" color="primary" style={{ textTransform: "none" }} disabled={!isFormUpdated()}>
+                                <Button type="submit" variant="contained" color="primary" style={{ textTransform: "none" }} disabled={!isEventUpdated()}>
                                     Confirm Edit
                                 </Button>
                                 <div className="error-messages">
