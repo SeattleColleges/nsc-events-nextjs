@@ -22,7 +22,7 @@ const Admin = () => {
             <Button
                 variant="contained"
                 color="primary"
-                style={{ margin: 'auto', width: isMobile ? '60%' : 'auto', display: 'block'}}
+                style={{ margin: 'auto', width: isMobile ? '60%' : 'auto', display: 'block' }}
             >
                 <Link href={ path }>{ text }</Link>
             </Button>
