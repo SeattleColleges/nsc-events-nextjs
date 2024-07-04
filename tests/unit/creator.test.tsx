@@ -1,8 +1,21 @@
 import '@testing-library/jest-dom'
 import { render, screen } from '@testing-library/react'
 import Page from '..//..//app/creator/page';
+import useAuth from "../../hooks/useAuth";
+
+jest.mock('../../hooks/useAuth', () => ({
+  __esModule: true,
+  default: jest.fn(),
+}))
 
 describe('Creator', () => {
+  beforeEach(() => {
+    (useAuth as jest.Mock).mockReturnValue({
+      isAuth: true,
+      user: { role: 'creator' }
+    })
+  })
+
   it('renders the buttons', () => {
     render(<Page/>)
     const buttons = screen.getAllByRole('button')
