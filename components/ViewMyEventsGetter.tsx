@@ -29,7 +29,6 @@ export function MyEventsList() {
             <Grid
                 container
                 direction={'column'}
-                spacing={2}
                 alignItems={'center'}
                 
             >
