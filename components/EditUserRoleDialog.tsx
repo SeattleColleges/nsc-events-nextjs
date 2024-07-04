@@ -11,34 +11,19 @@ import RadioGroup from "@mui/material/RadioGroup";
 import Radio from "@mui/material/Radio";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import React, { useEffect, useRef, useState } from "react";
-import { UserCardProps } from "./UserCard";
-import Snackbar from '@mui/material/Snackbar';
-import Alert, { AlertColor } from '@mui/material/Alert';
-
 
 const options = ["admin", "creator", "user"];
-/**
- * Props for the ConfirmationDialogRaw component.
- */
+
 interface ConfirmationDialogRawProps {
   id: string;
   keepMounted: boolean;
   value: string;
   open: boolean;
   onClose: (value?: string, success?: boolean) => void;
-  setSnackbarOpen: (open: boolean) => void;
-  setSnackbarMessage: (message: string) => void;
-  setSnackbarSeverity: (severity: 'error' | 'warning' | 'info' | 'success') => void;
 }
 
-/**
- * Renders a confirmation dialog for editing user roles.
- *
- * @param props - The component props.
- * @returns The rendered ConfirmationDialogRaw component.
- */
-export function ConfirmationDialogRaw(props: ConfirmationDialogRawProps & { user: UserCardProps }) {
-  const { onClose, value: valueProp, open, user, ...other } = props;
+export function ConfirmationDialogRaw(props: ConfirmationDialogRawProps) {
+  const { onClose, value: valueProp, open, ...other } = props;
   const [value, setValue] = useState(valueProp);
   const radioGroupRef = useRef<HTMLElement>(null);
 
@@ -48,60 +33,24 @@ export function ConfirmationDialogRaw(props: ConfirmationDialogRawProps & { user
     }
   }, [valueProp, open]);
 
-/**
- * Handles the entering event of the dialog.
- */
   const handleEntering = () => {
     if (radioGroupRef.current != null) {
       radioGroupRef.current.focus();
     }
   }; 
 
-  /**
-     * Handles the cancel action.
-  */
   const handleCancel = () => {
     onClose();
   };
 
- /**
-   * Handles the click event when the user confirms the role update.
-   * @returns {void}
-   */
-  const handleOk = async () => {
-    const token = localStorage.getItem('token');
-    try {
-      const apiUrl = process.env.NSC_EVENTS_PUBLIC_API_URL || `http://localhost:3000/api`;
-      const response = await fetch(`${apiUrl}/users/update/${user.id}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({ role: value })
-      });
-      if (response.ok) {
-        onClose(value, true); // Indicate success
-        props.setSnackbarSeverity('success');
-        props.setSnackbarMessage('User role updated successfully!');
-        props.setSnackbarOpen(true);
-      } else {
-        console.error('Failed to update user role:', response.statusText);
-        props.setSnackbarSeverity('error');
-        props.setSnackbarMessage('Failed to update user role');
-        props.setSnackbarOpen(true);
-      }
-    } catch (error) {
-      console.error('Error updating user role:', error);
-      props.setSnackbarSeverity('error');
-      props.setSnackbarMessage('Error updating user role');
-      props.setSnackbarOpen(true);
+  const handleOk = () => {
+    if (value !== valueProp) {
+      onClose(value, true); // Indicate success
+    } else {
+      onClose();
     }
   };
-  /**
-   * Handles the change event of the input element.
-   * @param event - The change event object.
-   */
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue((event.target as HTMLInputElement).value);
   };
@@ -143,39 +92,23 @@ export function ConfirmationDialogRaw(props: ConfirmationDialogRawProps & { user
   );
 }
 
-/**
- * Renders a dialog for editing the user role.
- *
- * @component
- * @param {Object} props - The component props.
- * @param {UserCardProps} props.user - The user object containing user information.
- * @param {Function} props.onClose - The function to be called when the dialog is closed.
- * @returns {JSX.Element} The rendered EditUserRoleDialog component.
- */
-
 export default function EditUserRoleDialog({
   user,
   onClose,
 }: {
-  user: UserCardProps;
-  onClose: (success: boolean) => void;
+  user: { id: string; role: string };
+  onClose: (newRole?: string, success?: boolean) => void;
 }): JSX.Element {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(user.role);
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState('');
-  const [snackbarSeverity, setSnackbarSeverity] = useState<AlertColor>('success');
 
   const handleClickListItem = () => {
     setOpen(true);
   };
 
-  const handleClose = (newValue?: string, success: boolean = false) => {
+  const handleClose = (newValue?: string, success?: boolean) => {
     setOpen(false);
-    if (newValue) {
-      setValue(newValue);
-    }
-    onClose(success);
+    onClose(newValue, success);
   };
 
   return (
@@ -199,23 +132,14 @@ export default function EditUserRoleDialog({
         >
           <ListItemText primary="Select User Role" secondary={value} secondaryTypographyProps={{ sx: { color: "#333" } }}/>
         </ListItemButton>
-        <ConfirmationDialogRaw
-          id="role-menu"
-          keepMounted
-          open={open}
-          onClose={handleClose}
-          value={value}
-          user={user}
-          setSnackbarOpen={setSnackbarOpen}
-          setSnackbarMessage={setSnackbarMessage}
-          setSnackbarSeverity={setSnackbarSeverity}
+        <ConfirmationDialogRaw 
+          id="role-menu" 
+          keepMounted 
+          open={open} 
+          onClose={handleClose} 
+          value={value} 
         />
       </List>
-      <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={() => setSnackbarOpen(false)}>
-        <Alert onClose={() => setSnackbarOpen(false)} severity={snackbarSeverity} sx={{ width: '100%' }}>
-          {snackbarMessage}
-        </Alert>
-      </Snackbar>
     </Box>
   );
 }
