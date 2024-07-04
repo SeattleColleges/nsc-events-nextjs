@@ -1,12 +1,13 @@
-import { ChangeEventHandler, FormEvent, useState } from "react";
+import {ChangeEventHandler, FormEvent, useEffect, useState} from "react";
 import { validateFormData } from "@/utility/validateFormData";
 import { Activity, FormErrors } from "@/models/activity";
 import useDateTimeSelection from "./useDateTimeSelection";
 import { ActivityDatabase } from "@/models/activityDatabase";
 import { useQueryClient } from "@tanstack/react-query";
+import { useRouter } from 'next/navigation';
 
 export const useEventForm = (initialData: Activity | ActivityDatabase) => {
-
+  const router = useRouter();
   const [eventData, setEventData] = useState<Activity | ActivityDatabase>(initialData);
   const [errors, setErrors] = useState<FormErrors>({
     eventTitle: "",
@@ -37,7 +38,7 @@ export const useEventForm = (initialData: Activity | ActivityDatabase) => {
     eventCapacity: ""
   });
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-
+  const [fixingErrors, setFixingErrors] = useState(false);
   // success/error messages for event creation
   const [successMessage, setSuccessMessage] = useState<String>("");
   const [errorMessage, setErrorMessage] = useState<String>("");
@@ -53,6 +54,13 @@ export const useEventForm = (initialData: Activity | ActivityDatabase) => {
     handleEndTimeChange,
   } = useDateTimeSelection("10:00", "11:00");
 
+  useEffect(() => {
+    if (fixingErrors) {
+      const newErrors = validateFormData(eventData);
+      setErrors(newErrors);
+    }
+  }, [eventData]);
+
   const handleInputChange: ChangeEventHandler<HTMLInputElement> = ({
     target,
   }) => {
@@ -61,7 +69,6 @@ export const useEventForm = (initialData: Activity | ActivityDatabase) => {
       ...prevEventData,
       [name]: value,
     }));
-    
   };
 
   // handling changes to the social media fields
@@ -113,7 +120,9 @@ export const useEventForm = (initialData: Activity | ActivityDatabase) => {
     e.preventDefault();
     console.log("Event Data: ", eventData);
     const newErrors = validateFormData(eventData);
-    if (Object.keys(newErrors).length > 0) {
+    const numNewErrors = Object.keys(newErrors).length;
+    setFixingErrors(numNewErrors > 0);
+    if (numNewErrors > 0) {
       setErrors(newErrors);
     } else {
       createActivity(eventData as Activity);
@@ -158,7 +167,9 @@ export const useEventForm = (initialData: Activity | ActivityDatabase) => {
         await queryClient.refetchQueries({queryKey:['events', 'myEvents', 'archivedEvents']});
         setSuccessMessage(data.message || "Event  successfully created!");
         setErrorMessage("");
-        // todo: navigate to a success page and clear form
+        setTimeout(() => {
+          router.push(`/event-detail?id=${data.activity._id}`)
+        }, 1200);
       } else {
         console.log("Failed to create activity:", response.status);
         throw new Error(data.message || "Failed to create the event.");
