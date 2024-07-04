@@ -79,6 +79,9 @@ const DrawerComp: React.FC<DrawerCompProps> = ({ isOpen, toggleDrawer }) => {
           </ListItem>
           {isAuth && user ? (
             <Box display="flex" flexDirection="column" alignItems="start">
+              <ListItem component={MuiLink} href="/profile" onClick={() => toggleDrawer(false)} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                <ListItemText primary="Profile" />
+              </ListItem>
               {user.role === 'admin' ? (
                 <ListItem component={MuiLink} href="/admin" onClick={() => toggleDrawer(false)} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
                   <ListItemText primary="My Account" />
