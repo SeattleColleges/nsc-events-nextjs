@@ -4,9 +4,10 @@ import { Activity, FormErrors } from "@/models/activity";
 import useDateTimeSelection from "./useDateTimeSelection";
 import { ActivityDatabase } from "@/models/activityDatabase";
 import { useQueryClient } from "@tanstack/react-query";
+import { useRouter } from 'next/navigation';
 
 export const useEventForm = (initialData: Activity | ActivityDatabase) => {
-
+  const router = useRouter();
   const [eventData, setEventData] = useState<Activity | ActivityDatabase>(initialData);
   const [errors, setErrors] = useState<FormErrors>({
     eventTitle: "",
@@ -166,7 +167,9 @@ export const useEventForm = (initialData: Activity | ActivityDatabase) => {
         await queryClient.refetchQueries({queryKey:['events', 'myEvents', 'archivedEvents']});
         setSuccessMessage(data.message || "Event  successfully created!");
         setErrorMessage("");
-        // todo: navigate to a success page and clear form
+        setTimeout(() => {
+          router.push(`/event-detail?id=${data.activity._id}`)
+        }, 1200);
       } else {
         console.log("Failed to create activity:", response.status);
         throw new Error(data.message || "Failed to create the event.");
