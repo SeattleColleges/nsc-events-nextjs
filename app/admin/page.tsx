@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { Box, Button, Container } from '@mui/material';
+import { Box, Button, Container, Grid, useMediaQuery, useTheme } from '@mui/material';
 import { FC } from "react";
 import styles from "../home.module.css";
 import '../globals.css';
@@ -9,16 +9,20 @@ import useAuth from "@/hooks/useAuth";
 
 const Admin = () => {
     const { isAuth, user } = useAuth();
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
     interface AdminButtonProps {
         path: string;
         text: string;
     }
+
     const AdminButton: FC<AdminButtonProps> = ({ path, text }) => {
         return (
             <Button
                 variant="contained"
                 color="primary"
-                style={{ margin: 'auto 0.25em' }}
+                style={{ margin: 'auto', width: isMobile ? '60%' : 'auto', display: 'block' }}
             >
                 <Link href={ path }>{ text }</Link>
             </Button>
@@ -33,12 +37,25 @@ const Admin = () => {
                     justifyContent="center"
                     alignContent="center"
                     height="100vh"
+                    flexDirection="column"
                 >
-                    <AdminButton path={'/edit-user-role-page'} text={"Edit User Role"}/>
-                    <AdminButton path={'/create-event'} text={"Create Event"}/>
-                    <AdminButton path={'/my-events'} text={"View My Events"}/>
-                    <AdminButton path={'/archived-events'} text={"View Archived Events"}/>
-                    <AdminButton path={'/'} text={"View All Events"}/>
+                    <Grid container spacing={2} justifyContent="center" alignItems="center">
+                        <Grid item xs={12} sm="auto">
+                            <AdminButton path={'/edit-user-role-page'} text={"Edit User Role"}/>
+                        </Grid>
+                        <Grid item xs={12} sm="auto">
+                            <AdminButton path={'/create-event'} text={"Create Event"}/>
+                        </Grid>
+                        <Grid item xs={12} sm="auto">
+                            <AdminButton path={'/my-events'} text={"View My Events"}/>
+                        </Grid>
+                        <Grid item xs={12} sm="auto">
+                            <AdminButton path={'/archived-events'} text={"View Archived Events"}/>
+                        </Grid>
+                        <Grid item xs={12} sm="auto">
+                            <AdminButton path={'/'} text={"View All Events"}/>
+                        </Grid>
+                    </Grid>
                 </Box>
             </Container>
         );
