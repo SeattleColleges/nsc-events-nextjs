@@ -1,7 +1,7 @@
 'use client';
 
 import Link from "next/link";
-import { Box, Button, Container } from '@mui/material';
+import { Box, Button, Container, Grid, useMediaQuery, useTheme } from '@mui/material';
 import { FC } from "react";
 import styles from "../home.module.css";
 import '../globals.css';
@@ -10,6 +10,10 @@ import UnauthorizedPageMessage from "@/components/UnauthorizedPageMessage";
 
 const Creator = () => {
     const { isAuth, user } = useAuth();
+
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
     interface CreatorButtonProps {
       path: string;
       text: string;
@@ -19,7 +23,7 @@ const Creator = () => {
             <Button
                 variant="contained"
                 color="primary"
-                style={{ margin: 'auto 0.25em' }}
+                style={{ margin: 'auto', width: isMobile ? '60%' : 'auto', display: 'block' }}
             >
                 <Link href={ path }>{ text }</Link>
             </Button>
@@ -33,12 +37,23 @@ const Creator = () => {
                      display="flex"
                      justifyContent="center"
                      alignItems="center"
-                     height='100vh'
+                     height="100vh"
+                     flexDirection="column"
                 >
-                    <CreatorButton path={"/create-event"} text={"Create Event"}/>
-                    <CreatorButton path={"/my-events"} text={"View My Events"}/>
-                    <CreatorButton path={"/archived-events"} text={"View Archived Events"}/>
-                    <CreatorButton path={"/"} text={"View All Events"}/>
+                    <Grid container spacing={2} justifyContent="center" alignItems="center">
+                        <Grid item xs={12} sm="auto">
+                            <CreatorButton path={"/create-event"} text={"Create Event"}/>
+                        </Grid>
+                        <Grid item xs={12} sm="auto">
+                            <CreatorButton path={"/my-events"} text={"View My Events"}/>
+                        </Grid>
+                        <Grid item xs={12} sm="auto">
+                            <CreatorButton path={"/archived-events"} text={"View Archived Events"}/>
+                        </Grid>
+                        <Grid item xs={12} sm="auto">
+                            <CreatorButton path={"/"} text={"View All Events"}/>
+                        </Grid>
+                    </Grid>
                 </Box>
                 {/* <h1>Placeholder for the creator page so npm run build compiles successfully.</h1>
           <p>FIX: move to pages or use getSession from nextauth</p>
