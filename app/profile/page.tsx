@@ -5,11 +5,14 @@ import { Box, Button, Stack, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import CurrentUserCard from "@/components/CurrentUserCard";
 import { useRouter } from "next/navigation";
+import useAuth from "@/hooks/useAuth";
+import UnauthorizedPageMessage from "@/components/UnauthorizedPageMessage";
 import EditUserDetailsDialog, { User } from "@/components/EditUserDetailsDialog";
 
 const URL = process.env.NSC_EVENTS_PUBLIC_API_URL || "http://localhost:3000/api";
 
 const Profile = () => {
+    const { isAuth } = useAuth();
     const [user, setUser] = useState<User>();
     const [token, setToken] = useState<string | null>();
     const [openEditDialog, setOpenEditDialog] = useState(false);
@@ -54,13 +57,14 @@ const Profile = () => {
             </Typography>
         )
     }
-
-    return (
-        <Box sx={{ display: "flex", justifyContent: "center" }}>
-            <Stack>
-                <Typography component="h1" variant="h4" sx={{ mt: 2, mb: 3 }}>
+  
+    if (isAuth ) {
+      return (
+         <Box sx={{ display: "flex", justifyContent: "center" }}>
+             <Stack>
+                 <Typography component="h1" variant="h4" sx={{ mt: 2, mb: 3 }}>
                     Welcome, { user?.firstName }
-                </Typography>
+                 </Typography>
                 <CurrentUserCard user={user}/>
                 <Button onClick={handleEditClick} sx={{ mt: 2 }}>Edit Profile</Button>
                 <Button onClick={ () => router.replace('/auth/change-password') }>
@@ -71,7 +75,10 @@ const Profile = () => {
                 )}
             </Stack>
         </Box>
-    );
+      );
+     } else {
+          return <UnauthorizedPageMessage/>
+     }
 };
 
 export default Profile;
