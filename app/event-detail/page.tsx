@@ -31,8 +31,8 @@ import ArchiveDialog from "@/components/ArchiveDialog";
 import EditDialog from "@/components/EditDialog";
 import { formatDate } from "@/utility/dateUtils";
 import ViewMoreDetailsDialog from "@/components/ViewMoreDetailsDialog";
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
+import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import { useTheme } from "@mui/material";
 import theme from "../theme";
 
@@ -312,10 +312,11 @@ const EventDetail = () => {
                 mt: 2,
               }}
             >
+              <Grid container spacing={2} justifyContent="center" alignItems="center">
               {(userRole === "admin" ||
                 (userRole === "creator" && event?.createdByUser === userId)) && (
                 <>
-                  <Grid item xs={12} sm="auto">
+                  <Grid item xs={4} sm="auto">
                     <Button
                       variant="contained"
                       sx={{ color: "white", backgroundColor: "#2074d4", ml: isMobile ? 0 : 2 }}
@@ -325,7 +326,7 @@ const EventDetail = () => {
                       {!isMobile && !isTablet && "Edit"}
                     </Button>
                   </Grid>
-                  <Grid item xs={12} sm="auto">
+                  <Grid item xs={4} sm="auto">
                     <Button
                       variant="contained"
                       sx={{ color: "white", backgroundColor: "#2074d4" }}
@@ -335,7 +336,7 @@ const EventDetail = () => {
                       {!isMobile && !isTablet && "Delete"}
                     </Button>
                   </Grid>
-                  <Grid item xs={12} sm="auto">
+                  <Grid item xs={4} sm="auto">
                     <Button
                       variant="contained"
                       sx={{ color: "white", backgroundColor: "#2074d4" }}
@@ -356,6 +357,7 @@ const EventDetail = () => {
                   </Grid>
                 </>
               )}
+              </Grid>
               <Grid item xs={12} sm="auto">
               <Button
                     variant="contained"
@@ -394,21 +396,22 @@ const EventDetail = () => {
                 position: "absolute",
                 display: "flex",
                 justifyContent: events.length > 1 && events.findIndex(e => e._id === event._id) > 0 ? "space-between" : "end",
+                alignContent: "center",
                 width: "100%",
                 maxWidth: 700,
-                top: "50%",
+                top: isMobile ? "34%" : "50%",
                 transform: "translateY(-50%)",
-                px: 2
+                px: 1
               }}
             >
             {events.length > 1 && events.findIndex(e => e._id === event._id) > 0 && (
-            <Button onClick={getPrevEvent}>
-              <ArrowBackIosIcon sx={{ fontSize: '60px', filter: 'drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2))' }} />
+            <Button onClick={getPrevEvent} sx={{ backgroundColor: isMobile ? "white" : "", color: isMobile ? "grey" : "", filter: isMobile ? "drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2))" : "", ml: 0 }}>
+              <ArrowLeftIcon sx={{ fontSize: isMobile ? "40px" : "70px", filter:  isMobile ? "" : "drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2))" }} />
             </Button>
             )}
             {events.length > 1 && events.findIndex(e => e._id === event._id) < events.length - 1 &&  (
-            <Button onClick={getNextEvent}>
-              <ArrowForwardIosIcon sx={{ fontSize: '60px', filter: 'drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2))' }} />
+            <Button onClick={getNextEvent} sx={{ backgroundColor: isMobile ? "white" : "", color: isMobile ? "grey" : "", filter: isMobile ? "drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2))" : "", mr: -2 }}>
+              <ArrowRightIcon sx={{ fontSize: isMobile ? "40px" : "70px", filter: isMobile ? "" : "drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2))" }} />
             </Button>
             )}
           </Box>
