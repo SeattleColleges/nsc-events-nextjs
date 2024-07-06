@@ -98,6 +98,8 @@ const CreateEvent: React.FC = () => {
               <TextField
                 id="event-description"
                 label="Event Description"
+                multiline
+                maxRows={3}
                 variant="outlined"
                 name="eventDescription"
                 value={eventData.eventDescription}
@@ -105,6 +107,7 @@ const CreateEvent: React.FC = () => {
                 error={!!errors.eventDescription}
                 helperText={errors.eventDescription}
                 InputProps={{ style: textFieldStyle.input }}
+                inputProps={{ maxLength: 300 }}
                 InputLabelProps={{ style: textFieldStyle.label }}
                 placeholder="Enter the description of the event"
               />
