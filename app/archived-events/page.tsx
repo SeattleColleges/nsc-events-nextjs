@@ -6,8 +6,9 @@ import EventCard from "@/components/EventCard";
 import { useArchivedEvents } from "@/utility/queries";
 import { ActivityDatabase } from "@/models/activityDatabase";
 import { Button, Container, Grid, Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useRef, useState} from "react";
 import UnauthorizedPageMessage from "@/components/UnauthorizedPageMessage";
+import Link from "next/link";
 
 const ArchivedEvents = () => {
     const { isAuth, user } = useAuth();
@@ -15,14 +16,17 @@ const ArchivedEvents = () => {
     const [hasReachedLastPage, setHasReachedLastPage] = useState(false);
     const [events, setEvents] = useState<ActivityDatabase[]>([]);
     const { data } = useArchivedEvents(page);
-  
+    const isMounted = useRef(false);
     useEffect(() => {
-      if (data) {
-        setEvents((prevEvents) => [...prevEvents, ...data]);
-        setHasReachedLastPage(data.length < 5);
-    }
-}, [data]);
-
+        if (!isMounted.current) {
+            isMounted.current = true;
+        } else {
+            if (data) {
+                setEvents((prevEvents) => [...prevEvents, ...data]);
+                setHasReachedLastPage(data.length < 5);
+            }
+        }
+    }, [data]);
 const handleLoadMoreEvents = () => {
   setPage((page) => page + 1);
 };
@@ -44,9 +48,19 @@ if (isAuth && (user?.role === 'admin' || user?.role === 'creator')) {
           alignItems={'center'}
           justifyItems={'center'}
         >
-          {events?.map((event: ActivityDatabase) => (
-            <EventCard key={event._id} event={event} />
-          ))}
+            {events?.map((event: ActivityDatabase) => (
+                <Link key={event._id} href={
+                    {
+                        pathname: "/event-detail",
+                        query: {
+                            id: event._id,
+                            events: JSON.stringify(events.map(e => e._id))
+                        },
+                    }
+                }>
+                    <EventCard event={event}/>
+                </Link>
+            ))}
           {!hasReachedLastPage && (
             <Button
               onClick={handleLoadMoreEvents}
