@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import UserCard from "../../components/UserCard";
-import { Box, Stack, Typography } from "@mui/material";
+import { Box, Stack, Typography, useMediaQuery, useTheme } from "@mui/material";
 import useAuth from "@/hooks/useAuth";
 import UnauthorizedPageMessage from "@/components/UnauthorizedPageMessage";
 
@@ -54,13 +54,15 @@ const EditUserRolePage = () => {
   }, []);
 
   const { isAuth, user } = useAuth();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   if (isAuth && (user?.role === 'admin')) {
     return (
       <Box sx={{ display: "flex", justifyContent: "center" }}>
         <Stack alignItems="center">
           <Typography
-              fontSize={"2.25rem"}
+              fontSize={isMobile ? "1.75rem" : "2.25rem"}
               textAlign={"center"}
               marginTop={"2rem"}
           >User Management

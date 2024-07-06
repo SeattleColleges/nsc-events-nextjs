@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Button, Container, Stack, Typography } from "@mui/material";
+import { Box, Button, Container, Stack, Typography, useMediaQuery, useTheme } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import CheckIcon from '@mui/icons-material/Check';
 import EditUserRoleDialog from "./EditUserRoleDialog";
@@ -21,6 +21,8 @@ function UserCard({ user }: { user: UserCardProps }) {
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarSeverity, setSnackbarSeverity] = useState<AlertColor>('success');
   const [newRole, setNewRole] = useState(user.role);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const handleEditClick = async () => {
     if (editCompleted) {
@@ -83,7 +85,7 @@ function UserCard({ user }: { user: UserCardProps }) {
   return (
     <Container
       fixed
-      maxWidth="lg"
+      maxWidth={isMobile ? "sm" : "lg"}
       sx={{
         display: "flex",
         justifyContent: "center",
@@ -92,6 +94,7 @@ function UserCard({ user }: { user: UserCardProps }) {
         border: "1px solid #ccc",
         padding: "20px",
         margin: "20px",
+        width: isMobile ? "75%" : "auto",
       }}
     >
       <Stack
@@ -100,23 +103,25 @@ function UserCard({ user }: { user: UserCardProps }) {
         alignItems="center"
         justifyContent="center"
       >
-        <Typography variant="body1" gutterBottom>
-          User ID: {user.id}
-        </Typography>
-        <Typography variant="body1" gutterBottom>
-          Full Name: {user.firstName} {user.lastName}
-        </Typography>
-        <Typography variant="body1" gutterBottom>
-          Email: {user.email}
-        </Typography>
-        <Typography variant="body1" gutterBottom>
-          Current Role: {user.role}
-        </Typography>
-        {editCompleted && (
-        <Typography variant="body1" gutterBottom>
-          Selected Role: {newRole}
-        </Typography>
-        )}
+        <Box sx={{ textAlign: "center" }}>
+          <Typography variant="body1" gutterBottom sx={{ mb: isMobile ? 1 : 2 }}>
+            User ID: {user.id}
+          </Typography>
+          <Typography variant="body1" gutterBottom sx={{ mb: isMobile ? 1 : 2 }}>
+            Full Name: {user.firstName} {user.lastName}
+          </Typography>
+          <Typography variant="body1" gutterBottom sx={{ mb: isMobile ? 1 : 2 }}>
+            Email: {user.email}
+          </Typography>
+          <Typography variant="body1" gutterBottom>
+            Current Role: {user.role}
+          </Typography>
+          {editCompleted && (
+          <Typography variant="body1" gutterBottom>
+            Selected Role: {newRole}
+          </Typography>
+          )}
+        </Box>
         {openDialog && (
           <Box display="flex" justifyContent="center">
             <EditUserRoleDialog user={user} onClose={handleCloseDialog} />
