@@ -16,6 +16,8 @@ const ArchivedEvents = () => {
     const [hasReachedLastPage, setHasReachedLastPage] = useState(false);
     const [events, setEvents] = useState<ActivityDatabase[]>([]);
     const { data } = useArchivedEvents(page);
+    const isMobile = useMediaQuery(theme.breakpoints.between('xs', 'sm'));
+  
     useEffect(() => {
         if (data) {
             setEvents((prevEvents) => [...prevEvents, ...data]);
@@ -30,7 +32,7 @@ if (isAuth && (user?.role === 'admin' || user?.role === 'creator')) {
     return (
         <Container maxWidth={false} className="bg-solid">
             <Typography
-                fontSize={"2.25rem"}
+                fontSize={isMobile ? "1.75rem" : "2.25rem"}
                 textAlign={"center"}
                 padding={"1rem"}
                 marginTop={"1rem"}
