@@ -108,10 +108,7 @@ function UserCard({ user }: { user: UserCardProps }) {
             User ID: {user.id}
           </Typography>
           <Typography variant="body1" gutterBottom sx={{ mb: isMobile ? 1 : 2 }}>
-            First Name: {user.firstName}
-          </Typography>
-          <Typography variant="body1" gutterBottom sx={{ mb: isMobile ? 1 : 2 }}>
-            Last Name: {user.lastName}
+            Full Name: {user.firstName} {user.lastName}
           </Typography>
           <Typography variant="body1" gutterBottom sx={{ mb: isMobile ? 1 : 2 }}>
             Email: {user.email}
