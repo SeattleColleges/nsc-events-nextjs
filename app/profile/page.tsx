@@ -65,7 +65,7 @@ const Profile = () => {
             <Box sx={{ display: "flex", justifyContent: "center", margin: 'auto', width: isMobile ? '75%' : 'auto' }}>
                 <Stack>
                     <Typography component="h1" variant="h4" sx={{ textAlign: "center", mt: 2, mb: 3 }}>
-                        Welcome, { user?.firstName }
+                        Welcome, { user?.firstName }!
                     </Typography>
                     <CurrentUserCard user={user}/>
                     <Button onClick={handleEditClick} sx={{ mt: 2 }}>Edit Profile</Button>
