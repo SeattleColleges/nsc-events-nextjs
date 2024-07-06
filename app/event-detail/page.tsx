@@ -31,6 +31,7 @@ import ViewMoreDetailsDialog from "@/components/ViewMoreDetailsDialog";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { useTheme } from "@mui/material";
+import {useEventById} from "@/utility/queries";
 
 interface SearchParams {
   searchParams: {
@@ -42,9 +43,10 @@ const EventDetail = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
+  const eventIds = searchParams.get("events");
   const queryClient = useQueryClient();
   const [event, setEvent] = useState<ActivityDatabase | null>(null);
-  const [events, setEvents] = useState<ActivityDatabase[]>([]);
+  const [events, setEvents] = useState<string[]>([]);
   const [isAuthed, setAuthed] = useState(false);
   const [token, setToken] = useState("");
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -58,6 +60,7 @@ const EventDetail = () => {
   const { palette } = useTheme();
   const containerColor = palette.mode === "dark" ? "#333" : "#fff";
 
+  const {data} = useEventById(id);
   const DeleteDialog = () => {
     return (
       <>
@@ -138,46 +141,13 @@ const EventDetail = () => {
     },
   });
 
-
   useEffect(() => {
-    const getEvents = async () => {
-      const events = queryClient.getQueryData<ActivityDatabase[]>(["events"]);
-      if (events) {
-        setEvents(events);
-        const selectedEvent = events.find(event => event._id === id) as ActivityDatabase;
-        setEvent(selectedEvent);
-      } else {
-        const apiUrl = process.env.NSC_EVENTS_PUBLIC_API_URL || `http://localhost:3000/api`;
-        const response = await fetch(`${apiUrl}/events`);
-        if (response.ok) {
-          const allEvts = await response.json();
-          setEvents(allEvts);
-          const selectedEvent = allEvts.find((event: { _id: string; }) => event._id === id);
-          setEvent(selectedEvent); // assuming there's only one event in response
-        }
-      }
-
-      // if (events !== undefined) {
-      //   setEvents(events);
-      //   const selectedEvent = events.find(event => event._id === searchParams.id) as ActivityDatabase;
-      //   setEvent(selectedEvent);
-      // } else if (searchParams.id) {
-      //   const apiUrl = process.env.NSC_EVENTS_PUBLIC_API_URL || `http://localhost:3000/api`;
-      //   const response = await fetch(`${apiUrl}/events/find/${searchParams.id}`);
-      //   if (response.ok) {
-      //     const evt = await response.json();
-      //     setEvent(evt);
-      //     setEvents([evt]); 
-      //   }
-      // }
-    };
-
-    if (id) {
-      setEvent(null);  // Reset event before fetching new data
-      console.log("Fetching event with ID: ", id);
-      getEvents();
+    if (eventIds) {
+      setEvents(JSON.parse(eventIds));
     }
-    
+    if (data) {
+      setEvent(data);
+    }
     const token = localStorage.getItem("token");
     // Sets token state that is used by delete mutation outside of effect
     setToken(token ?? "");
@@ -187,8 +157,7 @@ const EventDetail = () => {
       setUserRole(role);
       setUserId(id);
     }
-  }, [queryClient, id]);
-
+  }, [queryClient, data]);
 
   const toggleAttendDialog = () => {
     if (token === "") {
@@ -208,20 +177,20 @@ const EventDetail = () => {
   };
 
   const getNextEvent = () => {
-    const currentIndex = events.findIndex(e => e._id === event?._id);
+    const currentIndex = events.findIndex(e => e === event?._id);
     if (currentIndex >= 0 && currentIndex < events.length - 1) {
       const nextEvent = events[currentIndex + 1];
-      console.log("Navigating to:", nextEvent._id);
-      router.push(`/event-detail?id=${nextEvent._id}`);
+      console.log("Navigating to:", nextEvent);
+      router.push(`/event-detail?id=${nextEvent}`);
     }
   };
 
   const getPrevEvent = () => {
-    const currentIndex = events.findIndex(e => e._id === event?._id);
+    const currentIndex = events.findIndex(e => e === event?._id);
     if (currentIndex > 0) {
       const prevEvent = events[currentIndex - 1];
-      console.log("Navigating to:", prevEvent._id);
-      router.push(`/event-detail?id=${prevEvent._id}`);
+      console.log("Navigating to:", prevEvent);
+      router.push(`/event-detail?id=${prevEvent}`);
     }
   };
 
@@ -263,7 +232,7 @@ const EventDetail = () => {
             zIndex: 1,
           }}
         >
-          {events.length > 1 && events.findIndex(e => e._id === event._id) > 0 && (
+          {events.length > 1 && events.findIndex(e => e === event._id) > 0 && (
             <Button onClick={getPrevEvent}>
               <ArrowBackIosIcon sx={{ color: 'white', fontSize: '100px', filter: 'drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2))' }} />
             </Button>
@@ -401,7 +370,7 @@ const EventDetail = () => {
         >
           <SnackbarContent message={snackbarMessage} sx={{ backgroundColor: "white", color: "black" }} />
         </Snackbar>
-        {events.length > 1 && events.findIndex(e => e._id === event._id) < events.length - 1 &&  (
+        {events.length > 1 && events.findIndex(e => e === event._id) < events.length - 1 &&  (
           <Button onClick={getNextEvent}>
             <ArrowForwardIosIcon sx={{ color: 'white', fontSize: '100px', filter: 'drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2))' }} />
           </Button>
