@@ -10,6 +10,7 @@ import {
   Button,
   Typography,
   Link as MuiLink,
+  useMediaQuery,
 } from "@mui/material";
 import { textFieldStyle } from "@/components/InputFields"
 import Snackbar, { SnackbarOrigin } from "@mui/material/Snackbar";
@@ -29,6 +30,9 @@ interface State extends SnackbarOrigin {
 
 const SignUp = () => {
   const { palette } = useTheme();
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const darkImagePath = white_vertical_nsc_logo;
   const lightImagePath = blue_vertical_nsc_logo;
@@ -130,6 +134,8 @@ const SignUp = () => {
         alignItems: "center",
         height: "100vh",
         justifyContent: "center",
+        mt: isMobile ? 15 : 10,
+        width: isMobile ? '90%' : 'auto', 
       }}
     >
       <Paper
