@@ -271,9 +271,9 @@ const EventDetail = () => {
         >
         <Box
           className={styles.formContainer}
-          sx={{ minHeight: "69vh", maxHeight: "100vh", width: "100vh", marginTop: "10vh", backgroundColor: isMobile ? "" : containerColor  }}
+          sx={{ minHeight: "69vh", maxHeight: "100vh", width: "100vh", marginTop: 2, backgroundColor: isMobile ? "" : containerColor  }}
         >
-          <Card sx={{ width: isMobile ? "40vh" : "45vh", minHeight: "59vh", maxHeight: "100vh", mt: isMobile ? "10vh" : "", marginBottom: "5vh" }}>
+          <Card sx={{ width: isMobile ? "41vh" : "50vh", minHeight: "59vh", maxHeight: "100vh", mt: isMobile ? 6 : "", marginBottom: 3 }}>
             <CardMedia
               component="img"
               image={event.eventCoverPhoto}
@@ -364,7 +364,8 @@ const EventDetail = () => {
                     sx={{
                       color: "white",
                       backgroundColor: "#2074d4",
-                      width: isMobile ? "175px" : "140px",
+                      width: "140px",
+                      mt: isMobile ? 1 : 0
                     }}
                     onClick={() => {
                       toggleViewMoreDetailsDialog();
@@ -380,7 +381,7 @@ const EventDetail = () => {
                       sx={{
                         color: "white",
                         backgroundColor: "#2074d4",
-                        width: isMobile ? "175px" : "90px",
+                        width: isMobile ? "140px" : "90px",
                       }}
                       onClick={() => {
                         toggleAttendDialog();
@@ -399,19 +400,18 @@ const EventDetail = () => {
                 alignContent: "center",
                 width: "100%",
                 maxWidth: 700,
-                top: isMobile ? "34%" : "50%",
+                top: isMobile ? "35%" : "43%",
                 transform: "translateY(-50%)",
-                px: 1
               }}
             >
             {events.length > 1 && events.findIndex(e => e._id === event._id) > 0 && (
-            <Button onClick={getPrevEvent} sx={{ backgroundColor: isMobile ? "white" : "", color: isMobile ? "grey" : "", filter: isMobile ? "drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2))" : "", ml: 0 }}>
-              <ArrowLeftIcon sx={{ fontSize: isMobile ? "40px" : "70px", filter:  isMobile ? "" : "drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2))" }} />
+            <Button onClick={getPrevEvent} sx={{ filter: isMobile ? "drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2))" : "", p: 0, ml: 0 }}>
+              <ArrowLeftIcon sx={{ fontSize: isMobile ? "40px" : "70px", backgroundColor: isMobile ? "white" : "", color: isMobile ? "grey" : "", filter:  isMobile ? "" : "drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2))", borderRadius: "2px" }} />
             </Button>
             )}
             {events.length > 1 && events.findIndex(e => e._id === event._id) < events.length - 1 &&  (
-            <Button onClick={getNextEvent} sx={{ backgroundColor: isMobile ? "white" : "", color: isMobile ? "grey" : "", filter: isMobile ? "drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2))" : "", mr: -2 }}>
-              <ArrowRightIcon sx={{ fontSize: isMobile ? "40px" : "70px", filter: isMobile ? "" : "drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2))" }} />
+            <Button onClick={getNextEvent} sx={{ filter: isMobile ? "drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2))" : "", p: 0, mr: -2 }}>
+              <ArrowRightIcon sx={{ fontSize: isMobile ? "40px" : "70px", backgroundColor: isMobile ? "white" : "", color: isMobile ? "grey" : "", filter:  isMobile ? "" : "drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2))", borderRadius: "2px" }} />
             </Button>
             )}
           </Box>
