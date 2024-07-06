@@ -31,7 +31,7 @@ import ViewMoreDetailsDialog from "@/components/ViewMoreDetailsDialog";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { useTheme } from "@mui/material";
-import {useEventById} from "@/utility/queries";
+import { useEventById } from "@/utility/queries";
 
 interface SearchParams {
   searchParams: {
@@ -60,7 +60,7 @@ const EventDetail = () => {
   const { palette } = useTheme();
   const containerColor = palette.mode === "dark" ? "#333" : "#fff";
 
-  const {data} = useEventById(id);
+  const { data } = useEventById(id);
   const DeleteDialog = () => {
     return (
       <>
@@ -157,7 +157,7 @@ const EventDetail = () => {
       setUserRole(role);
       setUserId(id);
     }
-  }, [queryClient, data]);
+  }, [queryClient, data, eventIds]);
 
   const toggleAttendDialog = () => {
     if (token === "") {
