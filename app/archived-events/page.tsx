@@ -16,15 +16,10 @@ const ArchivedEvents = () => {
     const [hasReachedLastPage, setHasReachedLastPage] = useState(false);
     const [events, setEvents] = useState<ActivityDatabase[]>([]);
     const { data } = useArchivedEvents(page);
-    const isMounted = useRef(false);
     useEffect(() => {
-        if (!isMounted.current) {
-            isMounted.current = true;
-        } else {
-            if (data) {
-                setEvents((prevEvents) => [...prevEvents, ...data]);
-                setHasReachedLastPage(data.length < 5);
-            }
+        if (data) {
+            setEvents((prevEvents) => [...prevEvents, ...data]);
+            setHasReachedLastPage(data.length < 5);
         }
     }, [data]);
 const handleLoadMoreEvents = () => {
