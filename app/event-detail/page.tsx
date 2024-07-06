@@ -273,7 +273,7 @@ const EventDetail = () => {
           className={styles.formContainer}
           sx={{ minHeight: "69vh", maxHeight: "100vh", width: "100vh", marginTop: 2, backgroundColor: isMobile ? "" : containerColor  }}
         >
-          <Card sx={{ width: isMobile ? "41vh" : "50vh", minHeight: "59vh", maxHeight: "100vh", mt: isMobile ? 6 : "", marginBottom: 3 }}>
+          <Card sx={{ width: isMobile ? "41vh" : "50vh", maxHeight: '100vh', overflowY: 'auto', mt: isMobile ? 5 : "", marginBottom: 3 }}>
             <CardMedia
               component="img"
               image={event.eventCoverPhoto}
@@ -284,7 +284,7 @@ const EventDetail = () => {
               <Typography gutterBottom variant="h5" component="div">
                 {event.eventTitle}
               </Typography>
-              <Typography variant="body2" color="text.secondary">
+              <Typography variant="body2" color="text.secondary" sx={{ pb: 1 }}>
                 {event.eventDescription}
               </Typography>
               <Typography variant="body2" color="text.secondary">
