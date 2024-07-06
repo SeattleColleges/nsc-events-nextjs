@@ -271,7 +271,7 @@ const EventDetail = () => {
         >
         <Box
           className={styles.formContainer}
-          sx={{ minHeight: "69vh", maxHeight: "100vh", width: "100vh", marginTop: 2, backgroundColor: isMobile ? "" : containerColor  }}
+          sx={{ minHeight: "69vh", maxHeight: "100vh", width: "105vh", marginTop: 2, backgroundColor: isMobile ? "" : containerColor  }}
         >
           <Card sx={{ width: isMobile ? "41vh" : "50vh", maxHeight: '100vh', overflowY: 'auto', mt: isMobile ? 5 : "", marginBottom: 3 }}>
             <CardMedia
@@ -309,7 +309,7 @@ const EventDetail = () => {
                 alignItems: "center",
                 flexDirection: isMobile ? "column" : "row",
                 gap: 2,
-                mt: 2,
+                mt: 2
               }}
             >
               <Grid container spacing={2} justifyContent="center" alignItems="center">
