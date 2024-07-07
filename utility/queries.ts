@@ -54,9 +54,9 @@ const getEventById = async (id: string | null) => {
     return response.json();
 }
 
-export function useEventById(userId: string | null) {
+export function useEventById(eventId: string | null) {
     return useQuery<ActivityDatabase, Error>({
-        queryKey:[userId],
-        queryFn: async () => getEventById(userId),
+        queryKey:[eventId],
+        queryFn: async () => getEventById(eventId),
     })
 }
