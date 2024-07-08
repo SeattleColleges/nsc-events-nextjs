@@ -48,3 +48,15 @@ export function useMyEvents(userId: string, page: any) {
         queryFn: async () => getMyEvents(userId, page),
     });
 }
+
+const getEventById = async (id: string | null) => {
+    const response = await fetch(`${apiUrl}/events/find/${id}`);
+    return response.json();
+}
+
+export function useEventById(eventId: string | null) {
+    return useQuery<ActivityDatabase, Error>({
+        queryKey:[eventId],
+        queryFn: async () => getEventById(eventId),
+    })
+}
