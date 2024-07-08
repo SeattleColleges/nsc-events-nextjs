@@ -4,8 +4,6 @@ import useAuth from '../hooks/useAuth';
 import { useRouter } from 'next/navigation';
 import ThemeToggle from './ThemeToggle';
 import Image from "next/image";
-import blue_vertical_nsc_logo from 'public/images/blue_vertical_nsc_logo.png'
-import white_vertical_nsc_logo from 'public/images/white_vertical_nsc_logo.png'
 
 interface DrawerCompProps {
   isOpen: boolean;
@@ -16,14 +14,12 @@ interface DrawerCompProps {
 const DrawerComp: React.FC<DrawerCompProps> = ({ isOpen, toggleDrawer }) => {
   const { isAuth, user } = useAuth(); 
   const router = useRouter();
-
   const { palette } = useTheme();
 
-  const darkImagePath = white_vertical_nsc_logo;
-  const lightImagePath = blue_vertical_nsc_logo;
+  const darkImagePath = "/images/white_vertical_nsc_logo.png";
+  const lightImagePath = "/images/blue_vertical_nsc_logo.png";
   const imagePath = palette.mode === "dark" ? darkImagePath : lightImagePath;
   const toggleColor = palette.mode === "dark" ? palette.primary.contrastText : palette.primary.main;
-
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -43,7 +39,6 @@ const DrawerComp: React.FC<DrawerCompProps> = ({ isOpen, toggleDrawer }) => {
     }
   }, [isOpen, toggleDrawer]);
 
-  
   const handleSignOut = () => {
     // Remove the token from local storage
     localStorage.removeItem('token');
@@ -56,7 +51,7 @@ const DrawerComp: React.FC<DrawerCompProps> = ({ isOpen, toggleDrawer }) => {
   };
 
   return (
-    <Drawer anchor="right" open={isOpen} onClose={(toggleDrawer(false))}>
+    <Drawer anchor="right" open={isOpen} onClose={toggleDrawer(false)}>
       <Box
         onClick={() => toggleDrawer(false)}
         onKeyDown={() => toggleDrawer(false)}
@@ -64,7 +59,7 @@ const DrawerComp: React.FC<DrawerCompProps> = ({ isOpen, toggleDrawer }) => {
       >
         <Box sx={{ display: 'flex', justifyContent: 'center', p: 2, mt: 2 }}>
           <Image
-            src={imagePath.src}
+            src={imagePath}
             alt="North Seattle College Logo"
             width={150}
             height={50}
@@ -72,7 +67,7 @@ const DrawerComp: React.FC<DrawerCompProps> = ({ isOpen, toggleDrawer }) => {
           />
         </Box>
         <List sx={{ m: 1 }}>
-        <ListItem component={MuiLink} href="/" sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+          <ListItem component={MuiLink} href="/" sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
             <MuiLink sx={{ textDecoration: 'none' }}>
               <ListItemText primary="Events" />
             </MuiLink>
@@ -110,3 +105,4 @@ const DrawerComp: React.FC<DrawerCompProps> = ({ isOpen, toggleDrawer }) => {
 };
 
 export default DrawerComp;
+

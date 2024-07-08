@@ -21,8 +21,8 @@ import React from "react";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useRouter } from "next/navigation";
-import blue_vertical_nsc_logo from 'public/images/blue_vertical_nsc_logo.png'
-import white_vertical_nsc_logo from 'public/images/white_vertical_nsc_logo.png'
+import blue_vertical_nsc_logo from "public/images/blue_vertical_nsc_logo.png"
+import white_vertical_nsc_logo from "public/images/white_vertical_nsc_logo.png"
 import { useTheme } from "@mui/material";
 
 interface State extends SnackbarOrigin {

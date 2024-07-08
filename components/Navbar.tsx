@@ -2,13 +2,11 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import white_nsc_logo from 'public/images/white_nsc_logo.png'
 import MenuIcon from '@mui/icons-material/Menu';
-import { AppBar, Toolbar, IconButton, Grid, Button, Drawer, List, ListItem, ListItemText, useTheme, useMediaQuery, Box, Tooltip, Avatar, Menu, Typography, MenuItem } from '@mui/material';
+import { AppBar, Toolbar, IconButton, Grid, Button, Menu, MenuItem, Typography, useTheme, useMediaQuery, Box, Tooltip } from '@mui/material';
 import { useRouter } from 'next/navigation';
-import DrawerComp from './DrawerComp'; 
-import useAuth from '../hooks/useAuth'; 
-import AuthProfileMenu from './AuthProfileMenu'; 
+import DrawerComp from './DrawerComp';
+import useAuth from '../hooks/useAuth';
 import ThemeToggle from './ThemeToggle';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
@@ -51,30 +49,9 @@ export default function Navbar() {
       router.push('/admin');
     } else if (user?.role === 'creator') {
       router.push('/creator');
-    } 
+    }
     toggleDrawer(false);
   };
-
-
-  const list = () => (
-    <div role='presentation' onClick={toggleDrawer(false)} onKeyDown={toggleDrawer(false)}>
-      <List>
-        <ListItem component={Link} href='/'>
-          <ListItemText primary="Events" />
-        </ListItem>
-        {isAuth ? (
-          <ListItem button>
-            <AuthProfileMenu />
-          </ListItem>
-        ) : (
-          <ListItem component={Link} href='/auth/sign-in'>
-            <ListItemText primary="Sign In" />
-          </ListItem>
-        )}
-      </List>
-    </div>
-  );
-
 
   return (
     <AppBar position="static">
@@ -82,7 +59,7 @@ export default function Navbar() {
         <Grid container justifyContent="space-between" alignItems="center">
           <Grid item>
             <Link href="/" passHref>
-              <Image src={white_nsc_logo} alt="logo" width={40} height={40} />
+              <Image src="/images/white_nsc_logo.png" alt="logo" width={40} height={40} />
             </Link>
           </Grid>
           <Grid item>
@@ -91,19 +68,17 @@ export default function Navbar() {
               color="inherit"
               aria-label="menu"
               onClick={toggleDrawer(true)}
-              sx={{ display: { xs: 'block', sm: 'block', md: 'none' } }} 
+              sx={{ display: { xs: 'block', sm: 'block', md: 'none' } }}
             >
               <MenuIcon />
             </IconButton>
             <Grid container spacing={2} alignItems="center" sx={{ display: { xs: 'none', md: 'flex' } }}>
-              {/* Events Link remains outside AuthProfileMenu for general access */}
               <Grid item>
                 <Link href="/" passHref>
                   <Button color="inherit" sx={{ textTransform: 'none' }}>Events</Button>
                 </Link>
               </Grid>
 
-              {/* AuthProfileMenu contains Create Event and Sign Out actions */}
               {isAuth && user && (
                 <Box sx={{ flexGrow: 0, display: 'flex', alignItems: 'center' }}>
                   <Tooltip title="Open user menu">
@@ -128,12 +103,10 @@ export default function Navbar() {
                     onClose={handleCloseUserMenu}
                     disableScrollLock
                   >
-                    {isAuth && user && (
-                      <MenuItem onClick={() => { handleProfileClick(); handleCloseUserMenu(); }}>
-                        <Typography textAlign="center">Profile</Typography>
-                      </MenuItem>
-                    )}
-                    {isAuth && user && (user.role === "admin" || user.role === "creator") && (
+                    <MenuItem onClick={() => { handleProfileClick(); handleCloseUserMenu(); }}>
+                      <Typography textAlign="center">Profile</Typography>
+                    </MenuItem>
+                    {(user.role === "admin" || user.role === "creator") && (
                       <MenuItem onClick={() => { handleAccountClick(); handleCloseUserMenu(); }}>
                         <Typography textAlign="center">My Account</Typography>
                       </MenuItem>
@@ -161,4 +134,4 @@ export default function Navbar() {
       <DrawerComp isOpen={drawerOpen} toggleDrawer={toggleDrawer} isAuth={isAuth} />
     </AppBar>
   );
-};
+}

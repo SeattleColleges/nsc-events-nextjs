@@ -1,67 +1,41 @@
-// tests/unit/createEvent.test.tsx
-import { render, screen, fireEvent } from "@testing-library/react";
-import '@testing-library/jest-dom';
-import CreateEvent from "@/app/create-event/page";
+import React from 'react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import '@testing-library/jest-dom/extend-expect';
+import CreateEvent from '@/app/create-event/page';
+import useAuth from '@/hooks/useAuth';
 
-jest.mock("@/hooks/useEventForm", () => ({
-  useEventForm: () => ({
-    eventData: {
-      eventTitle: "",
-      eventDescription: "",
-      eventCategory: "",
-      eventLocation: "",
-      eventCoverPhoto: "",
-      eventHost: "",
-      eventMeetingURL: "",
-      eventRegistration: "",
-      eventCapacity: "",
-      eventTags: [],
-      eventSchedule: "",
-      eventSpeakers: "",
-      eventPrerequisites: "",
-      eventCancellationPolicy: "",
-      eventContact: "",
-      eventSocialMedia: {},
-      eventPrivacy: "",
-      eventAccessibility: "",
-      eventNote: "",
-    },
-    handleInputChange: jest.fn(),
-    handleSocialMediaChange: jest.fn(),
-    handleTagClick: jest.fn(),
-    handleSubmit: jest.fn(),
-    errors: {},
-    selectedDate: null,
-    setSelectedDate: jest.fn(),
-    startTime: "",
-    handleStartTimeChange: jest.fn(),
-    endTime: "",
-    handleEndTimeChange: jest.fn(),
-    timeError: "",
-    successMessage: "",
-    errorMessage: ""
-  })
+// Mock the useAuth hook
+jest.mock('@/hooks/useAuth', () => ({
+  __esModule: true,
+  default: jest.fn()
 }));
 
-jest.mock("@/hooks/useAuth", () => ({
-  useAuth: () => ({
-    isAuth: true,
-    user: { role: "admin" }
-  })
-}));
-
-describe("CreateEvent", () => {
-  test("renders CreateEvent component", () => {
-    render(<CreateEvent />);
-    expect(screen.getByText("Add Event")).toBeInTheDocument();
+describe('CreateEvent Component', () => {
+  beforeEach(() => {
+    // Mocking the useAuth hook return value
+    (useAuth as jest.Mock).mockReturnValue({
+      user: { role: 'admin' },
+      isAuth: true,
+    });
   });
 
-  test("allows entering event title", () => {
+  test('renders CreateEvent form and submits with valid data', async () => {
     render(<CreateEvent />);
-    const titleInput = screen.getByLabelText("Event Title") as HTMLInputElement;
-    fireEvent.change(titleInput, { target: { value: "New Event" } });
-    expect(titleInput.value).toBe("New Event");
+
+    // Fill out the form
+    fireEvent.change(screen.getByLabelText(/event name/i), { target: { value: 'Test Event' } });
+    fireEvent.change(screen.getByLabelText(/event description/i), { target: { value: 'This is a test event.' } });
+    fireEvent.change(screen.getByLabelText(/event date/i), { target: { value: '2023-08-15' } });
+    fireEvent.change(screen.getByLabelText(/event capacity/i), { target: { value: '100' } });
+    fireEvent.change(screen.getByLabelText(/event speakers/i), { target: { value: 'Speaker1,Speaker2' } });
+
+    // Submit the form
+    fireEvent.click(screen.getByRole('button', { name: /create event/i }));
+
+    // Wait for submission to complete
+    await waitFor(() => {
+      expect(screen.getByText(/event created successfully/i)).toBeInTheDocument();
+    });
   });
 
-  // Add more tests as needed
 });

@@ -9,8 +9,6 @@ import HomeEventsList from "@/components/HomeEventGetter";
 import UpcomingEvent from "@/components/UpcomingEvent";
 import { Box, Button, Typography } from "@mui/material";
 import Link from "next/link";
-import blue_nsc_logo from 'public/images/blue_nsc_logo.png'
-import white_nsc_logo from 'public/images/white_nsc_logo.png'
 import { useTheme } from "@mui/material";
 
 const Home = () => {
@@ -18,8 +16,8 @@ const Home = () => {
   const [isLoading, setIsLoading] = useState(true);
   const { palette } = useTheme();
 
-  const darkImagePath = white_nsc_logo;
-  const lightImagePath = blue_nsc_logo;
+  const darkImagePath = "/images/white_nsc_logo.png";
+  const lightImagePath = "/images/blue_nsc_logo.png";
   const imagePath = palette.mode === "dark" ? darkImagePath : lightImagePath;
   const containerColor = palette.mode === "dark" ? "#333" : "#fff";
 
@@ -69,7 +67,7 @@ const Home = () => {
         <Box className={styles.welcomeContainer}>
           <Box className={styles.formContainer} sx={{ backgroundColor: containerColor }}>
             <Box className={styles.logoContainer}>
-            <Image src={imagePath} title={"NSC Logo"} alt={"NSC Logo"} width={100} height={100} />
+              <Image src={imagePath} title={"NSC Logo"} alt={"NSC Logo"} width={100} height={100} />
             </Box>
             <Typography
                 fontSize={"2.25rem"}
