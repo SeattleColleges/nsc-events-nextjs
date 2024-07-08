@@ -10,6 +10,7 @@ import {
   Button,
   Typography,
   Link as MuiLink,
+  SnackbarContent,
 } from "@mui/material";
 import { textFieldStyle } from "@/components/InputFields"
 import Snackbar, { SnackbarOrigin } from "@mui/material/Snackbar";
@@ -279,7 +280,9 @@ const SignUp = () => {
         onClose={() => setSnackBarMessage("")}
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
         message={snackBarMessage}
-      />
+      >
+        <SnackbarContent message={snackBarMessage} sx={{ backgroundColor: "white", color: "black" }} />
+      </Snackbar>
     </Container>
   );
 };
