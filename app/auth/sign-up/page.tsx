@@ -10,6 +10,7 @@ import {
   Button,
   Typography,
   Link as MuiLink,
+  useMediaQuery,
   SnackbarContent,
 } from "@mui/material";
 import { textFieldStyle } from "@/components/InputFields"
@@ -30,6 +31,10 @@ interface State extends SnackbarOrigin {
 
 const SignUp = () => {
   const { palette } = useTheme();
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
 
   const darkImagePath = white_vertical_nsc_logo;
   const lightImagePath = blue_vertical_nsc_logo;
@@ -131,6 +136,8 @@ const SignUp = () => {
         alignItems: "center",
         height: "100vh",
         justifyContent: "center",
+        mt: isMobile ? 4 : isTablet ? 8 : 2,
+        width: isMobile ? '95%' : 'auto', 
       }}
     >
       <Paper
@@ -161,7 +168,7 @@ const SignUp = () => {
           </Typography>
           <TextField
             fullWidth
-            margin="normal"
+            margin={isMobile ? "dense" : "normal"}
             label="First Name"
             name="firstName"
             value={userInfo.firstName}
@@ -173,7 +180,7 @@ const SignUp = () => {
           />
           <TextField
             fullWidth
-            margin="normal"
+            margin={isMobile ? "dense" : "normal"}
             label="Last Name"
             name="lastName"
             value={lastName}
@@ -185,7 +192,7 @@ const SignUp = () => {
           />
           <TextField
             fullWidth
-            margin="normal"
+            margin={isMobile ? "dense" : "normal"}
             label="Pronouns"
             name="pronouns"
             value={pronouns}
@@ -197,7 +204,7 @@ const SignUp = () => {
           />
           <TextField
             fullWidth
-            margin="normal"
+            margin={isMobile ? "dense" : "normal"}
             label="Email"
             name="email"
             value={email}
@@ -209,7 +216,7 @@ const SignUp = () => {
           />
           <TextField
             fullWidth
-            margin="normal"
+            margin={isMobile ? "dense" : "normal"}
             label="Password"
             name="password"
             value={password}
@@ -234,7 +241,7 @@ const SignUp = () => {
           />
           <TextField
             fullWidth
-            margin="normal"
+            margin={isMobile ? "dense" : "normal"}
             label="Confirm Password"
             name="confirmPassword"
             value={confirmPassword}
