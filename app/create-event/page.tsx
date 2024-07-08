@@ -7,11 +7,12 @@ import { LocalizationProvider, TimePicker, DatePicker } from '@mui/x-date-picker
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import TextField, { TextFieldProps } from '@mui/material/TextField';
 import { format, parse } from 'date-fns';
-import { Box, Button, Typography, Stack }  from '@mui/material';
+import { Box, Button, Typography, Stack, useTheme, useMediaQuery }  from '@mui/material';
 import { textFieldStyle } from "@/components/InputFields"
 import { MouseEvent, ChangeEvent, useState, FormEvent } from "react";
 import useAuth from "@/hooks/useAuth";
 import UnauthorizedPageMessage from "@/components/UnauthorizedPageMessage";
+import theme from "../theme";
 
 const CreateEvent: React.FC = () => {
   const {
@@ -35,6 +36,7 @@ const CreateEvent: React.FC = () => {
     // Convert startTime and endTime from string to Date for TimePicker
     const startTimeDate = startTime ? parse(startTime, 'HH:mm', new Date()) : null;
     const endTimeDate = endTime ? parse(endTime, 'HH:mm', new Date()) : null;
+    const isMobile = useMediaQuery(theme.breakpoints.between('xs', 'sm'));
 
     const handleDateChange = (newDate: Date | null) => {
       setSelectedDate(newDate);
@@ -73,7 +75,7 @@ const CreateEvent: React.FC = () => {
     if (isAuth && (user?.role === 'admin' || user?.role === 'creator')) {
       return (
         <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <Box component="form" onSubmit={handleSubmit} noValidate autoComplete="off" sx={{ p: 3, width: '75%', mx: 'auto' }}>
+          <Box component="form" onSubmit={handleSubmit} noValidate autoComplete="off" sx={{ p: 3, width: isMobile ? '100%' : '75%', mx: 'auto' }}>
           <Typography
               fontSize={"2.25rem"}
               textAlign={"center"}
@@ -98,6 +100,8 @@ const CreateEvent: React.FC = () => {
               <TextField
                 id="event-description"
                 label="Event Description"
+                multiline
+                maxRows={3}
                 variant="outlined"
                 name="eventDescription"
                 value={eventData.eventDescription}
@@ -105,6 +109,7 @@ const CreateEvent: React.FC = () => {
                 error={!!errors.eventDescription}
                 helperText={errors.eventDescription}
                 InputProps={{ style: textFieldStyle.input }}
+                inputProps={{ maxLength: 300 }}
                 InputLabelProps={{ style: textFieldStyle.label }}
                 placeholder="Enter the description of the event"
               />
