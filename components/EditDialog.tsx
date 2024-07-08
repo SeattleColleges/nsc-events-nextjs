@@ -36,9 +36,12 @@ const EditDialog = ({ isOpen, event, toggleEditDialog }: EditDialogProps) => {
 
     const [initialEventData, setInitialEventData] = useState(event);
 
+    const RemoveWhitespace = (str: string) => str.replace(/\s+/g, '');
+    const trimmedEventStartTime = RemoveWhitespace(eventData.eventStartTime);
+    const trimmedEventEndTime = RemoveWhitespace(eventData.eventEndTime);
     // Convert startTime and endTime from string to Date for TimePicker
-    const startTimeDate = to24HourTime(eventData.eventStartTime);
-    const endTimeDate = to24HourTime(eventData.eventEndTime)
+    const startTimeDate = to24HourTime(trimmedEventStartTime);
+    const endTimeDate = to24HourTime(trimmedEventEndTime);
 
     useEffect(() => {
         if (isOpen) {
