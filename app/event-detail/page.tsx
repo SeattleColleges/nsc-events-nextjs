@@ -365,7 +365,7 @@ const EventDetail = () => {
               sx={{
                 position: "absolute",
                 display: "flex",
-                justifyContent: events.length > 1 && events.findIndex(e => e._id === event._id) > 0 ? "space-between" : "end",
+                justifyContent: events.length > 1 && events.findIndex(e => e === event?._id) > 0 ? "space-between" : "end",
                 alignContent: "center",
                 width: "100%",
                 maxWidth: 700,
@@ -373,12 +373,12 @@ const EventDetail = () => {
                 transform: "translateY(-50%)",
               }}
             >
-            {events.length > 1 && events.findIndex(e => e._id === event._id) > 0 && (
+            {events.length > 1 && events.findIndex(e => e === event?._id) > 0 && (
             <Button onClick={getPrevEvent} sx={{ filter: isMobile ? "drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2))" : "", p: 0, ml: 0 }}>
               <ArrowLeftIcon sx={{ fontSize: isMobile ? "40px" : "70px", backgroundColor: isMobile ? "white" : "", color: isMobile ? "grey" : "", filter:  isMobile ? "" : "drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2))", borderRadius: "2px" }} />
             </Button>
             )}
-            {events.length > 1 && events.findIndex(e => e._id === event._id) < events.length - 1 &&  (
+            {events.length > 1 && events.findIndex(e => e === event?._id) < events.length - 1 &&  (
             <Button onClick={getNextEvent} sx={{ filter: isMobile ? "drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2))" : "", p: 0, mr: -2 }}>
               <ArrowRightIcon sx={{ fontSize: isMobile ? "40px" : "70px", backgroundColor: isMobile ? "white" : "", color: isMobile ? "grey" : "", filter:  isMobile ? "" : "drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2))", borderRadius: "2px" }} />
             </Button>
