@@ -5,6 +5,7 @@ import { Grid, Button } from '@mui/material';
 import { ActivityDatabase } from "@/models/activityDatabase";
 import EventCard from "./EventCard";
 import { useFilteredEvents } from "@/utility/queries";
+import Link from "next/link";
 
 export function HomeEventsList(){
     const [page, setPage] = useState(1)
@@ -31,11 +32,20 @@ export function HomeEventsList(){
         <Grid container spacing={1}>
             {
                 events?.map((event: ActivityDatabase) => (
+                    <Link key={event._id} href={
+                        {
+                            pathname: "/event-detail",
+                            query: {
+                                id: event._id,
+                                events: JSON.stringify(events.map(e => e._id))
+                            },
+                        }
+                    } >
                     <EventCard
                         key={event._id}
                         event={event}
                     />
-
+                    </Link>
                 ))}
             {
                 !reachedLastPage &&

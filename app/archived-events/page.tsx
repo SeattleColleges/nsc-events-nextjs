@@ -8,7 +8,8 @@ import { ActivityDatabase } from "@/models/activityDatabase";
 import { Button, Container, Grid, Typography, useMediaQuery } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import UnauthorizedPageMessage from "@/components/UnauthorizedPageMessage";
-import theme from "../theme";
+import Link from "next/link";
+import theme from "@/app/theme";
 
 const ArchivedEvents = () => {
     const { isAuth, user } = useAuth();
@@ -19,12 +20,11 @@ const ArchivedEvents = () => {
     const isMobile = useMediaQuery(theme.breakpoints.between('xs', 'sm'));
   
     useEffect(() => {
-      if (data) {
-        setEvents((prevEvents) => [...prevEvents, ...data]);
-        setHasReachedLastPage(data.length < 5);
-    }
-}, [data]);
-
+        if (data) {
+            setEvents((prevEvents) => [...prevEvents, ...data]);
+            setHasReachedLastPage(data.length < 5);
+        }
+    }, [data]);
 const handleLoadMoreEvents = () => {
   setPage((page) => page + 1);
 };
@@ -46,9 +46,19 @@ if (isAuth && (user?.role === 'admin' || user?.role === 'creator')) {
           alignItems={'center'}
           justifyItems={'center'}
         >
-          {events?.map((event: ActivityDatabase) => (
-            <EventCard key={event._id} event={event} />
-          ))}
+            {events?.map((event: ActivityDatabase) => (
+                <Link key={event._id} href={
+                    {
+                        pathname: "/event-detail",
+                        query: {
+                            id: event._id,
+                            events: JSON.stringify(events.map(e => e._id))
+                        },
+                    }
+                }>
+                    <EventCard event={event}/>
+                </Link>
+            ))}
           {!hasReachedLastPage && (
             <Button
               onClick={handleLoadMoreEvents}
