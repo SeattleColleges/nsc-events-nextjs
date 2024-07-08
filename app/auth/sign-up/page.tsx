@@ -135,7 +135,7 @@ const SignUp = () => {
         alignItems: "center",
         height: "100vh",
         justifyContent: "center",
-        mt: isMobile ? 2 : isTablet ? 6 : 0,
+        mt: isMobile ? 4 : isTablet ? 8 : 2,
         width: isMobile ? '95%' : 'auto', 
       }}
     >
