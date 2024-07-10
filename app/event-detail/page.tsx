@@ -75,7 +75,7 @@ const EventDetail = () => {
     const prevPage = localStorage.getItem("prevPage")
     return prevPage ? prevPage : searchParams.get("from")
   })
-  const [ usedData, setUsedData] = useState([])
+  const [ usedData, setUsedData] = useState<ActivityDatabase[] | undefined>(undefined)
   const { data: filteredEvents } = useFilteredEvents(page, prevPage === "home")
   const { data: archivedEvents }  = useArchivedEvents(page, prevPage === "archived")
   const { data: myEvents }  = useMyEvents(getCurrentUserId(), page, prevPage === "mine")
