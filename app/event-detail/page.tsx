@@ -161,6 +161,42 @@ const EventDetail = () => {
   });
 
   useEffect(() => {
+    if(prevPage) {
+      localStorage.setItem("prevPage", prevPage)
+    }
+    if(events) {
+      localStorage.setItem("events", JSON.stringify(events))
+    }
+    return () => {
+      localStorage.removeItem("events")
+      localStorage.removeItem("prevPage")
+    }
+  }, [events, prevPage]);
+
+  useEffect(() => {
+    switch (prevPage) {
+      case "home":
+        setUsedData(filteredEvents);
+        break;
+      case "archived":
+        setUsedData(archivedEvents);
+        break;
+      case "mine":
+        setUsedData(myEvents)
+        break;
+    }
+    if (usedData) {
+      setEvents((prevEvents) => {
+        const newEvents: string[] = [...prevEvents, ...usedData.map((e: { _id: string; }) => e._id)];
+        return newEvents.filter((event, index, self) =>
+            index === self.findIndex((e) => e === event)
+        );
+      });
+      setReachedLastPage(usedData.length === 0);
+    }
+  }, [archivedEvents, filteredEvents, myEvents, page, prevPage, queryClient, usedData]);
+
+  useEffect(() => {
     if (eventIds) {
       setEvents(JSON.parse(eventIds));
     }
@@ -197,6 +233,10 @@ const EventDetail = () => {
 
   const getNextEvent = () => {
     const currentIndex = events.findIndex(e => e === event?._id);
+    if(!reachedLastPage && events.findIndex(e => e === event?._id)) {
+      setPage(num => num + 1);
+    }
+
     if (currentIndex >= 0 && currentIndex < events.length - 1) {
       const nextEvent = events[currentIndex + 1];
       console.log("Navigating to:", nextEvent);
