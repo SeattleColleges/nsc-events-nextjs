@@ -1,7 +1,6 @@
 'use client';
 
 import useAuth from "@/hooks/useAuth";
-import styles from "@/app/home.module.css";
 import EventCard from "@/components/EventCard";
 import { useArchivedEvents } from "@/utility/queries";
 import { ActivityDatabase } from "@/models/activityDatabase";

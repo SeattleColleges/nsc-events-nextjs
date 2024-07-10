@@ -3,8 +3,6 @@
 import Link from "next/link";
 import { Box, Button, Container, Grid, useMediaQuery, useTheme } from '@mui/material';
 import { FC } from "react";
-import styles from "../home.module.css";
-import '../globals.css';
 import useAuth from "@/hooks/useAuth";
 import UnauthorizedPageMessage from "@/components/UnauthorizedPageMessage";
 
@@ -33,7 +31,7 @@ const Creator = () => {
     if (isAuth && user?.role === 'creator') {
         return (
             <Container maxWidth={false} className="bg-solid">
-                <Box className={styles.title}
+                <Box
                      display="flex"
                      justifyContent="center"
                      alignItems="center"

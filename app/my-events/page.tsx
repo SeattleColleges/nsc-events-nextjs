@@ -1,7 +1,6 @@
 "use client";
 
 import useAuth from "@/hooks/useAuth";
-import '../globals.css';
 import MyEventsList from "@/components/ViewMyEventsGetter";
 import { Box, Container, Typography, useMediaQuery } from "@mui/material";
 import UnauthorizedPageMessage from "@/components/UnauthorizedPageMessage";
