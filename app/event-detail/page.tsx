@@ -34,7 +34,6 @@ import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import { useTheme } from "@mui/material";
 import { useEventById } from "@/utility/queries";
-import theme from "../theme";
 
 interface SearchParams {
   searchParams: {
@@ -61,6 +60,7 @@ const EventDetail = () => {
   const [userRole, setUserRole] = useState("");
   const { palette } = useTheme();
   const containerColor = palette.mode === "dark" ? "#333" : "#fff";
+  const theme = useTheme();
   const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
   const isMobile = useMediaQuery(theme.breakpoints.between('xs', 'sm'));
 

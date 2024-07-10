@@ -4,11 +4,10 @@ import useAuth from "@/hooks/useAuth";
 import EventCard from "@/components/EventCard";
 import { useArchivedEvents } from "@/utility/queries";
 import { ActivityDatabase } from "@/models/activityDatabase";
-import { Button, Container, Grid, Typography, useMediaQuery } from "@mui/material";
+import { Button, Container, Grid, Typography, useMediaQuery, useTheme } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import UnauthorizedPageMessage from "@/components/UnauthorizedPageMessage";
 import Link from "next/link";
-import theme from "@/app/theme";
 
 const ArchivedEvents = () => {
     const { isAuth, user } = useAuth();
@@ -16,6 +15,7 @@ const ArchivedEvents = () => {
     const [hasReachedLastPage, setHasReachedLastPage] = useState(false);
     const [events, setEvents] = useState<ActivityDatabase[]>([]);
     const { data } = useArchivedEvents(page);
+    const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.between('xs', 'sm'));
   
     useEffect(() => {
