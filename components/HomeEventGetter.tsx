@@ -11,7 +11,7 @@ export function HomeEventsList(){
     const [page, setPage] = useState(1)
     const [events, setEvents] = useState<ActivityDatabase[]>([]);
     const [reachedLastPage, setReachedLastPage] = useState(false);
-    const { data } = useFilteredEvents(page);
+    const { data } = useFilteredEvents(page, true);
     useEffect(() => {
         if (data) {
             setEvents((prevEvents) => {
