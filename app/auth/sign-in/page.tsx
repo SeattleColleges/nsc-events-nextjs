@@ -130,9 +130,12 @@ const Signin = () => {
             </MuiLink>
           </Box>
           <Box textAlign="center" sx={{ mt: 2 }}>
-            <MuiLink href="/auth/sign-up" variant="body2">
-              {"Don't have an account? Sign Up"}
-            </MuiLink>
+            <Typography variant="body2">
+              Don&apos;t have an account?&nbsp;
+              <MuiLink href="/auth/sign-up" variant="body2">
+                {"Sign Up"}
+              </MuiLink>
+            </Typography>
           </Box>
         </Box>
       </Paper>
