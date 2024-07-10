@@ -52,7 +52,9 @@ if (isAuth && (user?.role === 'admin' || user?.role === 'creator')) {
                         pathname: "/event-detail",
                         query: {
                             id: event._id,
-                            events: JSON.stringify(events.map(e => e._id))
+                            events: JSON.stringify(events.map(e => e._id)),
+                            from: 'archived',
+                            page: page
                         },
                     }
                 }>

@@ -38,7 +38,9 @@ export function MyEventsList() {
                                 pathname: "/event-detail",
                                 query: {
                                     id: event._id,
-                                    events: JSON.stringify(events.map(e => e._id))
+                                    events: JSON.stringify(events.map(e => e._id)),
+                                    from: 'mine',
+                                    page: page,
                                 },
                             }
                         } >
