@@ -13,9 +13,8 @@ import {
   Grid,
 } from "@mui/material";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { activityDatabase, ActivityDatabase } from "@/models/activityDatabase";
+import { ActivityDatabase } from "@/models/activityDatabase";
 import Snackbar from "@mui/material/Snackbar";
-import styles from "@/app/home.module.css";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ArchiveIcon from "@mui/icons-material/Archive";
@@ -51,7 +50,6 @@ const EventDetail = () => {
   const queryClient = useQueryClient();
   const [event, setEvent] = useState<ActivityDatabase | null>(null);
   const [events, setEvents] = useState<string[]>([]);
-  const [isAuthed, setAuthed] = useState(false);
   const [token, setToken] = useState("");
   const [dialogOpen, setDialogOpen] = useState(false);
   const [archiveDialogOpen, setArchiveDialogOpen] = useState(false);
@@ -212,7 +210,7 @@ const EventDetail = () => {
 
   return (
     <>
-      <Box className={styles.container}
+      <Box style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}
         sx={{
           position: "relative",
           zIndex: 0,
@@ -232,14 +230,14 @@ const EventDetail = () => {
           }
         }}
       >
-        <Box className={styles.container}
+        <Box 
           sx={{ 
-            backgroundColor: "rgba(0, 0, 0, 0)",
-            zIndex: 1,
+            display: "flex", justifyContent: "center", alignItems: "center", height: "100vh", backgroundColor: "rgba(0, 0, 0, 0)", zIndex: 1,
           }}
         >
-        <Box
-          className={styles.formContainer}
+        <Box style={{ 
+          display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", padding: "2rem", borderRadius: "15px", width: "800px", marginBottom: "10vh"
+        }}
           sx={{ minHeight: "69vh", maxHeight: "100vh", width: "105vh", marginTop: 2, backgroundColor: isMobile ? "" : containerColor  }}
         >
           <Card sx={{ width: isMobile ? "41vh" : "50vh", maxHeight: '100vh', overflowY: 'auto', mt: isMobile ? 5 : "", marginBottom: 3 }}>

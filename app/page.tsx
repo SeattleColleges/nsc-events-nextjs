@@ -1,14 +1,13 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import styles from "./home.module.css";
 import Image from "next/image";
 import CircularProgress from "@mui/material/CircularProgress";
-import google_play from "./google_play.png";
 import HomeEventsList from "@/components/HomeEventGetter";
 import UpcomingEvent from "@/components/UpcomingEvent";
 import { Box, Button, Typography } from "@mui/material";
 import Link from "next/link";
+import google_play from "public/images/google_play.png";
 import blue_nsc_logo from 'public/images/blue_nsc_logo.png'
 import white_nsc_logo from 'public/images/white_nsc_logo.png'
 import { useTheme } from "@mui/material";
@@ -56,19 +55,19 @@ const Home = () => {
               marginBottom={"1rem"}
           >Upcoming Events
           </Typography>
-          <Box className={styles.eventContainer}>
-            <Box className={styles.homeEventsList}>
+          <Box sx={{ display: "flex", justifyContent: "center" }}>
+            <Box sx={{ display: "flex", flex: "1", pl: "33vh" }}>
               <HomeEventsList />
             </Box>
-            <Box className={styles.upcomingEvent}>
+            <Box sx={{ display: "flex", flex: "1", pl: "4vh" }}>
               <UpcomingEvent />
             </Box>
           </Box>
         </Box>
       ) : (
-        <Box className={styles.welcomeContainer}>
-          <Box className={styles.formContainer} sx={{ backgroundColor: containerColor }}>
-            <Box className={styles.logoContainer}>
+        <Box sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", pt: "5vh" }}>
+          <Box sx={{ backgroundColor: containerColor, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", p: "2rem", borderRadius: "15px", width: "800px", mb: "10vh" }}>
+            <Box sx={{ display: "block", m: "0 auto", width: "100px", height: "100px", mb: "1rem" }}>
             <Image src={imagePath} title={"NSC Logo"} alt={"NSC Logo"} width={100} height={100} />
             </Box>
             <Typography
@@ -116,11 +115,11 @@ const Home = () => {
                 marginBottom={"1rem"}
             >Upcoming Events
             </Typography>
-          <Box className={styles.eventContainer}>
-            <Box className={styles.homeEventsList}>
+          <Box sx={{ display: "flex", justifyContent: "center" }}>
+            <Box sx={{ display: "flex", flex: "1", pl: "33vh" }}>
               <HomeEventsList />
             </Box>
-            <Box className={styles.upcomingEvent}>
+            <Box sx={{ display: "flex", flex: "1", pl: "4vh" }}>
               <UpcomingEvent />
             </Box>
           </Box>
