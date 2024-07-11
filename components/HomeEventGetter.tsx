@@ -11,7 +11,7 @@ export function HomeEventsList(){
     const [page, setPage] = useState(1)
     const [events, setEvents] = useState<ActivityDatabase[]>([]);
     const [reachedLastPage, setReachedLastPage] = useState(false);
-    const { data } = useFilteredEvents(page);
+    const { data } = useFilteredEvents(page, true);
     useEffect(() => {
         if (data) {
             setEvents((prevEvents) => {
@@ -37,7 +37,9 @@ export function HomeEventsList(){
                             pathname: "/event-detail",
                             query: {
                                 id: event._id,
-                                events: JSON.stringify(events.map(e => e._id))
+                                events: JSON.stringify(events.map(e => e._id)),
+                                from: 'home',
+                                page: page,
                             },
                         }
                     } >

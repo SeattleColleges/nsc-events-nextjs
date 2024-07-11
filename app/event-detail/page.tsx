@@ -34,8 +34,9 @@ import ViewMoreDetailsDialog from "@/components/ViewMoreDetailsDialog";
 import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import { useTheme } from "@mui/material";
-import { useEventById } from "@/utility/queries";
+import { useArchivedEvents, useEventById, useFilteredEvents, useMyEvents } from "@/utility/queries";
 import theme from "../theme";
+import { getCurrentUserId } from "@/utility/userUtils";
 
 interface SearchParams {
   searchParams: {
@@ -50,7 +51,10 @@ const EventDetail = () => {
   const eventIds = searchParams.get("events");
   const queryClient = useQueryClient();
   const [event, setEvent] = useState<ActivityDatabase | null>(null);
-  const [events, setEvents] = useState<string[]>([]);
+  const [events, setEvents] = useState<string[]>( () => {
+        const events = localStorage.getItem('events');
+        return events ? JSON.parse(events) : [];
+  });
   const [isAuthed, setAuthed] = useState(false);
   const [token, setToken] = useState("");
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -65,7 +69,16 @@ const EventDetail = () => {
   const containerColor = palette.mode === "dark" ? "#333" : "#fff";
   const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
   const isMobile = useMediaQuery(theme.breakpoints.between('xs', 'sm'));
-
+  const [page, setPage] = useState(Number(searchParams.get("page")!) + 1)
+  const [reachedLastPage, setReachedLastPage] = useState(false);
+  const [prevPage] = useState( () => {
+    const prevPage = localStorage.getItem("prevPage")
+    return prevPage ? prevPage : searchParams.get("from")
+  })
+  const [ usedData, setUsedData] = useState<ActivityDatabase[] | undefined>(undefined)
+  const { data: filteredEvents } = useFilteredEvents(page, prevPage === "home")
+  const { data: archivedEvents }  = useArchivedEvents(page, prevPage === "archived")
+  const { data: myEvents }  = useMyEvents(getCurrentUserId(), page, prevPage === "mine")
   const { data } = useEventById(id);
   const DeleteDialog = () => {
     return (
@@ -148,6 +161,42 @@ const EventDetail = () => {
   });
 
   useEffect(() => {
+    if(prevPage) {
+      localStorage.setItem("prevPage", prevPage)
+    }
+    if(events) {
+      localStorage.setItem("events", JSON.stringify(events))
+    }
+    return () => {
+      localStorage.removeItem("events")
+      localStorage.removeItem("prevPage")
+    }
+  }, [events, prevPage]);
+
+  useEffect(() => {
+    switch (prevPage) {
+      case "home":
+        setUsedData(filteredEvents);
+        break;
+      case "archived":
+        setUsedData(archivedEvents);
+        break;
+      case "mine":
+        setUsedData(myEvents)
+        break;
+    }
+    if (usedData) {
+      setEvents((prevEvents) => {
+        const newEvents: string[] = [...prevEvents, ...usedData.map((e: { _id: string; }) => e._id)];
+        return newEvents.filter((event, index, self) =>
+            index === self.findIndex((e) => e === event)
+        );
+      });
+      setReachedLastPage(usedData.length === 0);
+    }
+  }, [archivedEvents, filteredEvents, myEvents, page, prevPage, queryClient, usedData]);
+
+  useEffect(() => {
     if (eventIds) {
       setEvents(JSON.parse(eventIds));
     }
@@ -184,6 +233,10 @@ const EventDetail = () => {
 
   const getNextEvent = () => {
     const currentIndex = events.findIndex(e => e === event?._id);
+    if(!reachedLastPage && events.findIndex(e => e === event?._id)) {
+      setPage(num => num + 1);
+    }
+
     if (currentIndex >= 0 && currentIndex < events.length - 1) {
       const nextEvent = events[currentIndex + 1];
       console.log("Navigating to:", nextEvent);
