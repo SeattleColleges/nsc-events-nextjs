@@ -6,7 +6,7 @@ import Link from 'next/link';
 
 // Mock next/link component
 jest.mock('next/link', () => {
-    return ({ children, href }) => {
+    return ({ children, href }: {children: React.ReactNode, href: string}) => {
         return <a href={href}>{children}</a>;
     };
 });
