@@ -126,7 +126,7 @@ const Home = () => {
           fontSize={isMobile ? "1.75rem" : "2.25rem"}
           textAlign={"center"}
           padding={"1rem"}
-          marginBottom={"1rem"}
+          marginBottom={isMobile ? "0.5" : "1rem"}
         >
           Upcoming Events
         </Typography>
