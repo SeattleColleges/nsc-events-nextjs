@@ -10,7 +10,6 @@ interface EventCardProps {
 
 function EventCard({ event }: EventCardProps) {
   const theme = useTheme();
-  const isXLScreen = useMediaQuery(theme.breakpoints.between('lg', 'xl'));
   const isLaptop = useMediaQuery(theme.breakpoints.between('md', 'lg'));
   const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
   const isMobile = useMediaQuery(theme.breakpoints.between('xs', 'sm'));

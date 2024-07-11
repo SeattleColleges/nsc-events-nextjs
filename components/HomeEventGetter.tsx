@@ -42,20 +42,22 @@ export function HomeEventsList(){
             >
             {
                 events?.map((event: ActivityDatabase) => (
-                    <Link key={event._id} href={
-                        {
-                            pathname: "/event-detail",
-                            query: {
-                                id: event._id,
-                                events: JSON.stringify(events.map(e => e._id))
-                            },
-                        }
-                    } >
-                    <EventCard
-                        key={event._id}
-                        event={event}
-                    />
-                    </Link>
+                    <Grid item xs={12} key={event._id}>
+                        <Link key={event._id} href={
+                            {
+                                pathname: "/event-detail",
+                                query: {
+                                    id: event._id,
+                                    events: JSON.stringify(events.map(e => e._id))
+                                },
+                            }
+                        } >
+                        <EventCard
+                            key={event._id}
+                            event={event}
+                        />
+                        </Link>
+                    </Grid>
                 ))}
             {
                 !reachedLastPage &&
