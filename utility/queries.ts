@@ -11,10 +11,11 @@ const getEvents = async(page: any) => {
     const response = await fetch(`${apiUrl}/events?${params.toString()}`);
     return response.json();
 }
-export function useFilteredEvents(page: any) {
+export function useFilteredEvents(page: any, isEnabled: boolean) {
     return useQuery<ActivityDatabase[], Error>({
         queryKey: ["events", page],
         queryFn: () => getEvents(page),
+        enabled: isEnabled
     });
 }
 
@@ -27,10 +28,11 @@ const getArchivedEvents = async(page: any) => {
     const response = await fetch(`${apiUrl}/events?${String(params)}`);
     return response.json();
 }
-export function useArchivedEvents(page: any) {
+export function useArchivedEvents(page: any, isEnabled: boolean) {
     return useQuery<ActivityDatabase[], Error>({
         queryKey: ["archivedEvents", page],
         queryFn: async () => getArchivedEvents(page),
+        enabled: isEnabled
     });
 }
 
@@ -42,10 +44,11 @@ const getMyEvents = async(userId: string, page: any) => {
     const response = await fetch(`${apiUrl}/events/user/${userId}?${String(params)}`);
     return response.json();
 }
-export function useMyEvents(userId: string, page: any) {
+export function useMyEvents(userId: string, page: any, isEnabled: boolean) {
     return useQuery<ActivityDatabase[], Error>({
         queryKey: ["myEvents", page],
         queryFn: async () => getMyEvents(userId, page),
+        enabled: isEnabled
     });
 }
 
