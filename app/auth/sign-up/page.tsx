@@ -10,6 +10,8 @@ import {
   Button,
   Typography,
   Link as MuiLink,
+  useMediaQuery,
+  SnackbarContent,
 } from "@mui/material";
 import { textFieldStyle } from "@/components/InputFields"
 import Snackbar, { SnackbarOrigin } from "@mui/material/Snackbar";
@@ -29,6 +31,10 @@ interface State extends SnackbarOrigin {
 
 const SignUp = () => {
   const { palette } = useTheme();
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
 
   const darkImagePath = white_vertical_nsc_logo;
   const lightImagePath = blue_vertical_nsc_logo;
@@ -130,6 +136,8 @@ const SignUp = () => {
         alignItems: "center",
         height: "100vh",
         justifyContent: "center",
+        mt: isMobile ? 4 : isTablet ? 8 : 2,
+        width: isMobile ? '95%' : 'auto', 
       }}
     >
       <Paper
@@ -160,7 +168,7 @@ const SignUp = () => {
           </Typography>
           <TextField
             fullWidth
-            margin="normal"
+            margin={isMobile ? "dense" : "normal"}
             label="First Name"
             name="firstName"
             value={userInfo.firstName}
@@ -172,7 +180,7 @@ const SignUp = () => {
           />
           <TextField
             fullWidth
-            margin="normal"
+            margin={isMobile ? "dense" : "normal"}
             label="Last Name"
             name="lastName"
             value={lastName}
@@ -184,7 +192,7 @@ const SignUp = () => {
           />
           <TextField
             fullWidth
-            margin="normal"
+            margin={isMobile ? "dense" : "normal"}
             label="Pronouns"
             name="pronouns"
             value={pronouns}
@@ -196,7 +204,7 @@ const SignUp = () => {
           />
           <TextField
             fullWidth
-            margin="normal"
+            margin={isMobile ? "dense" : "normal"}
             label="Email"
             name="email"
             value={email}
@@ -208,7 +216,7 @@ const SignUp = () => {
           />
           <TextField
             fullWidth
-            margin="normal"
+            margin={isMobile ? "dense" : "normal"}
             label="Password"
             name="password"
             value={password}
@@ -233,7 +241,7 @@ const SignUp = () => {
           />
           <TextField
             fullWidth
-            margin="normal"
+            margin={isMobile ? "dense" : "normal"}
             label="Confirm Password"
             name="confirmPassword"
             value={confirmPassword}
@@ -267,9 +275,12 @@ const SignUp = () => {
             Sign Up
           </Button>
           <Box textAlign="center" sx={{ mt: 2 }}>
-            <MuiLink href="/auth/sign-in" variant="body2">
-              Already have an account? Sign In
-            </MuiLink>
+            <Typography variant="body2">
+              Already have an account?{" "}
+              <MuiLink href="/auth/sign-in" variant="body2">
+                {"Sign In"}
+              </MuiLink>
+            </Typography>
           </Box>
         </Box>
       </Paper>
@@ -279,7 +290,9 @@ const SignUp = () => {
         onClose={() => setSnackBarMessage("")}
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
         message={snackBarMessage}
-      />
+      >
+        <SnackbarContent message={snackBarMessage} sx={{ backgroundColor: "white", color: "black" }} />
+      </Snackbar>
     </Container>
   );
 };

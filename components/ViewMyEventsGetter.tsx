@@ -29,14 +29,22 @@ export function MyEventsList() {
             <Grid
                 container
                 direction={'column'}
-                spacing={2}
                 alignItems={'center'}
-                
             >
                 {events?.map((event: ActivityDatabase) => (
                     <Grid item xs={12} key={event._id}>
+                        <Link key={event._id} href={
+                            {
+                                pathname: "/event-detail",
+                                query: {
+                                    id: event._id,
+                                    events: JSON.stringify(events.map(e => e._id))
+                                },
+                            }
+                        } >
                         <EventCard
-                            event={event} key={""}                        />
+                            event={event} />
+                        </Link>
                     </Grid>
                 ))}
                 {/* {events.map(event => (

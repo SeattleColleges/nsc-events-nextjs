@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { ActivityDatabase } from "@/models/activityDatabase";
 import Dialog from "@mui/material/Dialog";
 import { DatePicker, LocalizationProvider, TimePicker } from "@mui/x-date-pickers";
@@ -34,9 +34,24 @@ const EditDialog = ({ isOpen, event, toggleEditDialog }: EditDialogProps) => {
         errorMessage
     } = useEditForm(event);
 
+    const [initialEventData, setInitialEventData] = useState(event);
+
+    const RemoveWhitespace = (str: string) => str.replace(/\s+/g, '');
+    const trimmedEventStartTime = RemoveWhitespace(eventData.eventStartTime);
+    const trimmedEventEndTime = RemoveWhitespace(eventData.eventEndTime);
     // Convert startTime and endTime from string to Date for TimePicker
-    const startTimeDate = to24HourTime(eventData.eventStartTime);
-    const endTimeDate = to24HourTime(eventData.eventEndTime)
+    const startTimeDate = to24HourTime(trimmedEventStartTime);
+    const endTimeDate = to24HourTime(trimmedEventEndTime);
+
+    useEffect(() => {
+        if (isOpen) {
+            setInitialEventData(event);
+        }
+    }, [isOpen, event]);
+
+    const isEventUpdated = () => {
+        return JSON.stringify(initialEventData) !== JSON.stringify(eventData);
+    };
 
     return (
         <>
@@ -63,6 +78,8 @@ const EditDialog = ({ isOpen, event, toggleEditDialog }: EditDialogProps) => {
                             <TextField
                                 id="event-description"
                                 label="Event Description"
+                                multiline
+                                maxRows={3}
                                 variant="outlined"
                                 name="eventDescription"
                                 value={eventData.eventDescription || ""}
@@ -70,6 +87,7 @@ const EditDialog = ({ isOpen, event, toggleEditDialog }: EditDialogProps) => {
                                 error={!!errors.eventDescription}
                                 helperText={errors.eventDescription}
                                 InputProps={{ style: textFieldStyle.input }}
+                                inputProps={{ maxLength: 300 }}
                                 InputLabelProps={{ style: textFieldStyle.label }}
                                 placeholder="Enter the description of the event"
                             />
@@ -365,7 +383,7 @@ const EditDialog = ({ isOpen, event, toggleEditDialog }: EditDialogProps) => {
                             />
                             <Box sx={{ display: 'flex', justifyContent: 'space-between' }} >
                                 <Box>
-                                <Button type="submit" variant="contained" color="primary" style={{ textTransform: "none" }}>
+                                <Button type="submit" variant="contained" color="primary" style={{ textTransform: "none" }} disabled={!isEventUpdated()}>
                                     Confirm Edit
                                 </Button>
                                 <div className="error-messages">

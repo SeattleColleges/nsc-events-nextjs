@@ -60,21 +60,13 @@ export const validateFormData = (data: Activity | ActivityDatabase): FormErrors 
     };
   }
   // todo: add more error validation rules
-  if (data.eventCoverPhoto || !data.eventCoverPhoto) {
-    try {
-      new URL(data.eventCoverPhoto);
-    } catch {
+  const urlPattern = /^(http(s)?:\/\/){0,1}(?:(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,})(?:[/?].*)?$/;
+  if (!data.eventCoverPhoto || !urlPattern.test(data.eventCoverPhoto)) {
       newErrors = { ...newErrors, eventCoverPhoto: "Event cover photo needs to be a valid URL"  };
-    }
   }
-
-  if (data.eventMeetingURL || !data.eventMeetingURL) {
-    try {
-      new URL(data.eventMeetingURL);
-    } catch {
-      newErrors = { ...newErrors, eventMeetingURL: "Event meeting URL needs to be a valid URL"  };
+  if (!data.eventMeetingURL || !urlPattern.test(data.eventMeetingURL)) {
+      newErrors = { ...newErrors, eventMeetingURL: "Event meeting URL needs to be a valid URL" };
     }
-  }
 
   // Overrides previous eventCapacity error check
   if (data.eventCapacity && isNaN(data.eventCapacity) || data.eventCapacity < 1) {

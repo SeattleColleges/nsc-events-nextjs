@@ -9,6 +9,8 @@ import {
   Box,
   Button,
   SnackbarContent,
+  useMediaQuery,
+  Grid,
 } from "@mui/material";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { activityDatabase, ActivityDatabase } from "@/models/activityDatabase";
@@ -17,6 +19,7 @@ import styles from "@/app/home.module.css";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ArchiveIcon from "@mui/icons-material/Archive";
+import UnarchiveIcon from '@mui/icons-material/Unarchive';
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
@@ -28,9 +31,11 @@ import ArchiveDialog from "@/components/ArchiveDialog";
 import EditDialog from "@/components/EditDialog";
 import { formatDate } from "@/utility/dateUtils";
 import ViewMoreDetailsDialog from "@/components/ViewMoreDetailsDialog";
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
+import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import { useTheme } from "@mui/material";
+import { useEventById } from "@/utility/queries";
+import theme from "../theme";
 
 interface SearchParams {
   searchParams: {
@@ -42,9 +47,10 @@ const EventDetail = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
+  const eventIds = searchParams.get("events");
   const queryClient = useQueryClient();
   const [event, setEvent] = useState<ActivityDatabase | null>(null);
-  const [events, setEvents] = useState<ActivityDatabase[]>([]);
+  const [events, setEvents] = useState<string[]>([]);
   const [isAuthed, setAuthed] = useState(false);
   const [token, setToken] = useState("");
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -57,7 +63,10 @@ const EventDetail = () => {
   const [userRole, setUserRole] = useState("");
   const { palette } = useTheme();
   const containerColor = palette.mode === "dark" ? "#333" : "#fff";
+  const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
+  const isMobile = useMediaQuery(theme.breakpoints.between('xs', 'sm'));
 
+  const { data } = useEventById(id);
   const DeleteDialog = () => {
     return (
       <>
@@ -138,46 +147,13 @@ const EventDetail = () => {
     },
   });
 
-
   useEffect(() => {
-    const getEvents = async () => {
-      const events = queryClient.getQueryData<ActivityDatabase[]>(["events"]);
-      if (events) {
-        setEvents(events);
-        const selectedEvent = events.find(event => event._id === id) as ActivityDatabase;
-        setEvent(selectedEvent);
-      } else {
-        const apiUrl = process.env.NSC_EVENTS_PUBLIC_API_URL || `http://localhost:3000/api`;
-        const response = await fetch(`${apiUrl}/events`);
-        if (response.ok) {
-          const allEvts = await response.json();
-          setEvents(allEvts);
-          const selectedEvent = allEvts.find((event: { _id: string; }) => event._id === id);
-          setEvent(selectedEvent); // assuming there's only one event in response
-        }
-      }
-
-      // if (events !== undefined) {
-      //   setEvents(events);
-      //   const selectedEvent = events.find(event => event._id === searchParams.id) as ActivityDatabase;
-      //   setEvent(selectedEvent);
-      // } else if (searchParams.id) {
-      //   const apiUrl = process.env.NSC_EVENTS_PUBLIC_API_URL || `http://localhost:3000/api`;
-      //   const response = await fetch(`${apiUrl}/events/find/${searchParams.id}`);
-      //   if (response.ok) {
-      //     const evt = await response.json();
-      //     setEvent(evt);
-      //     setEvents([evt]); 
-      //   }
-      // }
-    };
-
-    if (id) {
-      setEvent(null);  // Reset event before fetching new data
-      console.log("Fetching event with ID: ", id);
-      getEvents();
+    if (eventIds) {
+      setEvents(JSON.parse(eventIds));
     }
-    
+    if (data) {
+      setEvent(data);
+    }
     const token = localStorage.getItem("token");
     // Sets token state that is used by delete mutation outside of effect
     setToken(token ?? "");
@@ -187,8 +163,7 @@ const EventDetail = () => {
       setUserRole(role);
       setUserId(id);
     }
-  }, [queryClient, id]);
-
+  }, [queryClient, data, eventIds]);
 
   const toggleAttendDialog = () => {
     if (token === "") {
@@ -208,20 +183,20 @@ const EventDetail = () => {
   };
 
   const getNextEvent = () => {
-    const currentIndex = events.findIndex(e => e._id === event?._id);
+    const currentIndex = events.findIndex(e => e === event?._id);
     if (currentIndex >= 0 && currentIndex < events.length - 1) {
       const nextEvent = events[currentIndex + 1];
-      console.log("Navigating to:", nextEvent._id);
-      router.push(`/event-detail?id=${nextEvent._id}`);
+      console.log("Navigating to:", nextEvent);
+      router.push(`/event-detail?id=${nextEvent}`);
     }
   };
 
   const getPrevEvent = () => {
-    const currentIndex = events.findIndex(e => e._id === event?._id);
+    const currentIndex = events.findIndex(e => e === event?._id);
     if (currentIndex > 0) {
       const prevEvent = events[currentIndex - 1];
-      console.log("Navigating to:", prevEvent._id);
-      router.push(`/event-detail?id=${prevEvent._id}`);
+      console.log("Navigating to:", prevEvent);
+      router.push(`/event-detail?id=${prevEvent}`);
     }
   };
 
@@ -249,7 +224,7 @@ const EventDetail = () => {
             left: 0,
             right: 0,
             bottom: 0,
-            backgroundImage: `url(${event.eventCoverPhoto})`,
+            backgroundImage: isMobile ? "" : `url(${event.eventCoverPhoto})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
             filter: "blur(8px)",
@@ -263,16 +238,11 @@ const EventDetail = () => {
             zIndex: 1,
           }}
         >
-          {events.length > 1 && events.findIndex(e => e._id === event._id) > 0 && (
-            <Button onClick={getPrevEvent}>
-              <ArrowBackIosIcon sx={{ color: 'white', fontSize: '100px', filter: 'drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2))' }} />
-            </Button>
-          )}
         <Box
           className={styles.formContainer}
-          sx={{ minHeight: "69vh", maxHeight: "100vh", width: "100vh", marginTop: "10vh", backgroundColor: containerColor  }}
+          sx={{ minHeight: "69vh", maxHeight: "100vh", width: "105vh", marginTop: 2, backgroundColor: isMobile ? "" : containerColor  }}
         >
-          <Card sx={{ width: "45vh", minHeight: "59vh", maxHeight: "100vh", marginBottom: "5vh" }}>
+          <Card sx={{ width: isMobile ? "41vh" : "50vh", maxHeight: '100vh', overflowY: 'auto', mt: isMobile ? 5 : "", marginBottom: 3 }}>
             <CardMedia
               component="img"
               image={event.eventCoverPhoto}
@@ -283,7 +253,7 @@ const EventDetail = () => {
               <Typography gutterBottom variant="h5" component="div">
                 {event.eventTitle}
               </Typography>
-              <Typography variant="body2" color="text.secondary">
+              <Typography variant="body2" color="text.secondary" sx={{ pb: 1 }}>
                 {event.eventDescription}
               </Typography>
               <Typography variant="body2" color="text.secondary">
@@ -300,54 +270,71 @@ const EventDetail = () => {
               </Typography>
             </CardContent>
           </Card>
-          <div style={{ width: "100vh", display: "flex" }}>
-            <div
-              style={{
+          <Grid container spacing={2} justifyContent="center" alignItems="center">
+            <Box
+              sx={{
                 display: "flex",
-                width: "100vh",
-                gap: "25px",
-                padding: 20,
                 justifyContent: "center",
                 alignItems: "center",
+                flexDirection: isMobile ? "column" : "row",
+                gap: 2,
+                mt: 2
               }}
             >
+              <Grid container spacing={2} justifyContent="center" alignItems="center">
               {(userRole === "admin" ||
                 (userRole === "creator" && event?.createdByUser === userId)) && (
                 <>
-                  <Button
-                    variant="contained"
-                    sx={{ color: "white", backgroundColor: "#2074d4", width: "125px" }}
-                    onClick={() => {
-                      toggleEditDialog();
-                    }}
-                  >
-                    {" "}
-                    <EditIcon sx={{ marginRight: "5px" }} /> Edit{" "}
-                  </Button>
-                  <Button
-                    variant="contained"
-                    sx={{ color: "white", backgroundColor: "#2074d4", width: "125px" }}
-                    onClick={() => setDialogOpen(true)}
-                  >
-                    {" "}
-                    <DeleteIcon sx={{ marginRight: "5px" }} /> Delete{" "}
-                  </Button>
-                  <Button
-                    variant="contained"
-                    sx={{ color: "white", backgroundColor: "#2074d4", width: "125px" }}
-                    onClick={() => toggleArchiveDialog()}
-                  >
-                    {" "}
-                    <ArchiveIcon sx={{ marginRight: "5px" }} /> { !event.isArchived ? "Archive" : "Unarchive" }{" "}
-                  </Button>
+                  <Grid item xs={4} sm="auto">
+                    <Button
+                      variant="contained"
+                      sx={{ color: "white", backgroundColor: "#2074d4", ml: isMobile ? 0 : 2 }}
+                      onClick={toggleEditDialog}
+                    >
+                      <EditIcon sx={{ marginRight: isMobile ? 0 : "5px" }} />
+                      {!isMobile && !isTablet && "Edit"}
+                    </Button>
+                  </Grid>
+                  <Grid item xs={4} sm="auto">
+                    <Button
+                      variant="contained"
+                      sx={{ color: "white", backgroundColor: "#2074d4" }}
+                      onClick={() => setDialogOpen(true)}
+                    >
+                      <DeleteIcon sx={{ marginRight: isMobile ? 0 : "5px" }} />
+                      {!isMobile && !isTablet && "Delete"}
+                    </Button>
+                  </Grid>
+                  <Grid item xs={4} sm="auto">
+                    <Button
+                      variant="contained"
+                      sx={{ color: "white", backgroundColor: "#2074d4" }}
+                      onClick={toggleArchiveDialog}
+                    >
+                      {!event.isArchived ? (
+                        <>
+                          <ArchiveIcon sx={{ marginRight: isMobile ? 0 : "5px" }} />
+                          {!isMobile && !isTablet && "Archive"}
+                        </>
+                      ) : (
+                        <>
+                          <UnarchiveIcon sx={{ marginRight: isMobile ? 0 : "5px" }} />
+                          {!isMobile && !isTablet && "Unarchive"}
+                        </>
+                      )}
+                    </Button>
+                  </Grid>
                 </>
               )}
+              </Grid>
+              <Grid item xs={12} sm="auto">
               <Button
                     variant="contained"
                     sx={{
                       color: "white",
                       backgroundColor: "#2074d4",
                       width: "140px",
+                      mt: isMobile ? 1 : 0
                     }}
                     onClick={() => {
                       toggleViewMoreDetailsDialog();
@@ -356,22 +343,48 @@ const EventDetail = () => {
                     {" "}
                     More Details{" "}
                   </Button>
-                  <Button
-                    variant="contained"
-                    sx={{
-                      color: "white",
-                      backgroundColor: "#2074d4",
-                      width: "125px",
-                    }}
-                    onClick={() => {
-                      toggleAttendDialog();
-                    }}
-                  >
-                    {" "}
-                    Attend{" "}
-                  </Button>
-            </div>
-          </div>
+                  </Grid>
+                  <Grid item xs={12} sm="auto">
+                    <Button
+                      variant="contained"
+                      sx={{
+                        color: "white",
+                        backgroundColor: "#2074d4",
+                        width: isMobile ? "140px" : "90px",
+                      }}
+                      onClick={() => {
+                        toggleAttendDialog();
+                      }}
+                    >
+                      {" "}
+                      Attend{" "}
+                    </Button>
+                  </Grid>
+            </Box>
+            <Box
+              sx={{
+                position: "absolute",
+                display: "flex",
+                justifyContent: events.length > 1 && events.findIndex(e => e === event?._id) > 0 ? "space-between" : "end",
+                alignContent: "center",
+                width: "100%",
+                maxWidth: 700,
+                top: isMobile ? "35%" : "43%",
+                transform: "translateY(-50%)",
+              }}
+            >
+            {events.length > 1 && events.findIndex(e => e === event?._id) > 0 && (
+            <Button onClick={getPrevEvent} sx={{ filter: isMobile ? "drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2))" : "", p: 0, ml: 0 }}>
+              <ArrowLeftIcon sx={{ fontSize: isMobile ? "40px" : "70px", backgroundColor: isMobile ? "white" : "", color: isMobile ? "grey" : "", filter:  isMobile ? "" : "drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2))", borderRadius: "2px" }} />
+            </Button>
+            )}
+            {events.length > 1 && events.findIndex(e => e === event?._id) < events.length - 1 &&  (
+            <Button onClick={getNextEvent} sx={{ filter: isMobile ? "drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2))" : "", p: 0, mr: -2 }}>
+              <ArrowRightIcon sx={{ fontSize: isMobile ? "40px" : "70px", backgroundColor: isMobile ? "white" : "", color: isMobile ? "grey" : "", filter:  isMobile ? "" : "drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2))", borderRadius: "2px" }} />
+            </Button>
+            )}
+          </Box>
+          </Grid>
         </Box>
         <DeleteDialog />
         <ViewMoreDetailsDialog
@@ -401,11 +414,6 @@ const EventDetail = () => {
         >
           <SnackbarContent message={snackbarMessage} sx={{ backgroundColor: "white", color: "black" }} />
         </Snackbar>
-        {events.length > 1 && events.findIndex(e => e._id === event._id) < events.length - 1 &&  (
-          <Button onClick={getNextEvent}>
-            <ArrowForwardIosIcon sx={{ color: 'white', fontSize: '100px', filter: 'drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2))' }} />
-          </Button>
-        )}
       </Box>
       </Box>
     </>

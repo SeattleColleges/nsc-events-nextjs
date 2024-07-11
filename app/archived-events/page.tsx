@@ -5,9 +5,11 @@ import styles from "@/app/home.module.css";
 import EventCard from "@/components/EventCard";
 import { useArchivedEvents } from "@/utility/queries";
 import { ActivityDatabase } from "@/models/activityDatabase";
-import { Button, Container, Grid, Typography } from "@mui/material";
+import { Button, Container, Grid, Typography, useMediaQuery } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import UnauthorizedPageMessage from "@/components/UnauthorizedPageMessage";
+import Link from "next/link";
+import theme from "@/app/theme";
 
 const ArchivedEvents = () => {
     const { isAuth, user } = useAuth();
@@ -15,14 +17,14 @@ const ArchivedEvents = () => {
     const [hasReachedLastPage, setHasReachedLastPage] = useState(false);
     const [events, setEvents] = useState<ActivityDatabase[]>([]);
     const { data } = useArchivedEvents(page);
+    const isMobile = useMediaQuery(theme.breakpoints.between('xs', 'sm'));
   
     useEffect(() => {
-      if (data) {
-        setEvents((prevEvents) => [...prevEvents, ...data]);
-        setHasReachedLastPage(data.length < 5);
-    }
-}, [data]);
-
+        if (data) {
+            setEvents((prevEvents) => [...prevEvents, ...data]);
+            setHasReachedLastPage(data.length < 5);
+        }
+    }, [data]);
 const handleLoadMoreEvents = () => {
   setPage((page) => page + 1);
 };
@@ -31,7 +33,7 @@ if (isAuth && (user?.role === 'admin' || user?.role === 'creator')) {
     return (
         <Container maxWidth={false} className="bg-solid">
             <Typography
-                fontSize={"2.25rem"}
+                fontSize={isMobile ? "1.75rem" : "2.25rem"}
                 textAlign={"center"}
                 padding={"1rem"}
                 marginTop={"1rem"}
@@ -44,9 +46,19 @@ if (isAuth && (user?.role === 'admin' || user?.role === 'creator')) {
           alignItems={'center'}
           justifyItems={'center'}
         >
-          {events?.map((event: ActivityDatabase) => (
-            <EventCard key={event._id} event={event} />
-          ))}
+            {events?.map((event: ActivityDatabase) => (
+                <Link key={event._id} href={
+                    {
+                        pathname: "/event-detail",
+                        query: {
+                            id: event._id,
+                            events: JSON.stringify(events.map(e => e._id))
+                        },
+                    }
+                }>
+                    <EventCard event={event}/>
+                </Link>
+            ))}
           {!hasReachedLastPage && (
             <Button
               onClick={handleLoadMoreEvents}
