@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from "react";
-import { Grid, Button } from '@mui/material';
+import { Grid, Button, useMediaQuery, useTheme, Container } from '@mui/material';
 import { ActivityDatabase } from "@/models/activityDatabase";
 import EventCard from "./EventCard";
 import { useFilteredEvents } from "@/utility/queries";
@@ -12,6 +12,11 @@ export function HomeEventsList(){
     const [events, setEvents] = useState<ActivityDatabase[]>([]);
     const [reachedLastPage, setReachedLastPage] = useState(false);
     const { data } = useFilteredEvents(page);
+
+    const theme = useTheme();
+    const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
+    const isMobile = useMediaQuery(theme.breakpoints.between('xs', 'sm'));
+  
     useEffect(() => {
         if (data) {
             setEvents((prevEvents) => {
@@ -29,7 +34,12 @@ export function HomeEventsList(){
         setPage(num => num + 1);
     };
     return (
-        <Grid container spacing={1}>
+        <Container maxWidth={false}>
+            <Grid
+                container
+                spacing={1} flexDirection={(isMobile || isTablet) ? "column" : "row" }
+                alignItems="center"
+            >
             {
                 events?.map((event: ActivityDatabase) => (
                     <Link key={event._id} href={
@@ -60,7 +70,8 @@ export function HomeEventsList(){
                     Load more events
                 </Button>
             }
-        </Grid>
+            </Grid>
+        </Container>
     );
 }
 

@@ -27,11 +27,11 @@ export function UpcomingEvent() {
       <Grid container spacing={1}>
         {data?.slice(0, 1).map((event: ActivityDatabase) => (
           <Grid item xs={12} key={event._id}>
-            <Box sx={{ width: 400 }}>
+            <Box sx={{ width: 350 }}>
               <Box
                 sx={{
                   position: "absolute",
-                  transform: "translate(55%, -91.5%)",
+                  transform: "translate(45%, -91.5%)",
                 }}
               >
                 <Image

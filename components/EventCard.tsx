@@ -10,15 +10,17 @@ interface EventCardProps {
 
 function EventCard({ event }: EventCardProps) {
   const theme = useTheme();
+  const isXLScreen = useMediaQuery(theme.breakpoints.between('lg', 'xl'));
+  const isLaptop = useMediaQuery(theme.breakpoints.between('md', 'lg'));
   const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
   const isMobile = useMediaQuery(theme.breakpoints.between('xs', 'sm'));
 
   return (
     <div>
       <Grid item xs={12} key={event._id}>
-      <Box sx={{ height: isMobile ? 325 : 130, width: isMobile ? 260 : isTablet ? 500 : 700, display: "block" }}>
+      <Box sx={{ height: (isMobile || isTablet) ? 325 : 130, width: isMobile ? 260 : isTablet ? 400 : isLaptop ? 500 : 700, display: "block" }}>
                 <Card sx={{ display: 'flex', flexDirection: 'column', marginTop: 0 }}>
-                    {isMobile && (
+                    {(isMobile || isTablet) && (
                       <CardMedia
                         component="img"
                         sx={{ height: 200, objectFit: "cover" }}
@@ -27,10 +29,10 @@ function EventCard({ event }: EventCardProps) {
                       />
                     )}
                     <CardContent sx={{ flexGrow: 1 }} >
-                        <Typography variant="h5" align={isMobile ? "center" : "left"}>
+                        <Typography variant="h5" align={(isMobile || isTablet) ? "center" : "left"}>
                         {event.eventTitle}
                     </Typography>
-                    <Typography variant="body2" align={isMobile ? "center" : "right"} color="text.secondary">
+                    <Typography variant="body2" align={(isMobile || isTablet) ? "center" : "right"} color="text.secondary">
                         Date: { formatDate(event.eventDate) }
                     </Typography>
                 </CardContent>
