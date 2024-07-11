@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { Box, Button, Container, Grid, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Button, Container, Grid, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { FC } from "react";
 import styles from "../home.module.css";
 import '../globals.css';
@@ -32,11 +32,18 @@ const Admin = () => {
     if (isAuth && (user?.role === 'admin')) {
         return (
             <Container maxWidth={false} className="bg-solid">
+                <Typography
+                    fontSize={isMobile ? "1.75rem" : "2.25rem"}
+                    textAlign={"center"}
+                    padding={"1rem"}
+                    marginTop={"1rem"}
+                    marginBottom={"1rem"}
+                >My Account</Typography>
                 <Box className={styles.title}
                     display="flex"
                     justifyContent="center"
                     alignContent="center"
-                    height="100vh"
+                    height="60vh"
                     flexDirection="column"
                 >
                     <Grid container spacing={2} justifyContent="center" alignItems="center">
