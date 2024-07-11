@@ -31,7 +31,7 @@ export function UpcomingEvent() {
               <Box
                 sx={{
                   position: "absolute",
-                  transform: "translate(55%, -91%)",
+                  transform: "translate(55%, -91.5%)",
                 }}
               >
                 <Image
@@ -58,11 +58,11 @@ export function UpcomingEvent() {
                   <Typography variant="h5" align="center">
                     {event.eventTitle}
                   </Typography>
-                  <Typography variant="body2" color="text.secondary">
+                  <Typography variant="body2" color="text.secondary" textAlign="center" marginTop="5px">
                     Date: {formatDate(event.eventDate)}
                   </Typography>
                 </CardContent>
-                <CardActions>
+                <CardActions sx={{ justifyContent: "center" }}>
                   <Link
                     href={{
                       pathname: "/event-detail",
