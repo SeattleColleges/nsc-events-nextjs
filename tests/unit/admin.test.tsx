@@ -17,19 +17,23 @@ jest.mock('next/router', () => ({
 }));
 
 describe('Admin', () => {
-    const renderComponent = () => {
+    // const renderComponent = () => {
+    //     render(<Page />);
+    // };
+
+    beforeEach(() => {
         render(<Page />);
-    };
+    })
 
     it('renders the buttons', () => {
-        render(<Page />)
+        // render(<Page />)
         const button = screen.getAllByRole('button')
         const buttonText = screen.getByText('Edit User Role')
         expect(button && buttonText).toBeInTheDocument()
     })
 
     it('renders the Admin component', () => {
-        renderComponent();
+        // renderComponent();
         expect(screen.getByText('Edit User Role')).toBeInTheDocument();
         expect(screen.getByText('Create Event')).toBeInTheDocument();
         expect(screen.getByText('View My Events')).toBeInTheDocument();
@@ -38,7 +42,7 @@ describe('Admin', () => {
     });
 
     it('buttons link to correct paths', () => {
-        renderComponent();
+        // renderComponent();
         expect(screen.getByText('Edit User Role').closest('a')).toHaveAttribute('href', '/edit-user-role-page');
         expect(screen.getByText('Create Event').closest('a')).toHaveAttribute('href', '/create-event');
         expect(screen.getByText('View My Events').closest('a')).toHaveAttribute('href', '/my-events');
