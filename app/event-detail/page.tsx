@@ -33,7 +33,6 @@ import ViewMoreDetailsDialog from "@/components/ViewMoreDetailsDialog";
 import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import { useTheme } from "@mui/material";
-import { useEventById } from "@/utility/queries";
 import { useArchivedEvents, useEventById, useFilteredEvents, useMyEvents } from "@/utility/queries";
 import { getCurrentUserId } from "@/utility/userUtils";
 
