@@ -1,20 +1,21 @@
 'use client';
 
 import { ActivityDatabase } from "@/models/activityDatabase";
-import { Button, Container, Grid } from "@mui/material";
+import { Button, Container, Grid, useMediaQuery, useTheme } from "@mui/material";
 import { useEffect, useState } from "react";
 import EventCard from "./EventCard";
-import styles from '@/app/home.module.css'
 import { useMyEvents } from "@/utility/queries";
 import { getCurrentUserId } from "@/utility/userUtils";
 import Link from "next/link";
 
 export function MyEventsList() {
-    // useState to hold the events from the API call
     const [events, setEvents] = useState<ActivityDatabase[]>([]);
     const [page, setPage] = useState(1);
     const [hasReachedLastPage, setHasReachedLastPage] = useState(false)
     const { data } = useMyEvents(getCurrentUserId(), page, true);
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.between('xs', 'sm'));
+    
     useEffect(() => {
         if (data) {
             setEvents((prevEvents) => [...prevEvents, ...data]);
@@ -28,11 +29,13 @@ export function MyEventsList() {
         <Container maxWidth={false}>
             <Grid
                 container
-                direction={'column'}
-                alignItems={'center'}
-            >
-                {events?.map((event: ActivityDatabase) => (
-                    <Grid item xs={12} key={event._id}>
+                direction={"column"}
+                spacing={1}
+                alignItems={"center"}
+                justifyItems={"center"}
+              >
+                  {events?.map((event: ActivityDatabase) => (
+                    <Grid item xs={12} key={event._id} sx={{ width: isMobile ? "100%" : "60%" }}>
                         <Link key={event._id} href={
                             {
                                 pathname: "/event-detail",
@@ -49,11 +52,6 @@ export function MyEventsList() {
                         </Link>
                     </Grid>
                 ))}
-                {/* {events.map(event => (
-                <Link key={event._id} href={`/eventDetails?id=${event._id}`} passHref>
-                    <a>{event.eventTitle}</a>
-                </Link>
-                ))} */}
                 {!hasReachedLastPage && (
                     <Grid item>
                         <Button onClick={handleLoadMoreEvents}

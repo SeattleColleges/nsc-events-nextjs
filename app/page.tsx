@@ -130,16 +130,18 @@ const Home = () => {
         >
           Upcoming Events
         </Typography>
-        <Grid container justifyContent="center" spacing={4}>
-          <Grid item xs={12} md={6}>
-            <HomeEventsList />
+        <Box ml={{ lg: 4  }}>
+          <Grid container justifyContent="center" p={2}>
+              <Grid item md={7} lg={8} xl={9} justifyContent="center">
+                <HomeEventsList />
+              </Grid>
+              {!isMobile && !isTablet && (
+              <Grid item md={5} lg={4} xl={3} justifyContent="center">
+                <UpcomingEvent />
+              </Grid>
+              )}
           </Grid>
-          { !(isMobile || isTablet) ? (
-          <Grid item xs={6} md={3}>
-            <UpcomingEvent />
-          </Grid>
-          ) : null }
-        </Grid>
+        </Box>
       </Box>
     </Box>
   );

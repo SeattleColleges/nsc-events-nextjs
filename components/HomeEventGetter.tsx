@@ -36,32 +36,36 @@ export function HomeEventsList(){
         <Container maxWidth={false}>
             <Grid
                 container
-                spacing={1} flexDirection={(isMobile || isTablet) ? "column" : "row" }
+                flexDirection={(isMobile || isTablet) ? "column" : "row" }
+                justifyContent="center"
                 alignItems="center"
+                sx={{ m: "auto" }}
             >
             {
                 events?.map((event: ActivityDatabase) => (
-                    <Link key={event._id} href={
-                        {
-                            pathname: "/event-detail",
-                            query: {
-                                id: event._id,
-                                events: JSON.stringify(events.map(e => e._id)),
-                                from: 'home',
-                                page: page,
-                            },
-                        }
-                    } >
-                    <EventCard
-                        key={event._id}
-                        event={event}
-                    />
-                    </Link>
+                    <Grid item xs={12} key={event._id}>
+                        <Link key={event._id} href={
+                            {
+                                pathname: "/event-detail",
+                                query: {
+                                    id: event._id,
+                                    events: JSON.stringify(events.map(e => e._id)),
+                                    from: 'home',
+                                    page: page,
+                                },
+                            }
+                        } >
+                        <EventCard
+                            key={event._id}
+                            event={event}
+                        />
+                        </Link>
+                    </Grid>
                 ))}
             {
                 !reachedLastPage &&
                 <Button onClick={handleLoadMoreEvents}
-                        type='button'
+                        type="button"
                         variant="contained"
                         color="primary"
                         style={{

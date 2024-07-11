@@ -40,12 +40,13 @@ if (isAuth && (user?.role === 'admin' || user?.role === 'creator')) {
             >Archived Events</Typography>
         <Grid
           container
-          direction={'column'}
+          direction={"column"}
           spacing={1}
-          alignItems={'center'}
-          justifyItems={'center'}
+          alignItems={"center"}
+          justifyItems={"center"}
         >
             {events?.map((event: ActivityDatabase) => (
+              <Grid item xs={12} key={event._id} sx={{ width: isMobile ? "100%" : "60%" }}>
                 <Link key={event._id} href={
                     {
                         pathname: "/event-detail",
@@ -59,6 +60,7 @@ if (isAuth && (user?.role === 'admin' || user?.role === 'creator')) {
                 }>
                     <EventCard event={event}/>
                 </Link>
+              </Grid>
             ))}
           {!hasReachedLastPage && (
             <Button
