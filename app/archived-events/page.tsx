@@ -16,7 +16,7 @@ const ArchivedEvents = () => {
     const [page, setPage] = useState(1);
     const [hasReachedLastPage, setHasReachedLastPage] = useState(false);
     const [events, setEvents] = useState<ActivityDatabase[]>([]);
-    const { data } = useArchivedEvents(page);
+    const { data } = useArchivedEvents(page, true);
     const isMobile = useMediaQuery(theme.breakpoints.between('xs', 'sm'));
   
     useEffect(() => {
@@ -52,7 +52,9 @@ if (isAuth && (user?.role === 'admin' || user?.role === 'creator')) {
                         pathname: "/event-detail",
                         query: {
                             id: event._id,
-                            events: JSON.stringify(events.map(e => e._id))
+                            events: JSON.stringify(events.map(e => e._id)),
+                            from: 'archived',
+                            page: page
                         },
                     }
                 }>

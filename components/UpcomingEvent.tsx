@@ -16,7 +16,7 @@ import { useFilteredEvents } from "@/utility/queries";
 import { formatDate } from "@/utility/dateUtils";
 
 export function UpcomingEvent() {
-  const { data, isLoading, isError } = useFilteredEvents(1);
+  const { data, isLoading, isError } = useFilteredEvents(1, true);
 
   if (isLoading) {
     return <span>Loading events...</span>;
