@@ -1,7 +1,7 @@
 'use client';
 
 import Link from "next/link";
-import { Box, Button, Container, Grid, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Button, Container, Grid, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { FC } from "react";
 import useAuth from "@/hooks/useAuth";
 import UnauthorizedPageMessage from "@/components/UnauthorizedPageMessage";
@@ -31,11 +31,18 @@ const Creator = () => {
     if (isAuth && user?.role === 'creator') {
         return (
             <Container maxWidth={false} className="bg-solid">
+                <Typography
+                    fontSize={isMobile ? "1.75rem" : "2.25rem"}
+                    textAlign={"center"}
+                    padding={"1rem"}
+                    marginTop={"1rem"}
+                    marginBottom={"1rem"}
+                >My Account</Typography>
                 <Box
                      display="flex"
                      justifyContent="center"
                      alignItems="center"
-                     height="100vh"
+                     height="60vh"
                      flexDirection="column"
                 >
                     <Grid container spacing={2} justifyContent="center" alignItems="center">
