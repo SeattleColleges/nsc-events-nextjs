@@ -43,10 +43,24 @@ let darkTheme = createTheme({
     },
     MuiOutlinedInput: {
       styleOverrides: {
+        root: {
+          "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+            borderColor: "#fff",
+          },
+        },
         input: {
           '&:-webkit-autofill': {
-            '-webkit-box-shadow': '0 0 0 100px #E8F0FE inset',
-            '-webkit-text-fill-color': '#000',
+            '-webkit-box-shadow': '0 0 0 100px rgba(69, 69, 69) inset',
+            '-webkit-text-fill-color': '#fff',
+          },
+        },
+      },
+    },
+    MuiInputLabel: {
+      styleOverrides: {
+        root: {
+          '&.Mui-focused': {
+            color: '#fff'
           },
         },
       },

@@ -77,7 +77,7 @@ const CreateEvent: React.FC = () => {
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <Box component="form" onSubmit={handleSubmit} noValidate autoComplete="off" sx={{ p: 3, width: isMobile ? '100%' : '75%', mx: 'auto' }}>
           <Typography
-              fontSize={"2.25rem"}
+              fontSize={isMobile ? "1.75rem" : "2.25rem"}
               textAlign={"center"}
               marginTop={"0.5rem"}
               marginBottom={"1rem"}
