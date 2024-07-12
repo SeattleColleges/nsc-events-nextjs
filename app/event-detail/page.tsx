@@ -152,6 +152,7 @@ const EventDetail = () => {
       await queryClient.refetchQueries({ queryKey:['events', 'myEvents', 'archivedEvents'] });
       setSnackbarMessage("Successfully deleted event.");
       setTimeout(() => {
+        router.refresh();
         router.push("/");
       }, 1200);
     },
