@@ -1,10 +1,10 @@
-import { FormEvent, useEffect, useState } from "react";
+import {FormEvent, useEffect, useState } from "react";
 import { validateFormData } from "@/utility/validateFormData";
 import useDateTimeSelection from "./useDateTimeSelection";
 import { ActivityDatabase } from "@/models/activityDatabase";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import { useEventForm } from "@/hooks/useEventForm";
-import { format, parse } from "date-fns";
+import { format, parse, previousDay } from "date-fns";
 
 export const useEditForm = (initialData: ActivityDatabase) => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
@@ -56,9 +56,25 @@ const to24HourTime  = (time: string) => {
   }
 
   // Handlers for TimePicker changes, converting Date back to string
+  // const onStartTimeChange = (date: Date | null) => {
+  //   const timeStr = date ? format(date, 'HH:mm') : '';
+  //   handleStartTimeChange(timeStr);
+  // };
+
   const onStartTimeChange = (date: Date | null) => {
     const timeStr = date ? format(date, 'HH:mm') : '';
-    handleStartTimeChange(timeStr);
+    setEventData((prevEventData) => {
+      if (prevEventData.eventStartTime != timeStr) {
+        return {
+          ...prevEventData,
+          eventStartTime: timeStr
+        };
+      } else {
+        return {
+          ...prevEventData
+        };
+      }
+    });
   };
 
   const onEndTimeChange = (date: Date | null) => {
