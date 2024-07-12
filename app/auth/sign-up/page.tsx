@@ -1,5 +1,6 @@
 "use client";
-import { ChangeEventHandler, FormEventHandler, use, useState } from "react";
+
+import { ChangeEventHandler, FormEventHandler, useState } from "react";
 import {
   Container,
   Paper,
@@ -12,7 +13,7 @@ import {
   Link as MuiLink,
   SnackbarContent,
 } from "@mui/material";
-import { textFieldStyle } from "@/components/InputFields"
+import { textFieldStyle } from "@/components/InputFields";
 import Snackbar, { SnackbarOrigin } from "@mui/material/Snackbar";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
@@ -20,8 +21,6 @@ import Image from "next/image";
 import { validateSignUp } from "./validateSignUp";
 import React from "react";
 import { signUp } from "./signupApi";
-import blue_vertical_nsc_logo from 'public/images/blue_vertical_nsc_logo.png'
-import white_vertical_nsc_logo from 'public/images/white_vertical_nsc_logo.png'
 import { useTheme } from "@mui/material";
 
 interface State extends SnackbarOrigin {
@@ -31,9 +30,7 @@ interface State extends SnackbarOrigin {
 const SignUp = () => {
   const { palette } = useTheme();
 
-  const darkImagePath = white_vertical_nsc_logo;
-  const lightImagePath = blue_vertical_nsc_logo;
-  const imagePath = palette.mode === "dark" ? darkImagePath : lightImagePath;
+  const imagePath = palette.mode === "dark" ? "/images/white_vertical_nsc_logo.png" : "/images/blue_vertical_nsc_logo.png";
 
   // Set initial state for password visibility
   const [showPassword, setShowPassword] = useState(false);
@@ -149,7 +146,7 @@ const SignUp = () => {
         >
           <Box sx={{ display: 'flex', justifyContent: 'center', marginBottom: 2 }}>
             <Image
-              src={imagePath.src}
+              src={imagePath}
               alt="North Seattle College Logo"
               width={150}
               height={50}
@@ -265,7 +262,7 @@ const SignUp = () => {
             type="submit"
             sx={{ mt: 2 }}
           >
-            Sign Up
+            Sign Up 
           </Button>
           <Box textAlign="center" sx={{ mt: 2 }}>
             <MuiLink href="/auth/sign-in" variant="body2">
