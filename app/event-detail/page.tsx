@@ -13,9 +13,8 @@ import {
   Grid,
 } from "@mui/material";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { activityDatabase, ActivityDatabase } from "@/models/activityDatabase";
+import { ActivityDatabase } from "@/models/activityDatabase";
 import Snackbar from "@mui/material/Snackbar";
-import styles from "@/app/home.module.css";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ArchiveIcon from "@mui/icons-material/Archive";
@@ -35,7 +34,6 @@ import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import { useTheme } from "@mui/material";
 import { useArchivedEvents, useEventById, useFilteredEvents, useMyEvents } from "@/utility/queries";
-import theme from "../theme";
 import { getCurrentUserId } from "@/utility/userUtils";
 
 interface SearchParams {
@@ -67,6 +65,7 @@ const EventDetail = () => {
   const [userRole, setUserRole] = useState("");
   const { palette } = useTheme();
   const containerColor = palette.mode === "dark" ? "#333" : "#fff";
+  const theme = useTheme();
   const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
   const isMobile = useMediaQuery(theme.breakpoints.between('xs', 'sm'));
   const [page, setPage] = useState(Number(searchParams.get("page")!) + 1)
@@ -265,7 +264,7 @@ const EventDetail = () => {
 
   return (
     <>
-      <Box className={styles.container}
+      <Box style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}
         sx={{
           position: "relative",
           zIndex: 0,
@@ -285,14 +284,14 @@ const EventDetail = () => {
           }
         }}
       >
-        <Box className={styles.container}
+        <Box 
           sx={{ 
-            backgroundColor: "rgba(0, 0, 0, 0)",
-            zIndex: 1,
+            display: "flex", justifyContent: "center", alignItems: "center", height: "100vh", backgroundColor: "rgba(0, 0, 0, 0)", zIndex: 1,
           }}
         >
-        <Box
-          className={styles.formContainer}
+        <Box style={{ 
+          display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", padding: "2rem", borderRadius: "15px", width: "800px", marginBottom: "10vh"
+        }}
           sx={{ minHeight: "69vh", maxHeight: "100vh", width: "105vh", marginTop: 2, backgroundColor: isMobile ? "" : containerColor  }}
         >
           <Card sx={{ width: isMobile ? "41vh" : "50vh", maxHeight: '100vh', overflowY: 'auto', mt: isMobile ? 5 : "", marginBottom: 3 }}>
