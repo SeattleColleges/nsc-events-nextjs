@@ -16,7 +16,7 @@ function EventCard({ event }: EventCardProps) {
   return (
     <div>
       <Grid item xs={12} key={event._id}>
-          <Box sx={{ margin: "0 auto", height: (isMobile || isTablet) ? 325 : 130, width: isMobile ? 260 : isTablet ? 400 : "80%", display: "block" }}>
+          <Box sx={{ margin: "0 auto", height: (isMobile || isTablet) ? 325 : 130, width: isMobile ? 260 : isTablet ? 400 : "80%", minWidth: !(isMobile || isTablet) ? 460 : 260, display: "block" }}>
               <Card sx={{ display: 'flex', flexDirection: 'column', marginTop: 0 }}>
                   {(isMobile || isTablet) && (
                       <CardMedia
