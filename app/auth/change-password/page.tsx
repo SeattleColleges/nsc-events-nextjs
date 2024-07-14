@@ -13,6 +13,7 @@ import {
   InputAdornment,
   IconButton,
   Link as MuiLink,
+  useMediaQuery,
 } from "@mui/material";
 import { textFieldStyle } from "@/components/InputFields";
 import { validateChangePassword } from "./validatePassword";
@@ -36,6 +37,10 @@ const ChangePassword = () => {
   const darkImagePath = white_vertical_nsc_logo;
   const lightImagePath = blue_vertical_nsc_logo;
   const imagePath = palette.mode === "dark" ? darkImagePath : lightImagePath;
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
 
   // Set initial state for password visibility
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
@@ -131,11 +136,12 @@ const ChangePassword = () => {
         alignItems: "center",
         height: "100vh",
         justifyContent: "center",
+        mt: isMobile ? -6 : isTablet ? -4 : -8
       }}
     >
       <Paper
         elevation={6}
-        sx={{ padding: 4, width: "100%", borderRadius: 2, mb: 15 }}
+        sx={{ padding: 4, width: "100%", borderRadius: 2, mb: 2 }}
       >
         <Box
           component="form"
