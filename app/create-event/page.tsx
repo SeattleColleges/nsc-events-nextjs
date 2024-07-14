@@ -12,7 +12,6 @@ import { textFieldStyle } from "@/components/InputFields"
 import { MouseEvent, ChangeEvent, useState, FormEvent } from "react";
 import useAuth from "@/hooks/useAuth";
 import UnauthorizedPageMessage from "@/components/UnauthorizedPageMessage";
-import theme from "../theme";
 
 const CreateEvent: React.FC = () => {
   const {
@@ -36,6 +35,7 @@ const CreateEvent: React.FC = () => {
     // Convert startTime and endTime from string to Date for TimePicker
     const startTimeDate = startTime ? parse(startTime, 'HH:mm', new Date()) : null;
     const endTimeDate = endTime ? parse(endTime, 'HH:mm', new Date()) : null;
+    const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.between('xs', 'sm'));
 
     const handleDateChange = (newDate: Date | null) => {
