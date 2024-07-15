@@ -29,6 +29,7 @@ interface ViewMoreDetailsDialogProps {
   event: ActivityDatabase;
   // current user's role so we can display details based on role
   userRole: string;
+  userId: string;
   dialogToggle: () => void;
 }
 
@@ -36,6 +37,7 @@ function ViewMoreDetailsDialog({
   isOpen,
   event,
   userRole,
+  userId,
   dialogToggle,
 }: ViewMoreDetailsDialogProps) {
   // Simple "array to string" function for handling activity details that are arrays
