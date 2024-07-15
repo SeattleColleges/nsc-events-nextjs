@@ -8,6 +8,9 @@ import blue_vertical_nsc_logo from 'public/images/blue_vertical_nsc_logo.png';
 import white_vertical_nsc_logo from 'public/images/white_vertical_nsc_logo.png';
 import { useTheme } from "@mui/material";
 
+const URL = process.env.NSC_EVENTS_PUBLIC_API_URL || "http://localhost:3000/api";
+
+
 const ForgotPassword = () => {
   const { palette } = useTheme();
   const darkImagePath = white_vertical_nsc_logo;
@@ -31,14 +34,23 @@ const ForgotPassword = () => {
   };
 
   // handle submit event
-  const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
+  const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
 
-    // Simulating email validation logic
-    if (email === "valid@example.com") {
-      setMessage("An email with a password reset link has been sent to your email address.");
-    } else {
+    // POST request to check for email
+    const res = await fetch(`${URL}/auth/forgot-password`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email,
+      }),
+    });
+    
+    // email validation logic
+    if (!res.ok) {
       setMessage("Email address is invalid, please use a registered email address.");
+    } else if(res.ok) {
+      setMessage("An email with a password reset link has been sent to your email address.");
     }
 
     setOpen(true);
