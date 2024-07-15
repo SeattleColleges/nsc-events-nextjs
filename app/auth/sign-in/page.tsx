@@ -3,7 +3,7 @@
 import { ChangeEventHandler, FormEventHandler, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { Container, Paper, Box, TextField, Button, Typography, Link as MuiLink } from "@mui/material";
+import { Container, Paper, Box, TextField, Button, Typography, Link as MuiLink, useMediaQuery } from "@mui/material";
 import { textFieldStyle } from "@/components/InputFields";
 import blue_vertical_nsc_logo from 'public/images/blue_vertical_nsc_logo.png'
 import white_vertical_nsc_logo from 'public/images/white_vertical_nsc_logo.png'
@@ -26,6 +26,10 @@ const Signin = () => {
   });
 
   const router = useRouter();
+  
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
 
   const { email, password } = userInfo;
 
@@ -66,9 +70,36 @@ const Signin = () => {
   };
 
   return (
-    <Container maxWidth="xs" sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', height: '100vh', justifyContent: 'center' }}>
-      <Paper elevation={6} sx={{ padding: 4, width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', borderRadius: 2, mb: 2 }}>
-        <Box sx={{ display: 'flex', justifyContent: 'center', marginBottom: 2 }}>
+    <Container 
+      maxWidth="xs" 
+      sx={{ 
+        display: 'flex', 
+        flexDirection: 'column', 
+        alignItems: 'center', 
+        height: '100vh', 
+        justifyContent: 'center',
+        mt: isMobile ? -8 : isTablet ? -6 : -10
+      }}
+    >
+      <Paper 
+        elevation={6} 
+        sx={{ 
+          padding: 4, 
+          width: '100%', 
+          display: 'flex', 
+          flexDirection: 'column', 
+          alignItems: 'center', 
+          borderRadius: 2, 
+          mb: 2 
+        }}
+      >
+        <Box 
+          sx={{ 
+            display: 'flex', 
+            justifyContent: 'center', 
+            marginBottom: 2 
+          }}
+        >
           <Image
             src={imagePath.src}
             alt="North Seattle College Logo"
