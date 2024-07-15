@@ -5,37 +5,32 @@ interface SignUpForm {
     email: string;
     password: string;
     confirmPassword: string;
-}
+    }
 
 export const validateSignUp = (values: SignUpForm) => {
+
     const errors: Partial<SignUpForm> = {};
 
-    const { firstName, lastName, pronouns, email, password, confirmPassword } = values;
+    const { firstName, lastName, email, password, confirmPassword } = values;
 
     if (!firstName) {
         errors.firstName = "First name is required";
     }
-
+    
     if (!lastName) {
         errors.lastName = "Last name is required";
     }
 
-    if (!pronouns) {
-        errors.pronouns = "Pronouns are required";
-    }
-
     if (!email) {
         errors.email = "Email is required";
-    } else if (!/^\S+@\S+\.\S+$/.test(email)) {
-        errors.email = "Invalid email address";
     }
-
-if (!email) {
-    errors.email = "Email is required";
-}
 
     if (!password) {
         errors.password = "Password is required";
+    }
+
+    if (!confirmPassword) {
+        errors.confirmPassword = "Confirm password is required";
     } else if (password.length < 8) {
         errors.password = "Password must be at least 8 characters";
     } else if (password.length > 30) {
@@ -48,13 +43,14 @@ if (!email) {
         errors.password = "Password must contain at least one special character";
     }
 
-if (!password) {
-    errors.password = "Password is required";
-}
-
     if (confirmPassword !== password) {
         errors.confirmPassword = "Passwords do not match";
     }
 
+    if (email && !/^\S+@\S+\.\S+$/.test(email)) {
+        errors.email = "Invalid email address";
+    }
+
     return errors;
-};
+}
+
