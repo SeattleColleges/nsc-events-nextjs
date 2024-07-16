@@ -6,6 +6,8 @@ import { ActivityDatabase } from "@/models/activityDatabase";
 import EventCard from "./EventCard";
 import { useFilteredEvents } from "@/utility/queries";
 import Link from "next/link";
+import TagSelector from "@/components/TagSelector";
+import { EventTags } from "@/utility/tags";
 
 export function HomeEventsList(){
     const [page, setPage] = useState(1)
@@ -41,7 +43,14 @@ export function HomeEventsList(){
                 alignItems="center"
                 sx={{ m: "auto" }}
             >
-            {
+                <TagSelector
+                    selectedTags={['']}
+                    allTags={[
+                        ...EventTags,
+                    ]}
+                    onTagClick={(tag) => console.log(tag)}
+                />
+                {
                 events?.map((event: ActivityDatabase) => (
                     <Grid item xs={12} key={event._id}>
                         <Link key={event._id} href={
