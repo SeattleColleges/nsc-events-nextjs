@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from "react";
-import { Grid, Button, useMediaQuery, useTheme, Container } from '@mui/material';
+import {Grid, Button, useMediaQuery, useTheme, Container, Box} from '@mui/material';
 import { ActivityDatabase } from "@/models/activityDatabase";
 import EventCard from "./EventCard";
 import { useFilteredEvents } from "@/utility/queries";
@@ -13,10 +13,11 @@ export function HomeEventsList(){
     const [page, setPage] = useState(1)
     const [events, setEvents] = useState<ActivityDatabase[]>([]);
     const [reachedLastPage, setReachedLastPage] = useState(false);
+    const [activeTags, setActiveTags] = useState<string[]>([]);
     const theme = useTheme();
     const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
     const isMobile = useMediaQuery(theme.breakpoints.between('xs', 'sm'));
-    const { data } = useFilteredEvents(page, true);
+    const { data, refetch } = useFilteredEvents(page, true);
 
     useEffect(() => {
         if (data) {
@@ -34,6 +35,27 @@ export function HomeEventsList(){
     const handleLoadMoreEvents = () => {
         setPage(num => num + 1);
     };
+    const handleTagClicked = (clickedTag: string) => {
+        if (activeTags.includes(clickedTag)) {
+            const newTags = activeTags.filter(t => t !== clickedTag);
+            setActiveTags(newTags);
+        } else {
+            setActiveTags((prevTags) => [...prevTags, clickedTag]);
+        }
+    }
+    useEffect(() => {
+        const newEvents = events.filter(e => {
+           return e.eventTags.some(tag => activeTags.includes(tag));
+        });
+        if (newEvents.length > 0) {
+            setEvents(newEvents);
+        } else {
+            if (data) {
+                setPage(1);
+                refetch().then(res => setEvents(res.data as ActivityDatabase[]));
+            }
+        }
+    }, [activeTags]);
     return (
         <Container maxWidth={false}>
             <Grid
@@ -43,13 +65,18 @@ export function HomeEventsList(){
                 alignItems="center"
                 sx={{ m: "auto" }}
             >
-                <TagSelector
-                    selectedTags={['']}
-                    allTags={[
-                        ...EventTags,
-                    ]}
-                    onTagClick={(tag) => console.log(tag)}
-                />
+                <Box
+                    marginY={5}
+                    maxWidth={'md'}
+                >
+                    <TagSelector
+                        selectedTags={activeTags}
+                        allTags={[
+                            ...EventTags,
+                        ]}
+                        onTagClick={(tag) => handleTagClicked(tag)}
+                    />
+                </Box>
                 {
                 events?.map((event: ActivityDatabase) => (
                     <Grid item xs={12} key={event._id}>
