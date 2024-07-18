@@ -1,16 +1,18 @@
 "use client";
 
 import React, { ChangeEventHandler, FormEventHandler, useState } from "react";
-import { Box, Button, TextField, Typography, Container, Paper, useMediaQuery } from '@mui/material';
+import { Box, Button, TextField, Typography, Container, Paper, useMediaQuery, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import { textFieldStyle } from "@/components/InputFields";
 import Image from "next/image";
-import blue_vertical_nsc_logo from 'public/images/blue_vertical_nsc_logo.png'
-import white_vertical_nsc_logo from 'public/images/white_vertical_nsc_logo.png'
+import blue_vertical_nsc_logo from 'public/images/blue_vertical_nsc_logo.png';
+import white_vertical_nsc_logo from 'public/images/white_vertical_nsc_logo.png';
 import { useTheme } from "@mui/material";
+
+const URL = process.env.NSC_EVENTS_PUBLIC_API_URL || "http://localhost:3000/api";
+
 
 const ForgotPassword = () => {
   const { palette } = useTheme();
-  
   const darkImagePath = white_vertical_nsc_logo;
   const lightImagePath = blue_vertical_nsc_logo;
   const imagePath = palette.mode === "dark" ? darkImagePath : lightImagePath;
@@ -22,6 +24,10 @@ const ForgotPassword = () => {
   // user email state
   const [userEmail, setUserEmail] = useState({ email: "" });
 
+  // success and error message states
+  const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState("");
+
   // destructure email from userEmail state
   const { email } = userEmail;
 
@@ -32,10 +38,31 @@ const ForgotPassword = () => {
   };
 
   // handle submit event
-  const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
+  const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
 
-    // TODO: send email to user with reset password link
+    // POST request to check for email
+    const res = await fetch(`${URL}/auth/forgot-password`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email,
+      }),
+    });
+    
+    // email validation logic
+    if (!res.ok) {
+      setMessage("Email address is invalid, please use a registered email address.");
+    } else if(res.ok) {
+      setMessage("An email with a password reset link has been sent to your email address.");
+    }
+
+    setOpen(true);
+  };
+
+  // handle close event
+  const handleClose = () => {
+    setOpen(false);
   };
 
   return (
@@ -58,7 +85,7 @@ const ForgotPassword = () => {
         }}
       >
         <Box sx={{ display: 'flex', justifyContent: 'center', marginBottom: 2 }}>
-        <Image
+          <Image
             src={imagePath.src}
             alt="North Seattle College Logo"
             width={150}
@@ -97,6 +124,22 @@ const ForgotPassword = () => {
           </Button>
         </Box>
       </Paper>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+      >
+        <DialogTitle>{message.includes("invalid") ? "Error" : "Success"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            {message}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            OK
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Container>
   );
 };
