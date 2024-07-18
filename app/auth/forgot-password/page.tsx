@@ -1,7 +1,7 @@
 "use client";
 
 import React, { ChangeEventHandler, FormEventHandler, useState } from "react";
-import { Box, Button, TextField, Typography, Container, Paper, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
+import { Box, Button, TextField, Typography, Container, Paper, useMediaQuery, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import { textFieldStyle } from "@/components/InputFields";
 import Image from "next/image";
 import blue_vertical_nsc_logo from 'public/images/blue_vertical_nsc_logo.png';
@@ -16,6 +16,10 @@ const ForgotPassword = () => {
   const darkImagePath = white_vertical_nsc_logo;
   const lightImagePath = blue_vertical_nsc_logo;
   const imagePath = palette.mode === "dark" ? darkImagePath : lightImagePath;
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
 
   // user email state
   const [userEmail, setUserEmail] = useState({ email: "" });
@@ -62,8 +66,24 @@ const ForgotPassword = () => {
   };
 
   return (
-    <Container component="main" maxWidth="xs" sx={{ display: 'flex', alignItems: 'center', height: '100vh' }}>
-      <Paper elevation={6} sx={{ padding: 4, width: '100%', borderRadius: 2, mb: 2 }}>
+    <Container component="main" 
+      maxWidth="xs" 
+      sx={{ 
+        display: 'flex', 
+        alignItems: 'center', 
+        height: '100vh',
+        mt: isMobile ? -16 : isTablet ? -14 : -18
+      }}
+    >
+      <Paper 
+        elevation={6} 
+        sx={{ 
+          padding: 4, 
+          width: '100%', 
+          borderRadius: 2, 
+          mb: 2 
+        }}
+      >
         <Box sx={{ display: 'flex', justifyContent: 'center', marginBottom: 2 }}>
           <Image
             src={imagePath.src}
@@ -73,7 +93,7 @@ const ForgotPassword = () => {
             style={{ borderRadius: "10px" }}
           />
         </Box>
-        <Typography component="h1" variant="h5" textAlign="center" sx={{ mb: 2 }}>
+        <Typography component="h1" variant="h6" textAlign="center" sx={{ mb: 2 }}>
           Forgot Password
         </Typography>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
