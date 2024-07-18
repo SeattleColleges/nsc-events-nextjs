@@ -445,7 +445,7 @@ const EventDetail = () => {
           event={event}
           userRole={userRole}
           dialogToggle={toggleViewMoreDetailsDialog}
-        />
+          userId={userId}/>
         <AttendDialog
           isOpen={attendDialogOpen}
           eventId={event._id}
