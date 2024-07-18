@@ -29,6 +29,7 @@ interface ViewMoreDetailsDialogProps {
   event: ActivityDatabase;
   // current user's role so we can display details based on role
   userRole: string;
+  userId: string;
   dialogToggle: () => void;
 }
 
@@ -36,10 +37,12 @@ function ViewMoreDetailsDialog({
   isOpen,
   event,
   userRole,
+  userId,
   dialogToggle,
 }: ViewMoreDetailsDialogProps) {
   // Simple "array to string" function for handling activity details that are arrays
   const arrayToString = (arr: any[]) => arr.join(", ");
+  const isCreatorOfEvent = userId === event.createdByUser
 
   const moreDetails = [
     { title: "Host", detail: event.eventHost },
@@ -63,7 +66,7 @@ function ViewMoreDetailsDialog({
     { title: "Archived", detail: event.isArchived ? "Yes" : "No" },
   ];
 
-  const adminDetails = [{ title: "Event Note", detail: event.eventNote }];
+  const eventNoteDetail = [{ title: "Event Note", detail: event.eventNote }];
 
   // Simple function to check if the event details being mapped is an object
   const isObject = (value: any) => value && typeof value === "object" && !Array.isArray(value);
@@ -112,7 +115,7 @@ function ViewMoreDetailsDialog({
           {/* map out the moreDetails object as a ListItem for each, handle each user role differently*/}
           {mapDetails(moreDetails)}
           {(userRole == "creator" || userRole == "admin") && <>{mapDetails(creatorDetails)}</>}
-          {userRole == "admin" && <>{mapDetails(adminDetails)}</>}
+          {(userRole == "admin" || isCreatorOfEvent) && <>{mapDetails(eventNoteDetail)}</>}
         </DialogContent>
 
         {/* cancel button to exit the dialog box */}
