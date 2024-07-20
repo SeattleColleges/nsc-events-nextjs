@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from "react";
-import { Grid, Button, useMediaQuery, useTheme, Container, Box } from '@mui/material';
+import {Grid, Button, useMediaQuery, useTheme, Container, Box, Typography} from '@mui/material';
 import { ActivityDatabase } from "@/models/activityDatabase";
 import EventCard from "./EventCard";
 import { useFilteredEvents } from "@/utility/queries";
@@ -17,7 +17,7 @@ export function HomeEventsList(){
     const theme = useTheme();
     const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
     const isMobile = useMediaQuery(theme.breakpoints.between('xs', 'sm'));
-    const { data, refetch } = useFilteredEvents(page, true);
+    const { data, isLoading } = useFilteredEvents(page, true, activeTags);
 
     useEffect(() => {
         if (data) {
@@ -36,6 +36,8 @@ export function HomeEventsList(){
         setPage(num => num + 1);
     };
     const handleTagClicked = (clickedTag: string) => {
+        setEvents([])
+        setPage(1)
         if (activeTags.includes(clickedTag)) {
             const newTags = activeTags.filter(t => t !== clickedTag);
             setActiveTags(newTags);
@@ -43,17 +45,6 @@ export function HomeEventsList(){
             setActiveTags((prevTags) => [...prevTags, clickedTag]);
         }
     }
-    useEffect(() => {
-        const newEvents = events.filter(e => {
-           return e.eventTags.some(tag => activeTags.includes(tag));
-        });
-        if (newEvents.length > 0) {
-            setEvents(newEvents);
-        } else if (data) {
-            setPage(1);
-            refetch().then(res => setEvents(res.data as ActivityDatabase[]));
-        }
-    }, [activeTags]);
     return (
         <Container maxWidth={false}>
             <Grid
@@ -76,6 +67,7 @@ export function HomeEventsList(){
                     />
                 </Box>
                 {
+                    events.length > 0 ?
                 events?.map((event: ActivityDatabase) => (
                     <Grid item xs={12} key={event._id}>
                         <Link key={event._id} href={
@@ -95,9 +87,12 @@ export function HomeEventsList(){
                         />
                         </Link>
                     </Grid>
-                ))}
+                )): <Typography>
+                            { isLoading ? 'Loading...': 'Found no events with selected tags!' }
+                    </Typography>
+                }
             {
-                !reachedLastPage &&
+                data && data.length > 0 && !reachedLastPage &&
                 <Button onClick={handleLoadMoreEvents}
                         type="button"
                         variant="contained"
