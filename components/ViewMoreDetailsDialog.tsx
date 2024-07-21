@@ -6,6 +6,8 @@ import {
   Button,
   ListItem,
   ListItemText,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 import React from "react";
 import { ActivityDatabase } from "@/models/activityDatabase";
@@ -30,6 +32,8 @@ function ViewMoreDetailsDialog({
   // Simple "array to string" function for handling activity details that are arrays
   const arrayToString = (arr: any[]) => arr.join(", ");
   const isCreatorOfEvent = userId === event.createdByUser
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.between('xs', 'sm'));
 
   const moreDetails = [
     { title: "Host", detail: event.eventHost },
@@ -99,7 +103,16 @@ function ViewMoreDetailsDialog({
 
   return (
     <>
-      <Dialog open={isOpen}>
+      <Dialog open={isOpen} maxWidth={"md"} fullWidth
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          '& .MuiDialog-paper': {
+            width: isMobile ? "90%" : "500px",
+            margin: 0,
+          },
+        }}>
         <DialogTitle>{"More Details:"}</DialogTitle>
         <DialogContent dividers sx={{ height: "fit-content" }}>
           {/* map out the moreDetails object as a ListItem for each, handle each user role differently*/}
