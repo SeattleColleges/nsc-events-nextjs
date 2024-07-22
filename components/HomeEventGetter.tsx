@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from "react";
-import {Grid, Button, useMediaQuery, useTheme, Container, Box, Typography} from '@mui/material';
+import { Grid, Button, useMediaQuery, useTheme, Container, Box, Typography } from '@mui/material';
 import { ActivityDatabase } from "@/models/activityDatabase";
 import EventCard from "./EventCard";
 import { useFilteredEvents } from "@/utility/queries";

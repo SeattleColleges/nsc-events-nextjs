@@ -12,7 +12,7 @@ import { textFieldStyle } from "@/components/InputFields"
 import { MouseEvent, ChangeEvent, useState, FormEvent } from "react";
 import useAuth from "@/hooks/useAuth";
 import UnauthorizedPageMessage from "@/components/UnauthorizedPageMessage";
-import {EventTags} from "@/utility/tags";
+import { EventTags } from "@/utility/tags";
 
 const CreateEvent: React.FC = () => {
   const {
