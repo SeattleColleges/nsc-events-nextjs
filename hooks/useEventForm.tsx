@@ -19,6 +19,7 @@ export const useEventForm = (initialData: Activity | ActivityDatabase) => {
     eventLocation: "",
     eventMeetingURL: "",
     eventCoverPhoto: "",
+    eventDocument: "",
     eventHost: "",
     eventRegistration: "",
     eventTags: "",
