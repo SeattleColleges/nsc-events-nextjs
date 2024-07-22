@@ -2,25 +2,14 @@ import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
-import CloseIcon from "@mui/icons-material/Close";
 import {
-  Box,
   Button,
-  DialogContentText,
-  Divider,
-  FormControlLabel,
   ListItem,
   ListItemText,
-  SnackbarContent,
-  Tooltip,
-  Typography,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
-import Snackbar from "@mui/material/Snackbar";
-import IconButton from "@mui/material/IconButton";
-import InfoIcon from "@mui/icons-material/Info";
-import React, { useState } from "react";
-import { useMutation } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
+import React from "react";
 import { ActivityDatabase } from "@/models/activityDatabase";
 
 interface ViewMoreDetailsDialogProps {
@@ -43,10 +32,12 @@ function ViewMoreDetailsDialog({
   // Simple "array to string" function for handling activity details that are arrays
   const arrayToString = (arr: any[]) => arr.join(", ");
   const isCreatorOfEvent = userId === event.createdByUser
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.between('xs', 'sm'));
 
   const moreDetails = [
     { title: "Host", detail: event.eventHost },
-    { title: "URL", detail: event.eventMeetingURL },
+    { title: "Meeting URL", detail: event.eventMeetingURL },
     { title: "Registration", detail: event.eventRegistration },
     { title: "Tags", detail: arrayToString(event.eventTags) },
     { title: "Speakers", detail: arrayToString(event.eventSpeakers) },
@@ -54,19 +45,22 @@ function ViewMoreDetailsDialog({
     { title: "Accessibility", detail: event.eventAccessibility },
   ];
 
+  const userDetails = [
+    { title: "Schedule", detail: event.eventSchedule },
+    { title: "Prerequisites", detail: event.eventPrerequisites },
+    { title: "Cancellation Policy", detail: event.eventCancellationPolicy },
+    { title: "Privacy", detail: event.eventPrivacy },
+    { title: "Social media", detail: event.eventSocialMedia },
+  ];
+
   const creatorDetails = [
     { title: "Category", detail: event.eventCategory },
     { title: "Capacity", detail: event.eventCapacity },
-    { title: "Schedule", detail: event.eventSchedule },
-    { title: "Prerequisites", detail: event.eventPrerequisites },
-    { title: "Cancelation Policy", detail: event.eventCancellationPolicy },
-    { title: "Social media", detail: event.eventSocialMedia },
-    { title: "Attendance Count", detail: event.attendanceCount ?? "Not Available" },
-    { title: "Privacy", detail: event.eventPrivacy },
-    { title: "Archived", detail: event.isArchived ? "Yes" : "No" },
   ];
 
   const eventNoteDetail = [{ title: "Event Note", detail: event.eventNote }];
+  const attendanceCount = [{ title: "Attendance Count", detail: event.attendanceCount ?? "Not Available" }];
+  const archived = [{ title: "Archived", detail: event.isArchived ? "Yes" : "No" }];
 
   // Simple function to check if the event details being mapped is an object
   const isObject = (value: any) => value && typeof value === "object" && !Array.isArray(value);
@@ -109,13 +103,23 @@ function ViewMoreDetailsDialog({
 
   return (
     <>
-      <Dialog open={isOpen}>
+      <Dialog open={isOpen} maxWidth={"md"} fullWidth
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          '& .MuiDialog-paper': {
+            width: isMobile ? "90%" : "500px",
+            margin: 0,
+          },
+        }}>
         <DialogTitle>{"More Details:"}</DialogTitle>
         <DialogContent dividers sx={{ height: "fit-content" }}>
           {/* map out the moreDetails object as a ListItem for each, handle each user role differently*/}
           {mapDetails(moreDetails)}
           {(userRole == "creator" || userRole == "admin") && <>{mapDetails(creatorDetails)}</>}
-          {(userRole == "admin" || isCreatorOfEvent) && <>{mapDetails(eventNoteDetail)}</>}
+          {(userRole == "user" || userRole == "creator" || userRole == "admin") && <>{mapDetails(userDetails)}</>}
+          {(userRole == "admin" || isCreatorOfEvent) && <>{mapDetails(eventNoteDetail)}{mapDetails(attendanceCount)}{mapDetails(archived)}</>}
         </DialogContent>
 
         {/* cancel button to exit the dialog box */}
