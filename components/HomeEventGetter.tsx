@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from "react";
-import { Grid, Button } from '@mui/material';
+import { Grid, Button, useMediaQuery, useTheme, Container } from '@mui/material';
 import { ActivityDatabase } from "@/models/activityDatabase";
 import EventCard from "./EventCard";
 import { useFilteredEvents } from "@/utility/queries";
@@ -11,7 +11,11 @@ export function HomeEventsList(){
     const [page, setPage] = useState(1)
     const [events, setEvents] = useState<ActivityDatabase[]>([]);
     const [reachedLastPage, setReachedLastPage] = useState(false);
-    const { data } = useFilteredEvents(page);
+    const theme = useTheme();
+    const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
+    const isMobile = useMediaQuery(theme.breakpoints.between('xs', 'sm'));
+    const { data } = useFilteredEvents(page, true);
+
     useEffect(() => {
         if (data) {
             setEvents((prevEvents) => {
@@ -29,28 +33,39 @@ export function HomeEventsList(){
         setPage(num => num + 1);
     };
     return (
-        <Grid container spacing={1}>
+        <Container maxWidth={false}>
+            <Grid
+                container
+                flexDirection={(isMobile || isTablet) ? "column" : "row" }
+                justifyContent="center"
+                alignItems="center"
+                sx={{ m: "auto" }}
+            >
             {
                 events?.map((event: ActivityDatabase) => (
-                    <Link key={event._id} href={
-                        {
-                            pathname: "/event-detail",
-                            query: {
-                                id: event._id,
-                                events: JSON.stringify(events.map(e => e._id))
-                            },
-                        }
-                    } >
-                    <EventCard
-                        key={event._id}
-                        event={event}
-                    />
-                    </Link>
+                    <Grid item xs={12} key={event._id}>
+                        <Link key={event._id} href={
+                            {
+                                pathname: "/event-detail",
+                                query: {
+                                    id: event._id,
+                                    events: JSON.stringify(events.map(e => e._id)),
+                                    from: 'home',
+                                    page: page,
+                                },
+                            }
+                        } >
+                        <EventCard
+                            key={event._id}
+                            event={event}
+                        />
+                        </Link>
+                    </Grid>
                 ))}
             {
                 !reachedLastPage &&
                 <Button onClick={handleLoadMoreEvents}
-                        type='button'
+                        type="button"
                         variant="contained"
                         color="primary"
                         style={{
@@ -60,7 +75,8 @@ export function HomeEventsList(){
                     Load more events
                 </Button>
             }
-        </Grid>
+            </Grid>
+        </Container>
     );
 }
 

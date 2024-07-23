@@ -13,9 +13,8 @@ import {
   Grid,
 } from "@mui/material";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { activityDatabase, ActivityDatabase } from "@/models/activityDatabase";
+import { ActivityDatabase } from "@/models/activityDatabase";
 import Snackbar from "@mui/material/Snackbar";
-import styles from "@/app/home.module.css";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ArchiveIcon from "@mui/icons-material/Archive";
@@ -34,8 +33,8 @@ import ViewMoreDetailsDialog from "@/components/ViewMoreDetailsDialog";
 import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import { useTheme } from "@mui/material";
-import { useEventById } from "@/utility/queries";
-import theme from "../theme";
+import { useArchivedEvents, useEventById, useFilteredEvents, useMyEvents } from "@/utility/queries";
+import { getCurrentUserId } from "@/utility/userUtils";
 
 interface SearchParams {
   searchParams: {
@@ -50,7 +49,10 @@ const EventDetail = () => {
   const eventIds = searchParams.get("events");
   const queryClient = useQueryClient();
   const [event, setEvent] = useState<ActivityDatabase | null>(null);
-  const [events, setEvents] = useState<string[]>([]);
+  const [events, setEvents] = useState<string[]>( () => {
+        const events = localStorage.getItem('events');
+        return events ? JSON.parse(events) : [];
+  });
   const [isAuthed, setAuthed] = useState(false);
   const [token, setToken] = useState("");
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -63,9 +65,19 @@ const EventDetail = () => {
   const [userRole, setUserRole] = useState("");
   const { palette } = useTheme();
   const containerColor = palette.mode === "dark" ? "#333" : "#fff";
+  const theme = useTheme();
   const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
   const isMobile = useMediaQuery(theme.breakpoints.between('xs', 'sm'));
-
+  const [page, setPage] = useState(Number(searchParams.get("page")!) + 1)
+  const [reachedLastPage, setReachedLastPage] = useState(false);
+  const [prevPage] = useState( () => {
+    const prevPage = localStorage.getItem("prevPage")
+    return prevPage ? prevPage : searchParams.get("from")
+  })
+  const [ usedData, setUsedData] = useState<ActivityDatabase[] | undefined>(undefined)
+  const { data: filteredEvents } = useFilteredEvents(page, prevPage === "home")
+  const { data: archivedEvents }  = useArchivedEvents(page, prevPage === "archived")
+  const { data: myEvents }  = useMyEvents(getCurrentUserId(), page, prevPage === "mine")
   const { data } = useEventById(id);
   const DeleteDialog = () => {
     return (
@@ -139,6 +151,7 @@ const EventDetail = () => {
       await queryClient.refetchQueries({ queryKey:['events', 'myEvents', 'archivedEvents'] });
       setSnackbarMessage("Successfully deleted event.");
       setTimeout(() => {
+        router.refresh();
         router.push("/");
       }, 1200);
     },
@@ -146,6 +159,42 @@ const EventDetail = () => {
       setSnackbarMessage("Failed to delete event.");
     },
   });
+
+  useEffect(() => {
+    if(prevPage) {
+      localStorage.setItem("prevPage", prevPage)
+    }
+    if(events) {
+      localStorage.setItem("events", JSON.stringify(events))
+    }
+    return () => {
+      localStorage.removeItem("events")
+      localStorage.removeItem("prevPage")
+    }
+  }, [events, prevPage]);
+
+  useEffect(() => {
+    switch (prevPage) {
+      case "home":
+        setUsedData(filteredEvents);
+        break;
+      case "archived":
+        setUsedData(archivedEvents);
+        break;
+      case "mine":
+        setUsedData(myEvents)
+        break;
+    }
+    if (usedData) {
+      setEvents((prevEvents) => {
+        const newEvents: string[] = [...prevEvents, ...usedData.map((e: { _id: string; }) => e._id)];
+        return newEvents.filter((event, index, self) =>
+            index === self.findIndex((e) => e === event)
+        );
+      });
+      setReachedLastPage(usedData.length === 0);
+    }
+  }, [archivedEvents, filteredEvents, myEvents, page, prevPage, queryClient, usedData]);
 
   useEffect(() => {
     if (eventIds) {
@@ -184,6 +233,10 @@ const EventDetail = () => {
 
   const getNextEvent = () => {
     const currentIndex = events.findIndex(e => e === event?._id);
+    if(!reachedLastPage && events.findIndex(e => e === event?._id)) {
+      setPage(num => num + 1);
+    }
+
     if (currentIndex >= 0 && currentIndex < events.length - 1) {
       const nextEvent = events[currentIndex + 1];
       console.log("Navigating to:", nextEvent);
@@ -212,7 +265,7 @@ const EventDetail = () => {
 
   return (
     <>
-      <Box className={styles.container}
+      <Box style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}
         sx={{
           position: "relative",
           zIndex: 0,
@@ -232,14 +285,14 @@ const EventDetail = () => {
           }
         }}
       >
-        <Box className={styles.container}
+        <Box 
           sx={{ 
-            backgroundColor: "rgba(0, 0, 0, 0)",
-            zIndex: 1,
+            display: "flex", justifyContent: "center", alignItems: "center", height: "100vh", backgroundColor: "rgba(0, 0, 0, 0)", zIndex: 1,
           }}
         >
-        <Box
-          className={styles.formContainer}
+        <Box style={{ 
+          display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", padding: "2rem", borderRadius: "15px", width: "800px", marginBottom: "10vh"
+        }}
           sx={{ minHeight: "69vh", maxHeight: "100vh", width: "105vh", marginTop: 2, backgroundColor: isMobile ? "" : containerColor  }}
         >
           <Card sx={{ width: isMobile ? "41vh" : "50vh", maxHeight: '100vh', overflowY: 'auto', mt: isMobile ? 5 : "", marginBottom: 3 }}>
@@ -392,7 +445,7 @@ const EventDetail = () => {
           event={event}
           userRole={userRole}
           dialogToggle={toggleViewMoreDetailsDialog}
-        />
+          userId={userId}/>
         <AttendDialog
           isOpen={attendDialogOpen}
           eventId={event._id}

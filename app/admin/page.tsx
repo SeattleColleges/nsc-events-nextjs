@@ -2,8 +2,6 @@
 import Link from "next/link";
 import { Box, Button, Container, Grid, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { FC } from "react";
-import styles from "../home.module.css";
-import '../globals.css';
 import UnauthorizedPageMessage from "@/components/UnauthorizedPageMessage";
 import useAuth from "@/hooks/useAuth";
 
@@ -39,7 +37,7 @@ const Admin = () => {
                     marginTop={"1rem"}
                     marginBottom={"1rem"}
                 >My Account</Typography>
-                <Box className={styles.title}
+                <Box
                     display="flex"
                     justifyContent="center"
                     alignContent="center"

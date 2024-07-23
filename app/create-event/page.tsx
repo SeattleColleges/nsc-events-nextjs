@@ -12,7 +12,6 @@ import { textFieldStyle } from "@/components/InputFields"
 import { MouseEvent, ChangeEvent, useState, FormEvent } from "react";
 import useAuth from "@/hooks/useAuth";
 import UnauthorizedPageMessage from "@/components/UnauthorizedPageMessage";
-import theme from "../theme";
 
 const CreateEvent: React.FC = () => {
   const {
@@ -29,13 +28,13 @@ const CreateEvent: React.FC = () => {
     endTime,
     handleEndTimeChange,
     timeError,
-    successMessage, 
-    errorMessage
+    successMessage
   } = useEventForm(activity);
  
     // Convert startTime and endTime from string to Date for TimePicker
     const startTimeDate = startTime ? parse(startTime, 'HH:mm', new Date()) : null;
     const endTimeDate = endTime ? parse(endTime, 'HH:mm', new Date()) : null;
+    const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.between('xs', 'sm'));
 
     const handleDateChange = (newDate: Date | null) => {
@@ -435,21 +434,6 @@ const CreateEvent: React.FC = () => {
             <Button type="submit" variant="contained" color="primary" style={{ textTransform: "none" }}>
               Create Event
             </Button>
-            <div className="error-messages">
-              {Object.entries(errors).map(([key, value]) => {
-                if (typeof value === 'object' && value !== null) {
-                  return Object.entries(value).map(([nestedKey, nestedError]) => (
-                    nestedError ? <p key={`${key}-${nestedKey}`} className="error-text" style={{ color: "red" }}>
-                      {`${nestedKey}: ${nestedError}`}
-                    </p> : null
-                  ));
-                } else {
-                  return value ? <p key={key} className="error-text" style={{ color: "red" }}>
-                    {value}
-                  </p> : null;
-                }
-              })}
-            </div>
           </Box>  
         </Stack> 
         {/* Success/Error message upon button click */}
@@ -459,13 +443,6 @@ const CreateEvent: React.FC = () => {
             </Typography>
           )
         }
-
-                {errorMessage && (
-                    <Typography color="error" sx={{ mb: 2 }}>
-                      {errorMessage}
-                    </Typography>
-                  )
-                }
           </Box>  
         </LocalizationProvider>  
       );
