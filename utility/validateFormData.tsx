@@ -64,6 +64,9 @@ export const validateFormData = (data: Activity | ActivityDatabase): FormErrors 
   if (!data.eventCoverPhoto || !urlPattern.test(data.eventCoverPhoto)) {
       newErrors = { ...newErrors, eventCoverPhoto: "Event cover photo needs to be a valid URL"  };
   }
+  if (!data.eventDocument || !urlPattern.test(data.eventDocument)) {
+    newErrors = { ...newErrors, eventDocument: "Event document needs to be a valid URL"  };
+  }
   if (!data.eventMeetingURL || !urlPattern.test(data.eventMeetingURL)) {
       newErrors = { ...newErrors, eventMeetingURL: "Event meeting URL needs to be a valid URL" };
     }

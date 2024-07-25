@@ -10,6 +10,7 @@ export interface FormErrors {
     eventLocation?: string;
     eventMeetingURL?: string;
     eventCoverPhoto?: string;
+    eventDocument?: string;
     eventHost?: string;
     eventRegistration?: string;
     eventCapacity?: string;
@@ -53,6 +54,7 @@ export interface Activity {
     eventLocation: string;
     eventMeetingURL: string;
     eventCoverPhoto: string;
+    eventDocument: string;
     eventHost: string;
     eventRegistration: string;
     eventCapacity: number;
@@ -79,6 +81,7 @@ export const activity: Activity = {
     eventLocation: "",
     eventMeetingURL: "",
     eventCoverPhoto: "",
+    eventDocument: "",
     eventHost: "",
     eventRegistration: "",
     eventCapacity: 0,
