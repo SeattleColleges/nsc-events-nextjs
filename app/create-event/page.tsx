@@ -12,6 +12,7 @@ import { textFieldStyle } from "@/components/InputFields"
 import { MouseEvent, ChangeEvent, useState, FormEvent } from "react";
 import useAuth from "@/hooks/useAuth";
 import UnauthorizedPageMessage from "@/components/UnauthorizedPageMessage";
+import { EventTags } from "@/utility/tags";
 
 const CreateEvent: React.FC = () => {
   const {
@@ -228,27 +229,13 @@ const CreateEvent: React.FC = () => {
             placeholder="Enter the capacity of the event"
           />
           <TagSelector
-            selectedTags={eventData.eventTags}
-            allTags={[
-              ...["Professional Development",
-              "Club",
-              "Social",
-              "Tech",
-              "Cultural",
-              "Study",
-              "Coffee",
-              "Art/Creative",
-              "Conference",
-              "Craft",
-              "Networking",
-              "Pizza",
-              "Free Food",
-              "LGBTQIA",
-              ],
-              ...customTags
-            ]}
-            onTagClick={handleTagClick}
-          />      
+              selectedTags={eventData.eventTags}
+              allTags={[
+                  ...EventTags,
+                  ...customTags
+              ]}
+              onTagClick={handleTagClick}
+          />
           <Box>
             <TextField
               id="add-custom-tag"
