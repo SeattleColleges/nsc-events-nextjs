@@ -3,18 +3,19 @@ import { ActivityDatabase } from "@/models/activityDatabase";
 import React from "react";
 
 const apiUrl = process.env.NSC_EVENTS_PUBLIC_API_URL || "http://localhost:3000/api";
-const getEvents = async(page: any) => {
+const getEvents = async(page: any, tags: string[]) => {
     const params = new URLSearchParams({
         page: String(page),
         isArchived: String(false),
+        tags: String(tags),
     });
     const response = await fetch(`${apiUrl}/events?${params.toString()}`);
     return response.json();
 }
-export function useFilteredEvents(page: any, isEnabled: boolean) {
+export function useFilteredEvents(page: any, isEnabled: boolean, tags: string[] = []) {
     return useQuery<ActivityDatabase[], Error>({
-        queryKey: ["events", page],
-        queryFn: () => getEvents(page),
+        queryKey: ["events", page, tags],
+        queryFn: () => getEvents(page, tags),
         enabled: isEnabled
     });
 }
