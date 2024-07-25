@@ -1,20 +1,23 @@
 'use client';
 
 import React, { useEffect, useState } from "react";
-import { Grid, Button, useMediaQuery, useTheme, Container } from '@mui/material';
+import { Grid, Button, useMediaQuery, useTheme, Container, Box, Typography } from '@mui/material';
 import { ActivityDatabase } from "@/models/activityDatabase";
 import EventCard from "./EventCard";
 import { useFilteredEvents } from "@/utility/queries";
 import Link from "next/link";
+import TagSelector from "@/components/TagSelector";
+import { EventTags } from "@/utility/tags";
 
 export function HomeEventsList(){
     const [page, setPage] = useState(1)
     const [events, setEvents] = useState<ActivityDatabase[]>([]);
     const [reachedLastPage, setReachedLastPage] = useState(false);
+    const [activeTags, setActiveTags] = useState<string[]>([]);
     const theme = useTheme();
     const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
     const isMobile = useMediaQuery(theme.breakpoints.between('xs', 'sm'));
-    const { data } = useFilteredEvents(page, true);
+    const { data, isLoading } = useFilteredEvents(page, true, activeTags);
 
     useEffect(() => {
         if (data) {
@@ -32,6 +35,16 @@ export function HomeEventsList(){
     const handleLoadMoreEvents = () => {
         setPage(num => num + 1);
     };
+    const handleTagClicked = (clickedTag: string) => {
+        setEvents([])
+        setPage(1)
+        if (activeTags.includes(clickedTag)) {
+            const newTags = activeTags.filter(t => t !== clickedTag);
+            setActiveTags(newTags);
+        } else {
+            setActiveTags((prevTags) => [...prevTags, clickedTag]);
+        }
+    }
     return (
         <Container maxWidth={false}>
             <Grid
@@ -41,7 +54,20 @@ export function HomeEventsList(){
                 alignItems="center"
                 sx={{ m: "auto" }}
             >
-            {
+                <Box
+                    marginY={5}
+                    maxWidth={'md'}
+                >
+                    <TagSelector
+                        selectedTags={activeTags}
+                        allTags={[
+                            ...EventTags,
+                        ]}
+                        onTagClick={(tag) => handleTagClicked(tag)}
+                    />
+                </Box>
+                {
+                    events.length > 0 ?
                 events?.map((event: ActivityDatabase) => (
                     <Grid item xs={12} key={event._id}>
                         <Link key={event._id} href={
@@ -61,9 +87,12 @@ export function HomeEventsList(){
                         />
                         </Link>
                     </Grid>
-                ))}
+                )): <Typography>
+                            { isLoading ? 'Loading...': 'Found no events with selected tags!' }
+                    </Typography>
+                }
             {
-                !reachedLastPage &&
+                data && data.length > 0 && !reachedLastPage &&
                 <Button onClick={handleLoadMoreEvents}
                         type="button"
                         variant="contained"
