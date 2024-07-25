@@ -9,6 +9,7 @@ export interface ActivityDatabase {
     eventEndTime: string;
     eventLocation: string;
     eventCoverPhoto: string;
+    eventDocument: string;
     eventHost: string;
     eventRegistration: string;
     eventCapacity: number;
@@ -45,6 +46,7 @@ export const activityDatabase: ActivityDatabase = {
     eventLocation: "",
     eventMeetingURL: "",
     eventCoverPhoto: "",
+    eventDocument: "",
     eventHost: "",
     eventRegistration: "",
     eventCapacity: 0,

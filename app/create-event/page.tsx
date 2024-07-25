@@ -178,6 +178,19 @@ const CreateEvent: React.FC = () => {
             placeholder="Enter the event cover photo of the event"
           />
           <TextField
+            id="event-document"
+            label="Event Document"
+            variant="outlined"
+            name="eventDocument"
+            value={eventData.eventDocument}
+            onChange={handleInputChange}
+            error={!!errors.eventDocument}
+            helperText={errors.eventDocument}
+            InputProps={{ style: textFieldStyle.input }}
+            InputLabelProps={{ style: textFieldStyle.label }}
+            placeholder="Add a document for the event"
+          />
+          <TextField
             id="event-host"
             label="Event Host"
             variant="outlined"
