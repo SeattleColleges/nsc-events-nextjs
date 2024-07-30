@@ -126,7 +126,7 @@ const EventDetail = () => {
 
   const deleteEvent = async (id: string) => {
     try {
-      const apiUrl = process.env.NSC_EVENTS_PUBLIC_API_URL || `http://localhost:3000/api`;
+      const apiUrl = process.env.NSC_EVENTS_PUBLIC_API_URL;
       const response = await fetch(`${apiUrl}/events/remove/${id}`, {
         method: 'DELETE',
         headers: {

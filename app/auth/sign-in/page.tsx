@@ -9,7 +9,10 @@ import blue_vertical_nsc_logo from 'public/images/blue_vertical_nsc_logo.png'
 import white_vertical_nsc_logo from 'public/images/white_vertical_nsc_logo.png'
 import { useTheme } from "@mui/material";
 
-const URL = process.env.NSC_EVENTS_PUBLIC_API_URL || "http://localhost:3000/api";
+const URL = process.env.NSC_EVENTS_PUBLIC_API_URL;
+if (URL?.includes('localhost')) {
+  console.log('Dev API Address: ',URL)
+}
 
 // similar to sign-up page, but we're only handling email and password. 
 const Signin = () => {
