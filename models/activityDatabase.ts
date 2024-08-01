@@ -32,6 +32,7 @@ export interface ActivityDatabase {
     eventNote: string;
     isHidden?: boolean;
     isArchived?: boolean;
+    document?: string;
 }
 
 export const activityDatabase: ActivityDatabase = {
