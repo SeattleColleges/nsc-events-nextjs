@@ -36,7 +36,7 @@ function UserCard({ user }: { user: UserCardProps }) {
     if (editCompleted) {
       const token = localStorage.getItem('token');
       try {
-        const apiUrl = process.env.NSC_EVENTS_PUBLIC_API_URL || `http://localhost:3000/api`;
+        const apiUrl = process.env.NSC_EVENTS_PUBLIC_API_URL;
         const response = await fetch(`${apiUrl}/users/update/${user.id}`, {
           method: 'PATCH',
           headers: {

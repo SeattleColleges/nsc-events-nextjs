@@ -89,7 +89,7 @@ const to24HourTime  = (time: string) => {
 
 
     try {
-      const apiUrl = process.env.NSC_EVENTS_PUBLIC_API_URL || `http://localhost:3000/api`;
+      const apiUrl = process.env.NSC_EVENTS_PUBLIC_API_URL;
       const response = await fetch(`${apiUrl}/events/update/${dataToSend._id}`, {
         method: "PUT",
         headers: {
