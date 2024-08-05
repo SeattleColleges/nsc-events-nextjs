@@ -43,6 +43,7 @@ function ViewMoreDetailsDialog({
     { title: "Speakers", detail: arrayToString(event.eventSpeakers) },
     { title: "Contact", detail: event.eventContact },
     { title: "Accessibility", detail: event.eventAccessibility },
+    { title: "Document", detail: event.document || "None available" },
   ];
 
   const userDetails = [
