@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { ActivityDatabase } from "@/models/activityDatabase";
 import React from "react";
 
-const apiUrl = process.env.NSC_EVENTS_PUBLIC_API_URL || "http://localhost:3000/api";
+const apiUrl = process.env.NSC_EVENTS_PUBLIC_API_URL;
 const getEvents = async(page: any, tags: string[]) => {
     const params = new URLSearchParams({
         page: String(page),
