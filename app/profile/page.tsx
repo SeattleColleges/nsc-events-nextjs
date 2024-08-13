@@ -9,7 +9,7 @@ import useAuth from "@/hooks/useAuth";
 import UnauthorizedPageMessage from "@/components/UnauthorizedPageMessage";
 import EditUserDetailsDialog, { User } from "@/components/EditUserDetailsDialog";
 
-const URL = process.env.NSC_EVENTS_PUBLIC_API_URL || "http://localhost:3000/api";
+const URL = process.env.NSC_EVENTS_PUBLIC_API_URL;
 
 const Profile = () => {
     const { isAuth } = useAuth();

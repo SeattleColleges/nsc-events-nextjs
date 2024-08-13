@@ -1,4 +1,4 @@
-const apiUrl = process.env.NSC_EVENTS_PUBLIC_API_URL || "http://localhost:3000/api";
+const apiUrl = process.env.NSC_EVENTS_PUBLIC_API_URL;
 interface SignUpPayload {
   firstName: string;
   lastName: string;
@@ -23,6 +23,10 @@ type SignUpResponse = SignUpSuccessResponse | SignUpErrorResponse;
 export const signUp = async (
   payload: SignUpPayload
 ): Promise<SignUpResponse> => {
+    if (apiUrl?.includes('localhost')) {
+    console.log('Dev API Address: ',apiUrl)
+  }
+
   try {
     const response = await fetch(`${apiUrl}/auth/signup`, {
       method: "POST",
