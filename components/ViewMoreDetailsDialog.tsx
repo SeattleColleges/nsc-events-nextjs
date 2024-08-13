@@ -43,7 +43,7 @@ function ViewMoreDetailsDialog({
     { title: "Speakers", detail: arrayToString(event.eventSpeakers) },
     { title: "Contact", detail: event.eventContact },
     { title: "Accessibility", detail: event.eventAccessibility },
-    { title: "Document", detail: event.document || "None available" },
+    { title: "Document", detail: event.document },
   ];
 
   const userDetails = [
@@ -52,11 +52,13 @@ function ViewMoreDetailsDialog({
     { title: "Cancellation Policy", detail: event.eventCancellationPolicy },
     { title: "Privacy", detail: event.eventPrivacy },
     { title: "Social media", detail: event.eventSocialMedia },
+    { title: "Document", detail: event.document },
   ];
 
   const creatorDetails = [
     { title: "Category", detail: event.eventCategory },
     { title: "Capacity", detail: event.eventCapacity },
+    { title: "Document", detail: event.document },
   ];
 
   const eventNoteDetail = [{ title: "Event Note", detail: event.eventNote }];
