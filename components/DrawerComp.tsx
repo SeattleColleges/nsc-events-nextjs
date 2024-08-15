@@ -4,8 +4,8 @@ import useAuth from '../hooks/useAuth';
 import { useRouter } from 'next/navigation';
 import ThemeToggle from './ThemeToggle';
 import Image from "next/image";
-import blue_vertical_nsc_logo from 'public/images/blue_vertical_nsc_logo.png'
-import white_vertical_nsc_logo from 'public/images/white_vertical_nsc_logo.png'
+import blue_vertical_nsc_logo from '../public/images/blue_vertical_nsc_logo.png'
+import white_vertical_nsc_logo from '../public/images/white_vertical_nsc_logo.png'
 
 interface DrawerCompProps {
   isOpen: boolean;

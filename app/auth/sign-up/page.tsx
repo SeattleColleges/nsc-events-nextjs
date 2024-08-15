@@ -21,8 +21,8 @@ import Image from "next/image";
 import { validateSignUp } from "./validateSignUp";
 import React from "react";
 import { signUp } from "./signupApi";
-import blue_vertical_nsc_logo from 'public/images/blue_vertical_nsc_logo.png'
-import white_vertical_nsc_logo from 'public/images/white_vertical_nsc_logo.png'
+import blue_vertical_nsc_logo from '../../../public/images/blue_vertical_nsc_logo.png'
+import white_vertical_nsc_logo from '../../../public/images/white_vertical_nsc_logo.png'
 import { useTheme } from "@mui/material";
 
 interface State extends SnackbarOrigin {

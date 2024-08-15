@@ -7,9 +7,9 @@ import HomeEventsList from "@/components/HomeEventGetter";
 import UpcomingEvent from "@/components/UpcomingEvent";
 import { Box, Button, Typography, Grid, useMediaQuery } from "@mui/material";
 import Link from "next/link";
-import google_play from "public/images/google_play.png";
-import blue_nsc_logo from 'public/images/blue_nsc_logo.png';
-import white_nsc_logo from 'public/images/white_nsc_logo.png';
+import google_play from "../public/images/google_play.png";
+import blue_nsc_logo from '../public/images/blue_nsc_logo.png';
+import white_nsc_logo from '../public/images/white_nsc_logo.png';
 import { useTheme } from "@mui/material";
 
 const Home = () => {
