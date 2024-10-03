@@ -64,7 +64,7 @@ const DrawerComp: React.FC<DrawerCompProps> = ({ isOpen, toggleDrawer }) => {
       >
         <Box sx={{ display: 'flex', justifyContent: 'center', p: 2, mt: 2 }}>
           <Image
-            src={imagePath.src}
+            src={imagePath}
             alt="North Seattle College Logo"
             width={150}
             height={50}
