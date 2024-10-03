@@ -13,8 +13,8 @@ const URL = process.env.NSC_EVENTS_PUBLIC_API_URL;
 
 const ForgotPassword = () => {
   const { palette } = useTheme();
-  const darkImagePath = white_vertical_nsc_logo;
-  const lightImagePath = blue_vertical_nsc_logo;
+  const darkImagePath = '/images/white_nsc_logo.png';
+  const lightImagePath = '/images/blue_nsc_logo.png';
   const imagePath = palette.mode === "dark" ? darkImagePath : lightImagePath;
 
   const theme = useTheme();

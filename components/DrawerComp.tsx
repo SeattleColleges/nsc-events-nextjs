@@ -19,8 +19,8 @@ const DrawerComp: React.FC<DrawerCompProps> = ({ isOpen, toggleDrawer }) => {
 
   const { palette } = useTheme();
 
-  const darkImagePath = white_vertical_nsc_logo;
-  const lightImagePath = blue_vertical_nsc_logo;
+  const darkImagePath = '/images/white_vertical_nsc_logo.png';
+  const lightImagePath = '/images/blue_vertical_nsc_logo.png';
   const imagePath = palette.mode === "dark" ? darkImagePath : lightImagePath;
   const toggleColor = palette.mode === "dark" ? palette.primary.contrastText : palette.primary.main;
 

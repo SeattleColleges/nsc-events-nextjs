@@ -55,6 +55,9 @@ export default function Navbar() {
     toggleDrawer(false);
   };
 
+  
+  const white_nsc_logo = '/images/white_nsc_logo.png'
+
 
   const list = () => (
     <div role='presentation' onClick={toggleDrawer(false)} onKeyDown={toggleDrawer(false)}>
