@@ -34,6 +34,7 @@ const Home = () => {
     setIsLoading(false);
   }, []);
 
+  
   if (isLoading) {
     return (
       <Box
