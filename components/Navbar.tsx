@@ -2,13 +2,12 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import white_nsc_logo from 'public/images/white_nsc_logo.png'
+import white_nsc_logo from 'public/images/white_nsc_logo.png';
 import MenuIcon from '@mui/icons-material/Menu';
-import { AppBar, Toolbar, IconButton, Grid, Button, Drawer, List, ListItem, ListItemText, useTheme, useMediaQuery, Box, Tooltip, Avatar, Menu, Typography, MenuItem } from '@mui/material';
+import { AppBar, Toolbar, IconButton, Grid, Button, Drawer, List, ListItem, ListItemText, useTheme, useMediaQuery, Box, Tooltip, Menu, Typography, MenuItem } from '@mui/material';
 import { useRouter } from 'next/navigation';
-import DrawerComp from './DrawerComp'; 
-import useAuth from '../hooks/useAuth'; 
-import AuthProfileMenu from './AuthProfileMenu'; 
+import DrawerComp from './DrawerComp';
+import useAuth from '../hooks/useAuth';
 import ThemeToggle from './ThemeToggle';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
@@ -51,13 +50,11 @@ export default function Navbar() {
       router.push('/admin');
     } else if (user?.role === 'creator') {
       router.push('/creator');
-    } 
+    }
     toggleDrawer(false);
   };
 
-  
-  const white_nsc_logo = '/images/white_nsc_logo.png'
-
+  const white_nsc_logo = '/images/white_nsc_logo.png';
 
   const list = () => (
     <div role='presentation' onClick={toggleDrawer(false)} onKeyDown={toggleDrawer(false)}>
@@ -66,8 +63,8 @@ export default function Navbar() {
           <ListItemText primary="Events" />
         </ListItem>
         {isAuth ? (
-          <ListItem button>
-            <AuthProfileMenu />
+          <ListItem component="button">
+            <ListItemText primary="Authenticated Action" />
           </ListItem>
         ) : (
           <ListItem component={Link} href='/auth/sign-in'>
@@ -77,7 +74,6 @@ export default function Navbar() {
       </List>
     </div>
   );
-
 
   return (
     <AppBar position="static">
@@ -94,7 +90,7 @@ export default function Navbar() {
               color="inherit"
               aria-label="menu"
               onClick={toggleDrawer(true)}
-              sx={{ display: { xs: 'block', sm: 'block', md: 'none' } }} 
+              sx={{ display: { xs: 'block', sm: 'block', md: 'none' } }}
             >
               <MenuIcon />
             </IconButton>
@@ -164,4 +160,4 @@ export default function Navbar() {
       <DrawerComp isOpen={drawerOpen} toggleDrawer={toggleDrawer} isAuth={isAuth} />
     </AppBar>
   );
-};
+}
