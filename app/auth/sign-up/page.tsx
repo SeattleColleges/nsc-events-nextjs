@@ -156,7 +156,7 @@ const SignUp = () => {
         >
           <Box sx={{ display: 'flex', justifyContent: 'center', marginBottom: 2 }}>
             <Image
-              src={imagePath}
+              src={imagePath.src}
               alt="North Seattle College Logo"
               width={150}
               height={50}

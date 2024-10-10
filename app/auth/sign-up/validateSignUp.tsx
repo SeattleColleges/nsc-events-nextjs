@@ -1,7 +1,6 @@
 interface SignUpForm {
     firstName: string;
     lastName: string;
-    pronouns: string;
     email: string;
     password: string;
     confirmPassword: string;
@@ -11,7 +10,7 @@ export const validateSignUp = (values: SignUpForm) => {
 
     const errors: Partial<SignUpForm> = {};
 
-    const { firstName, lastName, pronouns, email, password, confirmPassword } = values;
+    const { firstName, lastName, email, password, confirmPassword } = values;
 
     if (!firstName) {
         errors.firstName = "First name is required";
@@ -19,10 +18,6 @@ export const validateSignUp = (values: SignUpForm) => {
     
     if (!lastName) {
         errors.lastName = "Last name is required";
-    }
-
-    if (!pronouns) {
-        errors.pronouns = "Pronouns is required";
     }
 
     if (!email) {
