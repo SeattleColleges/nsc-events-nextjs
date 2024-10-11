@@ -2,6 +2,7 @@ const apiUrl = process.env.NSC_EVENTS_PUBLIC_API_URL;
 interface SignUpPayload {
   firstName: string;
   lastName: string;
+  pronouns: string;
   email: string;
   password: string;
   role: string;
