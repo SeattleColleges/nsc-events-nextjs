@@ -17,9 +17,8 @@ if (URL?.includes('localhost')) {
 // similar to sign-up page, but we're only handling email and password. 
 const Signin = () => {
   const { palette } = useTheme();
-
-  const darkImagePath = white_vertical_nsc_logo;
-  const lightImagePath = blue_vertical_nsc_logo;
+  const darkImagePath = '/images/white_nsc_logo.png';
+  const lightImagePath = '/images/blue_nsc_logo.png';
   const imagePath = palette.mode === "dark" ? darkImagePath : lightImagePath;
   
   const [error, setError] = useState("");
@@ -104,7 +103,7 @@ const Signin = () => {
           }}
         >
           <Image
-            src={imagePath.src}
+            src={imagePath}
             alt="North Seattle College Logo"
             width={150}
             height={50}
