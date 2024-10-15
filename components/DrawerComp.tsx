@@ -4,8 +4,7 @@ import useAuth from '../hooks/useAuth';
 import { useRouter } from 'next/navigation';
 import ThemeToggle from './ThemeToggle';
 import Image from "next/image";
-import blue_vertical_nsc_logo from 'public/images/blue_vertical_nsc_logo.png'
-import white_vertical_nsc_logo from 'public/images/white_vertical_nsc_logo.png'
+
 
 interface DrawerCompProps {
   isOpen: boolean;
@@ -19,8 +18,8 @@ const DrawerComp: React.FC<DrawerCompProps> = ({ isOpen, toggleDrawer }) => {
 
   const { palette } = useTheme();
 
-  const darkImagePath = white_vertical_nsc_logo;
-  const lightImagePath = blue_vertical_nsc_logo;
+  const darkImagePath = '/images/white_nsc_logo.png';
+  const lightImagePath = '/images/blue_nsc_logo.png';
   const imagePath = palette.mode === "dark" ? darkImagePath : lightImagePath;
   const toggleColor = palette.mode === "dark" ? palette.primary.contrastText : palette.primary.main;
 

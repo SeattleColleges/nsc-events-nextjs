@@ -7,18 +7,17 @@ import HomeEventsList from "@/components/HomeEventGetter";
 import UpcomingEvent from "@/components/UpcomingEvent";
 import { Box, Button, Typography, Grid, useMediaQuery } from "@mui/material";
 import Link from "next/link";
-import google_play from "public/images/google_play.png";
-import blue_nsc_logo from 'public/images/blue_nsc_logo.png';
-import white_nsc_logo from 'public/images/white_nsc_logo.png';
 import { useTheme } from "@mui/material";
 
 const Home = () => {
+
+  const google_play = '/images/google_play.png'
   const [token, setToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const { palette } = useTheme();
 
-  const darkImagePath = white_nsc_logo;
-  const lightImagePath = blue_nsc_logo;
+  const darkImagePath = '/images/white_nsc_logo.png';
+  const lightImagePath = '/images/blue_nsc_logo.png';
   const imagePath = palette.mode === "dark" ? darkImagePath : lightImagePath;
   const containerColor = palette.mode === "dark" ? "#333" : "#fff";
 
@@ -114,6 +113,8 @@ const Home = () => {
                 <Image
                   src={google_play}
                   alt="google_play"
+                  width={25}
+                  height={25}
                   style={{ marginRight: "8px" }}
                 />
                 Download App
