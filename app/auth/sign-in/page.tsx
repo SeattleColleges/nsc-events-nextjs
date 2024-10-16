@@ -5,8 +5,6 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Container, Paper, Box, TextField, Button, Typography, Link as MuiLink, useMediaQuery } from "@mui/material";
 import { textFieldStyle } from "@/components/InputFields";
-import blue_vertical_nsc_logo from 'public/images/blue_vertical_nsc_logo.png'
-import white_vertical_nsc_logo from 'public/images/white_vertical_nsc_logo.png'
 import { useTheme } from "@mui/material";
 
 const URL = process.env.NSC_EVENTS_PUBLIC_API_URL;
@@ -18,8 +16,8 @@ if (URL?.includes('localhost')) {
 const Signin = () => {
   const { palette } = useTheme();
 
-  const darkImagePath = white_vertical_nsc_logo;
-  const lightImagePath = blue_vertical_nsc_logo;
+  const darkImagePath = '/images/white_vertical_nsc_logo.png';
+  const lightImagePath = '/images/blue_vertical_nsc_logo.png';
   const imagePath = palette.mode === "dark" ? darkImagePath : lightImagePath;
   
   const [error, setError] = useState("");
