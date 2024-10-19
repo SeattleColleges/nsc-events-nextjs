@@ -36,8 +36,8 @@ const SignUp = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
 
-  const darkImagePath = white_vertical_nsc_logo;
-  const lightImagePath = blue_vertical_nsc_logo;
+  const darkImagePath = '/images/white_nsc_logo.png';
+  const lightImagePath = '/images/blue_nsc_logo.png';
   const imagePath = palette.mode === "dark" ? darkImagePath : lightImagePath;
 
   // Set initial state for password visibility
@@ -156,7 +156,7 @@ const SignUp = () => {
         >
           <Box sx={{ display: 'flex', justifyContent: 'center', marginBottom: 2 }}>
             <Image
-              src={imagePath.src}
+              src={imagePath}
               alt="North Seattle College Logo"
               width={150}
               height={50}
