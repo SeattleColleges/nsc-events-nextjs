@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import white_nsc_logo from 'public/images/white_nsc_logo.png'
 import MenuIcon from '@mui/icons-material/Menu';
 import { AppBar, Toolbar, IconButton, Grid, Button, Drawer, List, ListItem, ListItemText, useTheme, useMediaQuery, Box, Tooltip, Avatar, Menu, Typography, MenuItem } from '@mui/material';
 import { useRouter } from 'next/navigation';
@@ -55,7 +54,6 @@ export default function Navbar() {
     toggleDrawer(false);
   };
 
-
   const list = () => (
     <div role='presentation' onClick={toggleDrawer(false)} onKeyDown={toggleDrawer(false)}>
       <List>
@@ -75,14 +73,14 @@ export default function Navbar() {
     </div>
   );
 
-
   return (
     <AppBar position="static">
       <Toolbar>
         <Grid container justifyContent="space-between" alignItems="center">
           <Grid item>
             <Link href="/" passHref>
-              <Image src={white_nsc_logo} alt="logo" width={40} height={40} />
+              {/* Directly reference the logo image from the public folder */}
+              <Image src="/images/white_nsc_logo.png" alt="logo" width={40} height={40} />
             </Link>
           </Grid>
           <Grid item>
