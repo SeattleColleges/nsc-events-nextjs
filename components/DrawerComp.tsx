@@ -4,8 +4,6 @@ import useAuth from '../hooks/useAuth';
 import { useRouter } from 'next/navigation';
 import ThemeToggle from './ThemeToggle';
 import Image from "next/image";
-import blue_vertical_nsc_logo from 'public/images/blue_vertical_nsc_logo.png'
-import white_vertical_nsc_logo from 'public/images/white_vertical_nsc_logo.png'
 
 interface DrawerCompProps {
   isOpen: boolean;
@@ -19,11 +17,11 @@ const DrawerComp: React.FC<DrawerCompProps> = ({ isOpen, toggleDrawer }) => {
 
   const { palette } = useTheme();
 
-  const darkImagePath = white_vertical_nsc_logo;
-  const lightImagePath = blue_vertical_nsc_logo;
+  // Update: Directly referencing the image paths
+  const darkImagePath = "/images/white_vertical_nsc_logo.png";
+  const lightImagePath = "/images/blue_vertical_nsc_logo.png";
   const imagePath = palette.mode === "dark" ? darkImagePath : lightImagePath;
   const toggleColor = palette.mode === "dark" ? palette.primary.contrastText : palette.primary.main;
-
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -63,8 +61,9 @@ const DrawerComp: React.FC<DrawerCompProps> = ({ isOpen, toggleDrawer }) => {
         sx={{ width: 250 }}
       >
         <Box sx={{ display: 'flex', justifyContent: 'center', p: 2, mt: 2 }}>
+          {/* Directly reference image path */}
           <Image
-            src={imagePath.src}
+            src={imagePath}
             alt="North Seattle College Logo"
             width={150}
             height={50}
