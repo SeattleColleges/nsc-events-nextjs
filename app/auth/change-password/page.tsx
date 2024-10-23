@@ -32,7 +32,9 @@ const ChangePassword = () => {
   const router = useRouter();
   const { palette } = useTheme();
   
+
   const imagePath = palette.mode === "dark" ? "/images/white_vertical_nsc_logo.png" : "/images/blue_vertical_nsc_logo.png";
+
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));

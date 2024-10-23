@@ -15,8 +15,10 @@ const Home = () => {
   const { palette } = useTheme();
 
   // Reference the image paths directly instead of using imports
-  const darkImagePath = "/images/white_nsc_logo.png";
-  const lightImagePath = "/images/blue_nsc_logo.png";
+  const googlePlayImage = '/images/google_play.png'
+  const darkImagePath = '/images/white_nsc_logo.png';
+  const lightImagePath = '/images/blue_nsc_logo.png';
+
   const imagePath = palette.mode === "dark" ? darkImagePath : lightImagePath;
   const containerColor = palette.mode === "dark" ? "#333" : "#fff";
 
@@ -111,10 +113,10 @@ const Home = () => {
               <Button variant="contained" color="secondary">
                 {/* Use direct reference for google play image */}
                 <Image
-                  src="/images/google_play.png"
+                  src={googlePlayImage}
                   alt="google_play"
-                  width={20}
-                  height={20}
+                  width={40}
+                  height={40}
                   style={{ marginRight: "8px" }}
                 />
                 Download App

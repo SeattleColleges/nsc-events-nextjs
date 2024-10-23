@@ -14,6 +14,11 @@ if (URL?.includes('localhost')) {
 
 const Signin = () => {
   const { palette } = useTheme();
+
+  const darkImagePath = '/images/white_nsc_logo.png';
+  const lightImagePath = '/images/blue_nsc_logo.png';
+  const imagePath = palette.mode === "dark" ? darkImagePath : lightImagePath;
+
   
   const [error, setError] = useState("");
   const [userInfo, setUserInfo] = useState({
@@ -95,7 +100,7 @@ const Signin = () => {
           }}
         >
           <Image
-            src={palette.mode === "dark" ? "/images/white_vertical_nsc_logo.png" : "/images/blue_vertical_nsc_logo.png"}
+            src={imagePath}
             alt="North Seattle College Logo"
             width={150}
             height={50}
