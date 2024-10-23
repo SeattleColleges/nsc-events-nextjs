@@ -37,7 +37,11 @@
         "eslint": "8.43.0",
         "eslint-config-next": "13.4.7",
         "mongoose": "^7.4.2",
+<<<<<<< Updated upstream
         "next": "^14.2.15",
+=======
+        "next": "^15.0.0",
+>>>>>>> Stashed changes
         "next-auth": "^4.24.8",
         "postcss": "^8.4.47",
         "react": "18.2.0",
