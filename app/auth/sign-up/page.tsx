@@ -1,4 +1,5 @@
 "use client";
+
 import { ChangeEventHandler, FormEventHandler, use, useState } from "react";
 import {
   Container,
@@ -21,8 +22,6 @@ import Image from "next/image";
 import { validateSignUp } from "./validateSignUp";
 import React from "react";
 import { signUp } from "./signupApi";
-import blue_vertical_nsc_logo from 'public/images/blue_vertical_nsc_logo.png'
-import white_vertical_nsc_logo from 'public/images/white_vertical_nsc_logo.png'
 import { useTheme } from "@mui/material";
 
 interface State extends SnackbarOrigin {
@@ -36,9 +35,7 @@ const SignUp = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
 
-  const darkImagePath = '/images/white_nsc_logo.png';
-  const lightImagePath = '/images/blue_nsc_logo.png';
-  const imagePath = palette.mode === "dark" ? darkImagePath : lightImagePath;
+  const imagePath = palette.mode === "dark" ? "/images/white_vertical_nsc_logo.png" : "/images/blue_vertical_nsc_logo.png";
 
   // Set initial state for password visibility
   const [showPassword, setShowPassword] = useState(false);
@@ -119,7 +116,6 @@ const SignUp = () => {
         localStorage.setItem("token", response.token);
       }
       setTimeout(() => {
-        // TODO use router to navigate to home page
         window.location.href = "/";
       }, 2000);
     } else {

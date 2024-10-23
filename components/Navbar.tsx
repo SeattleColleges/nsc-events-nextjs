@@ -1,34 +1,16 @@
 "use client";
-import React, { useState } from "react";
-import Link from "next/link";
-import Image from "next/image";
-import white_nsc_logo from "public/images/white_nsc_logo.png";
-import MenuIcon from "@mui/icons-material/Menu";
-import {
-  AppBar,
-  Toolbar,
-  IconButton,
-  Grid,
-  Button,
-  Drawer,
-  List,
-  ListItem,
-  ListItemText,
-  useTheme,
-  useMediaQuery,
-  Box,
-  Tooltip,
-  Avatar,
-  Menu,
-  Typography,
-  MenuItem,
-} from "@mui/material";
-import { useRouter } from "next/navigation";
-import DrawerComp from "./DrawerComp";
-import useAuth from "../hooks/useAuth";
-import AuthProfileMenu from "./AuthProfileMenu";
-import ThemeToggle from "./ThemeToggle";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import React, { useState } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import MenuIcon from '@mui/icons-material/Menu';
+import { AppBar, Toolbar, IconButton, Grid, Button, Drawer, List, ListItem, ListItemText, useTheme, useMediaQuery, Box, Tooltip, Avatar, Menu, Typography, MenuItem } from '@mui/material';
+import { useRouter } from 'next/navigation';
+import DrawerComp from './DrawerComp'; 
+import useAuth from '../hooks/useAuth'; 
+import AuthProfileMenu from './AuthProfileMenu'; 
+import ThemeToggle from './ThemeToggle';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+
 
 export default function Navbar() {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -77,8 +59,6 @@ export default function Navbar() {
     toggleDrawer(false);
   };
 
-  const white_nsc_logo = "/images/white_nsc_logo.png";
-
   const list = () => (
     <div role="presentation" onClick={toggleDrawer(false)} onKeyDown={toggleDrawer(false)}>
       <List>
@@ -104,7 +84,8 @@ export default function Navbar() {
         <Grid container justifyContent="space-between" alignItems="center">
           <Grid item>
             <Link href="/" passHref>
-              <Image src={white_nsc_logo} alt="logo" width={40} height={40} />
+              {/* Directly reference the logo image from the public folder */}
+              <Image src="/images/white_nsc_logo.png" alt="logo" width={40} height={40} />
             </Link>
           </Grid>
           <Grid item>
@@ -210,4 +191,4 @@ export default function Navbar() {
       <DrawerComp isOpen={drawerOpen} toggleDrawer={toggleDrawer} isAuth={isAuth} />
     </AppBar>
   );
-}
+};

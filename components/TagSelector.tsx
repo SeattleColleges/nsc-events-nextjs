@@ -12,7 +12,7 @@ type TagSelectorProps = {
 const TagSelector: React.FC<TagSelectorProps> = ({ selectedTags, allTags, onTagClick }) => {
     return (
         <label>
-            Event Tags
+            
             <Stack direction="row" spacing={1} className="mt-2" flexWrap="wrap" useFlexGap>
                 {allTags.map(tag => (
                     <Button
