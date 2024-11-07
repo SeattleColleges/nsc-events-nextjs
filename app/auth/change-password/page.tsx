@@ -1,4 +1,4 @@
-"use client";
+"use client"; 
 
 import { ChangeEventHandler, FormEventHandler, useState } from "react";
 import Image from "next/image";
@@ -22,8 +22,6 @@ import React from "react";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useRouter } from "next/navigation";
-import blue_vertical_nsc_logo from 'public/images/blue_vertical_nsc_logo.png'
-import white_vertical_nsc_logo from 'public/images/white_vertical_nsc_logo.png'
 import { useTheme } from "@mui/material";
 
 interface State extends SnackbarOrigin {
@@ -34,9 +32,9 @@ const ChangePassword = () => {
   const router = useRouter();
   const { palette } = useTheme();
   
-  const darkImagePath = white_vertical_nsc_logo;
-  const lightImagePath = blue_vertical_nsc_logo;
-  const imagePath = palette.mode === "dark" ? darkImagePath : lightImagePath;
+
+  const imagePath = palette.mode === "dark" ? "/images/white_vertical_nsc_logo.png" : "/images/blue_vertical_nsc_logo.png";
+
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -155,7 +153,7 @@ const ChangePassword = () => {
         >
           <Box sx={{ display: 'flex', justifyContent: 'center', marginBottom: 2 }}>
             <Image
-              src={imagePath.src}
+              src={imagePath}
               alt="North Seattle College Logo"
               width={150}
               height={50}

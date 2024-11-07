@@ -7,9 +7,6 @@ import HomeEventsList from "@/components/HomeEventGetter";
 import UpcomingEvent from "@/components/UpcomingEvent";
 import { Box, Button, Typography, Grid, useMediaQuery } from "@mui/material";
 import Link from "next/link";
-import google_play from "public/images/google_play.png";
-import blue_nsc_logo from 'public/images/blue_nsc_logo.png';
-import white_nsc_logo from 'public/images/white_nsc_logo.png';
 import { useTheme } from "@mui/material";
 
 const Home = () => {
@@ -17,8 +14,11 @@ const Home = () => {
   const [isLoading, setIsLoading] = useState(true);
   const { palette } = useTheme();
 
-  const darkImagePath = white_nsc_logo;
-  const lightImagePath = blue_nsc_logo;
+  // Reference the image paths directly instead of using imports
+  const googlePlayImage = '/images/google_play.png'
+  const darkImagePath = '/images/white_nsc_logo.png';
+  const lightImagePath = '/images/blue_nsc_logo.png';
+
   const imagePath = palette.mode === "dark" ? darkImagePath : lightImagePath;
   const containerColor = palette.mode === "dark" ? "#333" : "#fff";
 
@@ -78,6 +78,7 @@ const Home = () => {
               mb: "1rem",
             }}
           >
+            {/* Correctly use the logo based on the theme */}
             <Image
               src={imagePath}
               title={"NSC Logo"}
@@ -110,9 +111,12 @@ const Home = () => {
           <Box style={{ marginBottom: "1em" }}>
             <Link href="">
               <Button variant="contained" color="secondary">
+                {/* Use direct reference for google play image */}
                 <Image
-                  src={google_play}
+                  src={googlePlayImage}
                   alt="google_play"
+                  width={40}
+                  height={40}
                   style={{ marginRight: "8px" }}
                 />
                 Download App

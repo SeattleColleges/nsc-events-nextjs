@@ -5,8 +5,6 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Container, Paper, Box, TextField, Button, Typography, Link as MuiLink, useMediaQuery } from "@mui/material";
 import { textFieldStyle } from "@/components/InputFields";
-import blue_vertical_nsc_logo from 'public/images/blue_vertical_nsc_logo.png'
-import white_vertical_nsc_logo from 'public/images/white_vertical_nsc_logo.png'
 import { useTheme } from "@mui/material";
 
 const URL = process.env.NSC_EVENTS_PUBLIC_API_URL;
@@ -14,13 +12,13 @@ if (URL?.includes('localhost')) {
   console.log('Dev API Address: ',URL)
 }
 
-// similar to sign-up page, but we're only handling email and password. 
 const Signin = () => {
   const { palette } = useTheme();
 
-  const darkImagePath = white_vertical_nsc_logo;
-  const lightImagePath = blue_vertical_nsc_logo;
+  const darkImagePath = '/images/white_nsc_logo.png';
+  const lightImagePath = '/images/blue_nsc_logo.png';
   const imagePath = palette.mode === "dark" ? darkImagePath : lightImagePath;
+
   
   const [error, setError] = useState("");
   const [userInfo, setUserInfo] = useState({
@@ -45,7 +43,6 @@ const Signin = () => {
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
 
-    // Fetch sign in
     const res = await fetch(`${URL}/auth/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -55,14 +52,13 @@ const Signin = () => {
       }),
     });
     if (!res.ok) {
-      alert("Invalid email or password"); // error message for now
+      alert("Invalid email or password");
       throw new Error(await res.text());
     }
     const { token } = await res.json();
-    const userRole = JSON.parse(atob(token.split(".")[1])).role; // decode token to get user role
+    const userRole = JSON.parse(atob(token.split(".")[1])).role; 
     localStorage.setItem("token", token);
-    window.dispatchEvent(new CustomEvent('auth-change')); // Dispatch an event to notify the app about the auth state change
-    // Redirect to user page
+    window.dispatchEvent(new CustomEvent('auth-change'));
     if (userRole === "admin") {
       router.push("/admin");
     } else if (userRole === "creator") {
@@ -104,7 +100,7 @@ const Signin = () => {
           }}
         >
           <Image
-            src={imagePath.src}
+            src={imagePath}
             alt="North Seattle College Logo"
             width={150}
             height={50}

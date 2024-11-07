@@ -4,18 +4,17 @@ import React, { ChangeEventHandler, FormEventHandler, useState } from "react";
 import { Box, Button, TextField, Typography, Container, Paper, useMediaQuery, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import { textFieldStyle } from "@/components/InputFields";
 import Image from "next/image";
-import blue_vertical_nsc_logo from 'public/images/blue_vertical_nsc_logo.png';
-import white_vertical_nsc_logo from 'public/images/white_vertical_nsc_logo.png';
 import { useTheme } from "@mui/material";
 
 const URL = process.env.NSC_EVENTS_PUBLIC_API_URL;
 
-
 const ForgotPassword = () => {
   const { palette } = useTheme();
-  const darkImagePath = white_vertical_nsc_logo;
-  const lightImagePath = blue_vertical_nsc_logo;
+
+  const darkImagePath = '/images/white_nsc_logo.png';
+  const lightImagePath = '/images/blue_nsc_logo.png';
   const imagePath = palette.mode === "dark" ? darkImagePath : lightImagePath;
+
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -85,8 +84,9 @@ const ForgotPassword = () => {
         }}
       >
         <Box sx={{ display: 'flex', justifyContent: 'center', marginBottom: 2 }}>
+          
           <Image
-            src={imagePath.src}
+            src={imagePath}
             alt="North Seattle College Logo"
             width={150}
             height={50}
