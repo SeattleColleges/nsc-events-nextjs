@@ -1,4 +1,5 @@
 "use client";
+// Force github actions
 import Link from "next/link";
 import { Box, Button, Container, Grid, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { FC } from "react";
