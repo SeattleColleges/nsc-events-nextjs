@@ -1,24 +1,10 @@
 "use client";
+// EditUserRolePage.tsx
 import React, { useState, useEffect } from "react";
-import {
-  Box,
-  IconButton,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Typography,
-  useMediaQuery,
-  useTheme,
-  Snackbar,
-} from "@mui/material";
-import EditIcon from "@mui/icons-material/Edit";
+import { Box, Typography, useMediaQuery, useTheme, Snackbar } from "@mui/material";
 import useAuth from "@/hooks/useAuth";
 import UnauthorizedPageMessage from "@/components/UnauthorizedPageMessage";
-import EditUserRoleDialog from "@/components/EditUserRoleDialog";
+import UserTable from "@/components/UserTable"; // Import the new UserTable component
 
 /**
  * Represents a user.
@@ -127,43 +113,14 @@ const EditUserRolePage = () => {
         <Box
           sx={{
             display: "flex",
-            justifyContent: "center", // Centers horizontally
-            alignItems: "center", // Centers vertically if needed
-            width: "100%", // Ensures the Box takes up the full width
-            maxWidth: "90%", // Ensures the table doesn't stretch beyond 90% of the container
-            margin: "0 auto", // Centers the Box within the parent container
+            justifyContent: "center",
+            alignItems: "center",
+            width: "100%",
+            maxWidth: "90%",
+            margin: "0 auto",
           }}
         >
-          <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 650 }} aria-label="simple table">
-              <TableHead>
-                <TableRow>
-                  <TableCell sx={{ fontWeight: 700 }}>Name</TableCell>
-                  <TableCell sx={{ fontWeight: 700 }} align="left">
-                    E-Mail
-                  </TableCell>
-                  <TableCell sx={{ fontWeight: 700 }} align="left">
-                    Role
-                  </TableCell>
-                  <TableCell sx={{ fontWeight: 700 }}>Edit</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {userInfo.map((user) => (
-                  <TableRow key={user.id}>
-                    <TableCell component="th" scope="row">
-                      {user.firstName + " " + user.lastName}
-                    </TableCell>
-                    <TableCell align="left">{user.email}</TableCell>
-                    <TableCell align="left">{user.role.toUpperCase()}</TableCell>
-                    <TableCell>
-                      <EditUserRoleDialog user={user} onClose={handleCloseDialog} />
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+          <UserTable userInfo={userInfo} handleCloseDialog={handleCloseDialog} />
         </Box>
 
         {/* Snackbar for feedback */}
