@@ -18,6 +18,7 @@ on:
       - 'components/**/*' # Run CI on PRs that change files in the components folder.
       - 'styles/**/*' # Run CI on PRs that change files in the styles folder.
       - '**/*.md' # Run CI on PRs that change .md files.
+      - '.github/workflows/**/*.yml' # Run CI on PRs that change workflow .yml files
       # Add more paths here if needed.
       
 jobs:
