@@ -1,8 +1,5 @@
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import List from "@mui/material/List";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemText from "@mui/material/ListItemText";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
@@ -11,6 +8,8 @@ import RadioGroup from "@mui/material/RadioGroup";
 import Radio from "@mui/material/Radio";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import React, { useEffect, useRef, useState } from "react";
+import { IconButton } from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
 
 const options = ["admin", "creator", "user"];
 
@@ -19,7 +18,7 @@ interface ConfirmationDialogRawProps {
   keepMounted: boolean;
   value: string;
   open: boolean;
-  onClose: (value?: string, success?: boolean) => void;
+  onClose: (value?: string, success?: boolean, userId?: string) => void;
 }
 
 export function ConfirmationDialogRaw(props: ConfirmationDialogRawProps) {
@@ -35,11 +34,15 @@ export function ConfirmationDialogRaw(props: ConfirmationDialogRawProps) {
     }
   }, [valueProp, open]);
 
-  const handleEntering = () => {
-    if (radioGroupRef.current != null) {
-      radioGroupRef.current.focus();
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = (event.target as HTMLInputElement).value;
+    setValue(newValue);
+    if (newValue !== valueProp) {
+      setRoleUpdated(true);
+    } else {
+      setRoleUpdated(false);
     }
-  }; 
+  };
 
   const handleCancel = () => {
     onClose();
@@ -53,25 +56,10 @@ export function ConfirmationDialogRaw(props: ConfirmationDialogRawProps) {
     }
   };
 
-  // const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   setValue((event.target as HTMLInputElement).value);
-  // };
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = (event.target as HTMLInputElement).value;
-    setValue(newValue);
-    if (newValue !== valueProp) {
-      setRoleUpdated(true);
-    } else {
-      setRoleUpdated(false);
-    }
-  };
-
   return (
     <Dialog
       sx={{ "& .MuiDialog-paper": { width: "50%", maxHeight: 435 } }}
       maxWidth="xs"
-      TransitionProps={{ onEntering: handleEntering }}
       open={open}
       {...other}
     >
@@ -85,12 +73,7 @@ export function ConfirmationDialogRaw(props: ConfirmationDialogRawProps) {
           onChange={handleChange}
         >
           {options.map((option) => (
-            <FormControlLabel
-              value={option}
-              key={option}
-              control={<Radio />}
-              label={option}
-            />
+            <FormControlLabel value={option} key={option} control={<Radio />} label={option} />
           ))}
         </RadioGroup>
       </DialogContent>
@@ -98,7 +81,9 @@ export function ConfirmationDialogRaw(props: ConfirmationDialogRawProps) {
         <Button autoFocus onClick={handleCancel}>
           Cancel
         </Button>
-        <Button onClick={handleOk} disabled={!roleUpdated}>Ok</Button>
+        <Button onClick={handleOk} disabled={!roleUpdated}>
+          Ok
+        </Button>
       </DialogActions>
     </Dialog>
   );
@@ -109,49 +94,32 @@ export default function EditUserRoleDialog({
   onClose,
 }: {
   user: { id: string; role: string };
-  onClose: (newRole?: string, success?: boolean) => void;
+  onClose: (newRole?: string, success?: boolean, userId?: string) => void;
 }): JSX.Element {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(user.role);
 
-  const handleClickListItem = () => {
+  const handleClickIcon = () => {
     setOpen(true);
   };
 
   const handleClose = (newValue?: string, success?: boolean) => {
     setOpen(false);
-    onClose(newValue, success);
+    onClose(newValue, success, user.id);
   };
 
   return (
-    <Box
-      sx={{
-        width: "100%",
-        maxWidth: 800,
-        bgcolor: "#fff",
-        color: "#000",
-        boxShadow: 1,
-        borderRadius: "8px"
-      }}
-    >
-      <List component="div" role="group">
-        <ListItemButton
-          divider
-          aria-haspopup="true"
-          aria-controls="role-menu"
-          aria-label="User role"
-          onClick={handleClickListItem}
-        >
-          <ListItemText primary="Select User Role" secondary={value} secondaryTypographyProps={{ sx: { color: "#333" } }}/>
-        </ListItemButton>
-        <ConfirmationDialogRaw 
-          id="role-menu" 
-          keepMounted 
-          open={open} 
-          onClose={handleClose} 
-          value={value} 
-        />
-      </List>
-    </Box>
+    <>
+      <IconButton onClick={handleClickIcon}>
+        <EditIcon />
+      </IconButton>
+      <ConfirmationDialogRaw
+        id="role-menu"
+        keepMounted
+        open={open}
+        onClose={handleClose}
+        value={value}
+      />
+    </>
   );
 }
