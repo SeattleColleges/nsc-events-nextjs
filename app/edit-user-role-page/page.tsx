@@ -12,33 +12,6 @@ import useDebounce from "@/hooks/useDebounce";
  * Fetch user info from the server
  * @param setUserInfo
  */
-async function fetchUsers(
-  setUserInfo: (userInfo: UsersData) => void,
-  query: string = "",
-  page: number = 1,
-  sort: string = ""
-) {
-  const token = localStorage.getItem("token");
-  const apiUrl = process.env.NSC_EVENTS_PUBLIC_API_URL;
-  try {
-    const res = await fetch(`${apiUrl}/users/search?s=${query}&page=${page}&sort=${sort}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    if (!res.ok) {
-      throw new Error(res.statusText);
-    } else {
-      const data: UsersData = await res.json();
-      setUserInfo(data);
-      console.log(data);
-    }
-  } catch (error) {
-    console.error("Error getting user info:", error);
-  }
-}
 
 /**
  * Edit user role page
@@ -60,11 +33,12 @@ const EditUserRolePage = () => {
   const debouncedQuery = useDebounce(query, 500);
 
   useEffect(() => {
-    fetchUsers(setUserInfo, debouncedQuery, userInfo.page, sort);
+    fetchUsers(debouncedQuery, userInfo.page, sort);
   }, [debouncedQuery, userInfo.page, sort]);
 
-  const handleSearch = (newQuery: string) => {
-    setQuery(newQuery);
+  const handleSearchTextChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const query = event.target.value;
+    setQuery(query);
     setUserInfo((prev) => ({ ...prev, page: 1 })); // Reset to first page on new search
   };
 
@@ -76,8 +50,31 @@ const EditUserRolePage = () => {
     setSort(newSort);
   };
 
+  async function fetchUsers(query: string = "", page: number = 1, sort: string = "") {
+    const token = localStorage.getItem("token");
+    const apiUrl = process.env.NSC_EVENTS_PUBLIC_API_URL;
+    try {
+      const res = await fetch(`${apiUrl}/users/search?s=${query}&page=${page}&sort=${sort}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (!res.ok) {
+        throw new Error(res.statusText);
+      } else {
+        const data: UsersData = await res.json();
+        setUserInfo(data);
+        console.log(data);
+      }
+    } catch (error) {
+      console.error("Error getting user info:", error);
+    }
+  }
+
   // Function to accept the new role and update via API
-  const acceptNewRole = async (userId: string, role: string) => {
+  async function acceptNewRole(userId: string, role: string) {
     const token = localStorage.getItem("token");
     try {
       const apiUrl = process.env.NSC_EVENTS_PUBLIC_API_URL;
@@ -98,19 +95,18 @@ const EditUserRolePage = () => {
       setSnackbarMessage("Error updating user role!");
     }
     setSnackbarOpen(true);
-  };
+  }
 
-  // Close dialog and update role in parent component
-  const handleCloseDialog = (role?: string, success?: boolean, userId?: string) => {
-    // if (success && role && userId) {
-    //   setNewRole(role);
-    //   acceptNewRole(userId, role);
-    //   setUserInfo((prevUserInfo) =>
-    //     prevUserInfo.map(
-    //       (user) => (user.id === userId ? { ...user, role } : user) // Update the role of the modified user
-    //     )
-    //   );
-    // }
+  // closing the dialog and updating role for the user if a change is made
+  const handleEditRoleDialog = (role?: string, success?: boolean, userId?: string) => {
+    if (success && role && userId) {
+      setNewRole(role);
+      acceptNewRole(userId, role);
+      setUserInfo((prevUserInfo) => ({
+        ...prevUserInfo,
+        data: prevUserInfo.data.map((user) => (user.id === userId ? { ...user, role } : user)),
+      }));
+    }
   };
 
   if (isAuth && user?.role === "admin") {
@@ -130,18 +126,26 @@ const EditUserRolePage = () => {
             display: "flex",
             flexDirection: "column",
             backgroundColor: "white",
-            alignItems: "flex-start",
-            width: "100%",
+            alignItems: "center",
+
             maxWidth: "80%",
             margin: "0 auto",
           }}
         >
-          {/* <SearchBar /> */}
+          {/* Search Bar */}
+          <Box sx={{ width: "100%", marginBottom: "1rem" }}>
+            <TextField
+              id="outlined"
+              label="Search Users"
+              helperText="Search by name, email, or role"
+              value={query}
+              onChange={handleSearchTextChange}
+            />
+          </Box>
           {/* Adds some space between TextField and UserTable */}
           <UserTable
             userInfo={userInfo}
-            handleCloseDialog={handleCloseDialog}
-            onSearch={handleSearch}
+            handleEditRoleDialog={handleEditRoleDialog}
             onPageChange={handlePageChange}
             onSortChange={handleSortChange}
           />

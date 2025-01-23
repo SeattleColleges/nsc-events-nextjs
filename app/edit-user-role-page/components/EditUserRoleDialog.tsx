@@ -1,4 +1,3 @@
-import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
@@ -52,7 +51,7 @@ export function ConfirmationDialogRaw(props: ConfirmationDialogRawProps) {
     if (value !== valueProp) {
       onClose(value, true); // Indicate success
     } else {
-      onClose();
+      onClose(); // Indicate no change
     }
   };
 

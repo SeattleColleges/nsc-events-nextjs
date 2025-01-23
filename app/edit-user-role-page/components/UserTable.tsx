@@ -37,8 +37,7 @@ interface UserTableProps {
     total: number; // Total number of users
     pages: number; // Total number of pages
   };
-  handleCloseDialog: (role?: string, success?: boolean, userId?: string) => void; // Function passed from the parent to handle dialog close
-  onSearch: (query: string) => void; // Function to handle search input
+  handleEditRoleDialog: (role?: string, success?: boolean, userId?: string) => void; // Function passed from the parent to handle dialog close
   onPageChange: (page: number) => void; // Function to handle page changes
   onSortChange: (sort: string) => void; // Function to handle sorting changes
 }
@@ -48,8 +47,7 @@ interface UserTableProps {
  */
 const UserTable: React.FC<UserTableProps> = ({
   userInfo,
-  handleCloseDialog,
-  onSearch,
+  handleEditRoleDialog,
   onPageChange,
   onSortChange,
 }) => {
@@ -58,7 +56,6 @@ const UserTable: React.FC<UserTableProps> = ({
   const handleSearchTextChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const query = event.target.value;
     setSearchValue(query);
-    onSearch(query); // Trigger search function passed from the parent
   };
   const handlePageChange = (_: React.ChangeEvent<unknown>, page: number) => {
     onPageChange(page); // Trigger page change function passed from the parent
@@ -67,17 +64,11 @@ const UserTable: React.FC<UserTableProps> = ({
   // Filtering the user list based on the search text
   return (
     <>
-      {/* Search Bar */}
-      <TextField
-        sx={{ marginBottom: "1rem" }}
-        id="outlined"
-        label="Search Users"
-        value={searchValue}
-        onChange={handleSearchTextChange}
-      />
-
       {/* User Table */}
-      <TableContainer component={Paper}>
+      <TableContainer
+        component={Paper}
+        sx={{ border: "2px solid #e0e0e0", boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)" }}
+      >
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
@@ -100,6 +91,7 @@ const UserTable: React.FC<UserTableProps> = ({
               <TableRow
                 key={user.id}
                 sx={{
+                  height: "30px", // Adjust the height as needed
                   "&:hover": {
                     backgroundColor: "rgba(0, 0, 0, 0.1)",
                     opacity: 0.9,
@@ -107,13 +99,17 @@ const UserTable: React.FC<UserTableProps> = ({
                   transition: "background-color 0.3s ease, opacity 0.3s ease",
                 }}
               >
-                <TableCell component="th" scope="row">
+                <TableCell sx={{ padding: "8px 16px" }} component="th" scope="row">
                   {user.firstName + " " + user.lastName}
                 </TableCell>
-                <TableCell align="left">{user.email}</TableCell>
-                <TableCell align="left">{user.role.toUpperCase()}</TableCell>
-                <TableCell>
-                  <EditUserRoleDialog user={user} onClose={handleCloseDialog} />
+                <TableCell sx={{ padding: "8px 16px" }} align="left">
+                  {user.email}
+                </TableCell>
+                <TableCell sx={{ padding: "8px 16px" }} align="left">
+                  {user.role.toUpperCase()}
+                </TableCell>
+                <TableCell sx={{ padding: "8px 16px" }}>
+                  <EditUserRoleDialog user={user} onClose={handleEditRoleDialog} />
                 </TableCell>
               </TableRow>
             ))}
