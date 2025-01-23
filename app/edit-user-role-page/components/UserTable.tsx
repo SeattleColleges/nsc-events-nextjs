@@ -53,16 +53,17 @@ const UserTable: React.FC<UserTableProps> = ({
   onPageChange,
   onSortChange,
 }) => {
-  const [searchText, setSearchText] = useState("");
+  const [searchValue, setSearchValue] = useState("");
 
   const handleSearchTextChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const query = event.target.value;
-    setSearchText(query);
+    setSearchValue(query);
     onSearch(query); // Trigger search function passed from the parent
   };
   const handlePageChange = (_: React.ChangeEvent<unknown>, page: number) => {
     onPageChange(page); // Trigger page change function passed from the parent
   };
+
   // Filtering the user list based on the search text
   return (
     <>
@@ -71,7 +72,7 @@ const UserTable: React.FC<UserTableProps> = ({
         sx={{ marginBottom: "1rem" }}
         id="outlined"
         label="Search Users"
-        value={searchText}
+        value={searchValue}
         onChange={handleSearchTextChange}
       />
 

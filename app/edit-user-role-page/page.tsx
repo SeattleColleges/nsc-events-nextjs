@@ -6,6 +6,7 @@ import useAuth from "@/hooks/useAuth";
 import UnauthorizedPageMessage from "@/components/UnauthorizedPageMessage";
 import UserTable from "@/app/edit-user-role-page/components/UserTable"; // Import the new UserTable component
 import { UsersData } from "./models/interface";
+import useDebounce from "@/hooks/useDebounce";
 
 /**
  * Fetch user info from the server
@@ -56,9 +57,11 @@ const EditUserRolePage = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
+  const debouncedQuery = useDebounce(query, 500);
+
   useEffect(() => {
-    fetchUsers(setUserInfo, query, userInfo.page, sort);
-  }, [query, userInfo.page, sort]);
+    fetchUsers(setUserInfo, debouncedQuery, userInfo.page, sort);
+  }, [debouncedQuery, userInfo.page, sort]);
 
   const handleSearch = (newQuery: string) => {
     setQuery(newQuery);
