@@ -2,7 +2,7 @@ import "@testing-library/jest-dom";
 import { render, screen, waitFor, act } from "@testing-library/react";
 import EditUserRolePage from "../../app/edit-user-role-page/page";
 import useAuth from "@/hooks/useAuth";
-import UserTable from "@/components/UserTable"; // Import the new UserTable component
+import UserTable from "@/app/edit-user-role-page/components/UserTable"; // Import the new UserTable component
 
 // Mock the useAuth hook
 jest.mock("@/hooks/useAuth", () => ({
@@ -13,7 +13,7 @@ jest.mock("@/hooks/useAuth", () => ({
 // Mock the UserTable component
 jest.mock("@/components/UserTable", () => ({ userInfo, handleCloseDialog }: any) => (
   <div data-testid="user-table">
-    {userInfo.map((user: any) => (
+    {userInfo.data.map((user: any) => (
       <div key={user.id} data-testid="user-row">
         <p>
           {user.firstName} {user.lastName}
