@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import {
   Table,
   TableBody,
@@ -9,23 +9,11 @@ import {
   TableHead,
   TableRow,
   Paper,
-  TextField,
   Pagination,
   Stack,
 } from "@mui/material";
 import EditUserRoleDialog from "@/app/edit-user-role-page/components/EditUserRoleDialog"; // Import the dialog component for editing user roles
-
-/**
- * Represents a single user.
- */
-interface User {
-  id: string;
-  firstName: string;
-  lastName: string;
-  pronouns: string;
-  email: string;
-  role: string;
-}
+import { User } from "../models/interface";
 
 /**
  * Props for the UserTable component.
@@ -51,12 +39,7 @@ const UserTable: React.FC<UserTableProps> = ({
   onPageChange,
   onSortChange,
 }) => {
-  const [searchValue, setSearchValue] = useState("");
-
-  const handleSearchTextChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const query = event.target.value;
-    setSearchValue(query);
-  };
+  // Function to handle page changes
   const handlePageChange = (_: React.ChangeEvent<unknown>, page: number) => {
     onPageChange(page); // Trigger page change function passed from the parent
   };

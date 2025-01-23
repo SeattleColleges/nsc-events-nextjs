@@ -22,7 +22,7 @@ const EditUserRolePage = () => {
   const [query, setQuery] = useState<string>("");
   const [sort, setSort] = useState<string>("asc");
   const [newRole, setNewRole] = useState<string>(""); // User role we're editing
-  const [selectedUserId, setSelectedUserId] = useState<string | null>(null); // Selected user ID
+  // const [selectedUserId, setSelectedUserId] = useState<string | null>(null); // Selected user ID
   const [snackbarMessage, setSnackbarMessage] = useState<string | null>(null); // Snackbar message for feedback
   const [snackbarOpen, setSnackbarOpen] = useState(false); // Snackbar open state
 
@@ -30,26 +30,32 @@ const EditUserRolePage = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
+  // Debounce the query to avoid making too many requests
   const debouncedQuery = useDebounce(query, 500);
 
+  // Fetch users on initial load and when the query, page, or sort changes
   useEffect(() => {
     fetchUsers(debouncedQuery, userInfo.page, sort);
   }, [debouncedQuery, userInfo.page, sort]);
 
+  /// Handle search text change with the query usestate
   const handleSearchTextChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const query = event.target.value;
     setQuery(query);
     setUserInfo((prev) => ({ ...prev, page: 1 })); // Reset to first page on new search
   };
 
+  // Handle page change
   const handlePageChange = (newPage: number) => {
     setUserInfo((prev) => ({ ...prev, page: newPage }));
   };
 
+  // Handle sort change (not fully implemented yet on the frontend)
   const handleSortChange = (newSort: string) => {
     setSort(newSort);
   };
 
+  // Fetch users from the API based on the query, page, and sort
   async function fetchUsers(query: string = "", page: number = 1, sort: string = "") {
     const token = localStorage.getItem("token");
     const apiUrl = process.env.NSC_EVENTS_PUBLIC_API_URL;
@@ -102,6 +108,7 @@ const EditUserRolePage = () => {
     if (success && role && userId) {
       setNewRole(role);
       acceptNewRole(userId, role);
+      // update the role on the frontend
       setUserInfo((prevUserInfo) => ({
         ...prevUserInfo,
         data: prevUserInfo.data.map((user) => (user.id === userId ? { ...user, role } : user)),
@@ -109,6 +116,7 @@ const EditUserRolePage = () => {
     }
   };
 
+  // make sure user is an admin
   if (isAuth && user?.role === "admin") {
     return (
       <div>
