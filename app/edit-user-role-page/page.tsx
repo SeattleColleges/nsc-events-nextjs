@@ -81,10 +81,17 @@ const EditUserRolePage = () => {
 
     // Filter out empty fields and create the search query part
     const searchParams = new URLSearchParams();
+
     // Add only non-empty fields to the searchParams
-    if (inputs.firstName.trim()) searchParams.append("firstName", inputs.firstName);
-    if (inputs.lastName.trim()) searchParams.append("lastName", inputs.lastName);
-    if (inputs.email.trim()) searchParams.append("email", inputs.email);
+    if (inputs.firstName.trim()) {
+      searchParams.append("firstName", inputs.firstName);
+    }
+    if (inputs.lastName.trim()) {
+      searchParams.append("lastName", inputs.lastName);
+    }
+    if (inputs.email.trim()) {
+      searchParams.append("email", inputs.email);
+    }
 
     // Add page and sort parameters to the searchParams
     searchParams.append("page", page.toString());
