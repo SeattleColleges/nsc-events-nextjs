@@ -49,6 +49,8 @@ export function ConfirmationDialogRaw(props: ConfirmationDialogRawProps) {
 
   const handleOk = () => {
     if (value !== valueProp) {
+      console.log("New role: ", value);
+
       onClose(value, true); // Indicate success
     } else {
       onClose(); // Indicate no change
@@ -105,6 +107,9 @@ export default function EditUserRoleDialog({
   const handleClose = (newValue?: string, success?: boolean) => {
     setOpen(false);
     onClose(newValue, success, user.id);
+    if (success && newValue) {
+      setValue(newValue);
+    }
   };
 
   return (
