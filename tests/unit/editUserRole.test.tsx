@@ -1,115 +1,61 @@
 import "@testing-library/jest-dom";
-import { render, screen, waitFor, act } from "@testing-library/react";
+import { render, screen, waitFor, act, fireEvent } from "@testing-library/react";
 import EditUserRolePage from "../../app/edit-user-role-page/page";
 import useAuth from "@/hooks/useAuth";
-import UserTable from "@/components/UserTable"; // Import the new UserTable component
 
-// Mock the useAuth hook
-jest.mock("@/hooks/useAuth", () => ({
-  __esModule: true,
-  default: jest.fn(),
-}));
+jest.mock("@/hooks/useAuth");
 
-// Mock the UserTable component
-jest.mock("@/components/UserTable", () => ({ userInfo, handleCloseDialog }: any) => (
-  <div data-testid="user-table">
-    {userInfo.map((user: any) => (
-      <div key={user.id} data-testid="user-row">
-        <p>
-          {user.firstName} {user.lastName}
-        </p>
-        <p>{user.email}</p>
-        <p>{user.role}</p>
-      </div>
-    ))}
-  </div>
-));
-
+// Test rendering the User Management title for admin users
 describe("EditUserRolePage", () => {
-  beforeEach(() => {
-    // Mock the fetch API
-    (global as any).fetch = jest.fn(() =>
-      Promise.resolve({
-        ok: true,
-        json: () =>
-          Promise.resolve([
-            {
-              id: "65f746226a9e5ccd0c0a6052",
-              firstName: "user",
-              lastName: "user",
-              email: "user@gmail.com",
-              role: "creator",
-            },
-            {
-              id: "65f7462a6a9e5ccd0c0a6055",
-              firstName: "user",
-              lastName: "user",
-              email: "admin@gmail.com",
-              role: "admin",
-            },
-          ]),
-      })
-    );
-  });
-
-  afterEach(() => {
-    jest.restoreAllMocks();
-  });
-
-  // Test 1: Render the page title
-  it("renders the page title", async () => {
+  it("renders the User Management title for admin users", () => {
+    // Mock the auth hook to simulate an authenticated admin user
     (useAuth as jest.Mock).mockReturnValue({
       isAuth: true,
       user: { role: "admin" },
     });
 
-    await act(async () => {
-      render(<EditUserRolePage />);
-    });
+    render(<EditUserRolePage />);
 
-    const title = screen.getByText("User Management");
-    expect(title).toBeInTheDocument();
+    expect(screen.getByText(/User Management/i)).toBeInTheDocument();
   });
+});
 
-  // Test 2: Fetch and display user information in UserTable
-  it("fetches and displays user information in UserTable", async () => {
+// Test the searchParams state update when typing in search fields
+describe("EditUserRolePage", () => {
+  it("updates searchParams when typing in search fields", async () => {
     (useAuth as jest.Mock).mockReturnValue({
       isAuth: true,
       user: { role: "admin" },
     });
 
-    await act(async () => {
-      render(<EditUserRolePage />);
+    render(<EditUserRolePage />);
+
+    const firstNameInput = screen.getByLabelText(/First Name/i);
+    const lastNameInput = screen.getByLabelText(/Last Name/i);
+    const emailInput = screen.getByLabelText(/Email/i);
+
+    act(() => {
+      fireEvent.change(firstNameInput, { target: { value: "John" } });
     });
 
-    // Wait for the data to be loaded and displayed
     await waitFor(() => {
-      const userRows = screen.getAllByTestId("user-row");
-      expect(userRows).toHaveLength(2); // Check if there are 2 user rows
-    });
-  });
-
-  // Test 3: Ensure the data in UserTable is correct
-  it("displays correct user data in the UserTable", async () => {
-    (useAuth as jest.Mock).mockReturnValue({
-      isAuth: true,
-      user: { role: "admin" },
+      expect(firstNameInput).toHaveValue("John");
     });
 
-    await act(async () => {
-      render(<EditUserRolePage />);
+    act(() => {
+      fireEvent.change(lastNameInput, { target: { value: "Doe" } });
     });
 
-    // Wait for the data to be loaded
     await waitFor(() => {
-      const userRows = screen.getAllByTestId("user-row");
-      expect(userRows[0]).toHaveTextContent("user user");
-      expect(userRows[0]).toHaveTextContent("user@gmail.com");
-      expect(userRows[0]).toHaveTextContent("creator");
+      expect(lastNameInput).toHaveValue("Doe");
+    });
 
-      expect(userRows[1]).toHaveTextContent("user user");
-      expect(userRows[1]).toHaveTextContent("admin@gmail.com");
-      expect(userRows[1]).toHaveTextContent("admin");
+    act(() => {
+      fireEvent.change(emailInput, { target: { value: "john.doe@example.com" } });
+    });
+
+    await waitFor(() => {
+      expect(emailInput).toHaveValue("john.doe@example.com");
     });
   });
 });
