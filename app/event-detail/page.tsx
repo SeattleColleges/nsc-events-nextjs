@@ -50,8 +50,8 @@ const EventDetail = () => {
   const queryClient = useQueryClient();
   const [event, setEvent] = useState<ActivityDatabase | null>(null);
   const [events, setEvents] = useState<string[]>( () => {
-        const events = localStorage.getItem('events');
-        return events ? JSON.parse(events) : [];
+    const events = localStorage.getItem('events');
+    return events ? JSON.parse(events) : [];
   });
   const [isAuthed, setAuthed] = useState(false);
   const [token, setToken] = useState("");
@@ -61,6 +61,7 @@ const EventDetail = () => {
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [attendDialogOpen, setAttendDialogOpen] = useState(false);
   const [moreDetailsDialogOpen, setMoreDetailsDialogOpen] = useState(false);
+  const [viewMoreDetailsClickCount, setViewMoreDetailsClickCount] = useState(0);
   const [userId, setUserId] = useState("");
   const [userRole, setUserRole] = useState("");
   const { palette } = useTheme();
@@ -74,10 +75,10 @@ const EventDetail = () => {
     const prevPage = localStorage.getItem("prevPage")
     return prevPage ? prevPage : searchParams.get("from")
   })
-  const [ usedData, setUsedData] = useState<ActivityDatabase[] | undefined>(undefined)
+  const [usedData, setUsedData] = useState<ActivityDatabase[] | undefined>(undefined)
   const { data: filteredEvents } = useFilteredEvents(page, prevPage === "home")
-  const { data: archivedEvents }  = useArchivedEvents(page, prevPage === "archived")
-  const { data: myEvents }  = useMyEvents(getCurrentUserId(), page, prevPage === "mine")
+  const { data: archivedEvents } = useArchivedEvents(page, prevPage === "archived")
+  const { data: myEvents } = useMyEvents(getCurrentUserId(), page, prevPage === "mine")
   const { data } = useEventById(id);
   const DeleteDialog = () => {
     return (
@@ -147,8 +148,8 @@ const EventDetail = () => {
 
   const { mutate: deleteEventMutation } = useMutation({
     mutationFn: deleteEvent,
-     onSuccess: async () => {
-      await queryClient.refetchQueries({ queryKey:['events', 'myEvents', 'archivedEvents'] });
+    onSuccess: async () => {
+      await queryClient.refetchQueries({ queryKey: ['events', 'myEvents', 'archivedEvents'] });
       setSnackbarMessage("Successfully deleted event.");
       setTimeout(() => {
         router.refresh();
@@ -161,10 +162,10 @@ const EventDetail = () => {
   });
 
   useEffect(() => {
-    if(prevPage) {
+    if (prevPage) {
       localStorage.setItem("prevPage", prevPage)
     }
-    if(events) {
+    if (events) {
       localStorage.setItem("events", JSON.stringify(events))
     }
     return () => {
@@ -189,7 +190,7 @@ const EventDetail = () => {
       setEvents((prevEvents) => {
         const newEvents: string[] = [...prevEvents, ...usedData.map((e: { _id: string; }) => e._id)];
         return newEvents.filter((event, index, self) =>
-            index === self.findIndex((e) => e === event)
+          index === self.findIndex((e) => e === event)
         );
       });
       setReachedLastPage(usedData.length === 0);
@@ -224,7 +225,11 @@ const EventDetail = () => {
   };
 
   const toggleViewMoreDetailsDialog = () => {
-    setMoreDetailsDialogOpen(!moreDetailsDialogOpen);
+    setMoreDetailsDialogOpen((prev) => !prev);
+
+    if (!moreDetailsDialogOpen) {
+      setViewMoreDetailsClickCount((prevCount) => prevCount + 1);
+    }
   };
 
   const toggleArchiveDialog = () => {
@@ -233,7 +238,7 @@ const EventDetail = () => {
 
   const getNextEvent = () => {
     const currentIndex = events.findIndex(e => e === event?._id);
-    if(!reachedLastPage && events.findIndex(e => e === event?._id)) {
+    if (!reachedLastPage && events.findIndex(e => e === event?._id)) {
       setPage(num => num + 1);
     }
 
@@ -285,189 +290,236 @@ const EventDetail = () => {
           }
         }}
       >
-        <Box 
-          sx={{ 
-            display: "flex", justifyContent: "center", alignItems: "center", height: "100vh", backgroundColor: "rgba(0, 0, 0, 0)", zIndex: 1,
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center", 
+            height: "100vh",
+            backgroundColor: "rgba(0, 0, 0, 0)",
+            zIndex: 1,
           }}
         >
-        <Box style={{ 
-          display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", padding: "2rem", borderRadius: "15px", width: "800px", marginBottom: "10vh"
-        }}
-          sx={{ minHeight: "69vh", maxHeight: "100vh", width: "105vh", marginTop: 2, backgroundColor: isMobile ? "" : containerColor  }}
-        >
-          <Card sx={{ width: isMobile ? "41vh" : "50vh", maxHeight: '100vh', overflowY: 'auto', mt: isMobile ? 5 : "", marginBottom: 3 }}>
-            <CardMedia
-              component="img"
-              image={event.eventCoverPhoto}
-              alt={event.eventTitle}
-              sx={{ height: "37vh" }}
-            />
-            <CardContent>
-              <Typography gutterBottom variant="h5" component="div">
-                {event.eventTitle}
-              </Typography>
-              <Typography variant="body2" color="text.secondary" sx={{ pb: 1 }}>
-                {event.eventDescription}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                Date: {formatDate(event.eventDate)}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                Start Time: {event.eventStartTime}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                End Time: {event.eventEndTime}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                Location: {event.eventLocation}
-              </Typography>
-            </CardContent>
-          </Card>
-          <Grid container spacing={2} justifyContent="center" alignItems="center">
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                flexDirection: isMobile ? "column" : "row",
-                gap: 2,
-                mt: 2
-              }}
-            >
-              <Grid container spacing={2} justifyContent="center" alignItems="center">
-              {(userRole === "admin" ||
-                (userRole === "creator" && event?.createdByUser === userId)) && (
-                <>
-                  <Grid item xs={4} sm="auto">
-                    <Button
-                      variant="contained"
-                      sx={{ color: "white", backgroundColor: "#2074d4", ml: isMobile ? 0 : 2 }}
-                      onClick={toggleEditDialog}
-                    >
-                      <EditIcon sx={{ marginRight: isMobile ? 0 : "5px" }} />
-                      {!isMobile && !isTablet && "Edit"}
-                    </Button>
-                  </Grid>
-                  <Grid item xs={4} sm="auto">
-                    <Button
-                      variant="contained"
-                      sx={{ color: "white", backgroundColor: "#2074d4" }}
-                      onClick={() => setDialogOpen(true)}
-                    >
-                      <DeleteIcon sx={{ marginRight: isMobile ? 0 : "5px" }} />
-                      {!isMobile && !isTablet && "Delete"}
-                    </Button>
-                  </Grid>
-                  <Grid item xs={4} sm="auto">
-                    <Button
-                      variant="contained"
-                      sx={{ color: "white", backgroundColor: "#2074d4" }}
-                      onClick={toggleArchiveDialog}
-                    >
-                      {!event.isArchived ? (
-                        <>
-                          <ArchiveIcon sx={{ marginRight: isMobile ? 0 : "5px" }} />
-                          {!isMobile && !isTablet && "Archive"}
-                        </>
-                      ) : (
-                        <>
-                          <UnarchiveIcon sx={{ marginRight: isMobile ? 0 : "5px" }} />
-                          {!isMobile && !isTablet && "Unarchive"}
-                        </>
-                      )}
-                    </Button>
-                  </Grid>
-                </>
-              )}
-              </Grid>
-              <Grid item xs={12} sm="auto">
-              <Button
+          <Box style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            padding: "2rem",
+            borderRadius: "15px",
+            width: "800px",
+            marginBottom: "10vh"
+          }}
+            sx={{
+              minHeight: "69vh",
+              maxHeight: "100vh",
+              width: "105vh",
+              marginTop: 2,
+              backgroundColor: isMobile ? "" : containerColor
+            }}
+          >
+            <Card sx={{ width: isMobile ? "41vh" : "50vh", maxHeight: '100vh', overflowY: 'auto', mt: isMobile ? 5 : "", marginBottom: 3 }}>
+              <CardMedia
+                component="img"
+                image={event.eventCoverPhoto}
+                alt={event.eventTitle}
+                sx={{ height: "37vh" }}
+              />
+              <CardContent>
+                <Typography gutterBottom variant="h5" component="div">
+                  {event.eventTitle}
+                </Typography>
+                <Typography variant="body2" color="text.secondary" sx={{ pb: 1 }}>
+                  {event.eventDescription}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Date: {formatDate(event.eventDate)}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Start Time: {event.eventStartTime}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  End Time: {event.eventEndTime}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Location: {event.eventLocation}
+                </Typography>
+              </CardContent>
+            </Card>
+            <Grid container spacing={2} justifyContent="center" alignItems="center">
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  flexDirection: isMobile ? "column" : "row",
+                  gap: isMobile ? 1 : 2,
+                  flexWrap: "wrap",
+                  marginTop: "2px",
+                  width: "100%",
+                }}
+              >
+                <Grid container spacing={2} justifyContent="center" alignItems="center" >
+                  {(userRole === "admin" ||
+                    (userRole === "creator" && event?.createdByUser === userId)) && (
+                      <>
+                        <Grid item xs={2} sm="auto">
+                          <Button
+                            variant="contained"
+                            sx={{
+                              color: "white",
+                              backgroundColor: "#2074d4",
+                              ml: isMobile ? 0 : 2,
+                              padding: "8px 16px",
+                              minWidth: "120px",
+                              width: isMobile ? "120" : "auto",
+                              marginBottom: isMobile ? "5px" : "0",
+                            }}
+                            onClick={toggleEditDialog}
+                          >
+                            <EditIcon sx={{ marginRight: isMobile ? 0 : "5px" }} />
+                            {!isMobile && !isTablet && "Edit"}
+                          </Button>
+                        </Grid>
+                        <Grid item xs={2} sm="auto">
+                          <Button
+                            variant="contained"
+                            sx={{
+                              color: "white",
+                              backgroundColor: "#2074d4",
+                              padding: "8px 16px",
+                              minWidth: "120px",
+                              width: isMobile ? "120" : "auto",
+                              marginBottom: isMobile ? "5px" : "0",
+                            }}
+                            onClick={() => setDialogOpen(true)}
+                          >
+                            <DeleteIcon sx={{ marginRight: isMobile ? 0 : "5px" }} />
+                            {!isMobile && !isTablet && "Delete"}
+                          </Button>
+                        </Grid>
+                        <Grid item xs={2} sm="auto">
+                          <Button
+                            variant="contained"
+                            sx={{
+                              color: "white",
+                              backgroundColor: "#2074d4",
+                              padding: "8px 16px",
+                              minWidth: "120px",
+                              width: isMobile ? "120" : "auto",
+                              marginBottom: isMobile ? "5px" : "0",
+                            }}
+                            onClick={toggleArchiveDialog}
+                          >
+                            {!event.isArchived ? (
+                              <>
+                                <ArchiveIcon sx={{ marginRight: isMobile ? 0 : "5px" }} />
+                                {!isMobile && !isTablet && "Archive"}
+                              </>
+                            ) : (
+                              <>
+                                <UnarchiveIcon sx={{ marginRight: isMobile ? 0 : "5px" }} />
+                                {!isMobile && !isTablet && "Unarchive"}
+                              </>
+                            )}
+                          </Button>
+                        </Grid>
+                      </>
+                    )}
+                </Grid>
+                <Grid item xs={12} sm="auto">
+                  <Button
                     variant="contained"
                     sx={{
                       color: "white",
                       backgroundColor: "#2074d4",
-                      width: "140px",
-                      mt: isMobile ? 1 : 0
+                      width: isMobile ? "120" : "auto",
+                      padding: "8px 16px",
+                      overflow: "hidden",
+                      marginTop: isMobile ? 1 : 0,
                     }}
                     onClick={() => {
                       toggleViewMoreDetailsDialog();
                     }}
                   >
                     {" "}
-                    More Details{" "}
+                    More Details{" "} <span>(Clicked: {viewMoreDetailsClickCount} times)</span>
                   </Button>
-                  </Grid>
-                  <Grid item xs={12} sm="auto">
-                    <Button
-                      variant="contained"
-                      sx={{
-                        color: "white",
-                        backgroundColor: "#2074d4",
-                        width: isMobile ? "140px" : "90px",
-                      }}
-                      onClick={() => {
-                        toggleAttendDialog();
-                      }}
-                    >
-                      {" "}
-                      Attend{" "}
-                    </Button>
-                  </Grid>
-            </Box>
-            <Box
-              sx={{
-                position: "absolute",
-                display: "flex",
-                justifyContent: events.length > 1 && events.findIndex(e => e === event?._id) > 0 ? "space-between" : "end",
-                alignContent: "center",
-                width: "100%",
-                maxWidth: 700,
-                top: isMobile ? "35%" : "43%",
-                transform: "translateY(-50%)",
-              }}
-            >
-            {events.length > 1 && events.findIndex(e => e === event?._id) > 0 && (
-            <Button onClick={getPrevEvent} sx={{ filter: isMobile ? "drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2))" : "", p: 0, ml: 0 }}>
-              <ArrowLeftIcon sx={{ fontSize: isMobile ? "40px" : "70px", backgroundColor: isMobile ? "white" : "", color: isMobile ? "grey" : "", filter:  isMobile ? "" : "drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2))", borderRadius: "2px" }} />
-            </Button>
-            )}
-            {events.length > 1 && events.findIndex(e => e === event?._id) < events.length - 1 &&  (
-            <Button onClick={getNextEvent} sx={{ filter: isMobile ? "drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2))" : "", p: 0, mr: -2 }}>
-              <ArrowRightIcon sx={{ fontSize: isMobile ? "40px" : "70px", backgroundColor: isMobile ? "white" : "", color: isMobile ? "grey" : "", filter:  isMobile ? "" : "drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2))", borderRadius: "2px" }} />
-            </Button>
-            )}
+                </Grid>
+                <Grid item xs={12} sm="auto">
+                  <Button
+                    variant="contained"
+                    sx={{
+                      color: "white",
+                      backgroundColor: "#2074d4",
+                      width: isMobile ? "120" : "auto",
+                      padding: "8px 16px",
+                      overflow: "hidden",
+                      marginTop: isMobile ? 1 : 0,
+                    }}
+                    onClick={() => {
+                      toggleAttendDialog();
+                    }}
+                  >
+                    {" "}
+                    Attend{" "}
+                  </Button>
+                </Grid>
+              </Box>
+              <Box
+                sx={{
+                  position: "absolute",
+                  display: "flex",
+                  justifyContent: events.length > 1 && events.findIndex(e => e === event?._id) > 0 ? "space-between" : "end",
+                  alignContent: "center",
+                  width: "100%",
+                  maxWidth: 700,
+                  top: isMobile ? "35%" : "43%",
+                  transform: "translateY(-50%)",
+                }}
+              >
+                {events.length > 1 && events.findIndex(e => e === event?._id) > 0 && (
+                  <Button onClick={getPrevEvent} sx={{ filter: isMobile ? "drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2))" : "", p: 0, ml: 0 }}>
+                    <ArrowLeftIcon sx={{ fontSize: isMobile ? "40px" : "70px", backgroundColor: isMobile ? "white" : "", color: isMobile ? "grey" : "", filter: isMobile ? "" : "drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2))", borderRadius: "2px" }} />
+                  </Button>
+                )}
+                {events.length > 1 && events.findIndex(e => e === event?._id) < events.length - 1 && (
+                  <Button onClick={getNextEvent} sx={{ filter: isMobile ? "drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2))" : "", p: 0, mr: -2 }}>
+                    <ArrowRightIcon sx={{ fontSize: isMobile ? "40px" : "70px", backgroundColor: isMobile ? "white" : "", color: isMobile ? "grey" : "", filter: isMobile ? "" : "drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2))", borderRadius: "2px" }} />
+                  </Button>
+                )}
+              </Box>
+            </Grid>
           </Box>
-          </Grid>
+          <DeleteDialog />
+          <ViewMoreDetailsDialog
+            isOpen={moreDetailsDialogOpen}
+            event={event}
+            userRole={userRole}
+            dialogToggle={toggleViewMoreDetailsDialog}
+            userId={userId} />
+          <AttendDialog
+            isOpen={attendDialogOpen}
+            eventId={event._id}
+            dialogToggle={toggleAttendDialog}
+          />
+          <ArchiveDialog
+            isOpen={archiveDialogOpen}
+            event={event}
+            dialogToggle={toggleArchiveDialog}
+          />
+          <EditDialog isOpen={editDialogOpen} event={event} toggleEditDialog={toggleEditDialog} />
+          <Snackbar
+            open={Boolean(snackbarMessage)}
+            onClose={() => {
+              setSnackbarMessage("");
+            }}
+            autoHideDuration={1200}
+            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+          >
+            <SnackbarContent message={snackbarMessage} sx={{ backgroundColor: "white", color: "black" }} />
+          </Snackbar>
         </Box>
-        <DeleteDialog />
-        <ViewMoreDetailsDialog
-          isOpen={moreDetailsDialogOpen}
-          event={event}
-          userRole={userRole}
-          dialogToggle={toggleViewMoreDetailsDialog}
-          userId={userId}/>
-        <AttendDialog
-          isOpen={attendDialogOpen}
-          eventId={event._id}
-          dialogToggle={toggleAttendDialog}
-        />
-        <ArchiveDialog
-          isOpen={archiveDialogOpen}
-          event={event}
-          dialogToggle={toggleArchiveDialog}
-        />
-        <EditDialog isOpen={editDialogOpen} event={event} toggleEditDialog={toggleEditDialog} />
-        <Snackbar
-          open={Boolean(snackbarMessage)}
-          onClose={() => {
-            setSnackbarMessage("");
-          }}
-          autoHideDuration={1200}
-          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-        >
-          <SnackbarContent message={snackbarMessage} sx={{ backgroundColor: "white", color: "black" }} />
-        </Snackbar>
-      </Box>
       </Box>
     </>
   );
