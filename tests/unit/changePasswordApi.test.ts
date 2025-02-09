@@ -1,4 +1,5 @@
 // changePasswordApi.test.ts
+"use client";
 import { changePassword } from "@/app/auth/change-password/changePasswordApi";
 
 global.fetch = jest.fn(); // Mock the global fetch API

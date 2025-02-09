@@ -1,4 +1,5 @@
 // tests/unit/ForgotPassword.test.tsx
+"use client";
 import React from "react";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import ForgotPassword from "@/app/auth/forgot-password/page"; // Adjust path as needed
