@@ -1,5 +1,5 @@
 // File: tests/unit/Profile.test.tsx
-
+"use client";
 import React from "react";
 import { render, screen, fireEvent, waitFor, act } from "@testing-library/react";
 import Profile from "@/app/profile/page"; // <-- Adjust path if needed

@@ -1,3 +1,4 @@
+"use client";
 {/* Custom React hook to manage and track user authentication state.*/}
 import { useState, useEffect } from 'react';
 
