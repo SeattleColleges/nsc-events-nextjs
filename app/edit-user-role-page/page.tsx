@@ -179,11 +179,12 @@ const EditUserRolePage = () => {
             padding: "1rem",
             display: "flex",
             flexDirection: "column",
-            backgroundColor: "white",
+            backgroundColor: theme.palette.mode === "dark" ? "#2E2E2E" : "#f5f5f5", // Change background dynamically
+            color: theme.palette.text.primary, // Ensure text color adapts
             alignItems: "center",
-
             maxWidth: "80%",
             margin: "0 auto",
+            borderRadius: "8px", // Added rounded corners
           }}
         >
           <Box
@@ -201,36 +202,72 @@ const EditUserRolePage = () => {
             {/* First Name Search Bar */}
             <Box sx={{ width: "30%" }}>
               <TextField
-                id="outlined"
+                variant="outlined"
                 label="First Name"
                 helperText="Search by first name"
                 value={searchParams.firstName}
                 onChange={handleInputChange("firstName")}
                 fullWidth
+
+                // Theme styling changes for adapting to light and dark mode (from themes.tsx)  
+                sx={{
+                  input: { color: theme.palette.text.primary },
+                  label: { color: theme.palette.text.secondary },
+                  "& .MuiOutlinedInput-root": {
+                    "& fieldset": { borderColor: theme.palette.divider },
+                    "&:hover fieldset": { borderColor: theme.palette.primary.main },
+                    "&.Mui-focused fieldset": { borderColor: theme.palette.primary.main },
+                    backgroundColor: theme.palette.background.paper,
+                  },
+                }}
               />
             </Box>
 
             {/* Last Name Search Bar */}
             <Box sx={{ width: "30%" }}>
               <TextField
-                id="outlined"
+                variant="outlined"
                 label="Last Name"
                 helperText="Search by last name"
                 value={searchParams.lastName}
                 onChange={handleInputChange("lastName")}
                 fullWidth
+
+                // Theme styling changes for adapting to light and dark mode (from themes.tsx)
+                sx={{
+                  input: { color: theme.palette.text.primary },
+                  label: { color: theme.palette.text.secondary },
+                  "& .MuiOutlinedInput-root": {
+                    "& fieldset": { borderColor: theme.palette.divider },
+                    "&:hover fieldset": { borderColor: theme.palette.primary.main },
+                    "&.Mui-focused fieldset": { borderColor: theme.palette.primary.main },
+                    backgroundColor: theme.palette.background.paper,
+                  },
+                }}
               />
             </Box>
 
             {/* Email Search Bar */}
             <Box sx={{ width: "30%" }}>
               <TextField
-                id="outlined"
+                variant="outlined"
                 label="Email"
                 helperText="Search by email"
                 value={searchParams.email}
                 onChange={handleInputChange("email")}
                 fullWidth
+                
+                // Theme styling changes for adapting to light and dark mode (from themes.tsx)
+                sx={{
+                  input: { color: theme.palette.text.primary },
+                  label: { color: theme.palette.text.secondary },
+                  "& .MuiOutlinedInput-root": {
+                    "& fieldset": { borderColor: theme.palette.divider },
+                    "&:hover fieldset": { borderColor: theme.palette.primary.main },
+                    "&.Mui-focused fieldset": { borderColor: theme.palette.primary.main },
+                    backgroundColor: theme.palette.background.paper,
+                  },
+                }}
               />
             </Box>
           </Box>
