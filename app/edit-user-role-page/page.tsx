@@ -162,6 +162,18 @@ const EditUserRolePage = () => {
     }
   };
 
+  // Theme styling changes for adapting to light and dark mode (from themes.tsx)
+  const searchBarStyles = {
+    input: { color: theme.palette.text.primary },
+    label: { color: theme.palette.text.secondary },
+    "& .MuiOutlinedInput-root": {
+      "& fieldset": { borderColor: theme.palette.divider },
+      "&:hover fieldset": { borderColor: theme.palette.primary.main },
+      "&.Mui-focused fieldset": { borderColor: theme.palette.primary.main },
+      backgroundColor: theme.palette.background.paper,
+    },
+  };
+
   // make sure user is an admin
   if (isAuth && user?.role === "admin") {
     return (
@@ -208,18 +220,7 @@ const EditUserRolePage = () => {
                 value={searchParams.firstName}
                 onChange={handleInputChange("firstName")}
                 fullWidth
-
-                // Theme styling changes for adapting to light and dark mode (from themes.tsx)  
-                sx={{
-                  input: { color: theme.palette.text.primary },
-                  label: { color: theme.palette.text.secondary },
-                  "& .MuiOutlinedInput-root": {
-                    "& fieldset": { borderColor: theme.palette.divider },
-                    "&:hover fieldset": { borderColor: theme.palette.primary.main },
-                    "&.Mui-focused fieldset": { borderColor: theme.palette.primary.main },
-                    backgroundColor: theme.palette.background.paper,
-                  },
-                }}
+                sx={{searchBarStyles,}}
               />
             </Box>
 
@@ -232,18 +233,7 @@ const EditUserRolePage = () => {
                 value={searchParams.lastName}
                 onChange={handleInputChange("lastName")}
                 fullWidth
-
-                // Theme styling changes for adapting to light and dark mode (from themes.tsx)
-                sx={{
-                  input: { color: theme.palette.text.primary },
-                  label: { color: theme.palette.text.secondary },
-                  "& .MuiOutlinedInput-root": {
-                    "& fieldset": { borderColor: theme.palette.divider },
-                    "&:hover fieldset": { borderColor: theme.palette.primary.main },
-                    "&.Mui-focused fieldset": { borderColor: theme.palette.primary.main },
-                    backgroundColor: theme.palette.background.paper,
-                  },
-                }}
+                sx={{searchBarStyles,}}
               />
             </Box>
 
@@ -256,18 +246,7 @@ const EditUserRolePage = () => {
                 value={searchParams.email}
                 onChange={handleInputChange("email")}
                 fullWidth
-                
-                // Theme styling changes for adapting to light and dark mode (from themes.tsx)
-                sx={{
-                  input: { color: theme.palette.text.primary },
-                  label: { color: theme.palette.text.secondary },
-                  "& .MuiOutlinedInput-root": {
-                    "& fieldset": { borderColor: theme.palette.divider },
-                    "&:hover fieldset": { borderColor: theme.palette.primary.main },
-                    "&.Mui-focused fieldset": { borderColor: theme.palette.primary.main },
-                    backgroundColor: theme.palette.background.paper,
-                  },
-                }}
+                sx={{searchBarStyles,}}
               />
             </Box>
           </Box>
