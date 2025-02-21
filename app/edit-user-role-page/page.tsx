@@ -220,7 +220,7 @@ const EditUserRolePage = () => {
                 value={searchParams.firstName}
                 onChange={handleInputChange("firstName")}
                 fullWidth
-                sx={{searchBarStyles,}}
+                sx={{ searchBarStyles, }}
               />
             </Box>
 
@@ -233,7 +233,7 @@ const EditUserRolePage = () => {
                 value={searchParams.lastName}
                 onChange={handleInputChange("lastName")}
                 fullWidth
-                sx={{searchBarStyles,}}
+                sx={{ searchBarStyles, }}
               />
             </Box>
 
@@ -246,7 +246,7 @@ const EditUserRolePage = () => {
                 value={searchParams.email}
                 onChange={handleInputChange("email")}
                 fullWidth
-                sx={{searchBarStyles,}}
+                sx={{ searchBarStyles, }}
               />
             </Box>
           </Box>
