@@ -1,4 +1,3 @@
-import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
@@ -50,9 +49,11 @@ export function ConfirmationDialogRaw(props: ConfirmationDialogRawProps) {
 
   const handleOk = () => {
     if (value !== valueProp) {
+      console.log("New role: ", value);
+
       onClose(value, true); // Indicate success
     } else {
-      onClose();
+      onClose(); // Indicate no change
     }
   };
 
@@ -106,6 +107,9 @@ export default function EditUserRoleDialog({
   const handleClose = (newValue?: string, success?: boolean) => {
     setOpen(false);
     onClose(newValue, success, user.id);
+    if (success && newValue) {
+      setValue(newValue);
+    }
   };
 
   return (
