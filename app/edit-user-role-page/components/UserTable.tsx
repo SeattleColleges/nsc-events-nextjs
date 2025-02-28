@@ -1,5 +1,4 @@
 "use client";
-
 import React from "react";
 import {
   Table,
@@ -14,7 +13,6 @@ import {
 } from "@mui/material";
 import EditUserRoleDialog from "@/app/edit-user-role-page/components/EditUserRoleDialog"; // Import the dialog component for editing user roles
 import { User } from "../models/interface";
-
 /**
  * Props for the UserTable component.
  */
@@ -27,23 +25,15 @@ interface UserTableProps {
   };
   handleEditRoleDialog: (role?: string, success?: boolean, userId?: string) => void; // Function passed from the parent to handle dialog close
   onPageChange: (page: number) => void; // Function to handle page changes
-  onSortChange: (sort: string) => void; // Function to handle sorting changes
 }
-
 /**
  * Table component to display a list of users.
  */
-const UserTable: React.FC<UserTableProps> = ({
-  userInfo,
-  handleEditRoleDialog,
-  onPageChange,
-  onSortChange,
-}) => {
+const UserTable: React.FC<UserTableProps> = ({ userInfo, handleEditRoleDialog, onPageChange }) => {
   // Function to handle page changes
   const handlePageChange = (_: React.ChangeEvent<unknown>, page: number) => {
     onPageChange(page); // Trigger page change function passed from the parent
   };
-
   // Filtering the user list based on the search text
   return (
     <>
@@ -59,11 +49,7 @@ const UserTable: React.FC<UserTableProps> = ({
               <TableCell sx={{ fontWeight: 700 }} align="left">
                 E-Mail
               </TableCell>
-              <TableCell
-                sx={{ fontWeight: 700, cursor: "pointer" }}
-                align="left"
-                onClick={() => onSortChange("role")}
-              >
+              <TableCell sx={{ fontWeight: 700, cursor: "pointer" }} align="left">
                 Role
               </TableCell>
               <TableCell sx={{ fontWeight: 700 }}>Edit</TableCell>
@@ -99,7 +85,6 @@ const UserTable: React.FC<UserTableProps> = ({
           </TableBody>
         </Table>
       </TableContainer>
-
       {/* Pagination */}
       <Stack spacing={2} justifyContent="center" alignItems="center" marginTop="1rem">
         <Pagination
@@ -113,5 +98,4 @@ const UserTable: React.FC<UserTableProps> = ({
     </>
   );
 };
-
 export default UserTable;
