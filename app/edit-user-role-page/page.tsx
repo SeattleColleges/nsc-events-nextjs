@@ -91,7 +91,10 @@ const EditUserRolePage = () => {
     if (inputs.email.trim()) {
       searchParams.append("email", inputs.email);
     }
-    if (role) searchParams.append("role", role); // Append role if selected
+    if (role) { 
+      searchParams.append("role", role); // Append role if selected
+    }
+    
     // Add page and sort parameters to the searchParams
     searchParams.append("page", page.toString());
     const url = `${apiUrl}/users/search?${searchParams.toString()}`;
