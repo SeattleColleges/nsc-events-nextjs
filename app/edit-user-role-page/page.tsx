@@ -20,6 +20,7 @@ import UnauthorizedPageMessage from "@/components/UnauthorizedPageMessage";
 import UserTable from "@/app/edit-user-role-page/components/UserTable"; // Import the new UserTable component
 import { UsersData } from "./models/interface";
 import useDebounce from "@/hooks/useDebounce";
+
 const EditUserRolePage = () => {
   const [userInfo, setUserInfo] = useState<UsersData>({ data: [], page: 1, total: 0, pages: 0 }); // All users
   const [searchParams, setSearchParams] = useState({
@@ -29,58 +30,61 @@ const EditUserRolePage = () => {
   });
   const [roleFilter, setRoleFilter] = useState<string>(""); // New state for role filtering
   const [newRole, setNewRole] = useState<string>(""); // User role we're editing
-  // const [selectedUserId, setSelectedUserId] = useState<string | null>(null); // Selected user ID
   const [snackbarMessage, setSnackbarMessage] = useState<string | null>(null); // Snackbar message for feedback
   const [snackbarOpen, setSnackbarOpen] = useState(false); // Snackbar open state
   const { isAuth, user } = useAuth();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
   // Debounce the query to avoid making too many requests
   const debouncedQueryData = useDebounce(searchParams, 500);
+
   // Fetch users on debounced query, page, or role changes
   useEffect(() => {
     const resetAndFetchUsers = async () => {
-      // Reset to page 1 before fetching users for a new search query
-      setUserInfo((prev) => ({ ...prev, page: 1 }));
-      // Ensure fetchUsers is called after the page reset
-      await fetchUsers(debouncedQueryData, 1, roleFilter);
+      setUserInfo((prev) => ({ ...prev, page: 1 })); // Reset to page 1 before fetching users for a new search query
+      await fetchUsers(debouncedQueryData, 1, roleFilter); // Ensure fetchUsers is called after the page reset
     };
     resetAndFetchUsers();
-  }, [debouncedQueryData, roleFilter]);
+  }, [debouncedQueryData, roleFilter]); // Only run the effect when the typed data or roleFilter (dropdown) changes
+
   // Handle page change for table pagination
   const handlePageChange = (newPage: number) => {
-    // Update the page in the userInfo state
-    setUserInfo((prev) => ({ ...prev, page: newPage }));
-    // query Fetch users for the new page
-    fetchUsers(debouncedQueryData, newPage, roleFilter);
+    setUserInfo((prev) => ({ ...prev, page: newPage })); // Update the page in the userInfo state
+    fetchUsers(debouncedQueryData, newPage, roleFilter); // query Fetch users for the new page
   };
-  // Handle input change for search parameters
+
+  // Handle input change for the seach text fields, set the new search parameters
   const handleInputChange =
     (field: keyof typeof searchParams) => (event: React.ChangeEvent<HTMLInputElement>) => {
       // Updates based on the search field being used (first name, last name, or email)
       const newParams = { ...searchParams, [field]: event.target.value };
       setSearchParams(newParams); // Updates state, triggering the debounce
     };
+
   // handle the role change for dropdown box filtering 
   const handleRoleChange = (event: SelectChangeEvent<string>) => {
     setRoleFilter(event.target.value);
   };
+
   // Fetch users from the API based on the query, page, and role
   async function fetchUsers(
     inputs: { firstName: string; lastName: string; email: string },
-    page: number = 1,
+    page: number,
     role: string
   ) {
-    console.log("Fetching users with:", { inputs, page }); // Debugging log 
     const token = localStorage.getItem("token");
     const apiUrl = process.env.NSC_EVENTS_PUBLIC_API_URL;
+
     // Check if the API URL is defined
     if (!apiUrl) {
       console.error("API URL is not defined");
       return;
     }
+
     // Filter out empty fields and create the search query part
     const searchParams = new URLSearchParams();
+
     // Add only non-empty fields to the searchParams
     if (inputs.firstName.trim()) {
       searchParams.append("firstName", inputs.firstName);
@@ -98,8 +102,6 @@ const EditUserRolePage = () => {
     // Add page and sort parameters to the searchParams
     searchParams.append("page", page.toString());
     const url = `${apiUrl}/users/search?${searchParams.toString()}`;
-    console.log("fetching users");
-    console.log(url);
     try {
       const res = await fetch(url, {
         method: "GET",
@@ -112,18 +114,20 @@ const EditUserRolePage = () => {
         throw new Error(res.statusText);
       } else {
         const data: UsersData = await res.json();
-        console.log("API Response (Users Data):", data); 
+         
         setUserInfo(data);
       }
     } catch (error) {
       console.error("Error getting user info:", error);
     }
   }
+
   // Function to accept the new role and update via API
   async function acceptNewRole(userId: string, role: string) {
     const token = localStorage.getItem("token");
     try {
       const apiUrl = process.env.NSC_EVENTS_PUBLIC_API_URL;
+
       // Check if the API URL is defined
       if (!apiUrl) {
         console.error("API URL is not defined");
@@ -147,11 +151,13 @@ const EditUserRolePage = () => {
     }
     setSnackbarOpen(true);
   }
+
   // closing the dialog and updating role for the user if a change is made
   const handleEditRoleDialog = (role?: string, success?: boolean, userId?: string) => {
     if (success && role && userId) {
       setNewRole(role);
       acceptNewRole(userId, role);
+
       // update the role on the frontend
       setUserInfo((prevUserInfo) => ({
         ...prevUserInfo,
