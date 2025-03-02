@@ -1,5 +1,4 @@
 "use client";
-
 import useAuth from "@/hooks/useAuth";
 import MyEventsList from "@/components/ViewMyEventsGetter";
 import { Container, Typography, useMediaQuery, useTheme } from "@mui/material";

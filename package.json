@@ -17,6 +17,8 @@
     "test:coverage": "jest --coverage"
   },
   "dependencies": {
+    "@azure/msal-browser": "^4.5.0",
+    "@azure/msal-react": "^3.0.5",
     "@emotion/cache": "11.13.1",
     "@emotion/react": "11.13.3",
     "@emotion/styled": "11.13.0",

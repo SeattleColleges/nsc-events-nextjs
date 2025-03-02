@@ -1,25 +1,30 @@
 "use client";
 
-import { ChangeEventHandler, FormEventHandler, useState } from "react";
+import { ChangeEventHandler, FormEventHandler, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Container, Paper, Box, TextField, Button, Typography, Link as MuiLink, useMediaQuery } from "@mui/material";
 import { textFieldStyle } from "@/components/InputFields";
 import { useTheme } from "@mui/material";
+import { useMsal } from "@azure/msal-react";
+import { loginRequest } from "@/utility/msal/authConfig";
+import { callMsGraph, getCalendarEvents, getUserPhoto } from "@/utility/msal/graph";
 
 const URL = process.env.NSC_EVENTS_PUBLIC_API_URL;
 if (URL?.includes('localhost')) {
-  console.log('Dev API Address: ',URL)
+  console.log('Dev API Address: ', URL);
 }
 
 const Signin = () => {
+  const { instance } = useMsal();
+  const [userData, setUserData] = useState("");
+  const [photo, setPhoto] = useState();
+	const [eventList, setEventList] = useState([]);
   const { palette } = useTheme();
-
   const darkImagePath = '/images/white_nsc_logo.png';
   const lightImagePath = '/images/blue_nsc_logo.png';
   const imagePath = palette.mode === "dark" ? darkImagePath : lightImagePath;
 
-  
   const [error, setError] = useState("");
   const [userInfo, setUserInfo] = useState({
     email: "",
@@ -27,7 +32,7 @@ const Signin = () => {
   });
 
   const router = useRouter();
-  
+
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
@@ -36,7 +41,6 @@ const Signin = () => {
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = ({ target }) => {
     const { name, value } = target;
-
     setUserInfo({ ...userInfo, [name]: value });
   };
 
@@ -51,14 +55,17 @@ const Signin = () => {
         password,
       }),
     });
+
     if (!res.ok) {
       alert("Invalid email or password");
       throw new Error(await res.text());
     }
+
     const { token } = await res.json();
-    const userRole = JSON.parse(atob(token.split(".")[1])).role; 
+    const userRole = JSON.parse(atob(token.split(".")[1])).role;
     localStorage.setItem("token", token);
     window.dispatchEvent(new CustomEvent('auth-change'));
+
     if (userRole === "admin") {
       router.push("/admin");
     } else if (userRole === "creator") {
@@ -68,35 +75,46 @@ const Signin = () => {
     }
   };
 
+  // Handle MSAL login
+	const handleMSALLogin = async () => {
+		try {
+			const response = await instance.loginPopup(loginRequest);
+			// For use in Postman
+			console.log(`token: ${response.accessToken}`);
+		} catch (error) {
+			console.error(error);
+		}
+	};
+
   return (
-    <Container 
-      maxWidth="xs" 
-      sx={{ 
-        display: 'flex', 
-        flexDirection: 'column', 
-        alignItems: 'center', 
-        height: '100vh', 
+    <Container
+      maxWidth="xs"
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        height: '100vh',
         justifyContent: 'center',
-        mt: isMobile ? -8 : isTablet ? -6 : -10
+        mt: isMobile ? -8 : isTablet ? -6 : -10,
       }}
     >
-      <Paper 
-        elevation={6} 
-        sx={{ 
-          padding: 4, 
-          width: '100%', 
-          display: 'flex', 
-          flexDirection: 'column', 
-          alignItems: 'center', 
-          borderRadius: 2, 
-          mb: 2 
+      <Paper
+        elevation={6}
+        sx={{
+          padding: 4,
+          width: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          borderRadius: 2,
+          mb: 2,
         }}
       >
-        <Box 
-          sx={{ 
-            display: 'flex', 
-            justifyContent: 'center', 
-            marginBottom: 2 
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            marginBottom: 2,
           }}
         >
           <Image
@@ -168,6 +186,21 @@ const Signin = () => {
             </Typography>
           </Box>
         </Box>
+        <br />
+        <Typography variant="body2" color="textSecondary" align="center">
+          Use your NSC email address to sign in
+        </Typography>
+        <Button
+          type="button"
+          onClick={handleMSALLogin} // Use this function to trigger MSAL login
+          sx={{ mt: 3, mb: 2 }}
+          style={{ textTransform: 'none' }}
+          color="primary"
+          fullWidth
+          variant="contained"
+        >
+          Sign in with Outlook
+        </Button>
       </Paper>
     </Container>
   );
