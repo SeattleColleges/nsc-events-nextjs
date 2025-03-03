@@ -69,7 +69,7 @@ const Profile = () => {
                 <Typography component="h1" variant="h4" sx={{ textAlign: "center", mt: 3, mb: 3 }}>
                     Welcome, { user?.firstName }!
                 </Typography>
-                <Box sx={{ display: "flex", flexDirection: 'column', justifyContent: "center", margin:'auto', width: isMobile ? '75%' : '90%',}}>
+                <Box sx={{ display: "flex", flexDirection: 'column', justifyContent: "center", margin:'auto', width: isMobile ? '75%' : '90%' }}>
                         
                     <UserHeader firstName={user.firstName} lastName={user.lastName} pronouns={user.pronouns} /> 
                     

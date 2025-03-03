@@ -1,11 +1,11 @@
 import { Avatar, Box, Typography } from '@mui/material'
 import React from 'react'
 
-interface UserSideBarInterface {
+interface UserSideBarProps {
     email: string;
 }
 
-const UserSideBar: React.FC<UserSideBarInterface> = ({email}) => {
+const UserSideBar: React.FC<UserSideBarProps> = ({ email }) => {
   return (
     <Box 
         sx={{
@@ -20,7 +20,7 @@ const UserSideBar: React.FC<UserSideBarInterface> = ({email}) => {
             padding: "35px",
             boxShadow: 3
         }}>
-        <Avatar sx={{height: 140, width: 140, fontSize: '50px', marginBottom: '25px'}}>JD</Avatar>
+        <Avatar sx={{ height: 140, width: 140, fontSize: '50px', marginBottom: '25px' }}>JD</Avatar>
         <Typography >Email:</Typography>
         <Typography>{email}</Typography>
         {/* Date Created and Date Last Edited (needs to be implemented in fetch user) */}
