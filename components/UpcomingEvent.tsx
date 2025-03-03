@@ -14,10 +14,16 @@ import Image from "next/image";
 import { ActivityDatabase } from "@/models/activityDatabase";
 import { useFilteredEvents } from "@/utility/queries";
 import { formatDate } from "@/utility/dateUtils";
+import { isModifier } from "typescript";
+import { useMediaQuery, useTheme } from "@mui/material"
 
 export function UpcomingEvent() {
   const [events, setEvents] = useState<ActivityDatabase[]>([]);
   const { data } = useFilteredEvents(1, true);
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.between('xs', 'sm'));
+
 
   useEffect(() => {
     if (data) {
@@ -35,33 +41,26 @@ export function UpcomingEvent() {
     <Grid container spacing={1}>
       {data?.slice(0, 1).map((event: ActivityDatabase) => (
         <Grid item xs={12} key={event._id}>
-          <Box sx={{ width: 350 }}>
-            <Box
-              sx={{
-                position: "absolute",
-                transform: "translate(45%, -91.5%)",
-              }}
-            >
-              <Image
-                src="/images/NSC_Mascot_2C_cropped.png"
-                alt="NSC Mascot"
-                width={200}
-                height={150}
-              />
-            </Box>
+          <Box sx={{ width: 675 }} >
             <Card
               sx={{
                 display: "flex",
-                flexDirection: "column",
+                flexDirection: "row",
                 marginTop: 0,
+                width: "100%",
               }}
             >
-              <CardMedia
-                component="img"
-                sx={{ height: 200, objectFit: "cover" }}
-                image={event.eventCoverPhoto}
-                alt={event.eventTitle}
-              />
+              {!isMobile ? (
+                  <CardMedia
+                  component="img"
+                  sx={{ height: 200, objectFit: "cover", width: 200, margin: 2 }}
+                  image={event.eventCoverPhoto}
+                  alt={event.eventTitle}
+                />
+              ) : (
+                null
+              )}
+ 
               <CardContent sx={{ flexGrow: 1 }}>
                 <Typography variant="h5" align="center">
                   {event.eventTitle}
