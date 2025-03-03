@@ -7,7 +7,7 @@ interface UserHeaderProps {
   pronouns: string;
 }
 
-const UserHeader: React.FC<UserHeaderProps> = ({firstName, lastName, pronouns}) => {
+const UserHeader: React.FC<UserHeaderProps> = ({ firstName, lastName, pronouns }) => {
   return (
     <Box
         sx={{
