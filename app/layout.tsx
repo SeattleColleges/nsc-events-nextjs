@@ -7,6 +7,7 @@ import { AppRouterCacheProvider } from "@mui/material-nextjs/v14-appRouter";
 import CssBaseline from "@mui/material/CssBaseline";
 import ThemeContextProvider from "./theme/providers";
 import Footer from "@/components/Footer";
+// import ArchivedEvents from "@/components/ArchivedEvents";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -29,6 +30,7 @@ export default function RootLayout({
               <Navbar />
               <CssBaseline /> {/* Ensures consistent baseline styles */}
               {children} {/* TODO: Add Wrapper Div component after replacing CSS with MUI for consistency*/}
+              {/* <ArchivedEvents /> */}
               <Footer />
             </ReactQueryProvider>
           </AppRouterCacheProvider>
