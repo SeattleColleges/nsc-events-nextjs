@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Box, Button, Container, Stack, Typography } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
-import EditUserRoleDialog from "../../edit-user-role-page/components/EditUserRoleDialog";
+import EditUserRoleDialog from "../app/edit-user-role-page/components/EditUserRoleDialog";
 
 export interface CurrentUserCardProps {
   firstName: string;
