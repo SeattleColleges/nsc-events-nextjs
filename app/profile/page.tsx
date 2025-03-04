@@ -3,11 +3,14 @@
 import { getCurrentUserId } from "@/utility/userUtils";
 import { Box, Button, Stack, Typography, useMediaQuery, useTheme } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import CurrentUserCard from "@/components/CurrentUserCard";
+import CurrentUserCard from "@/app/profile/components/CurrentUserCard";
 import { useRouter } from "next/navigation";
 import useAuth from "@/hooks/useAuth";
 import UnauthorizedPageMessage from "@/components/UnauthorizedPageMessage";
-import EditUserDetailsDialog, { User } from "@/components/EditUserDetailsDialog";
+import EditUserDetailsDialog, { User } from "@/app/profile/components/EditUserDetailsDialog";
+import UserHeader from "./components/UserHeader";
+import UserSideBar from "./components/UserSideBar";
+import UserContent from "./components/UserContent";
 
 const URL = process.env.NSC_EVENTS_PUBLIC_API_URL;
 
@@ -60,23 +63,32 @@ const Profile = () => {
         )
     }
   
-    if (isAuth ) {
+    if (isAuth) {
         return (
-            <Box sx={{ display: "flex", justifyContent: "center", margin: 'auto', width: isMobile ? '75%' : 'auto' }}>
-                <Stack>
-                    <Typography component="h1" variant="h4" sx={{ textAlign: "center", mt: 3, mb: 3 }}>
-                        Welcome, { user?.firstName }!
-                    </Typography>
-                    <CurrentUserCard user={user}/>
+            <>
+                <Typography component="h1" variant="h4" sx={{ textAlign: "center", mt: 3, mb: 3 }}>
+                    Welcome, { user?.firstName }!
+                </Typography>
+                <Box sx={{ display: "flex", flexDirection: 'column', justifyContent: "center", margin:'auto', width: isMobile ? '75%' : '90%' }}>
+                        
+                    <UserHeader firstName={user.firstName} lastName={user.lastName} pronouns={user.pronouns} /> 
+                    
+                    <Box sx={{ display: "flex", justifyContent: "flex-start", width: "auto", marginY: '10px' }}>
+                        <UserSideBar email={user.email}/> 
+                        <UserContent 
+                        />
+                    </Box>
+                    {/* <CurrentUserCard user={user}/>
                     <Button onClick={handleEditClick} sx={{ mt: 2 }}>Edit Profile</Button>
                     <Button onClick={ () => router.replace('/auth/change-password') }>
                         Change Password
                     </Button>
                     {openEditDialog && (
                         <EditUserDetailsDialog open={openEditDialog} onClose={handleCloseEditDialog} user={user} />
-                    )}
-                </Stack>
-            </Box>
+                    )} */}
+                    
+                </Box>
+            </>
         );
     } else {
         return <UnauthorizedPageMessage/>
