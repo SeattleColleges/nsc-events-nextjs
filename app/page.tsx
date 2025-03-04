@@ -5,7 +5,7 @@ import Image from "next/image";
 import CircularProgress from "@mui/material/CircularProgress";
 import HomeEventsList from "@/components/HomeEventGetter";
 import UpcomingEvent from "@/components/UpcomingEvent";
-import { Box, Button, Typography, Grid, useMediaQuery } from "@mui/material";
+import { Box, Button, Typography, Grid2, useMediaQuery } from "@mui/material";
 import Link from "next/link";
 import { useTheme } from "@mui/material";
 
@@ -52,11 +52,11 @@ const Home = () => {
   return (
     <Box
       sx={{ 
-        display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", paddingBlock: 10, paddingInline: 2, 
+        display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", paddingBlock: 5, paddingInline: 2, width: "100%"
       }}
     >
       <Box
-        sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", width: "100%" }}
+        sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", width: "50%" }}
       >
         <Box
           sx={{
@@ -86,22 +86,22 @@ const Home = () => {
         >
           Upcoming Events
         </Typography>
-        <Box ml={{ lg: 4  }}>
-          <Grid container justifyContent="center" p={2}>
+        <Box sx={{}}>
+          <Box justifyContent="center" p={2}>
               {/* <Grid item md={7} lg={8} xl={9} justifyContent="center">
                 <HomeEventsList />
               </Grid> */}
               {!isMobile &&  (
-              <Grid item md={5} lg={4} xl={3} justifyContent="center">
+              <Grid2 justifyContent="center">
                 <UpcomingEvent />
-              </Grid>
+              </Grid2>
               )}
-          </Grid>
+          </Box>
         </Box>
       </Box>
       <Box
         sx={{
-          display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", pt: 4,
+          display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", pt: 4, width: "50%"
         }}
       >
         {!token ? (
@@ -114,7 +114,8 @@ const Home = () => {
               alignItems: "center",
               p: isMobile ? "1em" : "2rem",
               borderRadius: "15px",
-              width: isMobile ? "95%" : isTablet ? "550px" : "800px",
+              width: "100%",
+              // width: isMobile ? "95%" : isTablet ? "550px" : "800px",
               mb: isMobile ? "7vh" : "10vh",
             }}
           >
