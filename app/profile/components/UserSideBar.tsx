@@ -2,7 +2,6 @@ import { Avatar, Box, Button, Typography } from '@mui/material'
 import React, { useState } from 'react'
 import EditUserDetailsDialog, { User } from './EditUserDetailsDialog';
 import router from 'next/router';
-import { set } from 'mongoose';
 import { useUser } from '@/context/UserContext';
 
 
@@ -27,7 +26,8 @@ const UserSideBar = () => {
     <Box 
         sx={{
             width: '15%',
-            height: '100%',
+            minWidth: '180px',
+            height: '600px',
             backgroundColor: 'white',
             display: 'flex',
             flexDirection: 'column',
@@ -37,21 +37,27 @@ const UserSideBar = () => {
             padding: "35px",
             boxShadow: 3
         }}>
-        <Avatar sx={{ height: 140, width: 140, fontSize: '50px', marginBottom: '25px' }}>JD</Avatar>
+        <Avatar sx={{ height: 140, width: 140, fontSize: '50px', marginBottom: '25px' }}>
+          {user?.firstName.charAt(0).toUpperCase()}{user?.lastName.charAt(0).toUpperCase()}
+        </Avatar>
         
         <Typography >Email:</Typography>
         { user && (
-        <>
-          <Typography>{user.email}</Typography>
-          <Button onClick={handleEditClick} sx={{ mt: 2 }}>Edit Profile</Button>
-          <Button onClick={ () => router.replace('/auth/change-password') }>
-              Change Password
-          </Button>
-        
-        {openEditDialog && (
-            <EditUserDetailsDialog open={openEditDialog} onClose={handleCloseEditDialog} user={user} />
-        )}
-        </>
+          <>
+            <Typography>{user.email}</Typography>
+            <Box sx={{ marginTop: 'auto', width: '100%', textAlign: 'center' }}>
+              <Button onClick={handleEditClick} sx={{ mt: 2 }}>
+                Edit Profile
+              </Button>
+              <Button onClick={() => router.replace('/auth/change-password')} sx={{ mt: 2 }}>
+                Change Password
+              </Button>
+            </Box>
+          
+            {openEditDialog && (
+                <EditUserDetailsDialog open={openEditDialog} onClose={handleCloseEditDialog} user={user} />
+            )}
+          </>
         )}
         {/* Date Created and Date Last Edited (needs to be implemented in fetch user) */}
         {/* Edit/Delete Buttons for User */}

@@ -3,25 +3,22 @@
 import { getCurrentUserId } from "@/utility/userUtils";
 import { Box, Button, Stack, Typography, useMediaQuery, useTheme } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import useAuth from "@/hooks/useAuth";
 import UnauthorizedPageMessage from "@/components/UnauthorizedPageMessage";
-import { User } from "@/app/profile/components/EditUserDetailsDialog";
 import UserHeader from "./components/UserHeader";
 import UserSideBar from "./components/UserSideBar";
 import UserContent from "./components/UserContent";
-import { UserProvider } from "@/context/UserContext";
+import { UserProvider, useUser } from "@/context/UserContext";
 
 const URL = process.env.NSC_EVENTS_PUBLIC_API_URL;
 
-const Profile = () => {
+const ProfileContent = () => {
     const { isAuth } = useAuth();
-    const [user, setUser] = useState<User>();
+    const { user, setUser } = useUser();
     const [token, setToken] = useState<string | null>();
     
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-    const router = useRouter();
     const getUserFromId = async (userId: string) => {
         const response = await fetch(`${URL}/users/find/${userId}`);
         if (response.ok) {
@@ -53,29 +50,32 @@ const Profile = () => {
         )
     }
   
-    if (isAuth && user) {
+    if (isAuth) {
         return (
-            <> 
-                <UserProvider>
-                    <Typography component="h1" variant="h4" sx={{ textAlign: "center", mt: 3, mb: 3 }}>
-                        Welcome, { user?.firstName }!
-                    </Typography>
-                    <Box sx={{ display: "flex", flexDirection: 'column', justifyContent: "center", margin:'auto', width: isMobile ? '75%' : '90%' }}>
-                            
-                        <UserHeader firstName={user.firstName} lastName={user.lastName} pronouns={user.pronouns} /> 
+            <Box> 
+                <Typography component="h1" variant="h4" sx={{ textAlign: "center", mt: 3, mb: 3 }}>
+                    Welcome, { user?.firstName }!
+                </Typography>
+                <Box sx={{ display: "flex", flexDirection: 'column', justifyContent: "center", margin:'auto', width: isMobile ? '75%' : '90%' }}>
                         
-                        <Box sx={{ display: "flex", justifyContent: "flex-start", width: "auto", marginY: '10px' }}>
-                            <UserSideBar/> 
-                            <UserContent 
-                            />
-                        </Box>
+                    <UserHeader firstName={user.firstName} lastName={user.lastName} pronouns={user.pronouns} /> 
+                    
+                    <Box sx={{ display: "flex", justifyContent: "flex-start", width: "auto", marginY: '10px' }}>
+                        <UserSideBar /> 
+                        <UserContent />
                     </Box>
-                </UserProvider>
-            </>
+                </Box>
+            </Box>
         );
     } else {
         return <UnauthorizedPageMessage/>
     }
 };
+
+const Profile = () => (
+    <UserProvider>
+        <ProfileContent />
+    </UserProvider>
+);
 
 export default Profile;

@@ -1,4 +1,4 @@
-import { User } from '@/app/profile/components/EditUserDetailsDialog';
+import { User } from '@/app/profile/components/EditUserDetailsDialog'; // Ensure this path is correct
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 
@@ -11,6 +11,7 @@ const UserContext = createContext<UserContextProps | undefined>(undefined);
 
 export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const [user, setUser] = useState<User>();
+    
 
     return (
         <UserContext.Provider value={{ user, setUser }}>
