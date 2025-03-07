@@ -8,24 +8,16 @@ import {
   Box,
   CardActions,
   Button,
-  Grid2,
 } from "@mui/material";
 import Link from "next/link";
 import Image from "next/image";
 import { ActivityDatabase } from "@/models/activityDatabase";
 import { useFilteredEvents } from "@/utility/queries";
 import { formatDate } from "@/utility/dateUtils";
-import { isModifier } from "typescript";
-import { useMediaQuery, useTheme } from "@mui/material"
 
 export function UpcomingEvent() {
   const [events, setEvents] = useState<ActivityDatabase[]>([]);
   const { data } = useFilteredEvents(1, true);
-
-  const theme = useTheme();
-  const isLaptop = useMediaQuery(theme.breakpoints.between('md', 'lg'));
-  const isMobile = useMediaQuery(theme.breakpoints.between('xs', 'sm'));
-
 
   useEffect(() => {
     if (data) {
@@ -40,113 +32,64 @@ export function UpcomingEvent() {
   }, [data]);
 
   return (
-    <Grid2 sx={{display: "flex", justifyContent: "center", width: "100%"}}>
+    <Grid container spacing={1}>
       {data?.slice(0, 1).map((event: ActivityDatabase) => (
-        <Grid2 key={event._id} sx={{ display: "flex" }} >
-          <Card 
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              marginTop: 0,
-              width: "100%",
-            }}
-          >
-            {!isMobile ? (
+        <Grid item xs={12} key={event._id}>
+          <Box sx={{ width: 350 }}>
+            <Box
+              sx={{
+                position: "absolute",
+                transform: "translate(45%, -91.5%)",
+              }}
+            >
+              <Image
+                src="/images/NSC_Mascot_2C_cropped.png"
+                alt="NSC Mascot"
+                width={200}
+                height={150}
+              />
+            </Box>
+            <Card
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                marginTop: 0,
+              }}
+            >
               <CardMedia
                 component="img"
-                sx={{ height: 200, objectFit: "cover", width: 200, margin: 2 }}
+                sx={{ height: 200, objectFit: "cover" }}
                 image={event.eventCoverPhoto}
                 alt={event.eventTitle}
               />
-            ) : (
-              null
-            )}
-            <Box sx={{display: "flex", flexDirection: "column", justifyContent: "space-between", marginTop: 2, marginRight: 2}}>
-              <Box sx={{display: "flex"}}>
-                <Box sx={{display: "flex", flexDirection: "row"}}>
-                  <Typography>
-                    {event.eventTitle}
-                  </Typography>
-                  <Typography>
-                    Location: {event.eventLocation}
-                  </Typography>
-                  <Typography>
-                    Time: {event.eventStartTime} - {event.eventEndTime}
-                  </Typography>
-                  <Typography>
-                    {event.eventDescription}
-                  </Typography>
-                </Box>
-                <Typography>
-                  July 9th
+              <CardContent sx={{ flexGrow: 1 }}>
+                <Typography variant="h5" align="center">
+                  {event.eventTitle}
                 </Typography>
-              </Box>
-              <Box sx={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
-                <Typography>
-                  Tags: Item Item Item
+                <Typography variant="body2" color="text.secondary" textAlign="center" marginTop="5px">
+                  Date: {formatDate(event.eventDate)}
                 </Typography>
-                <Button type="button">
-                  See more details {'>'}
-                </Button>
-              </Box>
-            </Box>
-          </Card>
-        </Grid2>
+              </CardContent>
+              <CardActions sx={{ justifyContent: "center" }}>
+              <Link key={event._id} href={
+                          {
+                              pathname: "/event-detail",
+                              query: {
+                                  id: event._id,
+                                  events: JSON.stringify(events.map(e => e._id)),
+                                  from: 'home'
+                              },
+                          }
+                      } >
+                  <Button size={"small"}>Details</Button>
+                </Link>
+              </CardActions>
+            </Card>
+          </Box>
+        </Grid>
       ))}
-    </Grid2>
-
-
-  //   <Grid container spacing={1}>
-  //     {data?.slice(0, 1).map((event: ActivityDatabase) => (
-  //       <Grid item xs={12} key={event._id}>
-  //         <Box sx={{ width: 675 }} >
-  //           <Card
-  //             sx={{
-  //               display: "flex",
-  //               flexDirection: "row",
-  //               marginTop: 0,
-  //               width: "100%",
-  //             }}
-  //           >
-  //             {!isMobile ? (
-  //                 <CardMedia
-  //                 component="img"
-  //                 sx={{ height: 200, objectFit: "cover", width: 200, margin: 2 }}
-  //                 image={event.eventCoverPhoto}
-  //                 alt={event.eventTitle}
-  //               />
-  //             ) : (
-  //               null
-  //             )}
- 
-  //             <CardContent sx={{ flexGrow: 1 }}>
-  //               <Typography variant="h5" align="center">
-  //                 {event.eventTitle}
-  //               </Typography>
-  //               <Typography variant="body2" color="text.secondary" textAlign="center" marginTop="5px">
-  //                 Date: {formatDate(event.eventDate)}
-  //               </Typography>
-  //             </CardContent>
-  //             <CardActions sx={{ justifyContent: "center" }}>
-  //             <Link key={event._id} href={
-  //                         {
-  //                             pathname: "/event-detail",
-  //                             query: {
-  //                                 id: event._id,
-  //                                 events: JSON.stringify(events.map(e => e._id)),
-  //                                 from: 'home'
-  //                             },
-  //                         }
-  //                     } >
-  //                 <Button size={"small"}>Details</Button>
-  //               </Link>
-  //             </CardActions>
-  //           </Card>
-  //         </Box>
-  //       </Grid>
-  //     ))}
-  //   </Grid>
+    </Grid>
   );
-}
+  }
 
 export default UpcomingEvent;
