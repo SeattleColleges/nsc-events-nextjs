@@ -9,7 +9,7 @@ interface EventCardProps {
   event: ActivityDatabase; 
 }
 
-function EventCard2({ event }: EventCardProps) {
+function EventCard({ event }: EventCardProps) {
 const theme = useTheme();
 const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
 const isMobile = useMediaQuery(theme.breakpoints.between('xs', 'sm'));
@@ -43,7 +43,4 @@ return (
 }
 
 
-export default EventCard
-
-
-
+export default EventCard;
