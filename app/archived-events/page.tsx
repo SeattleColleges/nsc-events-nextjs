@@ -10,7 +10,7 @@ import { ActivityDatabase } from "@/models/activityDatabase";
 import EventCard from "../../components/EventCard";
 import Link from "next/link";
 
-export function ArchivedEvents() {
+const ArchivedEvents = () => {
 
     const { isAuth, user } = useAuth();
     const [events, setEvents] = useState<ActivityDatabase[]>([]);
