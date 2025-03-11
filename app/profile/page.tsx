@@ -9,6 +9,7 @@ import UserHeader from "./components/UserHeader";
 import UserSideBar from "./components/UserSideBar";
 import UserContent from "./components/UserContent";
 import { UserProvider, useUser } from "@/context/UserContext";
+import { set } from "mongoose";
 
 const URL = process.env.NSC_EVENTS_PUBLIC_API_URL;
 
@@ -19,13 +20,31 @@ const ProfileContent = () => {
     
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
     const getUserFromId = async (userId: string) => {
-        const response = await fetch(`${URL}/users/find/${userId}`);
+        const storedToken = localStorage.getItem("token");
+        
+        if (!storedToken) {
+            console.error("Token is missing");
+            return;
+        }
+    
+        const response = await fetch(`${URL}/users/find/${userId}`, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${storedToken}`, // Send token in Authorization header
+                "Content-Type": "application/json"
+            }
+        });
+        
         if (response.ok) {
             const data = await response.json();
-            setUser(data)
+            setUser(data);
+        } else {
+            console.error("Error:", response.status, response.statusText);
         }
-    }
+    };
+    
     useEffect(()=> {
         setToken(localStorage.getItem('token'))
         const userId = getCurrentUserId();
@@ -36,7 +55,7 @@ const ProfileContent = () => {
     if (token === null) {
         return (
             <Box sx={{ display: "flex", justifyContent: "center" }}>
-                <Typography>
+                <Typography sx={{ marginTop: "100px" }}>
                     Please sign in to view profile.
                 </Typography>
             </Box>
