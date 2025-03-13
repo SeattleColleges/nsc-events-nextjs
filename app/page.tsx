@@ -5,9 +5,11 @@ import Image from "next/image";
 import CircularProgress from "@mui/material/CircularProgress";
 import HomeEventsList from "@/components/HomeEventGetter";
 import UpcomingEvent from "@/components/UpcomingEvent";
-import { Box, Button, Typography, Grid, useMediaQuery } from "@mui/material";
+import { Box, Button, Typography, useMediaQuery } from "@mui/material";
+import Grid from "@mui/material/Grid2";
 import Link from "next/link";
 import { useTheme } from "@mui/material";
+import LoginWindow from "@/components/LoginWindow";
 
 const Home = () => {
   const [token, setToken] = useState<string | null>(null);
@@ -51,103 +53,73 @@ const Home = () => {
 
   return (
     <Box
-      sx={{ 
-        display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", pt: 4,
+      sx={{
+        display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", pt: 4, margin: !(isMobile) ? 4 : 0, pb: 4
       }}
     >
-      {!token ? (
-        <Box
-          sx={{
-            backgroundColor: containerColor,
+      <Box sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", width: "100%" }}>
+        <Grid sx={{
+          display: "flex",
+          flexDirection: isMobile || isTablet ? "column" : "row",
+          justifyContent: "center",
+          alignItems: "center",
+          width: "100%",
+        }}>
+          <Box sx={{
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
-            p: isMobile ? "1em" : "2rem",
-            borderRadius: "15px",
-            width: isMobile ? "95%" : isTablet ? "550px" : "800px",
-            mb: isMobile ? "7vh" : "10vh",
-          }}
-        >
-          <Box
-            sx={{
-              display: "block",
-              m: "0 auto",
-              width: "100px",
-              height: "100px",
-              mb: "1rem",
-            }}
-          >
-            {/* Correctly use the logo based on the theme */}
-            <Image
-              src={imagePath}
-              title={"NSC Logo"}
-              alt={"NSC Logo"}
-              width={100}
-              height={100}
-            />
+            width: "100%",
+          }}>
+            <Typography
+              fontSize={isMobile ? "1.75rem" : "2.25rem"}
+              textAlign={"center"}
+              padding={"1rem"}
+              marginBottom={isMobile ? "0.5" : "1rem"}
+              sx={{
+                borderBottom: "1px solid #333",
+                width: "90%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                mt: isMobile ? -8 : isTablet ? -6 : -10,
+              }}
+            >
+              Upcoming Events
+            </Typography>
+            <Box
+              sx={{
+                width: "100%",
+                height: "calc(100vh - 200px)", // Adjust height to take up the entire window height minus some offset
+                overflowY: "scroll", // Use scroll property for scroll effect
+                padding: "1rem",
+                border: "1px solid #ccc",
+                borderRadius: "4px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              {/* <UpcomingEvent /> */}
+              <HomeEventsList />
+            </Box>
           </Box>
-          <Typography
-            fontSize={isMobile ? "1.75rem" : "2.25rem"}
-            textAlign={"center"}
-            padding={"1rem"}
-            marginBottom={"1.5rem"}
-          >
-            Welcome to North Seattle College Events
-          </Typography>
-          <Box flex={1} display={"flex"} gap={1} marginBottom={"1em"}>
-            <Link href="auth/sign-in">
-              <Button variant="contained" color="primary">
-                Sign In
-              </Button>
-            </Link>
-            <Link href="auth/sign-up">
-              <Button variant="contained" color="primary">
-                Sign Up
-              </Button>
-            </Link>
+          <Box sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            width: "100%",
+          }}>
+            <Grid sx={{ md: 7, lg: 8, xl: 9 }} justifyContent="center">
+              {!token ? (
+                <LoginWindow />
+              ) : null}
+            </Grid>
           </Box>
-          {/* download mobile app link */}
-          <Box style={{ marginBottom: "1em" }}>
-            <Link href="">
-              <Button variant="contained" color="secondary">
-                {/* Use direct reference for google play image */}
-                <Image
-                  src={googlePlayImage}
-                  alt="google_play"
-                  width={40}
-                  height={40}
-                  style={{ marginRight: "8px" }}
-                />
-                Download App
-              </Button>
-            </Link>
-          </Box>
-        </Box>
-      ) : null}
-      <Box>
-        <Typography
-          fontSize={isMobile ? "1.75rem" : "2.25rem"}
-          textAlign={"center"}
-          padding={"1rem"}
-          marginBottom={isMobile ? "0.5" : "1rem"}
-        >
-          Upcoming Events
-        </Typography>
-        <Box ml={{ lg: 4  }}>
-          <Grid container justifyContent="center" p={2}>
-              <Grid item md={7} lg={8} xl={9} justifyContent="center">
-                <HomeEventsList />
-              </Grid>
-              {!isMobile && !isTablet && (
-              <Grid item md={5} lg={4} xl={3} justifyContent="center">
-                <UpcomingEvent />
-              </Grid>
-              )}
-          </Grid>
-        </Box>
+        </Grid>
       </Box>
-    </Box>
+    </Box >
   );
 };
 
