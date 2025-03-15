@@ -16,6 +16,12 @@
   }
 }
 
+body {
+  box-sizing: border-box;
+  height: 100%;
+  width: 100%;
+}
+
 /* This is removed because the PO requested a solid plain background color with no shadows
 /* body {
   color: rgb(var(--foreground-rgb));
@@ -26,4 +32,3 @@
     )
     rgb(var(--background-start-rgb));
 } */
-

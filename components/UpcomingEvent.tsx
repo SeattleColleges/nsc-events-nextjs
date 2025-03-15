@@ -21,13 +21,13 @@ export function UpcomingEvent() {
 
   useEffect(() => {
     if (data) {
-        setEvents((prevEvents) => {
-            const newEvents = [...prevEvents, ...data];
-            const uniqueEvents = newEvents.filter((event, index, self) =>
-                index === self.findIndex((e) => e._id === event._id)
-            );
-            return uniqueEvents;
-        });
+      setEvents((prevEvents) => {
+        const newEvents = [...prevEvents, ...data];
+        const uniqueEvents = newEvents.filter((event, index, self) =>
+          index === self.findIndex((e) => e._id === event._id)
+        );
+        return uniqueEvents;
+      });
     }
   }, [data]);
 
@@ -71,16 +71,16 @@ export function UpcomingEvent() {
                 </Typography>
               </CardContent>
               <CardActions sx={{ justifyContent: "center" }}>
-              <Link key={event._id} href={
-                          {
-                              pathname: "/event-detail",
-                              query: {
-                                  id: event._id,
-                                  events: JSON.stringify(events.map(e => e._id)),
-                                  from: 'home'
-                              },
-                          }
-                      } >
+                <Link key={event._id} href={
+                  {
+                    pathname: "/event-detail",
+                    query: {
+                      id: event._id,
+                      events: JSON.stringify(events.map(e => e._id)),
+                      from: 'home'
+                    },
+                  }
+                } >
                   <Button size={"small"}>Details</Button>
                 </Link>
               </CardActions>
@@ -90,6 +90,6 @@ export function UpcomingEvent() {
       ))}
     </Grid>
   );
-  }
+}
 
 export default UpcomingEvent;
