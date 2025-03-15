@@ -48,7 +48,7 @@ const ProfileContent = () => {
         setToken(localStorage.getItem('token'))
         const userId = getCurrentUserId();
         getUserFromId(userId);
-    },[]);
+    },[getUserFromId]);
         
 
     if (token === null) {

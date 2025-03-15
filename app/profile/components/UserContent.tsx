@@ -35,12 +35,12 @@ const UserContent: React.FC<UserContentProps> = () => {
         User Content
       </Typography>
       <Box sx={{ display: 'flex', flexDirection: 'row', gap: '20px', justifyContent: 'space-between', marginTop: '15px', width: '100%', height: '100%' }}>
-        <Box sx={{ width: '35%', boxShadow: 3, height: '100%', backgroundColor: '#BDBDBD', borderRadius: '7px'}}>
+        <Box sx={{ width: '35%', boxShadow: 3, height: '100%', backgroundColor: '#BDBDBD', borderRadius: '7px' }}>
           <Typography sx={headerStyle}>
             Bio/Affiliations
           </Typography>
         </Box>
-        <Box sx={{ width: '65%', boxShadow: 3, height: '100%', backgroundColor: '#BDBDBD', borderRadius: '7px'}}>
+        <Box sx={{ width: '65%', boxShadow: 3, height: '100%', backgroundColor: '#BDBDBD', borderRadius: '7px' }}>
           <Typography sx={headerStyle}>
             Events Attended
           </Typography>
