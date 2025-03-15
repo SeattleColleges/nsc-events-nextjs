@@ -9,7 +9,6 @@ import UserHeader from "./components/UserHeader";
 import UserSideBar from "./components/UserSideBar";
 import UserContent from "./components/UserContent";
 import { UserProvider, useUser } from "@/context/UserContext";
-import { set } from "mongoose";
 
 const URL = process.env.NSC_EVENTS_PUBLIC_API_URL;
 

@@ -1,12 +1,16 @@
+"use client";
+
 import { Avatar, Box, Button, Typography } from '@mui/material'
 import React, { useState } from 'react'
 import EditUserDetailsDialog, { User } from './EditUserDetailsDialog';
-import router from 'next/router';
+import { useRouter } from 'next/navigation';
 import { useUser } from '@/context/UserContext';
+
 
 const UserSideBar = () => {
   const { user, setUser } = useUser();
   const [openEditDialog, setOpenEditDialog] = useState(false);
+  const router = useRouter();
 
   const handleEditClick = () => {
     setOpenEditDialog(true);
