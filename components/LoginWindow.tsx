@@ -78,10 +78,8 @@ const LoginWindow = () => {
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
-                height: '100vh',
+                height: '100%',
                 justifyContent: 'center',
-                mt: isMobile ? -20 : isTablet ? -28 : -70,
-                minWidth: isMobile ? "100vw" : isTablet ? "80vw" : isLaptop ? "60vw" : isXLScreen ? "40vw" : "30vw",
             }}
         >
             <Paper
@@ -108,12 +106,12 @@ const LoginWindow = () => {
                         boxShadow: 4
                     }}
                 >
-                    <Typography component="h1" variant="h5">
+                    <Typography component="h1" variant="h4" sx={{ fontFamily: 'font-serif' }}>
                         Login
                     </Typography>
                 </Box>
                 <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1, width: '100%', pb: 1, paddingInline: 8, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                    <Typography sx={{ alignSelf: 'flex-start' }}>Email</Typography>
+                    <Typography sx={{ alignSelf: 'flex-start', fontFamily: "font-serif" }}>Email</Typography>
                     <TextField
                         margin="normal"
                         required
@@ -127,7 +125,7 @@ const LoginWindow = () => {
                         InputProps={{ style: textFieldStyle.input }}
                         InputLabelProps={{ style: textFieldStyle.label }}
                     />
-                    <Typography sx={{ alignSelf: 'flex-start' }}>Password</Typography>
+                    <Typography sx={{ alignSelf: 'flex-start', fontFamily: "font-serif" }}>Password</Typography>
                     <TextField
                         margin="normal"
                         required
@@ -147,7 +145,7 @@ const LoginWindow = () => {
                         type="submit"
                         fullWidth
                         variant="contained"
-                        sx={{ mt: 3, mb: 2, color: "black", backgroundColor: palette.secondary.light }}
+                        sx={{ mt: 3, mb: 2, color: "black", backgroundColor: palette.secondary.light, fontFamily: "font-serif" }}
                     >
                         Login
                     </Button>

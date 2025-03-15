@@ -24,9 +24,9 @@ function EventCard({ event }: EventCardProps) {
 
   return (
     <div>
-      <Grid size={{ xs: 12, sm: 6, md: 3 }} key={event._id} sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", marginBlock: (isMobile || isTablet) ? 2 : 1 }}>
-        <Box sx={{ width: (isMobile || isTablet) ? "100vw" : "100%", display: "flex", flexDirection: "column", justifyContent: "center", textWrap: "balance" }}>
-          <Card sx={{ display: 'flex', flexDirection: 'row', height: "auto", minWidth: !(isMobile || isTablet) ? 460 : 260, maxWidth: 720, boxShadow: 2, borderRadius: 2 }}>
+      <Grid key={event._id} sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", marginBlock: (isMobile || isTablet) ? 2 : 1, }}>
+        <Box sx={{ width: (isMobile || isTablet) ? "100vw" : "100%", display: "flex", flexDirection: "column", justifyContent: "center", textWrap: "balance", p: 2 }}>
+          <Card sx={{ display: 'flex', flexDirection: 'row', height: "auto", minWidth: !(isMobile || isTablet) ? 460 : "auto", maxWidth: 1200, boxShadow: 2, borderRadius: 2 }}>
             {!isMobile && (
               <CardMedia
                 component="img"
@@ -38,9 +38,9 @@ function EventCard({ event }: EventCardProps) {
             <CardContent sx={{ display: "flex", flexDirection: "column", width: "100%" }} >
               <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between", minWidth: 200, width: "100%" }}>
                 <CardHeader
-                  sx={{ width: "100%", maxWidth: 365, backgroundColor: palette.primary.dark, color: palette.primary.contrastText, borderRadius: 2, boxShadow: 2, padding: 1, mr: 1, height: 40, display: "flex", alignItems: "center" }}
+                  sx={{ width: "100%", maxWidth: "auto", backgroundColor: palette.primary.dark, color: palette.primary.contrastText, borderRadius: 2, boxShadow: 2, padding: 1, mr: 1, height: 40, display: "flex", alignItems: "center" }}
                   title={
-                    <Typography sx={{ fontSize: 16, fontWeight: "500", justifyContent: "center", paddingLeft: 2 }}>
+                    <Typography sx={{ fontSize: (isMobile || isTablet) ? "1rem" : "1.5rem", fontWeight: "300", justifyContent: "center", paddingLeft: 2, fontFamily: "font-serif" }}>
                       {event.eventTitle}
                     </Typography>
                   }
@@ -52,15 +52,15 @@ function EventCard({ event }: EventCardProps) {
               <Box sx={{ display: "flex", flexDirection: "column", justifyContent: "space-between", width: "100%", height: "100%" }}>
                 <Box sx={{ padding: 2 }}>
                   <Box sx={{ mt: 2, mb: 2 }}>
-                    <Typography sx={{ display: "flex", flexDirection: "row" }}>
+                    <Typography sx={{ display: "flex", flexDirection: "row", fontFamily: "font-serif" }}>
                       <Typography sx={{ fontWeight: "bold" }}>Location:</Typography> {event.eventLocation}
                     </Typography>
-                    <Typography sx={{ display: "flex", flexDirection: "row" }}>
+                    <Typography sx={{ display: "flex", flexDirection: "row", fontFamily: "font-serif" }}>
                       <Typography sx={{ fontWeight: "bold" }}>Time:</Typography> {formatDate(event.eventDate)}
                     </Typography>
                   </Box>
-                  <Typography sx={{ display: "flex", flexDirection: "column" }}>
-                    Description: {event.eventDescription}
+                  <Typography sx={{ display: "flex", flexDirection: "column", fontFamily: "font-serif" }}>
+                    {event.eventDescription}
                   </Typography>
                 </Box>
                 <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
@@ -83,7 +83,7 @@ function EventCard({ event }: EventCardProps) {
           </Card>
         </Box>
       </Grid>
-    </div>
+    </div >
   )
 }
 
