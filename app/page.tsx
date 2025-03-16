@@ -5,31 +5,31 @@ import Image from "next/image";
 import CircularProgress from "@mui/material/CircularProgress";
 import HomeEventsList from "@/components/HomeEventGetter";
 import UpcomingEvent from "@/components/UpcomingEvent";
-import { Box, Button, CardMedia, Typography, useMediaQuery } from "@mui/material";
+import { Box, Button, CardMedia, Paper, Typography, useMediaQuery } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import Link from "next/link";
 import { useTheme } from "@mui/material";
 import LoginWindow from "@/components/LoginWindow";
+import HomeEventDetails from "@/components/HomeEventDetails";
 
 const Home = () => {
   const [token, setToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const { palette } = useTheme();
+  const [eventId, setEventId] = useState(null);
 
   // Reference the image paths directly instead of using imports
   const googlePlayImage = '/images/google_play.png'
   const darkImagePath = '/images/north-seattle-tree-frogs.png';
   const lightImagePath = '/images/north-seattle-tree-frogs.png';
-
   const imagePath = palette.mode === "dark" ? darkImagePath : lightImagePath;
-  const containerColor = palette.mode === "dark" ? "#333" : "#fff";
 
+  // Check if the user is on a tablet or mobile device
   const theme = useTheme();
-  const isXLScreen = useMediaQuery(theme.breakpoints.between('lg', 'xl'));
-  const isLaptop = useMediaQuery(theme.breakpoints.between('md', 'lg'));
   const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
   const isMobile = useMediaQuery(theme.breakpoints.between('xs', 'sm'));
 
+  // Load the token from local storage
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
     setToken(storedToken);
@@ -50,6 +50,10 @@ const Home = () => {
       </Box>
     );
   }
+
+  const handleEventZoom = (event: any) => {
+    setEventId(event._id);
+  };
 
   return (
     <Box sx={{ flexGrow: 1, height: "100vh", width: "100vw", p: 2 }}>
@@ -77,7 +81,6 @@ const Home = () => {
                 alignItems: "center",
                 width: "100%",
                 height: "100%",
-                overflowY: "scroll",
               }}
             >
               <CardMedia>
@@ -107,8 +110,9 @@ const Home = () => {
               <Box
                 sx={{
                   display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
+                  overflowY: "scroll",
+                  height: "100%",
+                  marginBlock: 2,
                 }}
               >
                 {/* <UpcomingEvent /> */}
@@ -148,7 +152,13 @@ const Home = () => {
                 </Typography>
                 <LoginWindow />
               </Box>
-            ) : null}
+            ) :
+              <Box flexGrow={1}>
+
+                {eventId && <HomeEventDetails event={eventId} />}
+
+              </Box>
+            }
           </Grid>
         </Box>
       </Grid>

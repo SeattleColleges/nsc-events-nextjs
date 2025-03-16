@@ -13,6 +13,7 @@ function EventCard({ event }: EventCardProps) {
   const theme = useTheme();
   const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
   const isMobile = useMediaQuery(theme.breakpoints.between('xs', 'sm'));
+  const eventId = event._id;
 
   const { palette } = useTheme();
 
@@ -72,7 +73,10 @@ function EventCard({ event }: EventCardProps) {
                       </Box>
                     ))}
                   </Typography>
-                  <Button size="small" sx={{ color: palette.primary.dark, borderRadius: 2, borderColor: palette.primary.dark, border: 1, boxShadow: 2, padding: 1, height: 20, display: "flex", alignItems: "center", fontSize: 9 }}>
+                  <Button
+                    size="small"
+                    id='see-more-details'
+                    sx={{ color: palette.primary.dark, borderRadius: 2, borderColor: palette.primary.dark, border: 1, boxShadow: 2, padding: 1, height: 20, display: "flex", alignItems: "center", fontSize: 9 }}>
                     {(!isMobile && !isTablet) ? 'See more' : ''}
                     details
                     {(!isMobile && !isTablet) ? ' >' : ''}
