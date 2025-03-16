@@ -1,8 +1,10 @@
+"use client";
 import { Box, Card, CardContent, CardHeader, CardMedia, Typography, useMediaQuery, useTheme, Button } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 import { ActivityDatabase } from "@/models/activityDatabase";
 import React from 'react'
 import { formatDate } from "@/utility/dateUtils";
+import { usePathname, useRouter } from 'next/navigation';
 
 // declare the event prop that will get passed to the component
 interface EventCardProps {
@@ -21,7 +23,19 @@ function EventCard({ event }: EventCardProps) {
   const lightImagePath = '/images/blue_nsc_logo.png';
   const googlePlayImage = '/images/google_play.png'
   const imagePath = palette.mode === "dark" ? darkImagePath : lightImagePath;
+  
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = new URLSearchParams(window.location.search);
 
+  // Function to handle the click event on the button
+  // This will update the URL with the selected event ID without reloading the page
+  const handleClick = () => {
+    // Clear any existing event ID from the search params and set the new event ID
+    searchParams.set("event", event._id);
+    // Replace the current URL with the updated search params
+    router.replace(`${pathname}?${searchParams.toString()}`);
+  }
 
   return (
     <div>
@@ -74,6 +88,7 @@ function EventCard({ event }: EventCardProps) {
                     ))}
                   </Typography>
                   <Button
+                    onClick={handleClick}
                     size="small"
                     id='see-more-details'
                     sx={{ color: palette.primary.dark, borderRadius: 2, borderColor: palette.primary.dark, border: 1, boxShadow: 2, padding: 1, height: 20, display: "flex", alignItems: "center", fontSize: 9 }}>

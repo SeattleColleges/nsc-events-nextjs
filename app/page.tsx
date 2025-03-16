@@ -3,20 +3,31 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import CircularProgress from "@mui/material/CircularProgress";
-import HomeEventsList from "@/components/HomeEventGetter";
+import HomeEventsList from "@/components/HomeEvents";
 import UpcomingEvent from "@/components/UpcomingEvent";
 import { Box, Button, CardMedia, Paper, Typography, useMediaQuery } from "@mui/material";
 import Grid from "@mui/material/Grid2";
-import Link from "next/link";
 import { useTheme } from "@mui/material";
 import LoginWindow from "@/components/LoginWindow";
 import HomeEventDetails from "@/components/HomeEventDetails";
+import { useSearchParams } from "next/navigation";
+import { useEventById } from "@/utility/queries"; // Adjust
+import { ActivityDatabase } from "@/models/activityDatabase";
 
 const Home = () => {
   const [token, setToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const { palette } = useTheme();
-  const [eventId, setEventId] = useState(null);
+
+
+  // Get the search params from the URL
+  // This will allow us to extract the eventId from the URL and fetch the event data
+  const searchParams = useSearchParams();  
+  const eventId = searchParams.get("event");
+
+  // Fetch the event data using the eventId from the URL
+  // If no eventId is found, it will return null and not fetch any data
+  const { data: event, isLoading: eventLoading } = useEventById(eventId);
 
   // Reference the image paths directly instead of using imports
   const googlePlayImage = '/images/google_play.png'
@@ -34,6 +45,7 @@ const Home = () => {
     const storedToken = localStorage.getItem("token");
     setToken(storedToken);
     setIsLoading(false);
+    
   }, []);
 
   if (isLoading) {
@@ -51,9 +63,6 @@ const Home = () => {
     );
   }
 
-  const handleEventZoom = (event: any) => {
-    setEventId(event._id);
-  };
 
   return (
     <Box sx={{ flexGrow: 1, height: "100vh", width: "100vw", p: 2 }}>
@@ -155,7 +164,7 @@ const Home = () => {
             ) :
               <Box flexGrow={1}>
 
-                {eventId && <HomeEventDetails event={eventId} />}
+                {event && <HomeEventDetails event={event} />}
 
               </Box>
             }

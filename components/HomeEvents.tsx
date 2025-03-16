@@ -83,20 +83,9 @@ export function HomeEventsList() {
                 {events.length > 0 ? (
                     events.map((event: ActivityDatabase) => (
                         <Grid item xs={12} key={event._id}>
-                            <Link
-                                key={event._id}
-                                href={{
-                                    pathname: "/event-detail",
-                                    query: {
-                                        id: event._id,
-                                        events: JSON.stringify(events.map(e => e._id)),
-                                        from: 'home',
-                                        page: page,
-                                    },
-                                }}
-                            >
+                            
                                 <EventCard key={event._id} event={event} />
-                            </Link>
+                            
                         </Grid>
                     ))
                 ) : (
