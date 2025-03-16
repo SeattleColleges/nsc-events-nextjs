@@ -8,7 +8,7 @@ const styles = {
     root: {
         display: "flex",
         flexDirection: "column",
-        marginTop: "100vh",
+        marginTop: "100%",
         justifyContent: "space-between"
     },
     mainDiv: {
@@ -22,11 +22,11 @@ const styles = {
         gap: 2,
         padding: 3
     }
-  };
+};
 
-export default function Footer(){
+export default function Footer() {
 
-    return(
+    return (
         <Stack sx={styles.root}>
             <Stack direction="row" sx={styles.mainDiv}>
                 <Stack>
@@ -44,13 +44,13 @@ export default function Footer(){
                     <Stack direction="row" color="white" sx={styles.div}>
                         <Box>
                             <Typography variant="h6">
-                            North Seattle College
-                            <br/>
-                            9600 College Way North
-                            <br/>
-                            Seattle, WA 98103
-                            <br/>
-                            206.934.3600
+                                North Seattle College
+                                <br />
+                                9600 College Way North
+                                <br />
+                                Seattle, WA 98103
+                                <br />
+                                206.934.3600
                             </Typography>
                         </Box>
                         <Stack paddingLeft={10}>
@@ -77,7 +77,7 @@ export default function Footer(){
                         </Stack>
                     </Stack>
                     <Stack direction="row" color="white" sx={styles.div}
-                        divider={<Divider orientation="vertical" flexItem sx={{ backgroundColor: "white" }}/>}>
+                        divider={<Divider orientation="vertical" flexItem sx={{ backgroundColor: "white" }} />}>
                         <Link href="https://northseattle.edu/disability-services"
                             color="inherit" underline="hover" variant="button">
                             Accessibility
@@ -90,11 +90,11 @@ export default function Footer(){
                             color="inherit" underline="hover" variant="button">
                             Privacy
                         </Link>
-                        <Link href="https://www.seattlecolleges.edu/administration/human-resources/public-records-requests" 
+                        <Link href="https://www.seattlecolleges.edu/administration/human-resources/public-records-requests"
                             color="inherit" underline="hover" variant="button">
                             Public Records
                         </Link>
-                        <Link href="https://seattlecolleges.formstack.com/forms/north_website_feedback" 
+                        <Link href="https://seattlecolleges.formstack.com/forms/north_website_feedback"
                             color="inherit" underline="hover" variant="button">
                             Website Feedback
                         </Link>
