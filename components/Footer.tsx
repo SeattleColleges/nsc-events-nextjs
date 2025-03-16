@@ -8,7 +8,7 @@ const styles = {
     root: {
         display: "flex",
         flexDirection: "column",
-        marginTop: "100%",
+        marginTop: "auto",
         justifyContent: "space-between"
     },
     mainDiv: {
