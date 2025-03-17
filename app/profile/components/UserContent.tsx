@@ -37,13 +37,13 @@ const UserContent: React.FC<UserContentProps> = () => {
       <Typography sx={{ fontSize: { xs: '1rem', sm: '1.25rem', md: '1.5rem' } }}>
         User Content
       </Typography>
-      <Box sx={{ display: 'flex', flexDirection: {xs: 'column', sm: 'row', md: 'row'}, gap: '20px', justifyContent: 'space-between', marginTop: '15px', width: '100%', height: '100%' }}>
-        <Box sx={{ width: { xs: '100%', sm: '35%', md: '35%'}, boxShadow: 3, height: { xs: '30%', sm: '100%', md: '100%' }, backgroundColor: containerColor, borderRadius: '7px' }}>
+      <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'column', md: 'row' }, gap: '20px', justifyContent: 'space-between', marginTop: '15px', width: '100%', height: '100%' }}>
+        <Box sx={{ width: { xs: '100%', sm: '100%', md: '35%' }, boxShadow: 3, height: { xs: '30%', sm: '40%', md: '100%' }, backgroundColor: containerColor, borderRadius: '7px' }}>
           <Typography sx={headerStyle}>
             Bio/Affiliations
           </Typography>
         </Box>
-        <Box sx={{ width:{ xs: '100%', sm: '65%', md: '65%' }, boxShadow: 3, height: '100%', backgroundColor: containerColor, borderRadius: '7px' }}>
+        <Box sx={{ width:{ xs: '100%', sm: '100%', md: '65%' }, boxShadow: 3, height: '100%', backgroundColor: containerColor, borderRadius: '7px' }}>
           <Typography sx={headerStyle}>
             Events Attended
           </Typography>
