@@ -54,19 +54,19 @@ const UserSideBar = () => {
         {user?.firstName.charAt(0).toUpperCase()}{user?.lastName.charAt(0).toUpperCase()}
       </Avatar>
       
-      <Typography sx={{ fontSize: { xs: '0.9rem', sm: '1rem', md: '1.1rem' } }}>Email:</Typography>
+      <Typography sx={{ fontSize: { xs: '0.7rem', sm: '1rem', md: '1.1rem' } }}>Email:</Typography>
       
       { user && (
         <>
-          <Typography sx={{ fontSize: { xs: '0.8rem', sm: '0.95rem', md: '1rem' } }}>
+          <Typography sx={{ fontSize: { xs: '0.6rem', sm: '0.95rem', md: '1rem' } }}>
             {user.email}
           </Typography>
           
           <Box sx={{ marginTop: 'auto', width: '100%', textAlign: 'center' }}>
-            <Button onClick={handleEditClick} sx={{ mt: 2, fontSize: { xs: '0.7rem', sm: '0.85rem', md: '1rem' } }}>
+            <Button onClick={handleEditClick} sx={{ mt: 2, fontSize: { xs: '0.6rem', sm: '0.85rem', md: '1rem' } }}>
               Edit Profile
             </Button>
-            <Button onClick={() => router.replace('/auth/change-password')} sx={{ mt: 2, fontSize: { xs: '0.7rem', sm: '0.85rem', md: '1rem' } }}>
+            <Button onClick={() => router.replace('/auth/change-password')} sx={{ mt: 2, fontSize: { xs: '0.6rem', sm: '0.85rem', md: '1rem' } }}>
               Change Password
             </Button>
           </Box>
