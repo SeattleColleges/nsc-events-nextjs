@@ -23,7 +23,7 @@ function EventCard({ event }: EventCardProps) {
   const lightImagePath = '/images/blue_nsc_logo.png';
   const googlePlayImage = '/images/google_play.png'
   const imagePath = palette.mode === "dark" ? darkImagePath : lightImagePath;
-  
+
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = new URLSearchParams(window.location.search);
@@ -53,7 +53,7 @@ function EventCard({ event }: EventCardProps) {
             <CardContent sx={{ display: "flex", flexDirection: "column", width: "100%" }} >
               <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between", minWidth: 200, width: "100%" }}>
                 <CardHeader
-                  sx={{ width: "100%", maxWidth: "auto", backgroundColor: palette.primary.dark, color: palette.primary.contrastText, borderRadius: 2, boxShadow: 2, padding: 1, mr: 1, height: 40, display: "flex", alignItems: "center" }}
+                  sx={{ width: "100%", maxWidth: "auto", height: "auto", minHeight: 40, backgroundColor: palette.primary.dark, color: palette.primary.contrastText, borderRadius: 2, boxShadow: 2, padding: 1, mr: 1, display: "flex", alignItems: "center" }}
                   title={
                     <Typography sx={{ fontSize: (isMobile || isTablet) ? "1rem" : "1.5rem", fontWeight: "300", justifyContent: "center", paddingLeft: 2, fontFamily: "font-serif" }}>
                       {event.eventTitle}

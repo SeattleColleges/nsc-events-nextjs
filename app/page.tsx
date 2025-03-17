@@ -22,7 +22,7 @@ const Home = () => {
 
   // Get the search params from the URL
   // This will allow us to extract the eventId from the URL and fetch the event data
-  const searchParams = useSearchParams();  
+  const searchParams = useSearchParams();
   const eventId = searchParams.get("event");
 
   // Fetch the event data using the eventId from the URL
@@ -45,7 +45,7 @@ const Home = () => {
     const storedToken = localStorage.getItem("token");
     setToken(storedToken);
     setIsLoading(false);
-    
+
   }, []);
 
   if (isLoading) {
@@ -73,13 +73,13 @@ const Home = () => {
             flexDirection: (isMobile || isTablet) ? "column-reverse" : "row",
           }}>
           <Grid
-            size={(isMobile || isTablet) ? 12 : 7}
-            p={2}
+            size={eventId ? 6 : (isMobile || isTablet) ? 12 : 7}
             sx={{
               height: "100vh",
               justifyContent: "center",
               alignItems: "center",
-              width: (isMobile || isTablet) ? "100vw" : "100%",
+              maxWidth: (isMobile || isTablet) ? "100vw" : "auto",
+              p: 2
             }}
           >
             <Box
@@ -96,8 +96,8 @@ const Home = () => {
                 <Image
                   src={imagePath}
                   alt="NSC Logo"
-                  width={isMobile ? 300 : 500}
-                  height={isMobile ? 150 : 250}
+                  width={isMobile ? 200 : 300}
+                  height={isMobile ? 150 : 150}
                 />
               </CardMedia>
               <Typography
@@ -121,7 +121,7 @@ const Home = () => {
                   display: "flex",
                   overflowY: "scroll",
                   height: "100%",
-                  marginBlock: 2,
+                  marginBlock: 2
                 }}
               >
                 {/* <UpcomingEvent /> */}
@@ -129,25 +129,25 @@ const Home = () => {
               </Box>
             </Box>
           </Grid>
-          <Grid
-            size={(isMobile || isTablet) ? 12 : 5}
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              textWrap: "balance",
-              minWidth: "400px",
-            }}
-            mb={4}
-          >
-            {!token ? (
+          {!token ? (
+            <Grid
+              size={(isMobile || isTablet) ? 12 : 5}
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                textWrap: "balance",
+                minWidth: "400px",
+                marginBottom: "4px"
+              }}
+            >
               <Box
                 sx={{
                   display: "flex",
                   flexDirection: "column",
                   justifyContent: "center",
                   alignItems: "center",
-                  width: "100%",
+                  maxWidth: "auto",
                   mt: 6,
                 }}>
                 <Typography
@@ -161,14 +161,12 @@ const Home = () => {
                 </Typography>
                 <LoginWindow />
               </Box>
-            ) :
-              <Box flexGrow={1}>
-
-                {event && <HomeEventDetails event={event} />}
-
-              </Box>
-            }
-          </Grid>
+            </Grid>
+          ) :
+            <Grid size={6}>
+              {event && <HomeEventDetails event={event} />}
+            </Grid>
+          }
         </Box>
       </Grid>
     </Box>
