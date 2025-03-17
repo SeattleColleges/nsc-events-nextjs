@@ -1,9 +1,12 @@
 import React from 'react'
-import { Box, Typography } from '@mui/material'
+import { Box, Typography, useTheme } from '@mui/material'
 
 interface UserContentProps {}
 
 const UserContent: React.FC<UserContentProps> = () => {
+
+  const { palette } = useTheme();
+  const containerColor = palette.mode === "dark" ? "#333" : "#fff";
 
   const headerStyle = {
     fontSize: { xs: '0.8rem', sm: '0.9rem', md: '1rem' },
@@ -20,7 +23,7 @@ const UserContent: React.FC<UserContentProps> = () => {
         width: { xs: '70%', md: '75%', lg: '85%' }, 
         minHeight: "600px",
         marginLeft: '10px' , 
-        backgroundColor: 'white',
+        backgroundColor: containerColor,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -35,12 +38,12 @@ const UserContent: React.FC<UserContentProps> = () => {
         User Content
       </Typography>
       <Box sx={{ display: 'flex', flexDirection: 'row', gap: '20px', justifyContent: 'space-between', marginTop: '15px', width: '100%', height: '100%' }}>
-        <Box sx={{ width: '35%', boxShadow: 3, height: '100%', backgroundColor: '#BDBDBD', borderRadius: '7px' }}>
+        <Box sx={{ width: '35%', boxShadow: 3, height: '100%', backgroundColor: containerColor, borderRadius: '7px' }}>
           <Typography sx={headerStyle}>
             Bio/Affiliations
           </Typography>
         </Box>
-        <Box sx={{ width: '65%', boxShadow: 3, height: '100%', backgroundColor: '#BDBDBD', borderRadius: '7px' }}>
+        <Box sx={{ width: '65%', boxShadow: 3, height: '100%', backgroundColor: containerColor, borderRadius: '7px' }}>
           <Typography sx={headerStyle}>
             Events Attended
           </Typography>

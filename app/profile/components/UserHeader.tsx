@@ -1,4 +1,4 @@
-import { Box, Typography } from '@mui/material'
+import { Box, Typography, useTheme } from '@mui/material'
 import React from 'react'
 
 interface UserHeaderProps {
@@ -8,12 +8,16 @@ interface UserHeaderProps {
 }
 
 const UserHeader: React.FC<UserHeaderProps> = ({ firstName, lastName, pronouns }) => {
+
+  const { palette } = useTheme();
+  const containerColor = palette.mode === "dark" ? "#333" : "#fff";
+
   return (
     <Box
         sx={{
           width: "100%", // Full width of the parent container
           height: "auto", 
-          backgroundColor: "white",
+          backgroundColor: containerColor,
           display: "flex",
           alignItems: "center", // Center items vertically within the parent Box
           justifyContent: "flex-start", // Align content to the left
