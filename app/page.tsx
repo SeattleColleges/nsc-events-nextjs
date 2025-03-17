@@ -70,10 +70,10 @@ const Home = () => {
         <Box
           sx={{
             display: "flex",
-            flexDirection: (isMobile || isTablet) ? "column-reverse" : "row",
+            flexDirection: (isMobile || isTablet) ? "column-reverse" : "row"
           }}>
           <Grid
-            size={eventId ? 6 : (isMobile || isTablet) ? 12 : 7}
+            size={eventId && event ? 6 : (isMobile || isTablet) ? 12 : 7}
             sx={{
               height: "100vh",
               justifyContent: "center",
@@ -164,7 +164,7 @@ const Home = () => {
             </Grid>
           ) :
             <Grid size={6}>
-              {event && <HomeEventDetails event={event} />}
+              {eventId && event ? (<HomeEventDetails event={event} />) : null}
             </Grid>
           }
         </Box>

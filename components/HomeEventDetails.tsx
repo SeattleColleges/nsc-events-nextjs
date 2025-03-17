@@ -99,11 +99,11 @@ function HomeEventDetails({ event }: HomeEventDetailsProps) {
                                     <Typography>
                                         Tags:
                                     </Typography>
-                                    {event.eventTags.map((tag, index) => (
+                                    {/* {event.eventTags.map((tag, index) => (
                                         <Box key={index} sx={{ backgroundColor: theme.palette.secondary.light, borderRadius: 1, padding: '2px 6px', margin: '4px', display: 'inline-block', fontSize: 10, height: 20 }}>
                                             {tag}
                                         </Box>
-                                    ))}
+                                    ))} */}
                                 </Box>
                             </Box>
                         </Box>
