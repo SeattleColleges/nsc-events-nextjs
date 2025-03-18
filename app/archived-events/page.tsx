@@ -165,7 +165,16 @@ const ArchivedEvents = () => {
                 </Grid2>
                 <Stack alignSelf={"center"}>
                     <Pagination
-                    color="primary" page={page} onChange={handleChange} count={10} variant="outlined" shape="rounded" size="large" sx={{ padding: "2rem" }}/>
+                        color="primary"
+                        page={page}
+                        onChange={handleChange}
+                        count={10}
+                        showFirstButton
+                        showLastButton
+                        variant="outlined"
+                        shape="rounded"
+                        size="large"
+                        sx={{ padding: "2rem" }}/>
                 </Stack>
             </Grid2>
         );
