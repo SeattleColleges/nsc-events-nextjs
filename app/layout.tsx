@@ -28,7 +28,7 @@ export default function RootLayout({
             <ReactQueryProvider>
               <Navbar />
               <CssBaseline /> {/* Ensures consistent baseline styles */}
-              {children} {/* TODO: Add Wrapper Div component after replacing CSS with MUI for consistency*/}
+              {children} {/* TODO: Add Wrapper Div component after replacing CSS with MUI for consistency */}
               <Footer />
             </ReactQueryProvider>
           </AppRouterCacheProvider>
