@@ -200,7 +200,7 @@ const EditUserRolePage = () => {
             }}
           >
             {/* First Name Search Bar */}
-            <Box sx={{ width: "22%", [theme.breakpoints.down("sm")]: { width: "100%" } }}>
+            <Box sx={{ width: isMobile ? "100%" : "22%" }}>
               <TextField
                 id="outlined"
                 label="First Name"
