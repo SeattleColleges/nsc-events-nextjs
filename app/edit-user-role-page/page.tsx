@@ -191,7 +191,7 @@ const EditUserRolePage = () => {
             sx={{
               padding: "1rem",
               display: "flex",
-              flexDirection: "row", // Arrange search bars horizontally
+              flexDirection: isMobile ? "column" : "row", // Arrange search bars horizontally
               justifyContent: "space-between", // Space out search bars
               gap: "1rem", // Space between search bars
               width: "100%",
@@ -200,7 +200,7 @@ const EditUserRolePage = () => {
             }}
           >
             {/* First Name Search Bar */}
-            <Box sx={{ width: "22%" }}>
+            <Box sx={{ width: isMobile ? "100%" : "22%" }}>
               <TextField
                 id="outlined"
                 label="First Name"
@@ -211,7 +211,7 @@ const EditUserRolePage = () => {
               />
             </Box>
             {/* Last Name Search Bar */}
-            <Box sx={{ width: "22%" }}>
+            <Box sx={{ width: isMobile ? "100%" : "22%" }}>
               <TextField
                 id="outlined"
                 label="Last Name"
@@ -222,7 +222,7 @@ const EditUserRolePage = () => {
               />
             </Box>
             {/* Email Search Bar */}
-            <Box sx={{ width: "22%" }}>
+            <Box sx={{ width: isMobile ? "100%" : "22%" }}>
               <TextField
                 id="outlined"
                 label="Email"
@@ -233,7 +233,7 @@ const EditUserRolePage = () => {
               />
             </Box>
             {/* Role Filter Dropdown */}
-            <Box sx={{ width: "22%" }}>
+            <Box sx={{ width: isMobile ? "100%" : "22%" }}>
               <FormControl fullWidth>
                 <InputLabel id="role-filter-label" shrink>Role</InputLabel>
                 <Select
