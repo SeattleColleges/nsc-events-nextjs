@@ -41,7 +41,7 @@ function HomeEventsCard({ event }: EventCardProps) {
     <div>
       <Grid key={event._id} sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", marginBlock: (isMobile || isTablet) ? 2 : 1, }}>
         <Box sx={{ width: (isMobile || isTablet) ? "100vw" : "100%", display: "flex", flexDirection: "column", justifyContent: "center", textWrap: "balance", p: 2 }}>
-          <Card sx={{ display: 'flex', flexDirection: 'row', height: "auto", minWidth: !(isMobile || isTablet) ? 460 : "auto", maxWidth: 1200, boxShadow: 2, borderRadius: 2 }}>
+          <Card sx={{ display: 'flex', flexDirection: 'row', height: "auto", minWidth: !(isMobile || isTablet) ? 460 : "auto", maxWidth: "auto", boxShadow: 2, borderRadius: 2 }}>
             {!isMobile && (
               <CardMedia
                 component="img"
