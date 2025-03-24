@@ -31,10 +31,17 @@ function HomeEventsCard({ event }: EventCardProps) {
   // Function to handle the click event on the button
   // This will update the URL with the selected event ID without reloading the page
   const handleClick = () => {
-    // Clear any existing event ID from the search params and set the new event ID
-    searchParams.set("event", event._id);
-    // Replace the current URL with the updated search params
-    router.replace(`${pathname}?${searchParams.toString()}`);
+    if(searchParams.get("event") !== event._id) {
+        // Clear any existing event ID from the search params and set the new event ID
+        searchParams.set("event", event._id);
+        // Replace the current URL with the updated search params
+        router.replace(`${pathname}?${searchParams.toString()}`);
+    } else {
+        // Clear the event ID from the search params
+        searchParams.delete("event");
+        // Replace the current URL with the updated search params
+        router.replace(`${pathname}?${searchParams.toString()}`);
+    }
   }
 
   return (
