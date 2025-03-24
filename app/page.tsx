@@ -70,10 +70,11 @@ const Home = () => {
         <Box
           sx={{
             display: "flex",
-            flexDirection: (isMobile || isTablet) ? "column-reverse" : "row"
-          }}>
+            flexDirection: (isMobile || isTablet) ? "column-reverse" : "row",
+          }}
+        >
           <Grid
-            size={eventId && event ? 6 : (isMobile || isTablet) ? 12 : 7}
+            size={eventId && event ? 6 : (isMobile || isTablet) ? 12 : 100}
             sx={{
               height: "100vh",
               justifyContent: "center",
@@ -131,7 +132,7 @@ const Home = () => {
           </Grid>
           {!token ? (
             <Grid
-              size={(isMobile || isTablet) ? 12 : 5}
+              size={(isMobile || isTablet) ? 12 : 0}
               sx={{
                 display: "flex",
                 flexDirection: "column",
@@ -149,7 +150,8 @@ const Home = () => {
                   alignItems: "center",
                   maxWidth: "auto",
                   mt: 6,
-                }}>
+                }}
+              >
                 <Typography
                   variant="h4"
                   textAlign={"center"}
