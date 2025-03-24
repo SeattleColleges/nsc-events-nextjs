@@ -13,6 +13,7 @@ import { MouseEvent, ChangeEvent, useState, FormEvent } from "react";
 import useAuth from "@/hooks/useAuth";
 import UnauthorizedPageMessage from "@/components/UnauthorizedPageMessage";
 import { EventTags } from "@/utility/tags";
+import UploadPage from "@/components/UploadPage";
 
 const CreateEvent: React.FC = () => {
   const {
@@ -164,6 +165,8 @@ const CreateEvent: React.FC = () => {
             Event Cover Photo
           <ImagePicker />
           </label> */}
+          <UploadPage />
+          
           <TextField
             id="event-cover-photo"
             label="Event Cover Photo"
