@@ -45,7 +45,6 @@ const Home = () => {
     const storedToken = localStorage.getItem("token");
     setToken(storedToken);
     setIsLoading(false);
-
   }, []);
 
   if (isLoading) {
