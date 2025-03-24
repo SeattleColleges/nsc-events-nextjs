@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { Grid, Button, useMediaQuery, useTheme, Container, Box, Typography } from '@mui/material';
 import { ActivityDatabase } from "@/models/activityDatabase";
-import EventCard from "./EventCard";
+import HomeEventsCard from "./HomeEventsCard";
 import { useFilteredEvents } from "@/utility/queries";
 import Link from "next/link";
 import TagSelector from "@/components/TagSelector";
@@ -84,7 +84,7 @@ export function HomeEventsList() {
                     events.map((event: ActivityDatabase) => (
                         <Grid item xs={12} key={event._id}>
                             
-                                <EventCard key={event._id} event={event} />
+                                <HomeEventsCard key={event._id} event={event} />
                             
                         </Grid>
                     ))

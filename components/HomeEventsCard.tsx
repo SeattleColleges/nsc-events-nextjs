@@ -11,7 +11,7 @@ interface EventCardProps {
   event: ActivityDatabase;
 }
 
-function HomeEventCard({ event }: EventCardProps) {
+function HomeEventsCard({ event }: EventCardProps) {
   const theme = useTheme();
   const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
   const isMobile = useMediaQuery(theme.breakpoints.between('xs', 'sm'));
@@ -107,4 +107,4 @@ function HomeEventCard({ event }: EventCardProps) {
 }
 
 
-export default HomeEventCard;
+export default HomeEventsCard;
