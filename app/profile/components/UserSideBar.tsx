@@ -1,6 +1,6 @@
 "use client";
 
-import { Avatar, Box, Button, Typography, useTheme } from '@mui/material'
+import { Avatar, Box, Button, Typography, useMediaQuery, useTheme } from '@mui/material'
 import React, { useState } from 'react'
 import EditUserDetailsDialog, { User } from './EditUserDetailsDialog';
 import { useRouter } from 'next/navigation';
@@ -10,6 +10,9 @@ import { useUser } from '@/context/UserContext';
 const UserSideBar = () => {
   const { user, setUser } = useUser();
   const [openEditDialog, setOpenEditDialog] = useState(false);
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const { palette } = useTheme();
   const containerColor = palette.mode === "dark" ? "#333" : "#fff";
@@ -30,11 +33,11 @@ const UserSideBar = () => {
   return (
     <Box 
       sx={{
-        width: { xs: '35%', md: '25%', lg: '15%' }, // Adjust width based on screen size
-        minHeight: "600px",
+        width: isMobile ? "100%" : { xs: '35%', md: '25%', lg: '15%' } , // Adjust width based on screen size
+        minHeight: isMobile ? "auto" : "100%",
         backgroundColor: containerColor,
         display: 'flex',
-        flexDirection: 'column',
+        flexDirection: "column",
         alignItems: 'center',
         justifyContent: 'flex-start',
         borderRadius: '7px',        

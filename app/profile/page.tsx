@@ -48,7 +48,7 @@ const ProfileContent = () => {
         setToken(localStorage.getItem('token'))
         const userId = getCurrentUserId();
         getUserFromId(userId);
-    },[getUserFromId]);
+    },[setUser]);
         
 
     if (token === null) {
@@ -78,7 +78,7 @@ const ProfileContent = () => {
                         
                     <UserHeader firstName={user.firstName} lastName={user.lastName} pronouns={user.pronouns} /> 
                     
-                    <Box sx={{ display: "flex", justifyContent: "flex-start", width: "auto", marginY: '10px' }}>
+                    <Box sx={{ display: "flex", justifyContent: "flex-start", width: "auto", marginY: '10px', flexDirection: isMobile ? "column" : "row" }}>
                         <UserSideBar /> 
                         <UserContent />
                     </Box>
