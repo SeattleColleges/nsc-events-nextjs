@@ -1,13 +1,9 @@
 export const msalConfig = {
 	auth: {
-		clientId: process.env.NEXT_PUBLIC_CLIENT_ID,
-		authority: process.env.NEXT_PUBLIC_AUTHORITY,
-		redirectUri: process.env.NEXT_PUBLIC_REDIRECT_URI,
-		postLogoutRedirectUri: "/",
-	},
-	cache: {
-		cacheLocation: "local storage", // Cache location is session storage
-		storeAuthStateInCookie: false, // Do not store state in cookie
+		clientId: "a8a89601-f97b-4b01-8b8a-3c52a28f6e9b",
+		authority: "https://login.microsoftonline.com/common",
+		redirectUri: "http://localhost:8080",
+		postLogoutRedirectUri: "http://localhost:8080",
 	},
 };
 
@@ -16,5 +12,5 @@ export const loginRequest = {
 };
 
 export const logoutRequest = {
-	postLogoutRedirectUri: "http://localhost:8080/", // Redirect to home page after logout
+	postLogoutRedirectUri: "http://localhost:8080", // Redirect to home page after logout
 };

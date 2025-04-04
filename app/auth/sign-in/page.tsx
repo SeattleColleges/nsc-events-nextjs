@@ -16,10 +16,6 @@ if (URL?.includes('localhost')) {
 }
 
 const Signin = () => {
-  const { instance } = useMsal();
-  const [userData, setUserData] = useState("");
-  const [photo, setPhoto] = useState();
-	const [eventList, setEventList] = useState([]);
   const { palette } = useTheme();
   const darkImagePath = '/images/white_nsc_logo.png';
   const lightImagePath = '/images/blue_nsc_logo.png';
@@ -32,7 +28,6 @@ const Signin = () => {
   });
 
   const router = useRouter();
-
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
@@ -46,7 +41,6 @@ const Signin = () => {
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
-
     const res = await fetch(`${URL}/auth/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -75,16 +69,22 @@ const Signin = () => {
     }
   };
 
-  // Handle MSAL login
-	const handleMSALLogin = async () => {
-		try {
-			const response = await instance.loginPopup(loginRequest);
-			// For use in Postman
-			console.log(`token: ${response.accessToken}`);
-		} catch (error) {
-			console.error(error);
-		}
-	};
+  // Microsoft Login 
+  const { instance } = useMsal();
+  const [userData, setUserData] = useState("");
+  const [photo, setPhoto] = useState();
+  const [eventList, setEventList] = useState([]);
+
+  const handleMSLogin = async () => {
+    try {
+      const response = await instance.loginPopup(loginRequest);
+      // const msToken = instance.acquireTokenPopup(loginRequest);
+      console.log(`token: ${response.accessToken}`);
+      // console.log(`msToken: ${msToken}`);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <Container
@@ -192,7 +192,7 @@ const Signin = () => {
         </Typography>
         <Button
           type="button"
-          onClick={handleMSALLogin} // Use this function to trigger MSAL login
+          onClick={handleMSLogin}
           sx={{ mt: 3, mb: 2 }}
           style={{ textTransform: 'none' }}
           color="primary"

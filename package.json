@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "@azure/msal-browser": "^4.5.0",
-    "@azure/msal-react": "^3.0.5",
+    "@azure/msal-react": "^3.0.7",
     "@emotion/cache": "11.13.1",
     "@emotion/react": "11.13.3",
     "@emotion/styled": "11.13.0",
@@ -36,6 +36,7 @@
     "autoprefixer": "10.4.20",
     "bcrypt": "5.1.1",
     "date-fns": "2.29.3",
+    "dotenv": "^16.4.7",
     "eslint": "8.57.1",
     "eslint-config-next": "14.2.14",
     "mongoose": "8.8.1",

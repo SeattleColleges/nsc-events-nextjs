@@ -27,12 +27,12 @@ export default function RootLayout({
 				<ThemeContextProvider>
 					<AppRouterCacheProvider>
 						<ReactQueryProvider>
-							<Navbar />
+							<MsalWrapper>
+								<Navbar />
 								<CssBaseline /> {/* Ensures consistent baseline styles */}
-								<MsalWrapper>
-									{children} {/* TODO: Add Wrapper Div component after replacing CSS with MUI for consistency*/}
-								</MsalWrapper>
-							<Footer />
+								{children} {/* TODO: Add Wrapper Div component after replacing CSS with MUI for consistency*/}
+								<Footer />
+							</MsalWrapper>
 						</ReactQueryProvider>
 					</AppRouterCacheProvider>
 				</ThemeContextProvider>

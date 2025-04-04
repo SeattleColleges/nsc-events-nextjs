@@ -1,11 +1,11 @@
-export const callMsGraph = async (accessToken) => {
+export const callMsGraph = async (accessToken: string) => {
 	const response = await fetch("https://graph.microsoft.com/v1.0/me", {
 		headers: { Authorization: `Bearer ${accessToken}` },
 	});
 	return response.json();
 };
 
-export const getUserPhoto = async (accessToken) => {
+export const getUserPhoto = async (accessToken: string) => {
 	const response = await fetch(
 		"https://graph.microsoft.com/v1.0/me/photo/$value",
 		{
@@ -21,7 +21,7 @@ export const getUserPhoto = async (accessToken) => {
 	return URL.createObjectURL(blob);
 };
 
-export const getCalendarEvents = async (accessToken) => {
+export const getCalendarEvents = async (accessToken: string) => {
 	const response = await fetch("https://graph.microsoft.com/v1.0/me/events", {
 		headers: { Authorization: `Bearer ${accessToken}` },
 	});
@@ -35,9 +35,9 @@ export const getCalendarEvents = async (accessToken) => {
 };
 
 export const updateCalendarEvent = async (
-	accessToken,
-	eventId,
-	updatedData,
+	accessToken: string,
+	eventId: string,
+	updatedData: [],
 ) => {
 	const response = await fetch(
 		`https://graph.microsoft.com/v1.0/me/events/${eventId}`,
