@@ -80,9 +80,9 @@ const Signin = () => {
   const handleMSLogin = async () => {
     try {
       const response = await instance.loginPopup(loginRequest);
-      // const msToken = instance.acquireTokenPopup(loginRequest);
-      console.log(`token: ${response.accessToken}`);
-      // console.log(`msToken: ${msToken}`);
+      const msToken = response.accessToken;
+      localStorage.setItem("token", msToken);
+      console.log(`msToken: ${msToken}`);
     } catch (error) {
       console.error(error);
     }
