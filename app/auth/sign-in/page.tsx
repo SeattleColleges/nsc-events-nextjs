@@ -1,6 +1,6 @@
 "use client";
 
-import { ChangeEventHandler, FormEventHandler, useState, useEffect } from "react";
+import { ChangeEventHandler, FormEventHandler, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Container, Paper, Box, TextField, Button, Typography, Link as MuiLink, useMediaQuery } from "@mui/material";
@@ -12,11 +12,12 @@ import { callMsGraph, getCalendarEvents, getUserPhoto } from "@/utility/msal/gra
 
 const URL = process.env.NSC_EVENTS_PUBLIC_API_URL;
 if (URL?.includes('localhost')) {
-  console.log('Dev API Address: ', URL);
+  console.log('Dev API Address: ',URL);
 }
 
 const Signin = () => {
   const { palette } = useTheme();
+
   const darkImagePath = '/images/white_nsc_logo.png';
   const lightImagePath = '/images/blue_nsc_logo.png';
   const imagePath = palette.mode === "dark" ? darkImagePath : lightImagePath;
@@ -28,6 +29,7 @@ const Signin = () => {
   });
 
   const router = useRouter();
+
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
@@ -36,11 +38,13 @@ const Signin = () => {
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = ({ target }) => {
     const { name, value } = target;
+
     setUserInfo({ ...userInfo, [name]: value });
   };
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
+
     const res = await fetch(`${URL}/auth/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -49,14 +53,13 @@ const Signin = () => {
         password,
       }),
     });
-
     if (!res.ok) {
       alert("Invalid email or password");
       throw new Error(await res.text());
     }
 
     const { token } = await res.json();
-    const userRole = JSON.parse(atob(token.split(".")[1])).role;
+    const userRole = JSON.parse(atob(token.split(".")[1])).role; 
     localStorage.setItem("token", token);
     window.dispatchEvent(new CustomEvent('auth-change'));
 
