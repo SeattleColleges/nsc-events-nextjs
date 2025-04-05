@@ -1,8 +1,8 @@
 export const msalConfig = {
 	auth: {
-		clientId: "a8a89601-f97b-4b01-8b8a-3c52a28f6e9b",
-		authority: "https://login.microsoftonline.com/common",
-		redirectUri: "http://localhost:8080",
+		clientId: process.env.NEXT_PUBLIC_MSAL_CLIENT_ID,
+		authority: process.env.NEXT_PUBLIC_MSAL_AUTHORITY,
+		redirectUri: process.env.NEXT_PUBLIC_MSAL_REDIRECT_URI,
 		postLogoutRedirectUri: "http://localhost:8080",
 	},
 };
