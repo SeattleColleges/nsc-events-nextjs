@@ -12,7 +12,7 @@ import { callMsGraph, getCalendarEvents, getUserPhoto } from "@/utility/msal/gra
 
 const URL = process.env.NSC_EVENTS_PUBLIC_API_URL;
 if (URL?.includes('localhost')) {
-  console.log('Dev API Address: ',URL);
+  console.log('Dev API Address: ',URL)
 }
 
 const Signin = () => {
@@ -21,6 +21,7 @@ const Signin = () => {
   const darkImagePath = '/images/white_nsc_logo.png';
   const lightImagePath = '/images/blue_nsc_logo.png';
   const imagePath = palette.mode === "dark" ? darkImagePath : lightImagePath;
+
 
   const [error, setError] = useState("");
   const [userInfo, setUserInfo] = useState({
@@ -57,12 +58,10 @@ const Signin = () => {
       alert("Invalid email or password");
       throw new Error(await res.text());
     }
-
     const { token } = await res.json();
     const userRole = JSON.parse(atob(token.split(".")[1])).role; 
     localStorage.setItem("token", token);
     window.dispatchEvent(new CustomEvent('auth-change'));
-
     if (userRole === "admin") {
       router.push("/admin");
     } else if (userRole === "creator") {

@@ -12,7 +12,7 @@ import MsalWrapper from '@/components/MsalWrapper';
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-	title: "NSC Events",
+  title: "NSC Events",
 	description: "Stay updated with the latest events at North Seattle College",
 };
 
