@@ -50,10 +50,10 @@ function HomeEventsCard({ event }: EventCardProps) {
     }
 
     return (
-        <div>
-            <Grid key={event._id} sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", marginBlock: (isMobile || isTablet) ? 2 : 1, }}>
+        <Box>
+            <Grid sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", marginBlock: (isMobile || isTablet) ? 2 : 1, }}>
                 <Box sx={{ width: (isMobile || isTablet) ? "100vw" : "100%", display: "flex", flexDirection: "column", justifyContent: "center", textWrap: "balance", p: 2 }}>
-                    <Card sx={{ display: 'flex', flexDirection: 'row', height: "auto", minWidth: !(isMobile || isTablet) ? 460 : "auto", maxWidth: "auto", boxShadow: 2, borderRadius: 2 }}>
+                    <Card sx={{ display: 'flex', flexDirection: 'row', height: "100%", minWidth: !(isMobile || isTablet) ? 460 : "auto", maxWidth: "700", maxHeight: "260", boxShadow: 2, borderRadius: 2 }}>
                         {!isMobile && (
                             <CardMedia
                                 component="img"
@@ -73,17 +73,17 @@ function HomeEventsCard({ event }: EventCardProps) {
                                     }
                                 />
                                 <Typography sx={{ backgroundColor: palette.secondary.light, width: 60, height: 60, borderRadius: 2, display: "flex", flexWrap: "wrap", fontWeight: "bolder", fontSize: 22, lineHeight: 1, alignItems: "center", textAlign: "center" }}>
-                                    Jul. 4th
+                                    { new Date(event.eventDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) }
                                 </Typography>
                             </Box>
                             <Box sx={{ display: "flex", flexDirection: "column", justifyContent: "space-between", width: "100%", height: "100%" }}>
-                                <Box sx={{ padding: 2 }}>
+                                <Box sx={{  }}>
                                     <Box sx={{ mt: 2, mb: 2 }}>
-                                        <Typography sx={{ display: "flex", flexDirection: "row", fontFamily: "font-serif" }}>
-                                            <Typography sx={{ fontWeight: "bold" }}>Location:</Typography> {event.eventLocation}
+                                        <Typography sx={{ fontWeight: "bold", display: "flex", flexDirection: "row", fontFamily: "font-serif" }}>
+                                            Location: {event.eventLocation}
                                         </Typography>
-                                        <Typography sx={{ display: "flex", flexDirection: "row", fontFamily: "font-serif" }}>
-                                            <Typography sx={{ fontWeight: "bold" }}>Time:</Typography> {formatDate(event.eventDate)}
+                                        <Typography sx={{ fontWeight: "bold", display: "flex", flexDirection: "row", fontFamily: "font-serif" }}>
+                                            Time: { formatDate(event.eventDate) }
                                         </Typography>
                                     </Box>
                                     <Typography sx={{ display: "flex", flexDirection: "column", fontFamily: "font-serif" }}>
@@ -99,22 +99,13 @@ function HomeEventsCard({ event }: EventCardProps) {
                                             </Box>
                                         ))}
                                     </Typography>
-                                    <Button
-                                        onClick={handleClick}
-                                        size="small"
-                                        id='see-more-details'
-                                        sx={{ color: palette.primary.dark, borderRadius: 2, borderColor: palette.primary.dark, border: 1, boxShadow: 2, padding: 1, height: 20, display: "flex", alignItems: "center", fontSize: 9 }}>
-                                        {(!isMobile && !isTablet) ? 'See more' : ''}
-                                        details
-                                        {(!isMobile && !isTablet) ? ' >' : ''}
-                                    </Button>
                                 </Box>
                             </Box>
                         </CardContent>
                     </Card>
                 </Box>
             </Grid>
-        </div >
+        </Box>
     )
 }
 
