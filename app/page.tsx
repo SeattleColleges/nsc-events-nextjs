@@ -41,7 +41,19 @@ const Home = () => {
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
     setToken(storedToken);
-  }, []);
+
+    if (data) {
+        setEvents((prevEvents) => {
+            const newEvents = [...prevEvents, ...data];
+            // filter events to avoid duplicates (fixes Unarchive Event bug)
+            const uniqueEvents = newEvents.filter((event, index, self) =>
+                index === self.findIndex((e) => e._id === event._id)
+            );
+            return uniqueEvents;
+        });
+        setReachedLastPage(data.length < 5);
+    }
+  }, [data]);
 
   const handleLoadMoreEvents = () => {
         setPage(num => num + 1);
@@ -67,12 +79,10 @@ const Home = () => {
   return (
     <Box
       sx={{
-        
-        width: "100vw",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        p: 2,
+        m: 2,
       }}
     >
         <CardMedia>
@@ -89,7 +99,7 @@ const Home = () => {
           fontFamily="font-serif"
           fontWeight="500"
           textAlign="center"
-          pt={4}
+          p={2}
           sx={{
             borderBottom: "3px solid #333",
             width: "85%",
@@ -98,18 +108,8 @@ const Home = () => {
           Upcoming Events
         </Typography>
 
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-            
-            width: "100%",
-            mt: 2,
-          }}
-        >
-          <Box marginY={5} maxWidth={'md'}>
+        
+          <Box m={3} maxWidth={'md'}>
             {/* Toggle button to show/hide the TagSelector */}
             <Button variant="contained" onClick={toggleTagVisibility}>
                 {showTags ? 'Hide Tags' : 'Filter by Tags'}
@@ -124,17 +124,20 @@ const Home = () => {
               />
             )}
           </Box>
-
+          <Grid container>
           {/* Display the events */}
           {data && data.length > 0 ? (
             data.map((event: ActivityDatabase) => (     
-              <HomeEventCard key={event._id} event={event} />                             
+              <Grid size={{ md: 12, lg: 6 }} key={event._id} sx={{  }}>
+                <HomeEventCard event={event} />
+              </Grid>                             
             ))
           ) : (
             <Box>
               {isLoading ? <CircularProgress /> : 'Found no events with selected tags!'}
             </Box>
           )}
+          </Grid>
 
           {/* Load more button */}
           {data && data.length > 0 && !reachedLastPage && (
@@ -148,7 +151,7 @@ const Home = () => {
                 Load more events
             </Button>
           )}
-        </Box>    
+           
     </Box>
 
   );
