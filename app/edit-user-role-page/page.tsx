@@ -1,14 +1,25 @@
 "use client";
 // EditUserRolePage.tsx
 import React, { useState, useEffect } from "react";
-import { Box, Typography, useMediaQuery, useTheme, Snackbar, TextField } from "@mui/material";
+import {
+  Box,
+  Typography,
+  useMediaQuery,
+  useTheme,
+  Snackbar,
+  TextField,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  SelectChangeEvent,
+  FormHelperText
+} from "@mui/material"; 
 import useAuth from "@/hooks/useAuth";
 import UnauthorizedPageMessage from "@/components/UnauthorizedPageMessage";
 import UserTable from "@/app/edit-user-role-page/components/UserTable"; // Import the new UserTable component
 import { UsersData } from "./models/interface";
 import useDebounce from "@/hooks/useDebounce";
-import { de } from "date-fns/locale";
-import { set } from "mongoose";
 
 const EditUserRolePage = () => {
   const [userInfo, setUserInfo] = useState<UsersData>({ data: [], page: 1, total: 0, pages: 0 }); // All users
@@ -17,12 +28,10 @@ const EditUserRolePage = () => {
     lastName: "",
     email: "",
   });
-  const [sort, setSort] = useState<string>("asc");
+  const [roleFilter, setRoleFilter] = useState<string>(""); // New state for role filtering
   const [newRole, setNewRole] = useState<string>(""); // User role we're editing
-  // const [selectedUserId, setSelectedUserId] = useState<string | null>(null); // Selected user ID
   const [snackbarMessage, setSnackbarMessage] = useState<string | null>(null); // Snackbar message for feedback
   const [snackbarOpen, setSnackbarOpen] = useState(false); // Snackbar open state
-
   const { isAuth, user } = useAuth();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -30,28 +39,22 @@ const EditUserRolePage = () => {
   // Debounce the query to avoid making too many requests
   const debouncedQueryData = useDebounce(searchParams, 500);
 
-  // Fetch users on debounced query, page, or sort changes
+  // Fetch users on debounced query, page, or role changes
   useEffect(() => {
     const resetAndFetchUsers = async () => {
-      // Reset to page 1 before fetching users for a new search query
-      setUserInfo((prev) => ({ ...prev, page: 1 }));
-
-      // Ensure fetchUsers is called after the page reset
-      await fetchUsers(debouncedQueryData, 1, sort);
+      setUserInfo((prev) => ({ ...prev, page: 1 })); // Reset to page 1 before fetching users for a new search query
+      await fetchUsers(debouncedQueryData, 1, roleFilter); // Ensure fetchUsers is called after the page reset
     };
-
     resetAndFetchUsers();
-  }, [debouncedQueryData, sort]);
+  }, [debouncedQueryData, roleFilter]); // Only run the effect when the typed data or roleFilter (dropdown) changes
 
   // Handle page change for table pagination
   const handlePageChange = (newPage: number) => {
-    // Update the page in the userInfo state
-    setUserInfo((prev) => ({ ...prev, page: newPage }));
-    // query Fetch users for the new page
-    fetchUsers(debouncedQueryData, newPage, sort);
+    setUserInfo((prev) => ({ ...prev, page: newPage })); // Update the page in the userInfo state
+    fetchUsers(debouncedQueryData, newPage, roleFilter); // query Fetch users for the new page
   };
 
-  // Handle input change for search parameters
+  // Handle input change for the seach text fields, set the new search parameters
   const handleInputChange =
     (field: keyof typeof searchParams) => (event: React.ChangeEvent<HTMLInputElement>) => {
       // Updates based on the search field being used (first name, last name, or email)
@@ -59,16 +62,16 @@ const EditUserRolePage = () => {
       setSearchParams(newParams); // Updates state, triggering the debounce
     };
 
-  // Handle sort change (not fully implemented yet on the frontend)
-  const handleSortChange = (newSort: string) => {
-    setSort(newSort);
+  // handle the role change for dropdown box filtering 
+  const handleRoleChange = (event: SelectChangeEvent<string>) => {
+    setRoleFilter(event.target.value);
   };
 
-  // Fetch users from the API based on the query, page, and sort
+  // Fetch users from the API based on the query, page, and role
   async function fetchUsers(
     inputs: { firstName: string; lastName: string; email: string },
-    page: number = 1,
-    sort: string = ""
+    page: number,
+    role: string
   ) {
     const token = localStorage.getItem("token");
     const apiUrl = process.env.NSC_EVENTS_PUBLIC_API_URL;
@@ -92,14 +95,13 @@ const EditUserRolePage = () => {
     if (inputs.email.trim()) {
       searchParams.append("email", inputs.email);
     }
-
+    if (role) { 
+      searchParams.append("role", role); // Append role if selected
+    }
+    
     // Add page and sort parameters to the searchParams
     searchParams.append("page", page.toString());
-    searchParams.append("sort", sort);
-
     const url = `${apiUrl}/users/search?${searchParams.toString()}`;
-    console.log("fetching users");
-
     try {
       const res = await fetch(url, {
         method: "GET",
@@ -108,11 +110,11 @@ const EditUserRolePage = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-
       if (!res.ok) {
         throw new Error(res.statusText);
       } else {
         const data: UsersData = await res.json();
+         
         setUserInfo(data);
       }
     } catch (error) {
@@ -125,6 +127,7 @@ const EditUserRolePage = () => {
     const token = localStorage.getItem("token");
     try {
       const apiUrl = process.env.NSC_EVENTS_PUBLIC_API_URL;
+
       // Check if the API URL is defined
       if (!apiUrl) {
         console.error("API URL is not defined");
@@ -154,6 +157,7 @@ const EditUserRolePage = () => {
     if (success && role && userId) {
       setNewRole(role);
       acceptNewRole(userId, role);
+
       // update the role on the frontend
       setUserInfo((prevUserInfo) => ({
         ...prevUserInfo,
@@ -161,19 +165,6 @@ const EditUserRolePage = () => {
       }));
     }
   };
-
-  // Theme styling changes for adapting to light and dark mode (from themes.tsx)
-  const searchBarStyles = {
-    input: { color: theme.palette.text.primary },
-    label: { color: theme.palette.text.secondary },
-    "& .MuiOutlinedInput-root": {
-      "& fieldset": { borderColor: theme.palette.divider },
-      "&:hover fieldset": { borderColor: theme.palette.primary.main },
-      "&.Mui-focused fieldset": { borderColor: theme.palette.primary.main },
-      backgroundColor: theme.palette.background.paper,
-    },
-  };
-
   // make sure user is an admin
   if (isAuth && user?.role === "admin") {
     return (
@@ -185,25 +176,22 @@ const EditUserRolePage = () => {
         >
           User Management
         </Typography>
-
         <Box
           sx={{
             padding: "1rem",
             display: "flex",
             flexDirection: "column",
-            backgroundColor: theme.palette.mode === "dark" ? "#2E2E2E" : "#f5f5f5", // Change background dynamically
-            color: theme.palette.text.primary, // Ensure text color adapts
+            backgroundColor: "white",
             alignItems: "center",
             maxWidth: "80%",
             margin: "0 auto",
-            borderRadius: "8px", // Added rounded corners
           }}
         >
           <Box
             sx={{
               padding: "1rem",
               display: "flex",
-              flexDirection: "row", // Arrange search bars horizontally
+              flexDirection: isMobile ? "column" : "row", // Arrange search bars horizontally
               justifyContent: "space-between", // Space out search bars
               gap: "1rem", // Space between search bars
               width: "100%",
@@ -212,42 +200,57 @@ const EditUserRolePage = () => {
             }}
           >
             {/* First Name Search Bar */}
-            <Box sx={{ width: "30%" }}>
+            <Box sx={{ width: isMobile ? "100%" : "22%" }}>
               <TextField
-                variant="outlined"
+                id="outlined"
                 label="First Name"
                 helperText="Search by first name"
                 value={searchParams.firstName}
                 onChange={handleInputChange("firstName")}
                 fullWidth
-                sx={{ searchBarStyles, }}
               />
             </Box>
-
             {/* Last Name Search Bar */}
-            <Box sx={{ width: "30%" }}>
+            <Box sx={{ width: isMobile ? "100%" : "22%" }}>
               <TextField
-                variant="outlined"
+                id="outlined"
                 label="Last Name"
                 helperText="Search by last name"
                 value={searchParams.lastName}
                 onChange={handleInputChange("lastName")}
                 fullWidth
-                sx={{ searchBarStyles, }}
               />
             </Box>
-
             {/* Email Search Bar */}
-            <Box sx={{ width: "30%" }}>
+            <Box sx={{ width: isMobile ? "100%" : "22%" }}>
               <TextField
-                variant="outlined"
+                id="outlined"
                 label="Email"
                 helperText="Search by email"
                 value={searchParams.email}
                 onChange={handleInputChange("email")}
                 fullWidth
-                sx={{ searchBarStyles, }}
               />
+            </Box>
+            {/* Role Filter Dropdown */}
+            <Box sx={{ width: isMobile ? "100%" : "22%" }}>
+              <FormControl fullWidth>
+                <InputLabel id="role-filter-label" shrink>Role</InputLabel>
+                <Select
+                  labelId="role-filter-label"
+                  id="role-filter"
+                  value={roleFilter}
+                  onChange={handleRoleChange}
+                  displayEmpty
+                  label="Role"
+                >
+                  <MenuItem value="">All</MenuItem>
+                  <MenuItem value="user">User</MenuItem>
+                  <MenuItem value="admin">Admin</MenuItem>
+                  <MenuItem value="creator">Creator</MenuItem>
+                </Select>
+                <FormHelperText>Filter by role</FormHelperText> 
+              </FormControl>
             </Box>
           </Box>
           {/* Adds some space between TextField and UserTable */}
@@ -255,10 +258,8 @@ const EditUserRolePage = () => {
             userInfo={userInfo}
             handleEditRoleDialog={handleEditRoleDialog}
             onPageChange={handlePageChange}
-            onSortChange={handleSortChange}
           />
         </Box>
-
         {/* Snackbar for feedback */}
         <Snackbar
           open={snackbarOpen}
@@ -272,5 +273,4 @@ const EditUserRolePage = () => {
     return <UnauthorizedPageMessage />;
   }
 };
-
 export default EditUserRolePage;

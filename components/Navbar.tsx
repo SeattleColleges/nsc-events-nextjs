@@ -5,9 +5,9 @@ import Image from 'next/image';
 import MenuIcon from '@mui/icons-material/Menu';
 import { AppBar, Toolbar, IconButton, Grid, Button, Drawer, List, ListItem, ListItemText, useTheme, useMediaQuery, Box, Tooltip, Avatar, Menu, Typography, MenuItem } from '@mui/material';
 import { useRouter } from 'next/navigation';
-import DrawerComp from './DrawerComp'; 
-import useAuth from '../hooks/useAuth'; 
-import AuthProfileMenu from './AuthProfileMenu'; 
+import DrawerComp from './DrawerComp';
+import useAuth from '../hooks/useAuth';
+import AuthProfileMenu from './AuthProfileMenu';
 import ThemeToggle from './ThemeToggle';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
