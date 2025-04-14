@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import CircularProgress from "@mui/material/CircularProgress";
-import HomeEventsList from "@/components/HomeEvents";
 import { Box, Button, CardMedia, Paper, Typography, useMediaQuery } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { useTheme } from "@mui/material";
@@ -12,6 +11,7 @@ import { useFilteredEvents } from "@/utility/queries";
 import HomeEventCard from "@/components/HomeEventCard";
 import { EventTags } from "@/utility/tags";
 import TagSelector from "@/components/TagSelector";
+import Link from "next/link";
 
 const Home = () => {
   const [token, setToken] = useState<string | null>(null);
@@ -124,12 +124,14 @@ const Home = () => {
               />
             )}
           </Box>
-          <Grid container>
+          <Grid container sx={{ mx: 15 }}>
           {/* Display the events */}
           {data && data.length > 0 ? (
             data.map((event: ActivityDatabase) => (     
               <Grid size={{ md: 12, lg: 6 }} key={event._id} sx={{  }}>
-                <HomeEventCard event={event} />
+                
+                  <HomeEventCard event={event} />
+                
               </Grid>                             
             ))
           ) : (
