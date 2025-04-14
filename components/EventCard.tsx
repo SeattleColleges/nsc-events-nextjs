@@ -44,4 +44,3 @@ function EventCard({ event }: EventCardProps) {
 export default EventCard
 
 
-
