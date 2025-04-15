@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "engines": {
-    "node": "20.x"
+    "node": "22.x"
   },
   "scripts": {
     "dev": "next dev -p 8080",
@@ -18,17 +18,16 @@
   },
   "dependencies": {
     "@emotion/cache": "11.13.1",
-    "@emotion/react": "^11.14.0",
-    "@emotion/styled": "^11.14.0",
-    "@mui/icons-material": "^6.1.7",
+    "@emotion/react": "11.14.0",
+    "@emotion/styled": "11.14.0",
+    "@mui/icons-material": "6.1.7",
     "@mui/lab": "6.0.0-beta.10",
-    "@mui/material": "^6.4.5",
+    "@mui/material": "6.4.5",
     "@mui/material-nextjs": "6.1.7",
     "@mui/utils": "6.1.7",
     "@mui/x-date-pickers": "7.22.2",
     "@tanstack/react-query": "5.60.5",
     "@types/bcrypt": "5.0.2",
-    "@types/node": "22.9.0",
     "@types/react": "18.3.12",
     "@types/react-dom": "18.3.1",
     "autoprefixer": "10.4.20",
@@ -36,8 +35,8 @@
     "date-fns": "2.29.3",
     "eslint": "8.57.1",
     "eslint-config-next": "14.2.14",
-    "mongoose": "^8.10.1",
-    "next": "^14.2.24",
+    "mongoose": "8.10.1",
+    "next": "14.2.24",
     "next-auth": "4.24.10",
     "postcss": "8.4.49",
     "react": "18.3.1",
@@ -49,9 +48,10 @@
     "typescript": "5.6.3"
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "^6.6.3",
-    "@testing-library/react": "^16.2.0",
+    "@testing-library/jest-dom": "6.6.3",
+    "@testing-library/react": "16.2.0",
     "@types/jest": "29.5.14",
+    "@types/node": "22.14.1",
     "@types/react-datepicker": "7.0.0",
     "@types/react-time-picker": "6.0.0",
     "eslint-plugin-jest-dom": "5.5.0",
