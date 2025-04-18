@@ -11,23 +11,20 @@ type TagSelectorProps = {
 
 const TagSelector: React.FC<TagSelectorProps> = ({ selectedTags, allTags, onTagClick }) => {
     return (
-        <label>
-            
-            <Stack direction="row" spacing={1} className="mt-2" flexWrap="wrap" useFlexGap>
-                {allTags.map(tag => (
-                    <Button
-                        key={tag}
-                        variant={selectedTags.includes(tag) ? 'contained' : 'outlined'}
-                        color="primary"
-                        onClick={() => onTagClick(tag)}
-                        size="small"
-                        style={{ textTransform: 'capitalize' }}
-                    >
-                        {tag}
-                    </Button>
-                ))}
-            </Stack>
-        </label>
+        <Stack direction="row" spacing={1} className="mt-2" flexWrap="wrap" useFlexGap>
+            {allTags.map(tag => (
+                <Button
+                    key={tag}
+                    variant={selectedTags.includes(tag) ? 'contained' : 'outlined'}
+                    color="primary"
+                    onClick={() => onTagClick(tag)}
+                    size="small"
+                    style={{ textTransform: 'capitalize' }}
+                >
+                    {tag}
+                </Button>
+            ))}
+        </Stack>
     );
 };
 
