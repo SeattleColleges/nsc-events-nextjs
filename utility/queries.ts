@@ -8,6 +8,7 @@ const getEvents = async(page: any, tags: string[]) => {
         page: String(page),
         isArchived: String(false),
         tags: String(tags),
+        numEvents: String(6),
     });
     const response = await fetch(`${apiUrl}/events?${params.toString()}`);
     return response.json();
@@ -23,7 +24,7 @@ export function useFilteredEvents(page: any, isEnabled: boolean, tags: string[] 
 const getArchivedEvents = async(page: any) => {
     const params = new URLSearchParams({
         page: String(page),
-        numEvents: String(5),
+        numEvents: String(6),
         isArchived: String(true)
     });
     const response = await fetch(`${apiUrl}/events?${String(params)}`);
@@ -40,7 +41,7 @@ export function useArchivedEvents(page: any, isEnabled: boolean) {
 const getMyEvents = async(userId: string, page: any) => {
     const params = new URLSearchParams({
         page: String(page),
-        numEvents: String(5),
+        numEvents: String(6),
     });
     const response = await fetch(`${apiUrl}/events/user/${userId}?${String(params)}`);
     return response.json();
