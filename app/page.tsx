@@ -45,7 +45,6 @@ const Home = () => {
     if (data) {
         setEvents((prevEvents) => {
             const newEvents = [...prevEvents, ...data];
-            console.log("new events", newEvents)
             // filter events to avoid duplicates (fixes Unarchive Event bug)
             const uniqueEvents = newEvents.filter((event, index, self) =>
                 index === self.findIndex((e) => e._id === event._id)
