@@ -363,7 +363,11 @@ const EventDetail = () => {
                   {(userRole === "admin" ||
                     (userRole === "creator" && event?.createdByUser === userId)) && (
                       <>
-                        <Grid item xs={2} sm="auto">
+                        <Grid
+                          size={{
+                            xs: 2,
+                            sm: "auto"
+                          }}>
                           <Button
                             variant="contained"
                             sx={{
@@ -381,7 +385,11 @@ const EventDetail = () => {
                             {!isMobile && !isTablet && "Edit"}
                           </Button>
                         </Grid>
-                        <Grid item xs={2} sm="auto">
+                        <Grid
+                          size={{
+                            xs: 2,
+                            sm: "auto"
+                          }}>
                           <Button
                             variant="contained"
                             sx={{
@@ -398,7 +406,11 @@ const EventDetail = () => {
                             {!isMobile && !isTablet && "Delete"}
                           </Button>
                         </Grid>
-                        <Grid item xs={2} sm="auto">
+                        <Grid
+                          size={{
+                            xs: 2,
+                            sm: "auto"
+                          }}>
                           <Button
                             variant="contained"
                             sx={{
@@ -427,7 +439,11 @@ const EventDetail = () => {
                       </>
                     )}
                 </Grid>
-                <Grid item xs={12} sm="auto">
+                <Grid
+                  size={{
+                    xs: 12,
+                    sm: "auto"
+                  }}>
                   <Button
                     variant="contained"
                     sx={{
@@ -446,7 +462,11 @@ const EventDetail = () => {
                     More Details{" "} <span>(Clicked: {viewMoreDetailsClickCount} times)</span>
                   </Button>
                 </Grid>
-                <Grid item xs={12} sm="auto">
+                <Grid
+                  size={{
+                    xs: 12,
+                    sm: "auto"
+                  }}>
                   <Button
                     variant="contained"
                     sx={{

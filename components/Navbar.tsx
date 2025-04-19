@@ -1,16 +1,33 @@
 "use client";
-import React, { useState } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
-import MenuIcon from '@mui/icons-material/Menu';
-import { AppBar, Toolbar, IconButton, Grid, Button, Drawer, List, ListItem, ListItemText, useTheme, useMediaQuery, Box, Tooltip, Avatar, Menu, Typography, MenuItem } from '@mui/material';
-import { useRouter } from 'next/navigation';
-import DrawerComp from './DrawerComp';
-import useAuth from '../hooks/useAuth';
-import AuthProfileMenu from './AuthProfileMenu';
-import ThemeToggle from './ThemeToggle';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-
+import React, { useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import MenuIcon from "@mui/icons-material/Menu";
+import {
+  AppBar,
+  Toolbar,
+  IconButton,
+  Grid,
+  Button,
+  Drawer,
+  List,
+  ListItem,
+  ListItemText,
+  useTheme,
+  useMediaQuery,
+  Box,
+  Tooltip,
+  Avatar,
+  Menu,
+  Typography,
+  MenuItem,
+} from "@mui/material";
+import { useRouter } from "next/navigation";
+import DrawerComp from "./DrawerComp";
+import useAuth from "../hooks/useAuth";
+import AuthProfileMenu from "./AuthProfileMenu";
+import ThemeToggle from "./ThemeToggle";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 export default function Navbar() {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -20,16 +37,17 @@ export default function Navbar() {
   const theme = useTheme();
   const isMediumScreen = useMediaQuery(theme.breakpoints.between("sm", "md"));
 
-  const toggleDrawer = (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
-    if (
-      event.type === "keydown" &&
-      "key" in event &&
-      (event.key === "Tab" || event.key === "Shift")
-    ) {
-      return;
-    }
-    setDrawerOpen(open);
-  };
+  const toggleDrawer =
+    (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
+      if (
+        event.type === "keydown" &&
+        "key" in event &&
+        (event.key === "Tab" || event.key === "Shift")
+      ) {
+        return;
+      }
+      setDrawerOpen(open);
+    };
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
@@ -60,7 +78,11 @@ export default function Navbar() {
   };
 
   const list = () => (
-    <div role="presentation" onClick={toggleDrawer(false)} onKeyDown={toggleDrawer(false)}>
+    <div
+      role="presentation"
+      onClick={toggleDrawer(false)}
+      onKeyDown={toggleDrawer(false)}
+    >
       <List>
         <ListItem component={Link} href="/">
           <ListItemText primary="Events" />
@@ -81,14 +103,27 @@ export default function Navbar() {
   return (
     <AppBar position="static">
       <Toolbar>
-        <Grid container justifyContent="space-between" alignItems="center">
-          <Grid item>
+        <Box
+          sx={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <Box>
             <Link href="/" passHref>
               {/* Directly reference the logo image from the public folder */}
-              <Image src="/images/white_nsc_logo.png" alt="logo" width={40} height={40} />
+              <Image
+                src="/images/white_nsc_logo.png"
+                alt="logo"
+                width={40}
+                height={40}
+              />
             </Link>
-          </Grid>
-          <Grid item>
+          </Box>
+
+          <Box>
             <IconButton
               edge="start"
               color="inherit"
@@ -98,28 +133,32 @@ export default function Navbar() {
             >
               <MenuIcon />
             </IconButton>
+
             <Grid
               container
               spacing={2}
+              justifyContent="flex-end"
               alignItems="center"
               sx={{ display: { xs: "none", md: "flex" } }}
             >
               {/* Events Link remains outside AuthProfileMenu for general access */}
-              <Grid item>
+              <Box>
                 <Link href="/" passHref>
                   <Button color="inherit" sx={{ textTransform: "none" }}>
                     Events
                   </Button>
                 </Link>
-              </Grid>
+              </Box>
 
               {/* AuthProfileMenu contains Create Event and Sign Out actions */}
               {isAuth && user && (
-                <Box sx={{ flexGrow: 0, display: "flex", alignItems: "center" }}>
+                <Box
+                  sx={{ flexGrow: 0, display: "flex", alignItems: "center" }}
+                >
                   <Tooltip title="Open user menu">
                     <IconButton
                       onClick={handleOpenUserMenu}
-                      sx={{ p: 0, ml: 3, mr: 1, mt: 2, color: "white" }}
+                      sx={{ p: 0, ml: 3, mr: 1, color: "white" }}
                     >
                       <AccountCircleIcon />
                     </IconButton>
@@ -151,16 +190,18 @@ export default function Navbar() {
                         <Typography textAlign="center">Profile</Typography>
                       </MenuItem>
                     )}
-                    {isAuth && user && (user.role === "admin" || user.role === "creator") && (
-                      <MenuItem
-                        onClick={() => {
-                          handleAccountClick();
-                          handleCloseUserMenu();
-                        }}
-                      >
-                        <Typography textAlign="center">My Account</Typography>
-                      </MenuItem>
-                    )}
+                    {isAuth &&
+                      user &&
+                      (user.role === "admin" || user.role === "creator") && (
+                        <MenuItem
+                          onClick={() => {
+                            handleAccountClick();
+                            handleCloseUserMenu();
+                          }}
+                        >
+                          <Typography textAlign="center">My Account</Typography>
+                        </MenuItem>
+                      )}
                     <MenuItem
                       onClick={() => {
                         handleCloseUserMenu();
@@ -172,23 +213,29 @@ export default function Navbar() {
                   </Menu>
                 </Box>
               )}
+
               {!isAuth && (
-                <Grid item>
+                <Box>
                   <Link href="/auth/sign-in" passHref>
                     <Button color="inherit" sx={{ textTransform: "none" }}>
                       Sign In
                     </Button>
                   </Link>
-                </Grid>
+                </Box>
               )}
-              <Grid item sx={{ ml: 1, mr: 1 }}>
+
+              <Box sx={{ ml: 1, mr: 1 }}>
                 <ThemeToggle />
-              </Grid>
+              </Box>
             </Grid>
-          </Grid>
-        </Grid>
+          </Box>
+        </Box>
       </Toolbar>
-      <DrawerComp isOpen={drawerOpen} toggleDrawer={toggleDrawer} isAuth={isAuth} />
+      <DrawerComp
+        isOpen={drawerOpen}
+        toggleDrawer={toggleDrawer}
+        isAuth={isAuth}
+      />
     </AppBar>
   );
-};
+}

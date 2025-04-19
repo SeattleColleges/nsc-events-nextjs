@@ -82,7 +82,7 @@ export function HomeEventsList() {
                 {/* Display the events */}
                 {events.length > 0 ? (
                     events.map((event: ActivityDatabase) => (
-                        <Grid item xs={12} key={event._id}>
+                        <Grid key={event._id} size={12}>
                             <HomeEventsCard key={event._id} event={event} />                            
                         </Grid>
                     ))

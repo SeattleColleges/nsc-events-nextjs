@@ -45,19 +45,39 @@ const Admin = () => {
                     flexDirection="column"
                 >
                     <Grid container spacing={2} justifyContent="center" alignItems="center">
-                        <Grid item xs={12} sm="auto">
+                        <Grid
+                            size={{
+                                xs: 12,
+                                sm: "auto"
+                            }}>
                             <AdminButton path={'/edit-user-role-page'} text={"Edit User Role"}/>
                         </Grid>
-                        <Grid item xs={12} sm="auto">
+                        <Grid
+                            size={{
+                                xs: 12,
+                                sm: "auto"
+                            }}>
                             <AdminButton path={'/create-event'} text={"Create Event"}/>
                         </Grid>
-                        <Grid item xs={12} sm="auto">
+                        <Grid
+                            size={{
+                                xs: 12,
+                                sm: "auto"
+                            }}>
                             <AdminButton path={'/my-events'} text={"View My Events"}/>
                         </Grid>
-                        <Grid item xs={12} sm="auto">
+                        <Grid
+                            size={{
+                                xs: 12,
+                                sm: "auto"
+                            }}>
                             <AdminButton path={'/archived-events'} text={"View Archived Events"}/>
                         </Grid>
-                        <Grid item xs={12} sm="auto">
+                        <Grid
+                            size={{
+                                xs: 12,
+                                sm: "auto"
+                            }}>
                             <AdminButton path={'/'} text={"View All Events"}/>
                         </Grid>
                     </Grid>

@@ -35,7 +35,7 @@ export function MyEventsList() {
                 justifyItems={"center"}
               >
                   {events?.map((event: ActivityDatabase) => (
-                    <Grid item xs={12} key={event._id} sx={{ width: isMobile ? "100%" : "60%" }}>
+                    <Grid key={event._id} sx={{ width: isMobile ? "100%" : "60%" }} size={12}>
                         <Link key={event._id} href={
                             {
                                 pathname: "/event-detail",
@@ -53,7 +53,7 @@ export function MyEventsList() {
                     </Grid>
                 ))}
                 {!hasReachedLastPage && (
-                    <Grid item>
+                    <Grid>
                         <Button onClick={handleLoadMoreEvents}
                                 type='button'
                                 variant="contained"

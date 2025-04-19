@@ -14,31 +14,31 @@ function EventCard({ event }: EventCardProps) {
   const isMobile = useMediaQuery(theme.breakpoints.between('xs', 'sm'));
 
   return (
-    <div>
-      <Grid item xs={12} key={event._id}>
-          <Box sx={{ margin: "0 auto", height: (isMobile || isTablet) ? 325 : 130, width: isMobile ? 260 : isTablet ? 400 : "80%", minWidth: !(isMobile || isTablet) ? 460 : 260, display: "block" }}>
-              <Card sx={{ display: 'flex', flexDirection: 'column', marginTop: 0 }}>
-                  {(isMobile || isTablet) && (
-                      <CardMedia
-                        component="img"
-                        sx={{ height: 200, objectFit: "cover" }}
-                        image={event.eventCoverPhoto}
-                        alt={event.eventTitle}
-                      />
-                  )}
-                  <CardContent sx={{ flexGrow: 1 }} >
-                      <Typography variant="h5" align={(isMobile || isTablet) ? "center" : "left"}>
-                          {event.eventTitle}
-                      </Typography>
-                      <Typography variant="body2" align={(isMobile || isTablet) ? "center" : "right"} color="text.secondary">
-                          Date: { formatDate(event.eventDate) }
-                      </Typography>
-                  </CardContent>
-              </Card>
-          </Box>
-      </Grid>
-    </div>
-  )
+      <div>
+          <Grid key={event._id} size={12}>
+              <Box sx={{ margin: "0 auto", height: (isMobile || isTablet) ? 325 : 130, width: isMobile ? 260 : isTablet ? 400 : "80%", minWidth: !(isMobile || isTablet) ? 460 : 260, display: "block" }}>
+                  <Card sx={{ display: 'flex', flexDirection: 'column', marginTop: 0 }}>
+                      {(isMobile || isTablet) && (
+                          <CardMedia
+                            component="img"
+                            sx={{ height: 200, objectFit: "cover" }}
+                            image={event.eventCoverPhoto}
+                            alt={event.eventTitle}
+                          />
+                      )}
+                      <CardContent sx={{ flexGrow: 1 }} >
+                          <Typography variant="h5" align={(isMobile || isTablet) ? "center" : "left"}>
+                              {event.eventTitle}
+                          </Typography>
+                          <Typography variant="body2" align={(isMobile || isTablet) ? "center" : "right"} color="text.secondary">
+                              Date: { formatDate(event.eventDate) }
+                          </Typography>
+                      </CardContent>
+                  </Card>
+              </Box>
+          </Grid>
+      </div>
+  );
 }
 
 export default EventCard
