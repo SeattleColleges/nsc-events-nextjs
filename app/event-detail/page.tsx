@@ -49,7 +49,7 @@ const EventDetail = () => {
   const eventIds = searchParams.get("events");
   const queryClient = useQueryClient();
   const [event, setEvent] = useState<ActivityDatabase | null>(null);
-  const [events, setEvents] = useState<string[]>( () => {
+  const [events, setEvents] = useState<string[]>(() => {
     const events = localStorage.getItem('events');
     return events ? JSON.parse(events) : [];
   });
@@ -64,6 +64,7 @@ const EventDetail = () => {
   const [viewMoreDetailsClickCount, setViewMoreDetailsClickCount] = useState(0);
   const [userId, setUserId] = useState("");
   const [userRole, setUserRole] = useState("");
+  const [isRegistered, setIsRegistered] = useState(false);
   const { palette } = useTheme();
   const containerColor = palette.mode === "dark" ? "#333" : "#fff";
   const theme = useTheme();
@@ -71,7 +72,7 @@ const EventDetail = () => {
   const isMobile = useMediaQuery(theme.breakpoints.between('xs', 'sm'));
   const [page, setPage] = useState(Number(searchParams.get("page")!) + 1)
   const [reachedLastPage, setReachedLastPage] = useState(false);
-  const [prevPage] = useState( () => {
+  const [prevPage] = useState(() => {
     const prevPage = localStorage.getItem("prevPage")
     return prevPage ? prevPage : searchParams.get("from")
   })
@@ -80,6 +81,7 @@ const EventDetail = () => {
   const { data: archivedEvents } = useArchivedEvents(page, prevPage === "archived")
   const { data: myEvents } = useMyEvents(getCurrentUserId(), page, prevPage === "mine")
   const { data } = useEventById(id);
+
   const DeleteDialog = () => {
     return (
       <>
@@ -215,6 +217,37 @@ const EventDetail = () => {
     }
   }, [queryClient, data, eventIds]);
 
+  useEffect(() => {
+    const checkRegistration = async () => {
+      if (!userId || !id) return;
+
+      try {
+        const apiUrl = process.env.NSC_EVENTS_PUBLIC_API_URL;
+        console.log("Checking registration with URL:", `${apiUrl}/event-registration/user/${userId}`);
+
+        const response = await fetch(`${apiUrl}/event-registration/user/${userId}`);
+        console.log("Registration check response status:", response.status);
+
+        if (!response.ok) {
+          console.error("Registration check failed:", await response.text());
+          return;
+        }
+
+        const registeredEvents = await response.json();
+        console.log("User registered events:", registeredEvents);
+
+        const isUserRegistered = registeredEvents.some((event: any) => event._id === id);
+        console.log("Is user registered for this event:", isUserRegistered, "Event ID:", id);
+
+        setIsRegistered(isUserRegistered);
+      } catch (error) {
+        console.error("Error checking registration status:", error);
+      }
+    };
+
+    checkRegistration();
+  }, [userId, id]);
+
   const toggleAttendDialog = () => {
     if (token === "") {
       console.log(token);
@@ -264,6 +297,45 @@ const EventDetail = () => {
     console.log("Current Event: ", event);
   }, [events, event]);
 
+  const handleUnregister = async () => {
+    if (!userId || !id || !token) return;
+
+    try {
+      const apiUrl = process.env.NSC_EVENTS_PUBLIC_API_URL;
+      console.log("Unregistering with URL:", `${apiUrl}/event-registration/unattend`);
+      console.log("Unregister payload:", { userId, eventId: id });
+
+      const response = await fetch(`${apiUrl}/event-registration/unattend`, {
+        method: 'DELETE',
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          userId: userId,
+          eventId: id
+        })
+      });
+
+      console.log("Unregister response status:", response.status);
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Unregister failed:", errorText);
+        throw new Error(`Failed to unregister: ${errorText}`);
+      }
+
+      const result = await response.json();
+      console.log("Unregister result:", result);
+
+      setSnackbarMessage("Successfully unregistered from event.");
+      setIsRegistered(false);
+    } catch (error) {
+      console.error("Error unregistering:", error);
+      setSnackbarMessage("Failed to unregister from event.");
+    }
+  };
+
   if (!event) {
     return <div>Loading...</div>;
   }
@@ -294,7 +366,7 @@ const EventDetail = () => {
           sx={{
             display: "flex",
             justifyContent: "center",
-            alignItems: "center", 
+            alignItems: "center",
             height: "100vh",
             backgroundColor: "rgba(0, 0, 0, 0)",
             zIndex: 1,
@@ -451,18 +523,21 @@ const EventDetail = () => {
                     variant="contained"
                     sx={{
                       color: "white",
-                      backgroundColor: "#2074d4",
+                      backgroundColor: isRegistered ? "#4CAF50" : "#2074d4",
                       width: isMobile ? "120" : "auto",
                       padding: "8px 16px",
                       overflow: "hidden",
                       marginTop: isMobile ? 1 : 0,
                     }}
                     onClick={() => {
-                      toggleAttendDialog();
+                      if (isRegistered) {
+                        handleUnregister();
+                      } else {
+                        toggleAttendDialog();
+                      }
                     }}
                   >
-                    {" "}
-                    Attend{" "}
+                    {isRegistered ? "Unregister" : "Attend"}
                   </Button>
                 </Grid>
               </Box>
@@ -502,6 +577,7 @@ const EventDetail = () => {
             isOpen={attendDialogOpen}
             eventId={event._id}
             dialogToggle={toggleAttendDialog}
+            onSuccess={() => setIsRegistered(true)}
           />
           <ArchiveDialog
             isOpen={archiveDialogOpen}

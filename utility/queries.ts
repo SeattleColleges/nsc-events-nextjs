@@ -3,7 +3,7 @@ import { ActivityDatabase } from "@/models/activityDatabase";
 import React from "react";
 
 const apiUrl = process.env.NSC_EVENTS_PUBLIC_API_URL;
-const getEvents = async(page: any, tags: string[]) => {
+const getEvents = async (page: any, tags: string[]) => {
     const params = new URLSearchParams({
         page: String(page),
         isArchived: String(false),
@@ -20,7 +20,7 @@ export function useFilteredEvents(page: any, isEnabled: boolean, tags: string[] 
     });
 }
 
-const getArchivedEvents = async(page: any) => {
+const getArchivedEvents = async (page: any) => {
     const params = new URLSearchParams({
         page: String(page),
         numEvents: String(5),
@@ -37,7 +37,7 @@ export function useArchivedEvents(page: any, isEnabled: boolean) {
     });
 }
 
-const getMyEvents = async(userId: string, page: any) => {
+const getMyEvents = async (userId: string, page: any) => {
     const params = new URLSearchParams({
         page: String(page),
         numEvents: String(5),
@@ -60,7 +60,7 @@ const getEventById = async (id: string | null) => {
 
 export function useEventById(eventId: string | null) {
     return useQuery<ActivityDatabase, Error>({
-        queryKey:[eventId],
+        queryKey: [eventId],
         queryFn: async () => getEventById(eventId),
     })
 }
