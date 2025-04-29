@@ -33,7 +33,7 @@ import ViewMoreDetailsDialog from "@/components/ViewMoreDetailsDialog";
 import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import { useTheme } from "@mui/material";
-import { useArchivedEvents, useEventById, useFilteredEvents, useMyEvents } from "@/utility/queries";
+import { useArchivedEvents, useEventById, useFilteredEvents, useIsAttending, useMyEvents } from "@/utility/queries";
 import { getCurrentUserId } from "@/utility/userUtils";
 
 interface SearchParams {
@@ -61,10 +61,8 @@ const EventDetail = () => {
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [attendDialogOpen, setAttendDialogOpen] = useState(false);
   const [moreDetailsDialogOpen, setMoreDetailsDialogOpen] = useState(false);
-  const [viewMoreDetailsClickCount, setViewMoreDetailsClickCount] = useState(0);
   const [userId, setUserId] = useState("");
   const [userRole, setUserRole] = useState("");
-  const [isRegistered, setIsRegistered] = useState(false);
   const { palette } = useTheme();
   const containerColor = palette.mode === "dark" ? "#333" : "#fff";
   const theme = useTheme();
@@ -77,10 +75,13 @@ const EventDetail = () => {
     return prevPage ? prevPage : searchParams.get("from")
   })
   const [usedData, setUsedData] = useState<ActivityDatabase[] | undefined>(undefined)
+
+  const [isRegistered, setIsRegistered] = useState<boolean | undefined>(undefined);
   const { data: filteredEvents } = useFilteredEvents(page, prevPage === "home")
   const { data: archivedEvents } = useArchivedEvents(page, prevPage === "archived")
   const { data: myEvents } = useMyEvents(getCurrentUserId(), page, prevPage === "mine")
   const { data } = useEventById(id);
+  const { data: isAttending } = useIsAttending(event?._id, userId);
 
   const DeleteDialog = () => {
     return (
@@ -137,7 +138,6 @@ const EventDetail = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(response);
       if (!response.ok) {
         throw new Error(`Failed to delete event: ${response.statusText}`);
       }
@@ -155,7 +155,7 @@ const EventDetail = () => {
       setSnackbarMessage("Successfully deleted event.");
       setTimeout(() => {
         router.refresh();
-        router.push("/");
+        router.push('/')
       }, 1200);
     },
     onError: () => {
@@ -217,40 +217,8 @@ const EventDetail = () => {
     }
   }, [queryClient, data, eventIds]);
 
-  useEffect(() => {
-    const checkRegistration = async () => {
-      if (!userId || !id) return;
-
-      try {
-        const apiUrl = process.env.NSC_EVENTS_PUBLIC_API_URL;
-        console.log("Checking registration with URL:", `${apiUrl}/event-registration/user/${userId}`);
-
-        const response = await fetch(`${apiUrl}/event-registration/user/${userId}`);
-        console.log("Registration check response status:", response.status);
-
-        if (!response.ok) {
-          console.error("Registration check failed:", await response.text());
-          return;
-        }
-
-        const registeredEvents = await response.json();
-        console.log("User registered events:", registeredEvents);
-
-        const isUserRegistered = registeredEvents.some((event: any) => event._id === id);
-        console.log("Is user registered for this event:", isUserRegistered, "Event ID:", id);
-
-        setIsRegistered(isUserRegistered);
-      } catch (error) {
-        console.error("Error checking registration status:", error);
-      }
-    };
-
-    checkRegistration();
-  }, [userId, id]);
-
   const toggleAttendDialog = () => {
     if (token === "") {
-      console.log(token);
       router.push("auth/sign-in");
     } else {
       setAttendDialogOpen(!attendDialogOpen);
@@ -259,10 +227,6 @@ const EventDetail = () => {
 
   const toggleViewMoreDetailsDialog = () => {
     setMoreDetailsDialogOpen((prev) => !prev);
-
-    if (!moreDetailsDialogOpen) {
-      setViewMoreDetailsClickCount((prevCount) => prevCount + 1);
-    }
   };
 
   const toggleArchiveDialog = () => {
@@ -297,43 +261,47 @@ const EventDetail = () => {
     console.log("Current Event: ", event);
   }, [events, event]);
 
-  const handleUnregister = async () => {
-    if (!userId || !id || !token) return;
+  const unattendEvent = async ({ eventId, userId }: { eventId: string; userId: string }) => {
+    let options = {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      }, 
+      body: JSON.stringify({ userId, eventId })
+    };
 
     try {
       const apiUrl = process.env.NSC_EVENTS_PUBLIC_API_URL;
-      console.log("Unregistering with URL:", `${apiUrl}/event-registration/unattend`);
-      console.log("Unregister payload:", { userId, eventId: id });
-
-      const response = await fetch(`${apiUrl}/event-registration/unattend`, {
-        method: 'DELETE',
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          userId: userId,
-          eventId: id
-        })
-      });
-
-      console.log("Unregister response status:", response.status);
-
+      const response = await fetch(`${apiUrl}/event-registration/unattend`, options);
       if (!response.ok) {
-        const errorText = await response.text();
-        console.error("Unregister failed:", errorText);
-        throw new Error(`Failed to unregister: ${errorText}`);
+        throw new Error(`Failed to unregister: ${response.statusText}`);
       }
-
-      const result = await response.json();
-      console.log("Unregister result:", result);
-
-      setSnackbarMessage("Successfully unregistered from event.");
-      setIsRegistered(false);
+      const data = await response.json();
+      return data;
     } catch (error) {
       console.error("Error unregistering:", error);
-      setSnackbarMessage("Failed to unregister from event.");
+      throw error;
     }
+  }
+  
+  const { mutate: unregisterEventMutation } = useMutation({
+    mutationFn: unattendEvent,
+    onSuccess: async () => {
+      await queryClient.refetchQueries({ queryKey: ['events', 'myEvents', 'archivedEvents'] });
+      setSnackbarMessage("Successfully unregistered from event.");
+      setIsRegistered(false);      
+    },
+    onError: () => {
+      setSnackbarMessage("Failed to unregister from event.");
+    },
+  });
+
+  const handleUnregister = async () => {
+    const userId = getCurrentUserId();
+    if (event && event._id && userId) {
+      unregisterEventMutation({ eventId: event._id, userId });
+    }    
   };
 
   if (!event) {
@@ -515,7 +483,7 @@ const EventDetail = () => {
                     }}
                   >
                     {" "}
-                    More Details{" "} <span>(Clicked: {viewMoreDetailsClickCount} times)</span>
+                    More Details{" "}
                   </Button>
                 </Grid>
                 <Grid item xs={12} sm="auto">
@@ -523,7 +491,7 @@ const EventDetail = () => {
                     variant="contained"
                     sx={{
                       color: "white",
-                      backgroundColor: isRegistered ? "#4CAF50" : "#2074d4",
+                      backgroundColor: isRegistered ? "red" : "#2074d4",
                       width: isMobile ? "120" : "auto",
                       padding: "8px 16px",
                       overflow: "hidden",

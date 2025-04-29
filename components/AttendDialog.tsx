@@ -8,7 +8,7 @@ import IconButton from "@mui/material/IconButton";
 import InfoIcon from '@mui/icons-material/Info';
 import React, { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
+
 
 interface AttendDialogProps {
     isOpen: boolean,
@@ -18,10 +18,12 @@ interface AttendDialogProps {
 }
 
 const AttendDialog = ({ isOpen, eventId, dialogToggle, onSuccess }: AttendDialogProps) => {
-    const router = useRouter();
+    
     const [checked, setChecked] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState("");
     const [heardFrom, setHeardFrom] = useState<string[]>([]); // New state for "Heard From"
+
+    const token = localStorage.getItem("token");
 
     const toggleCheckBox = () => {
         setChecked(!checked);
@@ -49,98 +51,39 @@ const AttendDialog = ({ isOpen, eventId, dialogToggle, onSuccess }: AttendDialog
             }, body: ''
         };
 
-        if (checked && token != null) {
+        if (token != null) {
             const body = {
-                attendee: {
-                    firstName: JSON.parse(atob(token.split(".")[1])).firstName,
-                    lastName: JSON.parse(atob(token.split(".")[1])).lastName
-                },
-                heardFrom // Include "Heard From" data in the request body
+                eventId: id,
+                userId: JSON.parse(atob(token.split(".")[1])).id,   
+                firstName: checked ?JSON.parse(atob(token.split(".")[1])).firstName : "",
+                lastName: checked ? JSON.parse(atob(token.split(".")[1])).lastName : "",
+                referralSources: heardFrom
             };
             options.body = JSON.stringify(body);
-            console.log(options);
         }
 
         try {
             const apiUrl = process.env.NSC_EVENTS_PUBLIC_API_URL;
-            const response = await fetch(`${apiUrl}/events/attend/${id}`, options);
+            const response = await fetch(`${apiUrl}/event-registration/attend`, options);
 
             return response.json();
         } catch (error) {
             console.error('error: ', error);
         }
     };
-
-    const attendEventLog = async (id: string) => {
-        const token = localStorage.getItem("token");
-        if (!token) {
-            console.error("Token is missing");
-            return;
-        }
-
-        try {
-            const apiUrl = process.env.NSC_EVENTS_PUBLIC_API_URL;
-
-            // First get the user's full profile
-            const userId = JSON.parse(atob(token.split(".")[1])).id;
-            const userResponse = await fetch(`${apiUrl}/users/find/${userId}`, {
-                headers: {
-                    "Authorization": `Bearer ${token}`,
-                    "Content-Type": "application/json"
-                }
-            });
-
-            if (!userResponse.ok) {
-                throw new Error("Failed to fetch user data");
-            }
-
-            const userData = await userResponse.json();
-
-            // Then make the event registration request with the full user data
-            const response = await fetch(`${apiUrl}/event-registration/attend`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`,
-                },
-                body: JSON.stringify({
-                    userId: userId,
-                    eventId: id,
-                    firstName: userData.firstName,
-                    lastName: userData.lastName,
-                    referralSources: heardFrom
-                })
-            });
-
-            return response.json();
-        } catch (error) {
-            console.error('error: ', error);
-        }
-    };
-
-    const { mutate: attendEventLogMutation } = useMutation({
-        mutationFn: attendEventLog,
-        onSuccess: () => {
-            console.log("Logged registration");
-            onSuccess?.();
-        },
-        onError: (error: String) => {
-            setSnackbarMessage("Failed to attend event.");
-            console.error("Failed to attend: ", error);
-        }
-    });
 
     const { mutate: attendEventMutation } = useMutation({
         mutationFn: attendEvent,
-        onSuccess: () => {
-            setSnackbarMessage("Successfully added your attendance.");
-            onSuccess?.();
-        },
-        onError: (error: String) => {
-            setSnackbarMessage("Failed to attend event.");
-            console.error("Failed to attend: ", error);
+        onSuccess: (data) => {
+            if (data) {
+                setSnackbarMessage("You are now attending this event!");
+                onSuccess && onSuccess();
+            } else {
+                setSnackbarMessage("Error: Unable to attend the event.");
+            }
         }
     });
+
 
     return (
         <>
@@ -264,7 +207,6 @@ const AttendDialog = ({ isOpen, eventId, dialogToggle, onSuccess }: AttendDialog
                         <Box>
                             <Button onClick={() => {
                                 attendEventMutation(eventId);
-                                attendEventLogMutation(eventId);
                                 handleDialogBtnClick();
                             }} autoFocus>
                                 Confirm

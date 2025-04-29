@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { ActivityDatabase } from "@/models/activityDatabase";
-import React from "react";
+
 const numOfEventsToGet = 6;
 const apiUrl = process.env.NSC_EVENTS_PUBLIC_API_URL;
 const getEvents = async (page: any, tags: string[]) => {
@@ -63,5 +63,25 @@ export function useEventById(eventId: string | null) {
     return useQuery<ActivityDatabase, Error>({
         queryKey: [eventId],
         queryFn: async () => getEventById(eventId),
+    })
+}
+
+export function useIsAttending(eventId: string | undefined, userId: string | undefined) {
+    return useQuery<boolean, Error>({
+        queryKey: ['isAttending', eventId, userId],
+        queryFn: async () => {
+            if (!eventId || !userId) throw new Error("Missing eventId or userId");
+            const token = localStorage.getItem("token");
+            const response = await fetch(`${apiUrl}/event-registration/is-attending/${eventId}/${userId}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error("Network response was not ok");
+            }
+            return response.json();
+        }
     })
 }
