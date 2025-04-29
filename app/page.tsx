@@ -58,7 +58,7 @@ const Home = () => {
         );
         return uniqueEvents;
       });
-      setReachedLastPage(data.length < 5);
+      setReachedLastPage(data.length < 6);
     }
   }, [data]);
 
