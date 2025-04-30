@@ -34,7 +34,7 @@ export function UpcomingEvent() {
   return (
     <Grid container spacing={1}>
       {data?.slice(0, 1).map((event: ActivityDatabase) => (
-        <Grid item xs={12} key={event._id}>
+        <Grid key={event._id} size={12}>
           <Box sx={{ width: 350 }}>
             <Box
               sx={{
