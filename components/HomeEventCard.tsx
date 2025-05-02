@@ -1,136 +1,194 @@
-"use client";
-import { Box, Card, CardContent, CardHeader, CardMedia, Typography, useMediaQuery, useTheme, Button } from '@mui/material';
-import { ActivityDatabase } from "@/models/activityDatabase";
-import React from 'react'
+import {
+    Box,
+    Card,
+    CardContent,
+    CardMedia,
+    Typography,
+    useMediaQuery,
+    useTheme,
+} from "@mui/material";
+import React from "react";
+import Link from "next/link";
 import { formatDate } from "@/utility/dateUtils";
-import Link from 'next/link';
+import { ActivityDatabase } from "@/models/activityDatabase";
 
-// declare the event prop that will get passed to the component
 interface EventCardProps {
     event: ActivityDatabase;
 }
 
-function HomeEventsCard({ event }: EventCardProps) {
+function HomeEventCard({ event }: EventCardProps) {
     const theme = useTheme();
-    const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
-    const isMobile = useMediaQuery(theme.breakpoints.between('xs', 'sm'));
+    const isTablet = useMediaQuery(theme.breakpoints.between("sm", "md"));
+    const isMobile = useMediaQuery(theme.breakpoints.between("xs", "sm"));
 
-    const { palette } = useTheme();
-
-    const darkImagePath = '/images/white_nsc_logo.png';
-    const lightImagePath = '/images/blue_nsc_logo.png';
-    const googlePlayImage = '/images/google_play.png'
-    const imagePath = palette.mode === "dark" ? darkImagePath : lightImagePath;
+    const { palette } = theme;
 
     return (
-        <Box sx={{ width: (isMobile || isTablet) ? "100vw" : "100%", display: "flex", flexDirection: "column", justifyContent: "center", p: 2 }}>
-            <Card sx={{ display: 'flex', flexDirection: 'row',  maxWidth: "700", minHeight: 300, minWidth: { md: 300, lg: 400, xl: 780 }, boxShadow: 2, borderRadius: 2, overflow: "hidden", }}>
+        <Box
+            sx={{
+                width: (isMobile || isTablet) ? "100vw" : "100%",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                p: 2,
+            }}
+        >
+            <Card
+                sx={{
+                    display: "flex",
+                    flexDirection: isMobile ? "column" : "row",
+                    borderRadius: 2,
+                    boxShadow: 2,
+                    overflow: "hidden",
+                    mb: 2,
+                }}
+            >
                 {!isMobile && (
                     <CardMedia
                         component="img"
-                        sx={{ height: "auto", objectFit: "cover", marginBlock: 2, marginLeft: 2, minWidth: 100, maxWidth: 200 }}
                         image={event.eventCoverPhoto}
                         alt={event.eventTitle}
+                        sx={{
+                            height: "auto",
+                            objectFit: "cover",
+                            marginBlock: 2,
+                            marginLeft: 2,
+                            minWidth: 100,
+                            maxWidth: 200,
+                        }}
                     />
                 )}
-                <CardContent sx={{ display: "flex", flexDirection: "column", width: "100%" }} >
+
+                <CardContent
+                    sx={{
+                        flex: 1,
+                        display: "flex",
+                        flexDirection: "column",
+                        p: 2,
+                        gap: 2,
+                        overflow: "hidden",
+                    }}
+                >
                     <Box
                         sx={{
-                        display: "flex",
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        width: "100%",
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "flex-start",
+                            gap: 2,
+                            flexWrap: "wrap",
+                            minWidth: 0, // prevent overflow from children
                         }}
                     >
-                        <Box sx={{ flexGrow: 1, mr: 2 }}>
+                        <Box sx={{ flex: 1, minWidth: 0 }}> {/* prevent overflow from children */}
                             <Link
-                                key={event._id}
-                                href={{
-                                    pathname: "/event-detail",
-                                    query: { id: event._id },
-                                }}
-                                style={{ textDecoration: "none" }} // prevent underline on header
+                                href={{ pathname: "/event-detail", query: { id: event._id } }}
+                                style={{ textDecoration: "none", display: "block" }}
                             >
-                                <CardHeader
-                                sx={{
-                                    width: "100%",
-                                    height: "100%",
-                                    minHeight: 60,
-                                    backgroundColor: palette.primary.dark,
-                                    color: palette.primary.contrastText,
-                                    borderRadius: 2,
-                                    boxShadow: 2,
-                                    padding: 1,
-                                    display: "flex",
-                                    alignItems: "center",
-                                }}
-                                title={
-                                    <Typography
+                                <Box
                                     sx={{
-                                        fontSize: isMobile || isTablet ? "1rem" : "1.5rem",
-                                        fontWeight: "300",
-                                        paddingLeft: 2,
-                                        fontFamily: "font-serif",
+                                        backgroundColor: palette.primary.dark,
+                                        color: palette.primary.contrastText,
+                                        borderRadius: 1,
+                                        px: 2,
+                                        py: 1,
+                                        mb: 1,
                                     }}
+                                >
+                                    <Typography
+                                        variant="h6"
+                                        fontWeight={500}
+                                        fontFamily="font-serif"
+                                        sx={{
+                                            whiteSpace: "normal",
+                                            overflowWrap: "break-word",
+                                            wordBreak: "break-word",
+                                            lineHeight: 1.3,
+                                        }}
                                     >
-                                    {event.eventTitle}
+                                        {event.eventTitle}
                                     </Typography>
-                                }
-                                />
+                                </Box>
                             </Link>
                         </Box>
 
-                        <Typography
-                        sx={{
-                            backgroundColor: palette.secondary.light,
-                            width: 60,
-                            height: 60,
-                            borderRadius: 2,
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            fontWeight: "bolder",
-                            fontSize: 22,
-                            textAlign: "center",
-                        }}
+                        <Box
+                            sx={{
+                                backgroundColor: palette.secondary.light,
+                                width: 60,
+                                height: 60,
+                                borderRadius: 2,
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                fontWeight: "bold",
+                                fontSize: 20,
+                                textAlign: "center",
+                                flexShrink: 0, // prevents the date box from shrinking
+                            }}
                         >
-                        {new Date(event.eventDate).toLocaleDateString("en-US", {
-                            month: "short",
-                            day: "numeric",
-                        })}
+                            {new Date(event.eventDate).toLocaleDateString("en-US", {
+                                month: "short",
+                                day: "numeric",
+                            })}
+                        </Box>
+                    </Box>
+
+                    <Box>
+                        <Typography fontFamily="font-serif">
+                            <strong>Location:</strong> {event.eventLocation}
+                        </Typography>
+                        <Typography fontFamily="font-serif">
+                            <strong>Time:</strong> {formatDate(event.eventDate)}
+                        </Typography>
+
+                        <Typography
+                            fontFamily="font-serif"
+                            mt={1}
+                            sx={{
+                                display: "-webkit-box",
+                                WebkitBoxOrient: "vertical",
+                                WebkitLineClamp: 3, // adjust if necessary
+                                overflow: "hidden",
+                                textOverflow: "ellipsis",  
+                                height: "4.5rem", // fixed height for 3 lines
+                                wordBreak: "break-word", // allow word wrapping
+                            }}
+                        >
+                            <strong>Description:</strong> {event.eventDescription}
                         </Typography>
                     </Box>
-                    <Box sx={{ display: "flex", flexDirection: "column", justifyContent: "space-between", width: "100%", height: "100%" }}>
-                        <Box sx={{ mb: 2 }}>
-                            <Box sx={{ mt: 2, mb: 2 }}>
-                                <Typography sx={{ fontWeight: "bold", display: "flex", flexDirection: "row", fontFamily: "font-serif" }}>
-                                    Location: {event.eventLocation}
-                                </Typography>
-                                <Typography sx={{ fontWeight: "bold", display: "flex", flexDirection: "row", fontFamily: "font-serif" }}>
-                                    Time: { formatDate(event.eventDate) }
-                                </Typography>
-                            </Box>
-                            <Typography sx={{ display: "flex", flexDirection: "column", fontFamily: "font-serif" }}>
-                                Description: {event.eventDescription}
-                            </Typography>
-                        </Box>
-                        <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
-                            <Typography>
-                                Tags:
-                                {event.eventTags.map((tag, index) => (
-                                    <Box key={index} sx={{ backgroundColor: palette.secondary.light, borderRadius: 1, padding: '2px 6px', margin: '2px', display: 'inline-block', fontSize: 10, height: 20, fontWeight: "bold" }}>
-                                        {tag}
-                                    </Box>
-                                ))}
-                            </Typography>
-                        </Box>
+
+                    <Box mt="auto">
+                        <Typography>
+                            Tags:
+                            {event.eventTags.map((tag, index) => (
+                                <Box
+                                    key={index}
+                                    component="span"
+                                    sx={{
+                                        backgroundColor: palette.secondary.light,
+                                        borderRadius: 1,
+                                        px: 1,
+                                        py: 0.5,
+                                        ml: 1,
+                                        fontSize: 10,
+                                        height: 20,
+                                        fontWeight: "bold",
+                                        display: "inline-block",
+                                    }}
+                                >
+                                    {tag}
+                                </Box>
+                            ))}
+                        </Typography>
                     </Box>
                 </CardContent>
             </Card>
         </Box>
-    )
+    );
 }
 
+export default HomeEventCard;
 
-export default HomeEventsCard;
+
+

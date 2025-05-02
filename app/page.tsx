@@ -129,7 +129,7 @@ const Home = () => {
           />
         )}
       </Box>
-      <Grid container sx={{ mx: 15 }}>
+      <Grid container spacing={4} sx={{ px: 2 }}> {/* Can be modified if needed (mx: 15)*/}
         {/* Display the events */}
         {data && data.length > 0 ? (
           data.map((event: ActivityDatabase) => (
