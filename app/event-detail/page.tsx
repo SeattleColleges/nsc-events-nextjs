@@ -69,7 +69,6 @@ const EventDetail = () => {
   const [attendeeCount, setAttendeeCount] = useState<number | null>(null);
   const [anonymousCount, setAnonymousCount] = useState<number | null>(null);
   const [attendeeNames, setAttendeeNames] = useState<string[]>([]);
-  // NEWLY ADDED
   const [attendees, setAttendees] = useState<Attendee[]>([]);
   const [viewDialogOpen, setViewDialogOpen] = useState(false);
 
@@ -225,7 +224,7 @@ const EventDetail = () => {
     }
   }, [queryClient, data, eventIds]);
 
-  // NEWLY ADDED FILE 002
+  
   useEffect(() => {
     const fetchAttendeeData = async () => {
       if (!event?._id || userRole !== "admin") return;
@@ -249,10 +248,6 @@ const EventDetail = () => {
     fetchAttendeeData();
   }, [event, userRole, token]);
   
-  
-  
-  // END OF NEWLY ADDED FILE 002
-
   const toggleAttendDialog = () => {
     if (token === "") {
       console.log(token);
@@ -383,26 +378,6 @@ const EventDetail = () => {
                 <Typography variant="body2" color="text.secondary">
                   Location: {event.eventLocation}
                 </Typography>
-
-                {/* NEWLY ADDED FILE 003 */}
-                {/* render atendees only for admins */}
-                {/* {userRole === "admin" && attendeeCount !== null && (
-                <Box sx={{ mb: 2 }}>
-                  <Typography variant="h6" sx={{ mt: 2, fontWeight: "bold" }}>
-                    Attendees ({attendeeCount})
-                  </Typography>
-                  <ul style={{ paddingLeft: "1.5rem" }}>
-                    {attendeeNames.map((name, index) => (
-                      <li key={index}>
-                        <Typography variant="body2">{name}</Typography>
-                      </li>
-                    ))}
-                  </ul>
-                </Box>
-              )} */}
-                {/* END OF NEWLY ADDED FILE 003 */}
-
-                {/* NEWLY ADDED FILE 003 PART B */}
 
                 {userRole === "admin" && attendeeCount !== null && (
                 <Box sx={{ mb: 2 }}>
