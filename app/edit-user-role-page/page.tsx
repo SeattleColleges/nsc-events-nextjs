@@ -1,5 +1,4 @@
 "use client";
-// EditUserRolePage.tsx
 import React, { useState, useEffect } from "react";
 import {
   Box,
@@ -13,8 +12,8 @@ import {
   FormControl,
   InputLabel,
   SelectChangeEvent,
-  FormHelperText
-} from "@mui/material"; 
+  FormHelperText,
+} from "@mui/material";
 import useAuth from "@/hooks/useAuth";
 import UnauthorizedPageMessage from "@/components/UnauthorizedPageMessage";
 import UserTable from "@/app/edit-user-role-page/components/UserTable"; // Import the new UserTable component
@@ -55,14 +54,13 @@ const EditUserRolePage = () => {
   };
 
   // Handle input change for the seach text fields, set the new search parameters
-  const handleInputChange =
-    (field: keyof typeof searchParams) => (event: React.ChangeEvent<HTMLInputElement>) => {
-      // Updates based on the search field being used (first name, last name, or email)
-      const newParams = { ...searchParams, [field]: event.target.value };
-      setSearchParams(newParams); // Updates state, triggering the debounce
-    };
+  const handleInputChange = (field: keyof typeof searchParams) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    // Updates based on the search field being used (first name, last name, or email)
+    const newParams = { ...searchParams, [field]: event.target.value };
+    setSearchParams(newParams); // Updates state, triggering the debounce
+  };
 
-  // handle the role change for dropdown box filtering 
+  // handle the role change for dropdown box filtering
   const handleRoleChange = (event: SelectChangeEvent<string>) => {
     setRoleFilter(event.target.value);
   };
@@ -95,10 +93,10 @@ const EditUserRolePage = () => {
     if (inputs.email.trim()) {
       searchParams.append("email", inputs.email);
     }
-    if (role) { 
+    if (role) {
       searchParams.append("role", role); // Append role if selected
     }
-    
+
     // Add page and sort parameters to the searchParams
     searchParams.append("page", page.toString());
     const url = `${apiUrl}/users/search?${searchParams.toString()}`;
@@ -114,7 +112,7 @@ const EditUserRolePage = () => {
         throw new Error(res.statusText);
       } else {
         const data: UsersData = await res.json();
-         
+
         setUserInfo(data);
       }
     } catch (error) {
@@ -169,11 +167,7 @@ const EditUserRolePage = () => {
   if (isAuth && user?.role === "admin") {
     return (
       <div>
-        <Typography
-          fontSize={isMobile ? "1.75rem" : "2.25rem"}
-          textAlign={"center"}
-          margin={"1.5rem"}
-        >
+        <Typography fontSize={isMobile ? "1.75rem" : "2.25rem"} textAlign={"center"} margin={"1.5rem"}>
           User Management
         </Typography>
         <Box
@@ -181,7 +175,7 @@ const EditUserRolePage = () => {
             padding: "1rem",
             display: "flex",
             flexDirection: "column",
-            backgroundColor: "white",
+            backgroundColor: theme.palette.mode === "dark" ? theme.palette.background.paper : "white",
             alignItems: "center",
             maxWidth: "80%",
             margin: "0 auto",
@@ -191,9 +185,9 @@ const EditUserRolePage = () => {
             sx={{
               padding: "1rem",
               display: "flex",
-              flexDirection: isMobile ? "column" : "row", // Arrange search bars horizontally
-              justifyContent: "space-between", // Space out search bars
-              gap: "1rem", // Space between search bars
+              flexDirection: isMobile ? "column" : "row",
+              justifyContent: "space-between",
+              gap: "1rem",
               width: "100%",
               maxWidth: "80%",
               margin: "0 auto",
@@ -235,7 +229,9 @@ const EditUserRolePage = () => {
             {/* Role Filter Dropdown */}
             <Box sx={{ width: isMobile ? "100%" : "22%" }}>
               <FormControl fullWidth>
-                <InputLabel id="role-filter-label" shrink>Role</InputLabel>
+                <InputLabel id="role-filter-label" shrink>
+                  Role
+                </InputLabel>
                 <Select
                   labelId="role-filter-label"
                   id="role-filter"
@@ -249,16 +245,12 @@ const EditUserRolePage = () => {
                   <MenuItem value="admin">Admin</MenuItem>
                   <MenuItem value="creator">Creator</MenuItem>
                 </Select>
-                <FormHelperText>Filter by role</FormHelperText> 
+                <FormHelperText>Filter by role</FormHelperText>
               </FormControl>
             </Box>
           </Box>
           {/* Adds some space between TextField and UserTable */}
-          <UserTable
-            userInfo={userInfo}
-            handleEditRoleDialog={handleEditRoleDialog}
-            onPageChange={handlePageChange}
-          />
+          <UserTable userInfo={userInfo} handleEditRoleDialog={handleEditRoleDialog} onPageChange={handlePageChange} />
         </Box>
         {/* Snackbar for feedback */}
         <Snackbar
