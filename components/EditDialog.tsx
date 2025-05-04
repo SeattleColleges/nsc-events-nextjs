@@ -296,7 +296,7 @@ const EditDialog = ({ isOpen, event, toggleEditDialog }: EditDialogProps) => {
                                 label="Facebook"
                                 variant="outlined"
                                 name="facebook"
-                                value={eventData.eventSocialMedia.facebook || ''}
+                                value={eventData.eventSocialMedia?.facebook || ''}
                                 onChange={(e) => handleSocialMediaChange('facebook', e.target.value)}
                                 error={!!errors.eventSocialMedia?.facebook}
                                 helperText={errors.eventSocialMedia?.facebook}
@@ -309,7 +309,7 @@ const EditDialog = ({ isOpen, event, toggleEditDialog }: EditDialogProps) => {
                                 label="Twitter"
                                 variant="outlined"
                                 name="twitter"
-                                value={eventData.eventSocialMedia.twitter || ''}
+                                value={eventData.eventSocialMedia?.twitter || ''}
                                 onChange={(e) => handleSocialMediaChange('twitter', e.target.value)}
                                 error={!!errors.eventSocialMedia?.twitter}
                                 helperText={errors.eventSocialMedia?.twitter}
@@ -322,7 +322,7 @@ const EditDialog = ({ isOpen, event, toggleEditDialog }: EditDialogProps) => {
                                 label="Instagram"
                                 variant="outlined"
                                 name="instagram"
-                                value={eventData.eventSocialMedia.instagram || ''}
+                                value={eventData.eventSocialMedia?.instagram || ''}
                                 onChange={(e) => handleSocialMediaChange('instagram', e.target.value)}
                                 error={!!errors.eventSocialMedia?.instagram}
                                 helperText={errors.eventSocialMedia?.instagram}
@@ -335,7 +335,7 @@ const EditDialog = ({ isOpen, event, toggleEditDialog }: EditDialogProps) => {
                                 label="Hashtag"
                                 variant="outlined"
                                 name="hashtag"
-                                value={eventData.eventSocialMedia.hashtag || ''}
+                                value={eventData.eventSocialMedia?.hashtag || ''}
                                 onChange={(e) => handleSocialMediaChange('hashtag', e.target.value)}
                                 error={!!errors.eventSocialMedia?.hashtag}
                                 helperText={errors.eventSocialMedia?.hashtag}
