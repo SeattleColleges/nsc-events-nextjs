@@ -12,6 +12,7 @@ import Link from "next/link";
 import { formatDate } from "@/utility/dateUtils";
 import { ActivityDatabase } from "@/models/activityDatabase";
 
+// declare the event prop that will get passed to the component
 interface EventCardProps {
     event: ActivityDatabase;
 }
@@ -49,7 +50,7 @@ function HomeEventCard({ event }: EventCardProps) {
                         image={event.eventCoverPhoto}
                         alt={event.eventTitle}
                         sx={{
-                            height: "auto",
+                            height: 250, // fixed height of the image
                             objectFit: "cover",
                             marginBlock: 2,
                             marginLeft: 2,
@@ -81,8 +82,12 @@ function HomeEventCard({ event }: EventCardProps) {
                     >
                         <Box sx={{ flex: 1, minWidth: 0 }}> {/* prevent overflow from children */}
                             <Link
-                                href={{ pathname: "/event-detail", query: { id: event._id } }}
-                                style={{ textDecoration: "none", display: "block" }}
+                                key={event._id}
+                                href={{ 
+                                    pathname: "/event-detail", 
+                                    query: { id: event._id } 
+                                }}
+                                style={{ textDecoration: "none", display: "block" }} // prevent underline on header
                             >
                                 <Box
                                     sx={{
