@@ -2,7 +2,7 @@ import { FormEvent, useEffect, useState } from "react";
 import { validateFormData } from "@/utility/validateFormData";
 import useDateTimeSelection from "./useDateTimeSelection";
 import { ActivityDatabase } from "@/models/activityDatabase";
-import {useMutation, useQueryClient} from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEventForm } from "@/hooks/useEventForm";
 import { format, parse } from "date-fns";
 
@@ -26,8 +26,8 @@ export const useEditForm = (initialData: ActivityDatabase) => {
 
   useEffect(() => {
     setEventData(initialData as ActivityDatabase)
-    setSelectedDate(new Date(eventData.eventDate))
-  }, [eventData.eventDate, initialData, setEventData]);
+    setSelectedDate(new Date(initialData.eventDate))
+  }, [initialData, setEventData]);
 
   const {
     timeError,
@@ -35,7 +35,7 @@ export const useEditForm = (initialData: ActivityDatabase) => {
     handleEndTimeChange,
     startTime,
     endTime
-  } = useDateTimeSelection(eventData.eventStartTime.slice(0, -2),  eventData.eventEndTime.slice(0, -2));
+  } = useDateTimeSelection(eventData.eventStartTime.slice(0, -2), eventData.eventEndTime.slice(0, -2));
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -47,11 +47,17 @@ export const useEditForm = (initialData: ActivityDatabase) => {
     }
   };
 
-  const handleDateChange = (newDate: Date | null)  => {
+  const handleDateChange = (newDate: Date | null) => {
     setSelectedDate(newDate);
+    if (newDate) {
+      setEventData(prev => ({
+        ...prev,
+        eventDate: newDate.toISOString().split('T')[0]
+      }));
+    }
   };
 
-const to24HourTime  = (time: string) => {
+  const to24HourTime = (time: string) => {
     return parse(time, 'hh:mma', new Date());
   }
 
@@ -59,11 +65,23 @@ const to24HourTime  = (time: string) => {
   const onStartTimeChange = (date: Date | null) => {
     const timeStr = date ? format(date, 'HH:mm') : '';
     handleStartTimeChange(timeStr);
+    if (timeStr) {
+      setEventData(prev => ({
+        ...prev,
+        eventStartTime: to12HourTime(timeStr)
+      }));
+    }
   };
 
   const onEndTimeChange = (date: Date | null) => {
     const timeStr = date ? format(date, 'HH:mm') : '';
     handleEndTimeChange(timeStr);
+    if (timeStr) {
+      setEventData(prev => ({
+        ...prev,
+        eventEndTime: to12HourTime(timeStr)
+      }));
+    }
   };
 
   const editEvent = async (activityData: ActivityDatabase) => {
@@ -113,12 +131,12 @@ const to24HourTime  = (time: string) => {
     }
   }
 
-  const { mutate: editEventMutation }  = useMutation({
+  const { mutate: editEventMutation } = useMutation({
     mutationFn: editEvent,
     onSuccess: async () => {
-      await queryClient.refetchQueries({queryKey:['events', 'myEvents', 'archivedEvents']});
-      setSuccessMessage( "Event successfully updated!");
-      setTimeout( () => {
+      await queryClient.refetchQueries({ queryKey: ['events', 'myEvents', 'archivedEvents'] });
+      setSuccessMessage("Event successfully updated!");
+      setTimeout(() => {
         window.location.reload()
       }, 1200)
 
