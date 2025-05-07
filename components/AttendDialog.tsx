@@ -37,40 +37,7 @@ const AttendDialog = ({ isOpen, eventId, dialogToggle }: AttendDialogProps) => {
     const handleDialogBtnClick = () => {
         dialogToggle();
     };
-    // OLD LINE 004
-    // const attendEvent = async (id: string) => {
-    //     const token = localStorage.getItem("token");
-    //     let options = {
-    //         method: 'POST',
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //             'Authorization': `Bearer ${token}`,
-    //         }, body: ''
-    //     };
-
-    //     if (checked && token != null) {
-    //         const body = {
-    //             attendee: {
-    //                 firstName: JSON.parse(atob(token.split(".")[1])).firstName,
-    //                 lastName: JSON.parse(atob(token.split(".")[1])).lastName
-    //             },
-    //             heardFrom // Include "Heard From" data in the request body
-    //         };
-    //         options.body = JSON.stringify(body);
-    //         console.log(options);
-    //     }
-
-    //     try {
-    //         const apiUrl = process.env.NSC_EVENTS_PUBLIC_API_URL;
-    //         const response = await fetch(`${apiUrl}/events/attend/${id}`, options);
-    //         return response.json();
-    //     } catch (error) {
-    //         console.error('error: ', error);
-    //     }
-    // };
-
-    // END OF OLD LINE 004
-    // START OF NEW ADDITION 004
+    
     const attendEvent = async (id: string) => {
         const token = localStorage.getItem("token");
         if (!token) throw new Error("Missing token");
@@ -103,10 +70,7 @@ const AttendDialog = ({ isOpen, eventId, dialogToggle }: AttendDialogProps) => {
       
         return response.json();
       };
-      
-      
-       //END OF NEW ADDITION 004 
-    
+       
     const { mutate: attendEventMutation } = useMutation({
         mutationFn: attendEvent,
         onSuccess: () => {
