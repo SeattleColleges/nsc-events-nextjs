@@ -15,7 +15,7 @@ import Grid from "@mui/material/Grid";
 import { useTheme } from "@mui/material";
 import { ActivityDatabase } from "@/models/activityDatabase";
 import { useFilteredEvents } from "@/utility/queries";
-import HomeEventCard from "@/components/HomeEventCard";
+import HomeEventsCard from "@/components/HomeEventsCard";
 import { EventTags } from "@/utility/tags";
 import TagSelector from "@/components/TagSelector";
 import Link from "next/link";
@@ -134,7 +134,7 @@ const Home = () => {
         {events && events.length > 0 ? (
           events.map((event: ActivityDatabase) => (
             <Grid size={{ md: 12, lg: 6 }} key={event._id} sx={{}}>
-              <HomeEventCard event={event} />
+              <HomeEventsCard event={event} />
             </Grid>
           ))
         ) : (
