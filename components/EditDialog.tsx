@@ -338,7 +338,7 @@ const EditDialog = ({ isOpen, event, toggleEditDialog }: EditDialogProps) => {
                                 value={eventData.eventSocialMedia.hashtag || ''}
                                 onChange={(e) => handleSocialMediaChange('hashtag', e.target.value)}
                                 error={!!errors.eventSocialMedia?.hashtag}
-                                helperText={errors.eventSocialMedia.hashtag}
+                                helperText={errors.eventSocialMedia?.hashtag}
                                 InputProps={{ style: textFieldStyle.input }}
                                 InputLabelProps={{ style: textFieldStyle.label }}
                                 placeholder="Enter the hashtag of the event"
