@@ -21,13 +21,15 @@ function HomeEventsCard({ event }: EventCardProps) {
     const theme = useTheme();
     const isTablet = useMediaQuery(theme.breakpoints.between("sm", "md"));
     const isMobile = useMediaQuery(theme.breakpoints.between("xs", "sm"));
+    const isSmallLaptop = useMediaQuery(theme.breakpoints.between("md", "lg"));
+
 
     const { palette } = theme;
 
     return (
         <Box
             sx={{
-                width: (isMobile || isTablet) ? "100vw" : "100%",
+                width: (isMobile || isTablet || isSmallLaptop) ? "100vw" : "100%",
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "center",
@@ -108,6 +110,12 @@ function HomeEventsCard({ event }: EventCardProps) {
                                             overflowWrap: "break-word",
                                             wordBreak: "break-word",
                                             lineHeight: 1.3,
+                                            display: "-webkit-box",
+                                            WebkitLineClamp: 2, // clamp to 2 lines, adjust if necessary
+                                            WebkitBoxOrient: "vertical",
+                                            overflow: "hidden",
+                                            textOverflow: "ellipsis",
+                                            maxHeight: "3.5rem", // roughly 2 lines
                                         }}
                                     >
                                         {event.eventTitle}
