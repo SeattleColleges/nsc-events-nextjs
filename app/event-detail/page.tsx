@@ -227,7 +227,9 @@ const EventDetail = () => {
   
   useEffect(() => {
     const fetchAttendeeData = async () => {
-      if (!event?._id || userRole !== "admin") return;
+      if (!event?._id || userRole !== "admin") {
+        return;
+      }
       try {
         const apiUrl = process.env.NSC_EVENTS_PUBLIC_API_URL;
         const res = await fetch(`${apiUrl}/event-registration/event/${event._id}`, {
@@ -271,10 +273,11 @@ const EventDetail = () => {
 
   const getNextEvent = () => {
     const currentIndex = events.findIndex(e => e === event?._id);
-    if (!reachedLastPage && events.findIndex(e => e === event?._id)) {
+  
+    if (!reachedLastPage && currentIndex !== -1) {
       setPage(num => num + 1);
     }
-
+  
     if (currentIndex >= 0 && currentIndex < events.length - 1) {
       const nextEvent = events[currentIndex + 1];
       console.log("Navigating to:", nextEvent);

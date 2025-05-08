@@ -40,8 +40,9 @@ const AttendDialog = ({ isOpen, eventId, dialogToggle }: AttendDialogProps) => {
     
     const attendEvent = async (id: string) => {
         const token = localStorage.getItem("token");
-        if (!token) throw new Error("Missing token");
-      
+        if (!token) {
+            throw new Error("Missing token");
+        }
         const payload = JSON.parse(atob(token.split(".")[1]));
         const userId = payload.id;
         const apiUrl = process.env.NSC_EVENTS_PUBLIC_API_URL;
