@@ -43,7 +43,8 @@ function HomeEventsCard({ event }: EventCardProps) {
                     borderRadius: 2,
                     boxShadow: 2,
                     overflow: "hidden",
-                    mb: 2,
+                    marginLeft: isMobile || isTablet || isSmallLaptop ? 2 : 0,
+                    marginRight: isMobile || isTablet || isSmallLaptop ? 2 : 0,
                 }}
             >
                 {!isMobile && (
