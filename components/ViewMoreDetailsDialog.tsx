@@ -20,6 +20,7 @@ interface ViewMoreDetailsDialogProps {
   userRole: string;
   userId: string;
   dialogToggle: () => void;
+  attendeeCount?: number; // added to update number of attendees inside more details
 }
 
 function ViewMoreDetailsDialog({
