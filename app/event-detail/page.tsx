@@ -1,5 +1,6 @@
 "use client";
-
+import { Attendee } from "@/types/attendee";
+import ViewAttendeesDialog from "@/components/ViewAttendeesDialog";
 import React, { useEffect, useState } from "react";
 import {
   Typography,
@@ -64,6 +65,14 @@ const EventDetail = () => {
   const [viewMoreDetailsClickCount, setViewMoreDetailsClickCount] = useState(0);
   const [userId, setUserId] = useState("");
   const [userRole, setUserRole] = useState("");
+
+  const [attendeeCount, setAttendeeCount] = useState<number | null>(null);
+  const [anonymousCount, setAnonymousCount] = useState<number | null>(null);
+  const [attendeeNames, setAttendeeNames] = useState<string[]>([]);
+  const [attendees, setAttendees] = useState<Attendee[]>([]);
+  const [viewDialogOpen, setViewDialogOpen] = useState(false);
+
+  
   const { palette } = useTheme();
   const containerColor = palette.mode === "dark" ? "#333" : "#fff";
   const theme = useTheme();
@@ -215,6 +224,32 @@ const EventDetail = () => {
     }
   }, [queryClient, data, eventIds]);
 
+  
+  useEffect(() => {
+    const fetchAttendeeData = async () => {
+      if (!event?._id || userRole !== "admin") {
+        return;
+      }
+      try {
+        const apiUrl = process.env.NSC_EVENTS_PUBLIC_API_URL;
+        const res = await fetch(`${apiUrl}/event-registration/event/${event._id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const data = await res.json();
+        setAttendeeCount(data.count);
+        setAnonymousCount(data.anonymousCount);
+        setAttendeeNames(data.attendeeNames || []);
+        setAttendees(data.attendees || []);
+      } catch (err) {
+        console.error("Failed to fetch attendee data", err);
+      }
+    };
+  
+    fetchAttendeeData();
+  }, [event, userRole, token]);
+  
   const toggleAttendDialog = () => {
     if (token === "") {
       console.log(token);
@@ -238,10 +273,11 @@ const EventDetail = () => {
 
   const getNextEvent = () => {
     const currentIndex = events.findIndex(e => e === event?._id);
-    if (!reachedLastPage && events.findIndex(e => e === event?._id)) {
+  
+    if (!reachedLastPage && currentIndex !== -1) {
       setPage(num => num + 1);
     }
-
+  
     if (currentIndex >= 0 && currentIndex < events.length - 1) {
       const nextEvent = events[currentIndex + 1];
       console.log("Navigating to:", nextEvent);
@@ -318,6 +354,7 @@ const EventDetail = () => {
               backgroundColor: isMobile ? "" : containerColor
             }}
           >
+            
             <Card sx={{ width: isMobile ? "41vh" : "50vh", maxHeight: '100vh', overflowY: 'auto', mt: isMobile ? 5 : "", marginBottom: 3 }}>
               <CardMedia
                 component="img"
@@ -344,6 +381,28 @@ const EventDetail = () => {
                 <Typography variant="body2" color="text.secondary">
                   Location: {event.eventLocation}
                 </Typography>
+
+                {userRole === "admin" && attendeeCount !== null && (
+                <Box sx={{ mb: 2 }}>
+                  <Typography variant="h6" sx={{ mt: 2, fontWeight: "bold" }}>
+                    Attendees ({attendeeCount})
+                  </Typography>
+                  <Button
+                    variant="outlined"
+                    onClick={() => setViewDialogOpen(true)}
+                    sx={{ mt: 1 }}
+                  >
+                    View Attendees
+                  </Button>
+                  <ViewAttendeesDialog
+                    open={viewDialogOpen}
+                    onClose={() => setViewDialogOpen(false)}
+                    attendees={attendees}
+                  />
+                </Box>
+              )}
+
+
               </CardContent>
             </Card>
             <Grid container spacing={2} justifyContent="center" alignItems="center">
