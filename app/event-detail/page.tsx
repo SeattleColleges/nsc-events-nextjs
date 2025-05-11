@@ -208,6 +208,13 @@ const EventDetail = () => {
     }
   }, [archivedEvents, filteredEvents, myEvents, page, prevPage, queryClient, usedData]);
 
+  // check if the user is registered for the event and set the state accordingly
+  useEffect(() => {
+    if (typeof isAttending === "boolean") {
+      setIsRegistered(isAttending);
+    }
+  }, [isAttending]);
+
   useEffect(() => {
     if (eventIds) {
       setEvents(JSON.parse(eventIds));
