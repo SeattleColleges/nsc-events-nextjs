@@ -40,7 +40,7 @@ const AttendDialog = ({ isOpen, eventId, dialogToggle, onSuccess }: AttendDialog
     const handleDialogBtnClick = () => {
         dialogToggle();
     };
-
+    
     const attendEvent = async (id: string) => {
         const token = localStorage.getItem("token");
         let options = {
