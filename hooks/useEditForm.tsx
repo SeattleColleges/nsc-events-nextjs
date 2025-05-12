@@ -24,6 +24,17 @@ export const useEditForm = (initialData: ActivityDatabase) => {
     handleTagClick,
   } = useEventForm(initialData as ActivityDatabase);
 
+  const [startTimeDate, setStartTimeDate] = useState<Date | null>(null);
+  const [endTimeDate, setEndTimeDate] = useState<Date | null>(null);
+
+  // Sync initial string times to Date only once when initialData changes
+  useEffect(() => {
+    const trimmedStart = initialData.eventStartTime.replace(/\s+/g, '');
+    const trimmedEnd = initialData.eventEndTime.replace(/\s+/g, '');
+    setStartTimeDate(to24HourTime(trimmedStart));
+    setEndTimeDate(to24HourTime(trimmedEnd));
+  }, [initialData]);
+
   useEffect(() => {
     setEventData(initialData as ActivityDatabase)
     setSelectedDate(new Date(eventData.eventDate))
@@ -51,17 +62,19 @@ export const useEditForm = (initialData: ActivityDatabase) => {
     setSelectedDate(newDate);
   };
 
-const to24HourTime  = (time: string) => {
+  const to24HourTime  = (time: string) => {
     return parse(time, 'hh:mma', new Date());
   }
 
   // Handlers for TimePicker changes, converting Date back to string
   const onStartTimeChange = (date: Date | null) => {
+    setStartTimeDate(date);
     const timeStr = date ? format(date, 'HH:mm') : '';
     handleStartTimeChange(timeStr);
   };
 
   const onEndTimeChange = (date: Date | null) => {
+    setEndTimeDate(date);
     const timeStr = date ? format(date, 'HH:mm') : '';
     handleEndTimeChange(timeStr);
   };
@@ -148,6 +161,8 @@ const to24HourTime  = (time: string) => {
     selectedDate,
     timeError,
     successMessage,
-    errorMessage
+    errorMessage,
+    startTimeDate,
+    endTimeDate
   };
 }

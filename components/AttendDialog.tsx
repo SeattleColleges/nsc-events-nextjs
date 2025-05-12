@@ -18,19 +18,22 @@ import IconButton from "@mui/material/IconButton";
 import InfoIcon from "@mui/icons-material/Info";
 import React, { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
+
 
 interface AttendDialogProps {
-  isOpen: boolean;
-  eventId: string;
-  dialogToggle: () => void;
+    isOpen: boolean,
+    eventId: string,
+    dialogToggle: () => void;
+    onSuccess?: () => void;
 }
 
-const AttendDialog = ({ isOpen, eventId, dialogToggle }: AttendDialogProps) => {
-  const router = useRouter();
-  const [checked, setChecked] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState("");
-  const [heardFrom, setHeardFrom] = useState<string[]>([]); // New state for "Heard From"
+const AttendDialog = ({ isOpen, eventId, dialogToggle, onSuccess }: AttendDialogProps) => {
+    
+    const [checked, setChecked] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState("");
+    const [heardFrom, setHeardFrom] = useState<string[]>([]); // New state for "Heard From"
+
+    const token = localStorage.getItem("token");
 
   const toggleCheckBox = () => {
     setChecked(!checked);
@@ -48,71 +51,53 @@ const AttendDialog = ({ isOpen, eventId, dialogToggle }: AttendDialogProps) => {
     );
   };
 
-  const handleDialogBtnClick = () => {
-    dialogToggle();
-  };
-
-  const attendEvent = async (id: string) => {
-    const token = localStorage.getItem("token");
-    if (!token) throw new Error("Not logged in");
-
-    let options = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: "",
+    const handleDialogBtnClick = () => {
+        dialogToggle();
     };
-    const payload = JSON.parse(atob(token.split(".")[1]));
-    const body = {
-      userId: payload.id || payload._id,
-      eventId,
-      attendee: {
-        firstName: payload.firstName,
-        lastName: payload.lastName,
-      },
-      heardFrom, // whatever extra field you need
+    
+    const attendEvent = async (id: string) => {
+        const token = localStorage.getItem("token");
+        let options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            }, body: ''
+        };
+
+        if (token != null) {
+            const body = {
+                eventId: id,
+                userId: JSON.parse(atob(token.split(".")[1])).id,   
+                firstName: checked ?JSON.parse(atob(token.split(".")[1])).firstName : "",
+                lastName: checked ? JSON.parse(atob(token.split(".")[1])).lastName : "",
+                referralSources: heardFrom
+            };
+            options.body = JSON.stringify(body);
+        }
+
+        try {
+            const apiUrl = process.env.NSC_EVENTS_PUBLIC_API_URL;
+            const response = await fetch(`${apiUrl}/event-registration/attend`, options);
+
+            return response.json();
+        } catch (error) {
+            console.error('error: ', error);
+        }
     };
 
-    if (checked && token != null) {
-      const body = {
-        attendee: {
-          firstName: JSON.parse(atob(token.split(".")[1])).firstName,
-          lastName: JSON.parse(atob(token.split(".")[1])).lastName,
-        },
-        heardFrom, // Include "Heard From" data in the request body
-      };
-      options.body = JSON.stringify(body);
-      console.log(options);
-    }
+    const { mutate: attendEventMutation } = useMutation({
+        mutationFn: attendEvent,
+        onSuccess: (data) => {
+            if (data) {
+                setSnackbarMessage("You are now attending this event!");
+                onSuccess && onSuccess();
+            } else {
+                setSnackbarMessage("Error: Unable to attend the event.");
+            }
+        }
+    });
 
-    try {
-      const apiUrl = process.env.NSC_EVENTS_PUBLIC_API_URL;
-      const res = await fetch(`${apiUrl}/event-registration/attend`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(body),
-      });
-      return res.json();
-    } catch (error) {
-      console.error("error: ", error);
-    }
-  };
-
-  const { mutate: attendEventMutation } = useMutation({
-    mutationFn: attendEvent,
-    onSuccess: () => {
-      setSnackbarMessage("Successfully added your attendance.");
-    },
-    onError: (error: String) => {
-      setSnackbarMessage("Failed to attend event.");
-      console.error("Failed to attend: ", error);
-    },
-  });
 
   return (
     <>
