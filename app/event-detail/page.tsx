@@ -1,5 +1,6 @@
 "use client";
-
+import { Attendee } from "@/types/attendee";
+import ViewAttendeesDialog from "@/components/ViewAttendeesDialog";
 import React, { useEffect, useState } from "react";
 import {
   Typography,
@@ -33,7 +34,7 @@ import ViewMoreDetailsDialog from "@/components/ViewMoreDetailsDialog";
 import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import { useTheme } from "@mui/material";
-import { useArchivedEvents, useEventById, useFilteredEvents, useMyEvents } from "@/utility/queries";
+import { useArchivedEvents, useEventById, useFilteredEvents, useIsAttending, useMyEvents } from "@/utility/queries";
 import { getCurrentUserId } from "@/utility/userUtils";
 
 interface SearchParams {
@@ -49,7 +50,7 @@ const EventDetail = () => {
   const eventIds = searchParams.get("events");
   const queryClient = useQueryClient();
   const [event, setEvent] = useState<ActivityDatabase | null>(null);
-  const [events, setEvents] = useState<string[]>( () => {
+  const [events, setEvents] = useState<string[]>(() => {
     const events = localStorage.getItem('events');
     return events ? JSON.parse(events) : [];
   });
@@ -61,9 +62,16 @@ const EventDetail = () => {
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [attendDialogOpen, setAttendDialogOpen] = useState(false);
   const [moreDetailsDialogOpen, setMoreDetailsDialogOpen] = useState(false);
-  const [viewMoreDetailsClickCount, setViewMoreDetailsClickCount] = useState(0);
   const [userId, setUserId] = useState("");
   const [userRole, setUserRole] = useState("");
+
+  const [attendeeCount, setAttendeeCount] = useState<number | null>(null);
+  const [anonymousCount, setAnonymousCount] = useState<number | null>(null);
+  const [attendeeNames, setAttendeeNames] = useState<string[]>([]);
+  const [attendees, setAttendees] = useState<Attendee[]>([]);
+  const [viewDialogOpen, setViewDialogOpen] = useState(false);
+
+  
   const { palette } = useTheme();
   const containerColor = palette.mode === "dark" ? "#333" : "#fff";
   const theme = useTheme();
@@ -71,15 +79,19 @@ const EventDetail = () => {
   const isMobile = useMediaQuery(theme.breakpoints.between('xs', 'sm'));
   const [page, setPage] = useState(Number(searchParams.get("page")!) + 1)
   const [reachedLastPage, setReachedLastPage] = useState(false);
-  const [prevPage] = useState( () => {
+  const [prevPage] = useState(() => {
     const prevPage = localStorage.getItem("prevPage")
     return prevPage ? prevPage : searchParams.get("from")
   })
   const [usedData, setUsedData] = useState<ActivityDatabase[] | undefined>(undefined)
+
+  const [isRegistered, setIsRegistered] = useState<boolean | undefined>(undefined);
   const { data: filteredEvents } = useFilteredEvents(page, prevPage === "home")
   const { data: archivedEvents } = useArchivedEvents(page, prevPage === "archived")
   const { data: myEvents } = useMyEvents(getCurrentUserId(), page, prevPage === "mine")
   const { data } = useEventById(id);
+  const { data: isAttending } = useIsAttending(event?._id, userId);
+
   const DeleteDialog = () => {
     return (
       <>
@@ -135,7 +147,6 @@ const EventDetail = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(response);
       if (!response.ok) {
         throw new Error(`Failed to delete event: ${response.statusText}`);
       }
@@ -153,7 +164,7 @@ const EventDetail = () => {
       setSnackbarMessage("Successfully deleted event.");
       setTimeout(() => {
         router.refresh();
-        router.push("/");
+        router.push('/')
       }, 1200);
     },
     onError: () => {
@@ -197,6 +208,13 @@ const EventDetail = () => {
     }
   }, [archivedEvents, filteredEvents, myEvents, page, prevPage, queryClient, usedData]);
 
+  // check if the user is registered for the event and set the state accordingly
+  useEffect(() => {
+    if (typeof isAttending === "boolean") {
+      setIsRegistered(isAttending);
+    }
+  }, [isAttending]);
+
   useEffect(() => {
     if (eventIds) {
       setEvents(JSON.parse(eventIds));
@@ -215,9 +233,34 @@ const EventDetail = () => {
     }
   }, [queryClient, data, eventIds]);
 
+  
+  useEffect(() => {
+    const fetchAttendeeData = async () => {
+      if (!event?._id || userRole !== "admin") {
+        return;
+      }
+      try {
+        const apiUrl = process.env.NSC_EVENTS_PUBLIC_API_URL;
+        const res = await fetch(`${apiUrl}/event-registration/event/${event._id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const data = await res.json();
+        setAttendeeCount(data.count);
+        setAnonymousCount(data.anonymousCount);
+        setAttendeeNames(data.attendeeNames || []);
+        setAttendees(data.attendees || []);
+      } catch (err) {
+        console.error("Failed to fetch attendee data", err);
+      }
+    };
+  
+    fetchAttendeeData();
+  }, [event, userRole, token]);
+  
   const toggleAttendDialog = () => {
     if (token === "") {
-      console.log(token);
       router.push("auth/sign-in");
     } else {
       setAttendDialogOpen(!attendDialogOpen);
@@ -226,10 +269,6 @@ const EventDetail = () => {
 
   const toggleViewMoreDetailsDialog = () => {
     setMoreDetailsDialogOpen((prev) => !prev);
-
-    if (!moreDetailsDialogOpen) {
-      setViewMoreDetailsClickCount((prevCount) => prevCount + 1);
-    }
   };
 
   const toggleArchiveDialog = () => {
@@ -238,10 +277,11 @@ const EventDetail = () => {
 
   const getNextEvent = () => {
     const currentIndex = events.findIndex(e => e === event?._id);
-    if (!reachedLastPage && events.findIndex(e => e === event?._id)) {
+  
+    if (!reachedLastPage && currentIndex !== -1) {
       setPage(num => num + 1);
     }
-
+  
     if (currentIndex >= 0 && currentIndex < events.length - 1) {
       const nextEvent = events[currentIndex + 1];
       console.log("Navigating to:", nextEvent);
@@ -263,6 +303,49 @@ const EventDetail = () => {
     console.log("Events: ", events);
     console.log("Current Event: ", event);
   }, [events, event]);
+
+  const unattendEvent = async ({ eventId, userId }: { eventId: string; userId: string }) => {
+    let options = {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      }, 
+      body: JSON.stringify({ userId, eventId })
+    };
+
+    try {
+      const apiUrl = process.env.NSC_EVENTS_PUBLIC_API_URL;
+      const response = await fetch(`${apiUrl}/event-registration/unattend`, options);
+      if (!response.ok) {
+        throw new Error(`Failed to unregister: ${response.statusText}`);
+      }
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("Error unregistering:", error);
+      throw error;
+    }
+  }
+  
+  const { mutate: unregisterEventMutation } = useMutation({
+    mutationFn: unattendEvent,
+    onSuccess: async () => {
+      await queryClient.refetchQueries({ queryKey: ['events', 'myEvents', 'archivedEvents'] });
+      setSnackbarMessage("Successfully unregistered from event.");
+      setIsRegistered(false);      
+    },
+    onError: () => {
+      setSnackbarMessage("Failed to unregister from event.");
+    },
+  });
+
+  const handleUnregister = async () => {
+    const userId = getCurrentUserId();
+    if (event && event._id && userId) {
+      unregisterEventMutation({ eventId: event._id, userId });
+    }    
+  };
 
   if (!event) {
     return <div>Loading...</div>;
@@ -294,7 +377,7 @@ const EventDetail = () => {
           sx={{
             display: "flex",
             justifyContent: "center",
-            alignItems: "center", 
+            alignItems: "center",
             height: "100vh",
             backgroundColor: "rgba(0, 0, 0, 0)",
             zIndex: 1,
@@ -318,6 +401,7 @@ const EventDetail = () => {
               backgroundColor: isMobile ? "" : containerColor
             }}
           >
+            
             <Card sx={{ width: isMobile ? "41vh" : "50vh", maxHeight: '100vh', overflowY: 'auto', mt: isMobile ? 5 : "", marginBottom: 3 }}>
               <CardMedia
                 component="img"
@@ -344,6 +428,28 @@ const EventDetail = () => {
                 <Typography variant="body2" color="text.secondary">
                   Location: {event.eventLocation}
                 </Typography>
+
+                {userRole === "admin" && attendeeCount !== null && (
+                <Box sx={{ mb: 2 }}>
+                  <Typography variant="h6" sx={{ mt: 2, fontWeight: "bold" }}>
+                    Attendees ({attendeeCount})
+                  </Typography>
+                  <Button
+                    variant="outlined"
+                    onClick={() => setViewDialogOpen(true)}
+                    sx={{ mt: 1 }}
+                  >
+                    View Attendees
+                  </Button>
+                  <ViewAttendeesDialog
+                    open={viewDialogOpen}
+                    onClose={() => setViewDialogOpen(false)}
+                    attendees={attendees}
+                  />
+                </Box>
+              )}
+
+
               </CardContent>
             </Card>
             <Grid container spacing={2} justifyContent="center" alignItems="center">
@@ -459,7 +565,7 @@ const EventDetail = () => {
                     }}
                   >
                     {" "}
-                    More Details{" "} <span>(Clicked: {viewMoreDetailsClickCount} times)</span>
+                    More Details{" "}
                   </Button>
                 </Grid>
                 <Grid
@@ -471,18 +577,21 @@ const EventDetail = () => {
                     variant="contained"
                     sx={{
                       color: "white",
-                      backgroundColor: "#2074d4",
+                      backgroundColor: isRegistered ? "red" : "#2074d4",
                       width: isMobile ? "120" : "auto",
                       padding: "8px 16px",
                       overflow: "hidden",
                       marginTop: isMobile ? 1 : 0,
                     }}
                     onClick={() => {
-                      toggleAttendDialog();
+                      if (isRegistered) {
+                        handleUnregister();
+                      } else {
+                        toggleAttendDialog();
+                      }
                     }}
                   >
-                    {" "}
-                    Attend{" "}
+                    {isRegistered ? "Unregister" : "Attend"}
                   </Button>
                 </Grid>
               </Box>
@@ -522,6 +631,7 @@ const EventDetail = () => {
             isOpen={attendDialogOpen}
             eventId={event._id}
             dialogToggle={toggleAttendDialog}
+            onSuccess={() => setIsRegistered(true)}
           />
           <ArchiveDialog
             isOpen={archiveDialogOpen}
