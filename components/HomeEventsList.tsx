@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { Grid, Button, useMediaQuery, useTheme, Container, Box, Typography } from '@mui/material';
 import { ActivityDatabase } from "@/models/activityDatabase";
-import EventCard from "./EventCard";
+import HomeEventsCard from "./HomeEventsCard";
 import { useFilteredEvents } from "@/utility/queries";
 import Link from "next/link";
 import TagSelector from "@/components/TagSelector";
@@ -82,21 +82,8 @@ export function HomeEventsList() {
                 {/* Display the events */}
                 {events.length > 0 ? (
                     events.map((event: ActivityDatabase) => (
-                        <Grid item xs={12} key={event._id}>
-                            <Link
-                                key={event._id}
-                                href={{
-                                    pathname: "/event-detail",
-                                    query: {
-                                        id: event._id,
-                                        events: JSON.stringify(events.map(e => e._id)),
-                                        from: 'home',
-                                        page: page,
-                                    },
-                                }}
-                            >
-                                <EventCard key={event._id} event={event} />
-                            </Link>
+                        <Grid key={event._id} size={12}>
+                            <HomeEventsCard key={event._id} event={event} />
                         </Grid>
                     ))
                 ) : (

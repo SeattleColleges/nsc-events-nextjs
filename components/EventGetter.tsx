@@ -30,7 +30,14 @@ export function EventsList(){
         return (
             <Grid container spacing={1}>
                 {data?.map((event: ActivityDatabase) => (
-                    <Grid item xs={12} sm={6} md={4} lg={3} key={event._id}>
+                    <Grid
+                        key={event._id}
+                        size={{
+                            xs: 12,
+                            sm: 6,
+                            md: 4,
+                            lg: 3
+                        }}>
                         <Box sx={{ width: 450, height: 400 }}>
                             <Card sx={{ display: 'flex', flexDirection: 'column' }}>
                                 <CardMedia
@@ -68,10 +75,3 @@ export function EventsList(){
 }
 
 export default EventsList;
-
-
-
-
-
-
-

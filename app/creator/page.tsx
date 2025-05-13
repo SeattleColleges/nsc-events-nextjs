@@ -46,16 +46,32 @@ const Creator = () => {
                      flexDirection="column"
                 >
                     <Grid container spacing={2} justifyContent="center" alignItems="center">
-                        <Grid item xs={12} sm="auto">
+                        <Grid
+                            size={{
+                                xs: 12,
+                                sm: "auto"
+                            }}>
                             <CreatorButton path={"/create-event"} text={"Create Event"}/>
                         </Grid>
-                        <Grid item xs={12} sm="auto">
+                        <Grid
+                            size={{
+                                xs: 12,
+                                sm: "auto"
+                            }}>
                             <CreatorButton path={"/my-events"} text={"View My Events"}/>
                         </Grid>
-                        <Grid item xs={12} sm="auto">
+                        <Grid
+                            size={{
+                                xs: 12,
+                                sm: "auto"
+                            }}>
                             <CreatorButton path={"/archived-events"} text={"View Archived Events"}/>
                         </Grid>
-                        <Grid item xs={12} sm="auto">
+                        <Grid
+                            size={{
+                                xs: 12,
+                                sm: "auto"
+                            }}>
                             <CreatorButton path={"/"} text={"View All Events"}/>
                         </Grid>
                     </Grid>
@@ -63,7 +79,6 @@ const Creator = () => {
                 {/* <h1>Placeholder for the creator page so npm run build compiles successfully.</h1>
           <p>FIX: move to pages or use getSession from nextauth</p>
           <p>FIX: allow only users with creator role to be routed to this page</p> */}
-
             </Container>
         );
     } else {
