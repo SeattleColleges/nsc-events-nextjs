@@ -417,23 +417,24 @@ const EventDetail = () => {
                   alt={event.eventTitle}
                   sx={{ height: "37vh", width: "100%", objectFit: "cover" }}
                 />
-
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={() => setCoverPhotoDialogOpen(true)}
-                  sx={{
-                    position: "absolute",
-                    bottom: 8,
-                    right: 8,
-                    textTransform: "none",
-                    flex: "0 0 auto",
-                    zIndex: 1
-                  }}
-                >
-                  <AddPhotoAlternateIcon sx={{ marginRight: "5px" }} />
-                  {isMobile ? "" : "Cover Photo"}
-                </Button>
+                { event.eventCoverPhoto && (userRole === "admin" || (userRole === "creator" && event.createdByUser === userId)) && 
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => setCoverPhotoDialogOpen(true)}
+                    sx={{
+                      position: "absolute",
+                      bottom: 8,
+                      right: 8,
+                      textTransform: "none",
+                      flex: "0 0 auto",
+                      zIndex: 1
+                    }}
+                  >
+                    <AddPhotoAlternateIcon sx={{ marginRight: "5px" }} />
+                    {isMobile ? "" : "Cover Photo"}
+                  </Button>
+                }
               </Box>
               <CardContent>
                 <Typography gutterBottom variant="h5" component="div">
@@ -668,6 +669,7 @@ const EventDetail = () => {
             isOpen={coverPhotoDialogOpen}
             dialogToggle={toggleCoverPhotoDialog}
             eventId={event._id}
+            setEvent={setEvent}
           />
           <EditDialog isOpen={editDialogOpen} event={event} toggleEditDialog={toggleEditDialog} />
           <Snackbar

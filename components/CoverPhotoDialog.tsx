@@ -1,16 +1,20 @@
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, SnackbarContent, Typography } from '@mui/material'
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { useMutation } from '@tanstack/react-query';
 import Snackbar from "@mui/material/Snackbar";
+import { Activity } from '@/models/activity';
+import { ActivityDatabase } from '@/models/activityDatabase';
 
 interface CoverPhotoDialogProps {
     isOpen: boolean
     dialogToggle: () => void;
     eventId: string;
+    setEvent: React.Dispatch<React.SetStateAction<any>>;
 }
 
-function CoverPhotoDialog({ isOpen, dialogToggle, eventId }: CoverPhotoDialogProps) {
+function CoverPhotoDialog({ isOpen, dialogToggle, eventId, setEvent }: CoverPhotoDialogProps) {
+
     const [selectedImage, setSelectedImage] = useState<string | undefined>(undefined);
     const [selectedFile, setSelectedFile] = useState<File | undefined>(undefined);
     const [snackbarMessage, setSnackbarMessage] = useState("");
@@ -54,6 +58,10 @@ function CoverPhotoDialog({ isOpen, dialogToggle, eventId }: CoverPhotoDialogPro
         onSuccess: (data) => {
             if (data) {
                 setSnackbarMessage("Cover photo uploaded successfully!");
+                setEvent((prevEvent: ActivityDatabase) => ({
+                    ...prevEvent,
+                    eventCoverPhoto: data.updatedActivity.eventCoverPhoto
+                }));
             }
         },
         onError: (error) => {
@@ -88,7 +96,7 @@ function CoverPhotoDialog({ isOpen, dialogToggle, eventId }: CoverPhotoDialogPro
                 />
             }
             <DialogContent>
-                <Button variant="outlined" component="label"> 
+                <Button variant="outlined" component="label" sx={{ marginRight: 2 }}> 
                     <AddPhotoAlternateIcon />
                     <input
                         type="file" 
@@ -103,8 +111,12 @@ function CoverPhotoDialog({ isOpen, dialogToggle, eventId }: CoverPhotoDialogPro
                         hidden
                     />
                 </Button>
+                { selectedFile?.name }
                 <Typography variant="body2" color="textSecondary" sx={{ marginTop: 2 }}>
                     Click to upload a new cover photo
+                </Typography>
+                <Typography variant="body2" color="textSecondary" sx={{}}>
+                    Supported formats: PNG, JPEG, JPG, GIF, WEBP
                 </Typography>
             </DialogContent>
             <DialogActions>
