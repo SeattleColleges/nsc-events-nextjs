@@ -8,30 +8,44 @@ export const validateFormData = (data: Activity | ActivityDatabase): FormErrors 
   if (!data.eventTitle) {
     newErrors = { ...newErrors, eventTitle: "Event title is required" };
   }
+  
   if (!data.eventDescription) {
     newErrors = {
       ...newErrors,
       eventDescription: "Event description is required",
     };
   }
+  
+  // NO LONGER NEEDED
+  /*
   if (!data.eventCategory) {
     newErrors = { ...newErrors, eventCategory: "Event Category is required" };
   }
-  if (!data.eventLocation) {
+  */
+  
+    if (!data.eventLocation) {
     newErrors = { ...newErrors, eventLocation: "Event location is required" };
   }
   if (!data.eventHost) {
     newErrors = { ...newErrors, eventHost: "Event host is required" };
   }
+
+  // NO LONGER NEEDED
+  /*
   if (!data.eventRegistration) {
     newErrors = {
       ...newErrors,
       eventRegistration: "Event registration is required",
     };
   }
+  */
+  
   if (!data.eventCapacity && data.eventCapacity !== 0) {
     newErrors = { ...newErrors, eventCapacity: "Event capacity is required"  };
   }
+  
+  // NO LONGER NEEDED
+  /*
   if (!data.eventSchedule) {
     newErrors = { ...newErrors, eventSchedule: "Event schedule is required" };
   }
@@ -50,16 +64,25 @@ export const validateFormData = (data: Activity | ActivityDatabase): FormErrors 
       eventCancellationPolicy: "Event cancellation policy is required",
     };
   }
+  */
+  
   if (!data.eventContact) {
     newErrors = { ...newErrors, eventContact: "Event contact is required" };
   }
+  
+  // NO LONGER NEEDED
+  /*
   if (!data.eventAccessibility) {
     newErrors = {
       ...newErrors,
       eventAccessibility: "Event accessibility is required",
     };
   }
+  */
+
   // todo: add more error validation rules
+  // NO LONGER NEEDED
+  /* 
   const urlPattern = /^(http(s)?:\/\/){0,1}(?:(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,})(?:[/?].*)?$/;
   if (!data.eventCoverPhoto || !urlPattern.test(data.eventCoverPhoto)) {
       newErrors = { ...newErrors, eventCoverPhoto: "Event cover photo needs to be a valid URL"  };
@@ -69,7 +92,8 @@ export const validateFormData = (data: Activity | ActivityDatabase): FormErrors 
   }
   if (!data.eventMeetingURL || !urlPattern.test(data.eventMeetingURL)) {
       newErrors = { ...newErrors, eventMeetingURL: "Event meeting URL needs to be a valid URL" };
-    }
+  }
+  */
 
   // Overrides previous eventCapacity error check
   if (data.eventCapacity && isNaN(data.eventCapacity) || data.eventCapacity < 1) {
@@ -80,9 +104,12 @@ export const validateFormData = (data: Activity | ActivityDatabase): FormErrors 
     newErrors = { ...newErrors, eventTags: "Please select an event tag" };
   }
 
+  // NO LONGER NEEDED
+  /*
   if (data.eventSpeakers.length < 1) {
     newErrors = { ...newErrors, eventSpeakers: "Must specify at least one event speaker"  };
   }
+  */
 
   // Tests if email is valid by using regex
   if (data.eventContact) {
@@ -92,9 +119,12 @@ export const validateFormData = (data: Activity | ActivityDatabase): FormErrors 
     }
   }
 
+  // NO LONGER NEEDED
+  /*
   if (data.eventPrivacy.length < 1) {
     newErrors = { ...newErrors, eventPrivacy: "Must include event privacy details"  };
   }
+  */
 
   return newErrors;
 };
