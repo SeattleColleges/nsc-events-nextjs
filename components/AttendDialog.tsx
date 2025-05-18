@@ -8,19 +8,22 @@ import IconButton from "@mui/material/IconButton";
 import InfoIcon from '@mui/icons-material/Info';
 import React, { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
+
 
 interface AttendDialogProps {
     isOpen: boolean,
     eventId: string,
     dialogToggle: () => void;
+    onSuccess?: () => void;
 }
 
-const AttendDialog = ({ isOpen, eventId, dialogToggle }: AttendDialogProps) => {
-    const router = useRouter();
+const AttendDialog = ({ isOpen, eventId, dialogToggle, onSuccess }: AttendDialogProps) => {
+    
     const [checked, setChecked] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState("");
     const [heardFrom, setHeardFrom] = useState<string[]>([]); // New state for "Heard From"
+
+    const token = localStorage.getItem("token");
 
     const toggleCheckBox = () => {
         setChecked(!checked);
@@ -37,7 +40,7 @@ const AttendDialog = ({ isOpen, eventId, dialogToggle }: AttendDialogProps) => {
     const handleDialogBtnClick = () => {
         dialogToggle();
     };
-
+    
     const attendEvent = async (id: string) => {
         const token = localStorage.getItem("token");
         let options = {
@@ -48,21 +51,21 @@ const AttendDialog = ({ isOpen, eventId, dialogToggle }: AttendDialogProps) => {
             }, body: ''
         };
 
-        if (checked && token != null) {
+        if (token != null) {
             const body = {
-                attendee: {
-                    firstName: JSON.parse(atob(token.split(".")[1])).firstName,
-                    lastName: JSON.parse(atob(token.split(".")[1])).lastName
-                },
-                heardFrom // Include "Heard From" data in the request body
+                eventId: id,
+                userId: JSON.parse(atob(token.split(".")[1])).id,   
+                firstName: checked ?JSON.parse(atob(token.split(".")[1])).firstName : "",
+                lastName: checked ? JSON.parse(atob(token.split(".")[1])).lastName : "",
+                referralSources: heardFrom
             };
             options.body = JSON.stringify(body);
-            console.log(options);
         }
 
         try {
             const apiUrl = process.env.NSC_EVENTS_PUBLIC_API_URL;
-            const response = await fetch(`${apiUrl}/events/attend/${id}`, options);
+            const response = await fetch(`${apiUrl}/event-registration/attend`, options);
+
             return response.json();
         } catch (error) {
             console.error('error: ', error);
@@ -71,14 +74,16 @@ const AttendDialog = ({ isOpen, eventId, dialogToggle }: AttendDialogProps) => {
 
     const { mutate: attendEventMutation } = useMutation({
         mutationFn: attendEvent,
-        onSuccess: () => {
-            setSnackbarMessage("Successfully added your attendance.");
-        },
-        onError: (error: String) => {
-            setSnackbarMessage("Failed to attend event.");
-            console.error("Failed to attend: ", error);
+        onSuccess: (data) => {
+            if (data) {
+                setSnackbarMessage("You are now attending this event!");
+                onSuccess && onSuccess();
+            } else {
+                setSnackbarMessage("Error: Unable to attend the event.");
+            }
         }
     });
+
 
     return (
         <>
