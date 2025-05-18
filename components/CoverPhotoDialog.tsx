@@ -85,13 +85,7 @@ function CoverPhotoDialog({ isOpen, dialogToggle, eventId, setEvent }: CoverPhot
                     src={selectedImage} 
                     alt="cover-photo" 
                     sx={{
-                        height: 250,
-                        objectFit: "cover",
-                        marginBlock: 2,
-                        marginLeft: 2,
-                        minWidth: 100,
-                        maxWidth: 200,
-
+                        height: "37vh", width: "100%", objectFit: "cover"
                     }} 
                 />
             }
