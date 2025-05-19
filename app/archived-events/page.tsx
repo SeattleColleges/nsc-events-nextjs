@@ -1,9 +1,9 @@
 'use client';
 
 import useAuth from "@/hooks/useAuth";
-import { Button, Checkbox, Container, Grid2, IconButton, Menu, MenuItem, Pagination, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography, useMediaQuery, useTheme } from "@mui/material";
+import { Button, Checkbox, Container, Grid, IconButton, Menu, MenuItem, Pagination, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography, useMediaQuery, useTheme } from "@mui/material";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useArchivedEvents } from "@/utility/queries";
 import UnauthorizedPageMessage from "../../components/UnauthorizedPageMessage";
 import { ActivityDatabase } from "@/models/activityDatabase";
@@ -18,6 +18,8 @@ const ArchivedEvents = () => {
     const [hasReachedLastPage, setHasReachedLastPage] = useState(false);
     const { data } = useArchivedEvents(page, true);
     const theme = useTheme();
+    const isDarkMode = theme.palette.mode === 'dark';
+    const memoizedTheme = useMemo(() => theme, [theme.palette.mode]); // this is an idea for dark mode bug fix 
     const isMobile = useMediaQuery(theme.breakpoints.between('xs', 'sm'));
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
@@ -65,14 +67,14 @@ const ArchivedEvents = () => {
                     <Typography fontSize={"1.75rem"} textAlign={"center"} padding={"1rem"} marginTop={"1rem"} marginBottom={"1rem"}>
                         Archived Events
                     </Typography>
-                    <Grid2 container gap={4}>
+                    <Grid container gap={4}>
                         <TextField id="outlined-search" label="Search field" type="search" defaultValue="Event Name" helperText="Search by event name" />
                         <TextField id="outlined-search" label="Search field" type="search" defaultValue="Date" helperText="Search by event date" />
                         <TextField id="outlined-search" label="Search field" type="search" defaultValue="Host" helperText="Search by event host" />
-                    </Grid2>
-                    <Grid2 container direction={"column"} spacing={1} alignItems={"center"} justifyItems={"center"} marginTop={"2rem"}>
+                    </Grid>
+                    <Grid container direction={"column"} spacing={1} alignItems={"center"} justifyItems={"center"} marginTop={"2rem"}>
                         {events.map((event: ActivityDatabase) => (
-                            <Grid2 key={event._id}>
+                            <Grid key={event._id}>
                                 <Link key={event._id} href={
                                     {
                                         pathname: "/event-detail",
@@ -86,45 +88,45 @@ const ArchivedEvents = () => {
                                 }>
                                     <EventCard event={event}/>
                                 </Link>
-                            </Grid2>
+                            </Grid>
                         ))}
                     {!hasReachedLastPage && (
                         <Button onClick={handleLoadMoreEvents} type='button' variant="contained" color="primary" style={{ textTransform: "none", margin: '1em auto' }}>
                             Load more events
                         </Button>
                     )}
-                    </Grid2>
+                    </Grid>
                 </Container>
             );
         } else {
         return (
-            <Grid2 container direction={"column"} bgcolor={"white"} margin={"2rem"}>
+            <Grid container direction={"column"} sx={{ backgroundColor: (theme) => theme.palette.background.default, margin: "2rem", }}> 
                 <Typography variant="h4" sx={{ padding: "2rem" }} alignSelf={"center"} display={"flex"}>Archived Events</Typography>
-                <Grid2 container gap={4} alignSelf={"center"}>
+                <Grid container gap={4} alignSelf={"center"}>
                     <TextField id="outlined-search" label="Search field" type="search" defaultValue="Event Name" helperText="Search by event name" />
                     <TextField id="outlined-search" label="Search field" type="search" defaultValue="Date" helperText="Search by event date" />
                     <TextField id="outlined-search" label="Search field" type="search" defaultValue="Host" helperText="Search by event host" />
-                </Grid2>
-                <Grid2 container sx={{ padding: "2rem" }} display={"flex"}>
+                </Grid>
+                <Grid container sx={{ padding: "2rem" }} display={"flex"}>
+                </Grid>
+                <Grid container sx={{ padding: "2rem" }} display={"flex"}>
                     <TableContainer component={Paper}>
                         <Table stickyHeader>
                             <TableHead>
                                 <TableRow>
-                                    <TableCell>
-                                        <Checkbox color="secondary"></Checkbox>
+                                    <TableCell sx={{ backgroundColor: isDarkMode ? '#333' : 'inherit' }}>
                                     </TableCell>
-                                    <TableCell>Event Title</TableCell>
-                                    <TableCell>Date</TableCell>
-                                    <TableCell>Location</TableCell>
-                                    <TableCell>Host Email</TableCell>
-                                    <TableCell align="right"></TableCell>
+                                    <TableCell sx={{ backgroundColor: isDarkMode ? '#333' : 'inherit', color: isDarkMode ? 'white' : 'inherit', fontWeight: 'bold' }}>Event Title</TableCell>
+                                    <TableCell sx={{ backgroundColor: isDarkMode ? '#333' : 'inherit', color: isDarkMode ? 'white' : 'inherit', fontWeight: 'bold' }}>Date</TableCell>
+                                    <TableCell sx={{ backgroundColor: isDarkMode ? '#333' : 'inherit', color: isDarkMode ? 'white' : 'inherit', fontWeight: 'bold' }}>Location</TableCell>
+                                    <TableCell sx={{ backgroundColor: isDarkMode ? '#333' : 'inherit', color: isDarkMode ? 'white' : 'inherit', fontWeight: 'bold' }}>Host Email</TableCell>
+                                    <TableCell align="right" sx={{ backgroundColor: isDarkMode ? '#333' : 'inherit' }}></TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
                                 {events.map((nscEvent) => (
                                     <TableRow key={nscEvent.eventTitle}>
                                         <TableCell>
-                                            <Checkbox></Checkbox>
                                         </TableCell>
                                         <TableCell component="th" scope="row">{nscEvent.eventTitle}</TableCell>
                                         <TableCell>{nscEvent.eventDate}</TableCell>
@@ -143,7 +145,9 @@ const ArchivedEvents = () => {
                                             </IconButton>
                                             <Menu
                                                 id="long-menu"
-                                                MenuListProps={{ 'aria-labelledby': 'long-button', }}
+                                                slots={{
+                                                    list: { 'aria-labelledby': 'long-button' } as any,
+                                                }}
                                                 anchorEl={anchorEl}
                                                 open={open}
                                                 onClose={handleClose}
@@ -162,7 +166,7 @@ const ArchivedEvents = () => {
                             </TableBody>
                         </Table>
                     </TableContainer>
-                </Grid2>
+                </Grid>
                 <Stack alignSelf={"center"}>
                     <Pagination
                         color="primary"
@@ -176,7 +180,7 @@ const ArchivedEvents = () => {
                         size="large"
                         sx={{ padding: "2rem" }}/>
                 </Stack>
-            </Grid2>
+            </Grid>
         );
     }
     } else {
@@ -185,3 +189,5 @@ const ArchivedEvents = () => {
 }
 
 export default ArchivedEvents;
+
+
