@@ -67,13 +67,6 @@ let darkTheme = createTheme({
         },
       },
     },
-    MuiTextField: {
-      styleOverrides: {
-        root: {
-          backgroundColor: 'rgba(245, 241, 241, 0.1)',
-        },
-      }
-    },
   } // end of components for dark theme
 }); // end of dark theme block
 

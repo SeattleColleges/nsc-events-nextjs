@@ -91,34 +91,66 @@ const CreateEvent: React.FC = () => {
     return (
       <LocalizationProvider dateAdapter={AdapterDateFns}>
 
-        <Box component="form" onSubmit={handleSubmit} noValidate autoComplete="off" sx={{ p: 3, width: isMobile ? '100%' : '75%', mx: 'auto' }}>
+        {/* start of the create events form */}
+        <Box component="form"
+          onSubmit={handleSubmit}
+          noValidate autoComplete="off"
+          sx={{ p: 3, width: isMobile ? '100%' : '75%', mx: 'auto' }}>
 
           <Stack spacing={2}>
 
             {/* page title */}
-            <Box sx={{ backgroundColor: '#114FA2' }}>
+            <Box sx={{
+              backgroundColor: '#114FA2',
+              boxShadow: '3px 3px 5px 0px rgba(0,0,0,0.3)'
+            }}>
+
               <Typography
                 fontSize={isMobile ? "1.75rem" : "2.25rem"}
                 textAlign={"center"}
                 marginTop={"0.5rem"}
                 marginBottom={"1rem"}
                 sx={{ color: 'white' }}
+
               >Add Event
               </Typography>
             </Box>
 
+            <Box>
+              <Typography
+                fontSize={isMobile ? "1rem" : "1rem"}
+                textAlign={"center"}
+                marginTop={"0.5rem"}
+                marginBottom={"1rem"}
+                sx={{ color: 'red' }}
+              >
+                REQUIRED*
+              </Typography>
+            </Box>
+
             {/* start of row 1 */}
-            <Box sx={{ display: 'flex', justifyContent: 'center', backgroundColor: '#114FA2', boxShadow: '3px 3px 5px 0px rgba(0,0,0,0.3)' }}>
+            <Box sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              backgroundColor: '#114FA2',
+              boxShadow: '3px 3px 5px 0px rgba(0,0,0,0.3)',
+              width: '100%'
+            }}>
 
               {/* start of box 1 row 1 */}
-              <Box sx={{ margin: 4, width: isMobile ? '100%' : '33%', backgroundColor: mode === 'light' ? 'white' : 'black', boxShadow: '3px 3px 5px 0px rgba(0,0,0,0.3)' }}>
+              <Box sx={{
+                margin: 4,
+                width: isMobile ? '100%' : '33%',
+                backgroundColor: mode === 'light' ? 'white' : 'black',
+                boxShadow: '3px 3px 5px 0px rgba(0,0,0,0.3)'
+              }}>
 
                 {/* stack tag for vertical alignment of text fields */}
                 <Stack sx={{ width: '100%', padding: 5 }} spacing={2}>
 
                   <TextField
                     id="event-title"
-                    label="Event Title*"
+                    label="Event Title"
                     variant="outlined"
                     name="eventTitle"
                     value={eventData.eventTitle}
@@ -128,6 +160,7 @@ const CreateEvent: React.FC = () => {
                     InputProps={{ style: textFieldStyle.input }}
                     InputLabelProps={{ style: textFieldStyle.label }}
                     placeholder="Enter the title of the event"
+                    sx={{ backgroundColor: mode === 'light' ? 'white' : '#f5f1f11a' }}
                   />
 
                   <TextField
@@ -142,6 +175,7 @@ const CreateEvent: React.FC = () => {
                     InputProps={{ style: textFieldStyle.input }}
                     InputLabelProps={{ style: textFieldStyle.label }}
                     placeholder="Enter the host of the event"
+                    sx={{ backgroundColor: mode === 'light' ? 'white' : '#f5f1f11a' }}
                   />
 
                   <TextField
@@ -156,6 +190,7 @@ const CreateEvent: React.FC = () => {
                     InputProps={{ style: textFieldStyle.input }}
                     InputLabelProps={{ style: textFieldStyle.label }}
                     placeholder="Enter the registration of the event"
+                    sx={{ backgroundColor: mode === 'light' ? 'white' : '#f5f1f11a' }}
                   />
 
                   <TextField
@@ -173,6 +208,7 @@ const CreateEvent: React.FC = () => {
                     inputProps={{ maxLength: 300 }}
                     InputLabelProps={{ style: textFieldStyle.label }}
                     placeholder="Enter the description of the event"
+                    sx={{ backgroundColor: mode === 'light' ? 'white' : '#f5f1f11a' }}
                   />
                 </Stack>
               </Box> {/* end of box 1 */}
@@ -193,7 +229,12 @@ const CreateEvent: React.FC = () => {
               /> */}
 
               {/* start of box 2 row 1 */}
-              <Box sx={{ margin: 4, width: isMobile ? '100%' : '33%', backgroundColor: mode === 'light' ? 'white' : 'black', boxShadow: '3px 3px 5px 0px rgba(0,0,0,0.3)' }}>
+              <Box sx={{
+                margin: 4,
+                width: isMobile ? '100%' : '33%',
+                backgroundColor: mode === 'light' ? 'white' : 'black',
+                boxShadow: '3px 3px 5px 0px rgba(0,0,0,0.3)'
+              }}>
 
                 {/* stack tag for vertical alignment */}
                 <Stack sx={{ width: '100%', padding: 5 }} spacing={2}>
@@ -203,16 +244,19 @@ const CreateEvent: React.FC = () => {
                     value={selectedDate}
                     onChange={handleDateChange}
                     minDate={new Date()}
+                    sx={{ backgroundColor: mode === 'light' ? 'white' : '#f5f1f11a' }}
                   />
                   <TimePicker
                     label="Start Time"
                     value={startTimeDate}
                     onChange={onStartTimeChange}
+                    sx={{ backgroundColor: mode === 'light' ? 'white' : '#f5f1f11a' }}
                   />
                   <TimePicker
                     label="End Time"
                     value={endTimeDate}
                     onChange={onEndTimeChange}
+                    sx={{ backgroundColor: mode === 'light' ? 'white' : '#f5f1f11a' }}
                   />
                   {/* Time Error Message */}
                   {timeError && (
@@ -230,6 +274,7 @@ const CreateEvent: React.FC = () => {
                     InputProps={{ style: textFieldStyle.input }}
                     InputLabelProps={{ style: textFieldStyle.label }}
                     placeholder="Enter the location of the event"
+                    sx={{ backgroundColor: mode === 'light' ? 'white' : '#f5f1f11a' }}
                   />
                 </Stack>
               </Box> {/* end of box 2 row 1 */}
@@ -239,13 +284,19 @@ const CreateEvent: React.FC = () => {
           <ImagePicker />
           </label> */}
 
-              {/* start of section 3 row 1 */}
-              <Box sx={{ margin: 4, width: isMobile ? '100%' : '33%', backgroundColor: mode === 'light' ? 'white' : 'black', boxShadow: '3px 3px 5px 0px rgba(0,0,0,0.3)' }}>
+              {/* start of box 3 row 1 */}
+              <Box sx={{
+                margin: 4,
+                width: isMobile ? '100%' : '33%',
+                backgroundColor: mode === 'light' ? 'white' : 'black',
+                boxShadow: '3px 3px 5px 0px rgba(0,0,0,0.3)'
+              }}>
 
                 {/* stack tag for vertical alignment */}
                 <Stack sx={{ width: '100%', padding: 5 }} spacing={2}>
 
-                  <TextField
+                  {/* commented out below due to not needing the cover photo and document fields. */}
+                  {/* <TextField
                     id="event-cover-photo"
                     label="Event Cover Photo"
                     variant="outlined"
@@ -271,7 +322,7 @@ const CreateEvent: React.FC = () => {
                     InputProps={{ style: textFieldStyle.input }}
                     InputLabelProps={{ style: textFieldStyle.label }}
                     placeholder="Add a document for the event"
-                  />
+                  /> */}
 
                   <TextField
                     id="event-capacity"
@@ -285,6 +336,7 @@ const CreateEvent: React.FC = () => {
                     InputProps={{ style: textFieldStyle.input }}
                     InputLabelProps={{ style: textFieldStyle.label }}
                     placeholder="Enter the capacity of the event"
+                    sx={{ backgroundColor: mode === 'light' ? 'white' : '#f5f1f11a' }}
                   />
 
 
@@ -299,13 +351,20 @@ const CreateEvent: React.FC = () => {
                     helperText={errors.eventMeetingURL}
                     InputProps={{ style: textFieldStyle.input }}
                     InputLabelProps={{ style: textFieldStyle.label }}
+                    sx={{ backgroundColor: mode === 'light' ? 'white' : '#f5f1f11a' }}
                   />
+
                 </Stack>
-              </Box>
+              </Box> {/* End of box 3 row 1*/}
             </Box> {/* End of row 1*/}
 
             {/* Begining of tag selector section */}
-            <Box sx={{ backgroundColor: mode === 'light' ? 'lightblue' : '#114FA2', padding: 2 }}>
+            <Box sx={{
+              backgroundColor: '#42A5F5',
+              padding: 2,
+              boxShadow: '3px 3px 5px 0px rgba(0,0,0,0.3)'
+            }}>
+
               <TagSelector
                 selectedTags={eventData.eventTags}
                 allTags={[
@@ -314,7 +373,9 @@ const CreateEvent: React.FC = () => {
                 ]}
                 onTagClick={handleTagClick}
               />
+
               <Box sx={{ backgroundColor: 'none', padding: 2 }}>
+
                 <TextField
                   id="add-custom-tag"
                   label="Add Tag"
@@ -330,6 +391,7 @@ const CreateEvent: React.FC = () => {
                   InputLabelProps={{ style: textFieldStyle.label }}
                   placeholder="Enter the tag of the event"
                 />
+
                 <Button
                   type="button"
                   variant="contained"
@@ -344,10 +406,20 @@ const CreateEvent: React.FC = () => {
             {/* end of tag selection section */}
 
             {/* Start of row 2 */}
-            <Box sx={{ display: 'flex', justifyContent: 'center', backgroundColor: '#114FA2', boxShadow: '3px 3px 5px 0px rgba(0,0,0,0.3)' }}>
+            <Box sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              backgroundColor: '#114FA2',
+              boxShadow: '3px 3px 5px 0px rgba(0,0,0,0.3)'
+            }}>
 
               {/* start of seciton 1 row 2 */}
-              <Box sx={{ margin: 4, width: isMobile ? '100%' : '33%', backgroundColor: mode === 'light' ? 'white' : 'black', boxShadow: '3px 3px 5px 0px rgba(0,0,0,0.3)' }}>
+              <Box sx={{
+                margin: 4,
+                width: isMobile ? '100%' : '33%',
+                backgroundColor: mode === 'light' ? 'white' : 'black',
+                boxShadow: '3px 3px 5px 0px rgba(0,0,0,0.3)'
+              }}>
 
                 <Stack sx={{ width: '100%', padding: 5 }} spacing={2}>
 
@@ -363,6 +435,7 @@ const CreateEvent: React.FC = () => {
                     InputProps={{ style: textFieldStyle.input }}
                     InputLabelProps={{ style: textFieldStyle.label }}
                     placeholder="Enter the schedule of the event"
+                    sx={{ backgroundColor: mode === 'light' ? 'white' : '#f5f1f11a' }}
                   />
 
                   <TextField
@@ -377,6 +450,7 @@ const CreateEvent: React.FC = () => {
                     InputProps={{ style: textFieldStyle.input }}
                     InputLabelProps={{ style: textFieldStyle.label }}
                     placeholder="Enter the speaker(s) of the event"
+                    sx={{ backgroundColor: mode === 'light' ? 'white' : '#f5f1f11a' }}
                   />
 
                   <TextField
@@ -391,6 +465,7 @@ const CreateEvent: React.FC = () => {
                     InputProps={{ style: textFieldStyle.input }}
                     InputLabelProps={{ style: textFieldStyle.label }}
                     placeholder="Enter the prerequisites of the event"
+                    sx={{ backgroundColor: mode === 'light' ? 'white' : '#f5f1f11a' }}
                   />
 
                   <TextField
@@ -405,12 +480,18 @@ const CreateEvent: React.FC = () => {
                     InputProps={{ style: textFieldStyle.input }}
                     InputLabelProps={{ style: textFieldStyle.label }}
                     placeholder="Enter the cancellation policy of the event"
+                    sx={{ backgroundColor: mode === 'light' ? 'white' : '#f5f1f11a' }}
                   />
                 </Stack>
               </Box>  {/* END of box 2 of row 2 */}
 
               {/* start of box 2 of row 2 */}
-              <Box sx={{ margin: 4, width: isMobile ? '100%' : '33%', backgroundColor: mode === 'light' ? 'white' : 'black', boxShadow: '3px 3px 5px 0px rgba(0,0,0,0.3)' }}>
+              <Box sx={{
+                margin: 4,
+                width: isMobile ? '100%' : '33%',
+                backgroundColor: mode === 'light' ? 'white' : 'black',
+                boxShadow: '3px 3px 5px 0px rgba(0,0,0,0.3)'
+              }}>
 
                 <Stack sx={{ width: '100%', padding: 5 }} spacing={2}>
 
@@ -426,7 +507,9 @@ const CreateEvent: React.FC = () => {
                     InputProps={{ style: textFieldStyle.input }}
                     InputLabelProps={{ style: textFieldStyle.label }}
                     placeholder="Enter the contact of the event"
+                    sx={{ backgroundColor: mode === 'light' ? 'white' : '#f5f1f11a' }}
                   />
+
                   <TextField
                     id="facebook"
                     label="Facebook"
@@ -439,7 +522,9 @@ const CreateEvent: React.FC = () => {
                     InputProps={{ style: textFieldStyle.input }}
                     InputLabelProps={{ style: textFieldStyle.label }}
                     placeholder="Enter the Facebook link of the event"
+                    sx={{ backgroundColor: mode === 'light' ? 'white' : '#f5f1f11a' }}
                   />
+
                   <TextField
                     id="twitter"
                     label="Twitter"
@@ -452,7 +537,9 @@ const CreateEvent: React.FC = () => {
                     InputProps={{ style: textFieldStyle.input }}
                     InputLabelProps={{ style: textFieldStyle.label }}
                     placeholder="Enter the Twitter link of the event"
+                    sx={{ backgroundColor: mode === 'light' ? 'white' : '#f5f1f11a' }}
                   />
+
                   <TextField
                     id="instagram"
                     label="Instagram"
@@ -465,13 +552,21 @@ const CreateEvent: React.FC = () => {
                     InputProps={{ style: textFieldStyle.input }}
                     InputLabelProps={{ style: textFieldStyle.label }}
                     placeholder="Enter the Instagram link of the event"
+                    sx={{ backgroundColor: mode === 'light' ? 'white' : '#f5f1f11a' }}
                   />
                 </Stack>
               </Box>
 
               {/* start of section 3 row 2 */}
-              <Box sx={{ margin: 4, width: isMobile ? '100%' : '33%', backgroundColor: mode === 'light' ? 'white' : 'black', boxShadow: '3px 3px 5px 0px rgba(0,0,0,0.3)' }}>
+              <Box sx={{
+                margin: 4,
+                width: isMobile ? '100%' : '33%',
+                backgroundColor: mode === 'light' ? 'white' : 'black',
+                boxShadow: '3px 3px 5px 0px rgba(0,0,0,0.3)'
+              }}>
+
                 <Stack sx={{ width: '100%', padding: 5 }} spacing={2}>
+
                   <TextField
                     id="hashtag"
                     label="Hashtag"
@@ -484,7 +579,9 @@ const CreateEvent: React.FC = () => {
                     InputProps={{ style: textFieldStyle.input }}
                     InputLabelProps={{ style: textFieldStyle.label }}
                     placeholder="Enter the hashtag of the event"
+                    sx={{ backgroundColor: mode === 'light' ? 'white' : '#f5f1f11a' }}
                   />
+
                   <TextField
                     id="event-privacy"
                     label="Event Privacy"
@@ -497,7 +594,9 @@ const CreateEvent: React.FC = () => {
                     InputProps={{ style: textFieldStyle.input }}
                     InputLabelProps={{ style: textFieldStyle.label }}
                     placeholder="Enter the privacy of the event"
+                    sx={{ backgroundColor: mode === 'light' ? 'white' : '#f5f1f11a' }}
                   />
+
                   <TextField
                     id="event-accessibility"
                     label="Event Accessibility"
@@ -510,7 +609,9 @@ const CreateEvent: React.FC = () => {
                     InputProps={{ style: textFieldStyle.input }}
                     InputLabelProps={{ style: textFieldStyle.label }}
                     placeholder="Enter the accessibility of the event"
+                    sx={{ backgroundColor: mode === 'light' ? 'white' : '#f5f1f11a' }}
                   />
+
                   <TextField
                     id="event-note"
                     label="Event Note"
@@ -522,14 +623,21 @@ const CreateEvent: React.FC = () => {
                     helperText={errors.eventNote}
                     InputProps={{ style: textFieldStyle.input }}
                     InputLabelProps={{ style: textFieldStyle.label }}
+                    sx={{ backgroundColor: mode === 'light' ? 'white' : '#f5f1f11a' }}
                   />
+
                 </Stack>
               </Box> {/* END of section 3 row 2 */}
             </Box> {/* END of row 2 */}
 
             {/* start of submit button */}
             <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-              <Button type="submit" variant="contained" color="primary" style={{ textTransform: "none" }}>
+
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                style={{ textTransform: "none" }} >
                 Create Event
               </Button>
             </Box>
