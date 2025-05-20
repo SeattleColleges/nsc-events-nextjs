@@ -10,7 +10,7 @@ import {
   Button,
   useTheme,
 } from "@mui/material";
-import { parseISO, isAfter, isBefore, startOfToday } from "date-fns";
+import { format } from "date-fns";
 
 const URL = process.env.NSC_EVENTS_PUBLIC_API_URL!;
 
@@ -42,7 +42,7 @@ const EventCard: React.FC<AttendedEvent & { onUnattend: () => void }> = ({
   eventHost,
   onUnattend,
 }) => {
-  const date = parseISO(eventDate);
+  const date = eventDate.slice(0, 10);
   return (
     <Box
       sx={{
@@ -56,7 +56,7 @@ const EventCard: React.FC<AttendedEvent & { onUnattend: () => void }> = ({
     >
       <Typography variant="h6">{eventTitle}</Typography>
       <Typography variant="body2">
-        {date.toLocaleDateString()} @ {eventStartTime}
+        {date} @ {eventStartTime}
       </Typography>
       <Typography variant="body2">Location {eventLocation}</Typography>
       <Typography variant="body2">Host: {eventHost}</Typography>
@@ -102,7 +102,8 @@ export const AttendedEvents: React.FC<AttendedEventsProps> = ({
           },
         });
         if (!res.ok) throw new Error(await res.text());
-        setEvents(await res.json());
+        const data = await res.json();
+        setEvents(data);
       } catch (err: any) {
         setError(err.message || "Failed to load attended events");
       } finally {
@@ -111,13 +112,17 @@ export const AttendedEvents: React.FC<AttendedEventsProps> = ({
     })();
   }, [userId, token]);
 
-  const today = startOfToday();
-  const upcoming = events.filter(
-    (e) =>
-      isAfter(parseISO(e.eventDate), today) ||
-      parseISO(e.eventDate).getTime() === today.getTime()
-  );
-  const past = events.filter((e) => isBefore(parseISO(e.eventDate), today));
+const today = format(new Date(), 'yyyy-MM-dd'); // local today as string
+
+const upcoming = events.filter((e) => {
+  const eventDate = e.eventDate.slice(0, 10);
+  return eventDate >= today;
+});
+
+const past = events.filter((e) => {
+  const eventDate = e.eventDate.slice(0, 10);
+  return eventDate < today;
+});
 
   // DELETE /event-registration/unattend
   const handleUnattend = async (eventId: string) => {
