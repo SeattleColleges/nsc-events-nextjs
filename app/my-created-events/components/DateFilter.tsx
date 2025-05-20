@@ -20,6 +20,7 @@ const DateFilter: React.FC<{ onDateChange: (date: string) => void }> = ({
       onChange={handleDateChange}
       variant="outlined"
       fullWidth={false}
+      // id ="eventDate" (possible to add this for accessibility?)
       sx={{
         width: 200,
         backgroundColor:
