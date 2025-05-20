@@ -80,6 +80,13 @@ const Admin = () => {
                             }}>
                             <AdminButton path={'/'} text={"View All Events"}/>
                         </Grid>
+                        <Grid
+                            size={{
+                                xs: 12,
+                                sm: "auto"
+                            }}>
+                            <AdminButton path={'/my-created-events'} text={"View My Created Events (figma page)"} />
+                        </Grid>
                     </Grid>
                 </Box>
             </Container>
