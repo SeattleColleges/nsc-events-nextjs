@@ -24,7 +24,7 @@ describe('Creator', () => {
       screen.getByText('View My Events'),
       screen.getByText('View All Events'),
     ]
-    expect(buttons.length).toBe(4)
+    expect(buttons.length).toBe(5) 
   })
 
   it('renders links with correct hrefs', () => {
