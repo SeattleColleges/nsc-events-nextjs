@@ -123,9 +123,9 @@ const ArchivedEvents = () => {
                                     <TableCell align="right" sx={{ backgroundColor: isDarkMode ? '#333' : 'inherit' }}></TableCell>
                                 </TableRow>
                             </TableHead>
-                            <TableBody>
+                            <TableBody key={`${theme.palette.mode}-${page}`}>
                                 {events.map((nscEvent) => (
-                                    <TableRow key={nscEvent.eventTitle}>
+                                    <TableRow key={nscEvent._id}>
                                         <TableCell>
                                         </TableCell>
                                         <TableCell component="th" scope="row">{nscEvent.eventTitle}</TableCell>
