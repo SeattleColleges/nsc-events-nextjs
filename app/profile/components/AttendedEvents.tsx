@@ -101,7 +101,11 @@ export const AttendedEvents: React.FC<AttendedEventsProps> = ({
             Authorization: `Bearer ${token}`,
           },
         });
-        if (!res.ok) throw new Error(await res.text());
+
+        if (!res.ok) {
+          throw new Error(await res.text());
+        }
+
         const data = await res.json();
         setEvents(data);
       } catch (err: any) {
@@ -135,7 +139,10 @@ const past = events.filter((e) => {
         },
         body: JSON.stringify({ userId, eventId }),
       });
-      if (!res.ok) throw new Error(await res.text());
+
+      if (!res.ok) {
+        throw new Error(await res.text());
+      }
       // remove from local state
       setEvents((prev) => prev.filter((e) => e.eventId !== eventId));
     } catch (err) {
@@ -143,18 +150,21 @@ const past = events.filter((e) => {
     }
   };
 
-  if (loading)
+  if (loading) {
     return (
       <Box sx={{ textAlign: "center", mt: 4 }}>
         <CircularProgress />
       </Box>
     );
-  if (error)
+  }
+  
+  if (error) {
     return (
       <Typography color="error" sx={{ mt: 4, textAlign: "center" }}>
         {error}
       </Typography>
     );
+  }
 
   return (
     <Box sx={{ width: "100%", mt: 3 }}>
