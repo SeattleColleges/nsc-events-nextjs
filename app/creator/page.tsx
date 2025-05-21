@@ -74,6 +74,13 @@ const Creator = () => {
                             }}>
                             <CreatorButton path={"/"} text={"View All Events"}/>
                         </Grid>
+                        <Grid
+                            size={{
+                                xs: 12,
+                                sm: "auto"
+                            }}>
+                            <CreatorButton path={'/my-created-events'} text={"View My Created Events (figma page)"} />
+                        </Grid>
                     </Grid>
                 </Box>
                 {/* <h1>Placeholder for the creator page so npm run build compiles successfully.</h1>
