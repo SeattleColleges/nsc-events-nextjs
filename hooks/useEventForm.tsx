@@ -136,6 +136,17 @@ export const useEventForm = (initialData: Activity | ActivityDatabase) => {
     // applying necessary transformations for date, time, and speaker feilds
     const dataToSend = { ...activityData };
 
+    // If fields are empty set them to empty strings
+    if (!dataToSend.eventMeetingURL?.trim()) {
+      dataToSend.eventMeetingURL = "";
+    }
+    if (!dataToSend.eventCoverPhoto?.trim()) {
+      dataToSend.eventCoverPhoto = "";
+    }
+    if (!dataToSend.eventDocument?.trim()) {
+      dataToSend.eventDocument = "";
+    }
+    
     if (selectedDate) {
       dataToSend.eventDate = selectedDate.toISOString().split('T')[0];
     }
