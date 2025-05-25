@@ -23,10 +23,8 @@ const UserContent: React.FC<UserContentProps> = () => {
 
   const headerStyle = {
     fontSize: { xs: "0.8rem", sm: "0.9rem", md: "1rem" },
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: "10px",
+    textAlign: "center" as const,
+    mb: 1,
   };
 
   return (
@@ -41,8 +39,8 @@ const UserContent: React.FC<UserContentProps> = () => {
         alignItems: "center",
         justifyContent: "flex-start",
         borderRadius: "7px",
-        padding: { xs: "10px", sm: "15px", md: "20px" }, // Adjust padding for smaller screens
-        marginBottom: { xs: "15px", sm: "0px" }, // Add spacing when stacked in small screens
+        padding: { xs: "10px", sm: "15px", md: "20px" },
+        marginBottom: { xs: "15px", sm: "0px" },
         boxShadow: 3,
       }}
     >
@@ -79,7 +77,6 @@ const UserContent: React.FC<UserContentProps> = () => {
             borderRadius: "7px",
           }}
         >
-          <Typography sx={headerStyle}>Events Attended</Typography>
           <AttendedEvents userId={userId} token={token} />
         </Box>
       </Box>

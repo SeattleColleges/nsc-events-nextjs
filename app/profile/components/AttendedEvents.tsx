@@ -8,6 +8,10 @@ import {
   Tabs,
   Tab,
   Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
   useTheme,
 } from "@mui/material";
 import { format } from "date-fns";
@@ -19,8 +23,6 @@ interface AttendedEvent {
   eventTitle: string;
   eventDate: string;
   eventStartTime: string;
-  eventLocation: string;
-  eventHost: string;
 }
 
 interface AttendedEventsProps {
@@ -31,16 +33,18 @@ interface AttendedEventsProps {
 type PanelProps = {
   items: AttendedEvent[];
   emptyMessage: string;
-  onUnattend: (eventId: string) => Promise<void>;
+  onRequestUnattend?: (eventId: string, eventTitle: string) => void;
 };
 
-const EventCard: React.FC<AttendedEvent & { onUnattend: () => void }> = ({
+interface EventCardProps extends AttendedEvent {
+  onRequestUnattend?: () => void;
+}
+
+const EventCard: React.FC<EventCardProps> = ({
   eventTitle,
   eventDate,
   eventStartTime,
-  eventLocation,
-  eventHost,
-  onUnattend,
+  onRequestUnattend,
 }) => {
   const date = eventDate.slice(0, 10);
   return (
@@ -56,28 +60,45 @@ const EventCard: React.FC<AttendedEvent & { onUnattend: () => void }> = ({
     >
       <Typography variant="h6">{eventTitle}</Typography>
       <Typography variant="body2">
-        {date} @ {eventStartTime}
+        {date} at {eventStartTime}
       </Typography>
-      <Typography variant="body2">Location {eventLocation}</Typography>
-      <Typography variant="body2">Host: {eventHost}</Typography>
-      <Button size="small" color="error" onClick={onUnattend} sx={{ mt: 1 }}>
-        Unregister
-      </Button>
+      {onRequestUnattend && (
+        <Button
+          size="small"
+          color="error"
+          onClick={onRequestUnattend}
+          sx={{ mt: 1 }}
+        >
+          Unregister
+        </Button>
+      )}
     </Box>
   );
 };
 
-const Panel: React.FC<PanelProps> = ({ items, emptyMessage, onUnattend }) => {
-  return items.length > 0 ? (
-    items.map((evt) => (
-      <EventCard
-        key={evt.eventId}
-        {...evt}
-        onUnattend={() => onUnattend(evt.eventId)}
-      />
-    ))
-  ) : (
-    <Typography color="text.secondary">{emptyMessage}</Typography>
+const Panel: React.FC<PanelProps> = ({
+  items,
+  emptyMessage,
+  onRequestUnattend,
+}) => {
+  if (items.length === 0) {
+    return <Typography color="text.secondary">{emptyMessage}</Typography>;
+  }
+
+  return (
+    <>
+      {items.map((evt) => (
+        <EventCard
+          key={evt.eventId}
+          {...evt}
+          onRequestUnattend={
+            onRequestUnattend
+              ? () => onRequestUnattend(evt.eventId, evt.eventTitle)
+              : undefined
+          }
+        />
+      ))}
+    </>
   );
 };
 
@@ -90,6 +111,11 @@ export const AttendedEvents: React.FC<AttendedEventsProps> = ({
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [tabIndex, setTabIndex] = useState(0);
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [pendingEvent, setPendingEvent] = useState<{
+    id: string;
+    title: string;
+  } | null>(null);
 
   useEffect(() => {
     (async () => {
@@ -116,20 +142,26 @@ export const AttendedEvents: React.FC<AttendedEventsProps> = ({
     })();
   }, [userId, token]);
 
-const today = format(new Date(), 'yyyy-MM-dd'); // local today as string
+  const today = format(new Date(), "yyyy-MM-dd");
 
-const upcoming = events.filter((e) => {
-  const eventDate = e.eventDate.slice(0, 10);
-  return eventDate >= today;
-});
+  const upcoming = events.filter((e) => {
+    const eventDate = e.eventDate.slice(0, 10);
+    return eventDate >= today;
+  });
 
-const past = events.filter((e) => {
-  const eventDate = e.eventDate.slice(0, 10);
-  return eventDate < today;
-});
+  const past = events.filter((e) => {
+    const eventDate = e.eventDate.slice(0, 10);
+    return eventDate < today;
+  });
 
-  // DELETE /event-registration/unattend
-  const handleUnattend = async (eventId: string) => {
+  const requestUnattend = (eventId: string, eventTitle: string) => {
+    console.log("Requesting to unregister:", eventId, eventTitle);
+    setPendingEvent({ id: eventId, title: eventTitle });
+    setConfirmOpen(true);
+  };
+
+  const confirmUnattend = async () => {
+    if (!pendingEvent) return;
     try {
       const res = await fetch(`${URL}/event-registration/unattend`, {
         method: "DELETE",
@@ -137,16 +169,18 @@ const past = events.filter((e) => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ userId, eventId }),
+        body: JSON.stringify({ userId, eventId: pendingEvent.id }),
       });
 
       if (!res.ok) {
         throw new Error(await res.text());
       }
-      // remove from local state
-      setEvents((prev) => prev.filter((e) => e.eventId !== eventId));
+      setEvents((prev) => prev.filter((e) => e.eventId !== pendingEvent.id));
     } catch (err) {
       console.error("Failed to unregister:", err);
+    } finally {
+      setConfirmOpen(false);
+      setPendingEvent(null);
     }
   };
 
@@ -157,7 +191,7 @@ const past = events.filter((e) => {
       </Box>
     );
   }
-  
+
   if (error) {
     return (
       <Typography color="error" sx={{ mt: 4, textAlign: "center" }}>
@@ -167,7 +201,15 @@ const past = events.filter((e) => {
   }
 
   return (
-    <Box sx={{ width: "100%", mt: 3 }}>
+    <Box
+      sx={{
+        width: "100%",
+        mt: 3,
+        display: "flex",
+        flexDirection: "column",
+        height: "500px", // fill parent
+      }}
+    >
       <Tabs
         value={tabIndex}
         onChange={(_, v) => setTabIndex(v)}
@@ -178,25 +220,45 @@ const past = events.filter((e) => {
         <Tab label={`Upcoming (${upcoming.length})`} />
         <Tab label={`Past (${past.length})`} />
       </Tabs>
+      {/* wrap both panels in one scrollable flex‐child */}
+      <Box
+        sx={{
+          flexGrow: 1, // take all leftover
+          overflowY: "auto", // and scroll
+          mt: 2,
+        }}
+      >
+        <Box role="tabpanel" hidden={tabIndex !== 0}>
+          {tabIndex === 0 && (
+            <Panel
+              items={upcoming}
+              emptyMessage="No upcoming events."
+              onRequestUnattend={requestUnattend}
+            />
+          )}
+        </Box>
+        <Box role="tabpanel" hidden={tabIndex !== 1}>
+          {tabIndex === 1 && (
+            <Panel items={past} emptyMessage="No past events." />
+          )}
+        </Box>
+      </Box>
 
-      <Box role="tabpanel" hidden={tabIndex !== 0} sx={{ mt: 2 }}>
-        {tabIndex === 0 && (
-          <Panel
-            items={upcoming}
-            emptyMessage="No upcoming events."
-            onUnattend={handleUnattend}
-          />
-        )}
-      </Box>
-      <Box role="tabpanel" hidden={tabIndex !== 1} sx={{ mt: 2 }}>
-        {tabIndex === 1 && (
-          <Panel
-            items={past}
-            emptyMessage="No past events."
-            onUnattend={handleUnattend}
-          />
-        )}
-      </Box>
+      <Dialog open={confirmOpen} onClose={() => setConfirmOpen(false)}>
+        <DialogTitle>Confirm Unregister</DialogTitle>
+        <DialogContent>
+          <Typography>
+            Are you sure you want to unregister for{" "}
+            <strong>{pendingEvent?.title}</strong>?
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setConfirmOpen(false)}>No</Button>
+          <Button color="error" onClick={confirmUnattend}>
+            Yes, Unregister
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };
