@@ -51,7 +51,7 @@ export const validateFormData = (data: Activity | ActivityDatabase): FormErrors 
 
   // Tests if URL is valid (keep this check for now, may be removed later)
   const urlPattern = /^(http(s)?:\/\/){0,1}(?:(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,})(?:[/?].*)?$/;
-  if (!data.eventMeetingURL || !urlPattern.test(data.eventMeetingURL)) {
+  if (data.eventMeetingURL && !urlPattern.test(data.eventMeetingURL)) {
     newErrors = { ...newErrors, eventMeetingURL: "Event meeting URL needs to be a valid URL" };
   }
 
