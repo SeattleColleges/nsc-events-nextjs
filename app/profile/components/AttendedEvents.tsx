@@ -161,7 +161,10 @@ export const AttendedEvents: React.FC<AttendedEventsProps> = ({
   };
 
   const confirmUnattend = async () => {
-    if (!pendingEvent) return;
+    if (!pendingEvent) {
+      return;
+    }   
+    
     try {
       const res = await fetch(`${URL}/event-registration/unattend`, {
         method: "DELETE",

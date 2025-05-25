@@ -20,35 +20,37 @@ const ProfileContent = () => {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
-    const getUserFromId = async (userId: string) => {
-        const storedToken = localStorage.getItem("token");
-        
-        if (!storedToken) {
-            console.error("Token is missing");
-            return;
-        }
+    useEffect(() => {
+        setToken(localStorage.getItem('token'));
     
-        const response = await fetch(`${URL}/users/find/${userId}`, {
-            method: "GET",
-            headers: {
-                "Authorization": `Bearer ${storedToken}`, // Send token in Authorization header
-                "Content-Type": "application/json"
-            }
-        });
-        
-        if (response.ok) {
-            const data = await response.json();
-            setUser(data);
-        } else {
-            console.error("Error:", response.status, response.statusText);
-        }
-    };
-    
-    useEffect(()=> {
-        setToken(localStorage.getItem('token'))
         const userId = getCurrentUserId();
+    
+        const getUserFromId = async (userId: string) => {
+            const storedToken = localStorage.getItem("token");
+    
+            if (!storedToken) {
+                console.error("Token is missing");
+                return;
+            }
+    
+            const response = await fetch(`${URL}/users/find/${userId}`, {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${storedToken}`,
+                    "Content-Type": "application/json"
+                }
+            });
+    
+            if (response.ok) {
+                const data = await response.json();
+                setUser(data);
+            } else {
+                console.error("Error:", response.status, response.statusText);
+            }
+        };
+    
         getUserFromId(userId);
-    },[setUser]);
+    }, [setUser]);
         
 
     if (token === null) {
