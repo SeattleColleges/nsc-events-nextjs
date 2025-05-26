@@ -20,8 +20,10 @@ const TagSelector: React.FC<TagSelectorProps> = ({ selectedTags, allTags, onTagC
                     onClick={() => onTagClick(tag)}
                     size="small"
                     style={{ textTransform: 'capitalize' }}
-                    // not sure how the sx prop is affecting the color switch but it funcitonal does the job for now
-                    sx={{ color: selectedTags.includes(tag) ? 'white' : 'black' }}
+                    sx={{ 
+                        color: selectedTags.includes(tag) ? 'white' : 'black',
+                        background: selectedTags.includes(tag) ? 'blue' : 'white'
+                     }}
                 >
                     {tag}
                 </Button>

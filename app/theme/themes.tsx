@@ -30,7 +30,7 @@ let darkTheme = createTheme({
     MuiPaper: {
       styleOverrides: {
         root: {
-          backgroundColor: 'rgba(120, 18, 18, 0.1)',
+          backgroundColor: '#333',
           color: 'black'
         },
       },

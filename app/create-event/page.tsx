@@ -124,7 +124,7 @@ const CreateEvent: React.FC = () => {
                 marginBottom={"1rem"}
                 sx={{ color: 'red' }}
               >
-                REQUIRED*
+                REQUIRED FIELDS*
               </Typography>
             </Box>
 
@@ -146,7 +146,10 @@ const CreateEvent: React.FC = () => {
               }}>
 
                 {/* stack tag for vertical alignment of text fields */}
-                <Stack sx={{ width: '100%', padding: 5 }} spacing={2}>
+                <Stack 
+                  sx={{ width: '100%', padding: 5 }} 
+                  spacing={2}
+                >
 
                   <TextField
                     id="event-title"
@@ -186,7 +189,7 @@ const CreateEvent: React.FC = () => {
                     value={eventData.eventRegistration}
                     onChange={handleInputChange}
                     // error={!!errors.eventRegistration} lifted requirements 
-                    helperText={errors.eventRegistration}
+                    // helperText={errors.eventRegistration}
                     InputProps={{ style: textFieldStyle.input }}
                     InputLabelProps={{ style: textFieldStyle.label }}
                     placeholder="Enter the registration of the event"
@@ -237,7 +240,10 @@ const CreateEvent: React.FC = () => {
               }}>
 
                 {/* stack tag for vertical alignment */}
-                <Stack sx={{ width: '100%', padding: 5 }} spacing={2}>
+                <Stack 
+                  sx={{ width: '100%', padding: 5 }} 
+                  spacing={2}
+                >
 
                   <DatePicker
                     label="Event Date"
@@ -262,20 +268,7 @@ const CreateEvent: React.FC = () => {
                   {timeError && (
                     <div className="text-red-500 text-sm mt-2">{timeError}</div>
                   )}
-                  <TextField
-                    id="event-location"
-                    label="Event Location"
-                    variant="outlined"
-                    name="eventLocation"
-                    value={eventData.eventLocation}
-                    onChange={handleInputChange}
-                    error={!!errors.eventLocation}
-                    helperText={errors.eventLocation}
-                    InputProps={{ style: textFieldStyle.input }}
-                    InputLabelProps={{ style: textFieldStyle.label }}
-                    placeholder="Enter the location of the event"
-                    sx={{ backgroundColor: mode === 'light' ? 'white' : '#f5f1f11a' }}
-                  />
+                  
                 </Stack>
               </Box> {/* end of box 2 row 1 */}
 
@@ -293,7 +286,10 @@ const CreateEvent: React.FC = () => {
               }}>
 
                 {/* stack tag for vertical alignment */}
-                <Stack sx={{ width: '100%', padding: 5 }} spacing={2}>
+                <Stack 
+                  sx={{ width: '100%', padding: 5 }} 
+                  spacing={2}
+                >
 
                   {/* commented out below due to not needing the cover photo and document fields. */}
                   {/* <TextField
@@ -348,9 +344,24 @@ const CreateEvent: React.FC = () => {
                     value={eventData.eventMeetingURL}
                     onChange={handleInputChange}
                     // error={!!errors.eventMeetingURL}
-                    helperText={errors.eventMeetingURL}
+                    // helperText={errors.eventMeetingURL}
                     InputProps={{ style: textFieldStyle.input }}
                     InputLabelProps={{ style: textFieldStyle.label }}
+                    sx={{ backgroundColor: mode === 'light' ? 'white' : '#f5f1f11a' }}
+                  />
+
+                  <TextField
+                    id="event-location"
+                    label="Event Location"
+                    variant="outlined"
+                    name="eventLocation"
+                    value={eventData.eventLocation}
+                    onChange={handleInputChange}
+                    error={!!errors.eventLocation}
+                    helperText={errors.eventLocation}
+                    InputProps={{ style: textFieldStyle.input }}
+                    InputLabelProps={{ style: textFieldStyle.label }}
+                    placeholder="Enter the location of the event"
                     sx={{ backgroundColor: mode === 'light' ? 'white' : '#f5f1f11a' }}
                   />
 
@@ -421,7 +432,10 @@ const CreateEvent: React.FC = () => {
                 boxShadow: '3px 3px 5px 0px rgba(0,0,0,0.3)'
               }}>
 
-                <Stack sx={{ width: '100%', padding: 5 }} spacing={2}>
+                <Stack 
+                  sx={{ width: '100%', padding: 5 }} 
+                  spacing={2}
+                >
 
                   <TextField
                     id="event-schedule"
@@ -431,7 +445,7 @@ const CreateEvent: React.FC = () => {
                     value={eventData.eventSchedule}
                     onChange={handleInputChange}
                     // error={!!errors.eventSchedule}
-                    helperText={errors.eventSchedule}
+                    // helperText={errors.eventSchedule}
                     InputProps={{ style: textFieldStyle.input }}
                     InputLabelProps={{ style: textFieldStyle.label }}
                     placeholder="Enter the schedule of the event"
@@ -446,7 +460,7 @@ const CreateEvent: React.FC = () => {
                     value={eventData.eventSpeakers}
                     onChange={handleInputChange}
                     // error={!!errors.eventSpeakers}
-                    helperText={errors.eventSpeakers}
+                    // helperText={errors.eventSpeakers}
                     InputProps={{ style: textFieldStyle.input }}
                     InputLabelProps={{ style: textFieldStyle.label }}
                     placeholder="Enter the speaker(s) of the event"
@@ -461,7 +475,7 @@ const CreateEvent: React.FC = () => {
                     value={eventData.eventPrerequisites}
                     onChange={handleInputChange}
                     // error={!!errors.eventPrerequisites}
-                    helperText={errors.eventPrerequisites}
+                    // helperText={errors.eventPrerequisites}
                     InputProps={{ style: textFieldStyle.input }}
                     InputLabelProps={{ style: textFieldStyle.label }}
                     placeholder="Enter the prerequisites of the event"
@@ -476,7 +490,7 @@ const CreateEvent: React.FC = () => {
                     value={eventData.eventCancellationPolicy}
                     onChange={handleInputChange}
                     // error={!!errors.eventCancellationPolicy}
-                    helperText={errors.eventCancellationPolicy}
+                    // helperText={errors.eventCancellationPolicy}
                     InputProps={{ style: textFieldStyle.input }}
                     InputLabelProps={{ style: textFieldStyle.label }}
                     placeholder="Enter the cancellation policy of the event"
@@ -493,7 +507,10 @@ const CreateEvent: React.FC = () => {
                 boxShadow: '3px 3px 5px 0px rgba(0,0,0,0.3)'
               }}>
 
-                <Stack sx={{ width: '100%', padding: 5 }} spacing={2}>
+                <Stack 
+                  sx={{ width: '100%', padding: 5 }} 
+                  spacing={2}
+                >
 
                   <TextField
                     id="event-contact"
@@ -518,7 +535,7 @@ const CreateEvent: React.FC = () => {
                     value={eventData.eventSocialMedia.facebook || ''}
                     onChange={(e) => handleSocialMediaChange('facebook', e.target.value)}
                     // error={!!errors.eventSocialMedia?.facebook}
-                    helperText={errors.eventSocialMedia?.facebook}
+                    // helperText={errors.eventSocialMedia?.facebook}
                     InputProps={{ style: textFieldStyle.input }}
                     InputLabelProps={{ style: textFieldStyle.label }}
                     placeholder="Enter the Facebook link of the event"
@@ -533,7 +550,7 @@ const CreateEvent: React.FC = () => {
                     value={eventData.eventSocialMedia.twitter || ''}
                     onChange={(e) => handleSocialMediaChange('twitter', e.target.value)}
                     // error={!!errors.eventSocialMedia?.twitter}
-                    helperText={errors.eventSocialMedia?.twitter}
+                    // helperText={errors.eventSocialMedia?.twitter}
                     InputProps={{ style: textFieldStyle.input }}
                     InputLabelProps={{ style: textFieldStyle.label }}
                     placeholder="Enter the Twitter link of the event"
@@ -548,7 +565,7 @@ const CreateEvent: React.FC = () => {
                     value={eventData.eventSocialMedia.instagram || ''}
                     onChange={(e) => handleSocialMediaChange('instagram', e.target.value)}
                     // error={!!errors.eventSocialMedia?.instagram}
-                    helperText={errors.eventSocialMedia?.instagram}
+                    // helperText={errors.eventSocialMedia?.instagram}
                     InputProps={{ style: textFieldStyle.input }}
                     InputLabelProps={{ style: textFieldStyle.label }}
                     placeholder="Enter the Instagram link of the event"
@@ -565,7 +582,10 @@ const CreateEvent: React.FC = () => {
                 boxShadow: '3px 3px 5px 0px rgba(0,0,0,0.3)'
               }}>
 
-                <Stack sx={{ width: '100%', padding: 5 }} spacing={2}>
+                <Stack 
+                  sx={{ width: '100%', padding: 5 }} 
+                  spacing={2}
+                >
 
                   <TextField
                     id="hashtag"
@@ -575,7 +595,7 @@ const CreateEvent: React.FC = () => {
                     value={eventData.eventSocialMedia.hashtag || ''}
                     onChange={(e) => handleSocialMediaChange('hashtag', e.target.value)}
                     // error={!!errors.eventSocialMedia?.hashtag}
-                    helperText={errors.eventSocialMedia?.hashtag}
+                    // helperText={errors.eventSocialMedia?.hashtag}
                     InputProps={{ style: textFieldStyle.input }}
                     InputLabelProps={{ style: textFieldStyle.label }}
                     placeholder="Enter the hashtag of the event"
@@ -589,8 +609,8 @@ const CreateEvent: React.FC = () => {
                     name="eventPrivacy"
                     value={eventData.eventPrivacy}
                     onChange={handleInputChange}
-                    error={!!errors.eventPrivacy}
-                    helperText={errors.eventPrivacy}
+                    // error={!!errors.eventPrivacy}
+                    // helperText={errors.eventPrivacy}
                     InputProps={{ style: textFieldStyle.input }}
                     InputLabelProps={{ style: textFieldStyle.label }}
                     placeholder="Enter the privacy of the event"
@@ -605,7 +625,7 @@ const CreateEvent: React.FC = () => {
                     value={eventData.eventAccessibility}
                     onChange={handleInputChange}
                     // error={!!errors.eventAccessibility}
-                    helperText={errors.eventAccessibility}
+                    // helperText={errors.eventAccessibility}
                     InputProps={{ style: textFieldStyle.input }}
                     InputLabelProps={{ style: textFieldStyle.label }}
                     placeholder="Enter the accessibility of the event"
@@ -620,7 +640,7 @@ const CreateEvent: React.FC = () => {
                     value={eventData.eventNote}
                     onChange={handleInputChange}
                     // error={!!errors.eventNote}
-                    helperText={errors.eventNote}
+                    // helperText={errors.eventNote}
                     InputProps={{ style: textFieldStyle.input }}
                     InputLabelProps={{ style: textFieldStyle.label }}
                     sx={{ backgroundColor: mode === 'light' ? 'white' : '#f5f1f11a' }}
@@ -631,7 +651,9 @@ const CreateEvent: React.FC = () => {
             </Box> {/* END of row 2 */}
 
             {/* start of submit button */}
-            <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <Box 
+              sx={{ display: 'flex', justifyContent: 'flex-end' }}
+            >
 
               <Button
                 type="submit"
