@@ -20,6 +20,10 @@ const TagSelector: React.FC<TagSelectorProps> = ({ selectedTags, allTags, onTagC
                     onClick={() => onTagClick(tag)}
                     size="small"
                     style={{ textTransform: 'capitalize' }}
+                    sx={{ 
+                        color: selectedTags.includes(tag) ? 'white' : 'black',
+                        background: selectedTags.includes(tag) ? 'blue' : 'white'
+                     }}
                 >
                     {tag}
                 </Button>

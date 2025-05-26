@@ -7,7 +7,7 @@ let darkTheme = createTheme({
     mode: "dark",
     primary: {
       light: "#3f50b5",
-      main: "#1565c0",
+      main: "#155c0",
       dark: "#002884",
       contrastText: "#fff",
     },
@@ -22,14 +22,16 @@ let darkTheme = createTheme({
     MuiButton: {
       styleOverrides: {
         root: {
-          color: "#f5f5f5",
+          background: 'lightgrey',
+          color: "black",
         },
       },
     },
     MuiPaper: {
       styleOverrides: {
         root: {
-          backgroundColor: "#333",
+          backgroundColor: '#333',
+          color: 'black'
         },
       },
     },
@@ -65,8 +67,9 @@ let darkTheme = createTheme({
         },
       },
     },
-  }
-});
+  } // end of components for dark theme
+}); // end of dark theme block
+
 darkTheme = responsiveFontSizes(darkTheme);
 
 let lightTheme = createTheme({
@@ -88,7 +91,8 @@ let lightTheme = createTheme({
       default: "#EAEAEA",
     },
   },
-});
+}); //  end of light theme block
+
 lightTheme = responsiveFontSizes(lightTheme);
 
 export { darkTheme, lightTheme };
