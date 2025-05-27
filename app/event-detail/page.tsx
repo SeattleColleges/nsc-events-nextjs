@@ -236,7 +236,8 @@ const EventDetail = () => {
   
   useEffect(() => {
     const fetchAttendeeData = async () => {
-      if (!event?._id || userRole !== "admin") {
+      if (!event?._id || userRole !== "admin" &&
+                    (userRole === "creator" && event?.createdByUser !== userId)) {
         return;
       }
       try {
@@ -429,7 +430,8 @@ const EventDetail = () => {
                   Location: {event.eventLocation}
                 </Typography>
 
-                {userRole === "admin" && attendeeCount !== null && (
+                {(userRole === "admin" ||
+                    (userRole === "creator" && event?.createdByUser === userId)) && attendeeCount !== null && (
                 <Box sx={{ mb: 2 }}>
                   <Typography variant="h6" sx={{ mt: 2, fontWeight: "bold" }}>
                     Attendees ({attendeeCount})
