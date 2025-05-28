@@ -76,7 +76,7 @@ const ProfileContent = () => {
                 </Typography>
                 <Box sx={{ display: "flex", flexDirection: 'column', justifyContent: "center", margin:'auto', width: isMobile ? '75%' : '90%' }}>
                         
-                    <UserHeader firstName={user.firstName} lastName={user.lastName} pronouns={user.pronouns} /> 
+                    <UserHeader firstName={user.firstName} lastName={user.lastName} pronouns={user.pronouns} role={user.role} /> 
                     
                     <Box sx={{ display: "flex", justifyContent: "flex-start", width: "auto", marginY: '10px', flexDirection: isMobile ? "column" : "row" }}>
                         <UserSideBar /> 
