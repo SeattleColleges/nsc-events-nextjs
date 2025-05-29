@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, Box } from "@mui/material";
 import Snackbar from '@mui/material/Snackbar';
 import Alert, { AlertColor } from '@mui/material/Alert';
-import { set } from "mongoose";
 
 interface EditUserDetailsDialogProps {
   open: boolean;
