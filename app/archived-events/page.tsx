@@ -19,7 +19,7 @@ const ArchivedEvents = () => {
     const { data } = useArchivedEvents(page, true);
     const theme = useTheme();
     const isDarkMode = theme.palette.mode === 'dark';
-    const memoizedTheme = useMemo(() => theme, [theme.palette.mode]); // this is an idea for dark mode bug fix 
+    // const memoizedTheme = useMemo(() => theme, [theme.palette.mode]); // this is an idea for dark mode bug fix 
     const isMobile = useMediaQuery(theme.breakpoints.between('xs', 'sm'));
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
