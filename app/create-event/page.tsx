@@ -95,14 +95,17 @@ const CreateEvent: React.FC = () => {
         <Box component="form"
           onSubmit={handleSubmit}
           noValidate autoComplete="off"
-          sx={{ p: 3, width: isMobile ? '100%' : '75%', mx: 'auto' }}>
+          sx={{
+            paddingTop: 3,
+            width: isMobile ? '100%' : '75%', mx: 'auto'
+          }}>
 
           <Stack spacing={2}>
 
             {/* page title */}
             <Box sx={{
               backgroundColor: '#114FA2',
-              boxShadow: '3px 3px 5px 0px rgba(0,0,0,0.3)'
+              boxShadow: '3px 3px 5px 0px rgba(0,0,0,0.3)',
             }}>
 
               <Typography
@@ -132,22 +135,25 @@ const CreateEvent: React.FC = () => {
             <Box sx={{
               display: 'flex',
               justifyContent: 'center',
+              flexDirection: isMobile ? 'column' : 'row',
               backgroundColor: '#114FA2',
               boxShadow: '3px 3px 5px 0px rgba(0,0,0,0.3)',
               width: '100%'
             }}>
 
+
               {/* start of box 1 row 1 */}
               <Box sx={{
-                margin: 4,
+                margin: isMobile ? 0 : 4,
+                marginTop: isMobile ? 2 : 4,
                 width: isMobile ? '100%' : '33%',
                 backgroundColor: mode === 'light' ? 'white' : 'black',
                 boxShadow: '3px 3px 5px 0px rgba(0,0,0,0.3)'
               }}>
 
                 {/* stack tag for vertical alignment of text fields */}
-                <Stack 
-                  sx={{ width: '100%', padding: 5 }} 
+                <Stack
+                  sx={{ width: '100%', padding: 5 }}
                   spacing={2}
                 >
 
@@ -233,15 +239,16 @@ const CreateEvent: React.FC = () => {
 
               {/* start of box 2 row 1 */}
               <Box sx={{
-                margin: 4,
+                margin: isMobile ? 0 : 4,
+                marginTop: isMobile ? 2 : 4,
                 width: isMobile ? '100%' : '33%',
                 backgroundColor: mode === 'light' ? 'white' : 'black',
                 boxShadow: '3px 3px 5px 0px rgba(0,0,0,0.3)'
               }}>
 
                 {/* stack tag for vertical alignment */}
-                <Stack 
-                  sx={{ width: '100%', padding: 5 }} 
+                <Stack
+                  sx={{ width: '100%', padding: 5 }}
                   spacing={2}
                 >
 
@@ -268,7 +275,7 @@ const CreateEvent: React.FC = () => {
                   {timeError && (
                     <div className="text-red-500 text-sm mt-2">{timeError}</div>
                   )}
-                  
+
                 </Stack>
               </Box> {/* end of box 2 row 1 */}
 
@@ -279,15 +286,16 @@ const CreateEvent: React.FC = () => {
 
               {/* start of box 3 row 1 */}
               <Box sx={{
-                margin: 4,
+                margin: isMobile ? 0 : 4,
+                marginTop: isMobile ? 2 : 4,
                 width: isMobile ? '100%' : '33%',
                 backgroundColor: mode === 'light' ? 'white' : 'black',
                 boxShadow: '3px 3px 5px 0px rgba(0,0,0,0.3)'
               }}>
 
                 {/* stack tag for vertical alignment */}
-                <Stack 
-                  sx={{ width: '100%', padding: 5 }} 
+                <Stack
+                  sx={{ width: '100%', padding: 5 }}
                   spacing={2}
                 >
 
@@ -367,6 +375,7 @@ const CreateEvent: React.FC = () => {
 
                 </Stack>
               </Box> {/* End of box 3 row 1*/}
+
             </Box> {/* End of row 1*/}
 
             {/* Begining of tag selector section */}
@@ -420,20 +429,22 @@ const CreateEvent: React.FC = () => {
             <Box sx={{
               display: 'flex',
               justifyContent: 'center',
+              flexDirection: isMobile ? 'column' : 'row',
               backgroundColor: '#114FA2',
               boxShadow: '3px 3px 5px 0px rgba(0,0,0,0.3)'
             }}>
 
               {/* start of seciton 1 row 2 */}
               <Box sx={{
-                margin: 4,
+                margin: isMobile ? 0 : 4,
+                marginTop: isMobile ? 2 : 4,
                 width: isMobile ? '100%' : '33%',
                 backgroundColor: mode === 'light' ? 'white' : 'black',
                 boxShadow: '3px 3px 5px 0px rgba(0,0,0,0.3)'
               }}>
 
-                <Stack 
-                  sx={{ width: '100%', padding: 5 }} 
+                <Stack
+                  sx={{ width: '100%', padding: 5 }}
                   spacing={2}
                 >
 
@@ -501,14 +512,15 @@ const CreateEvent: React.FC = () => {
 
               {/* start of box 2 of row 2 */}
               <Box sx={{
-                margin: 4,
+                margin: isMobile ? 0 : 4,
+                marginTop: isMobile ? 2 : 4,
                 width: isMobile ? '100%' : '33%',
                 backgroundColor: mode === 'light' ? 'white' : 'black',
                 boxShadow: '3px 3px 5px 0px rgba(0,0,0,0.3)'
               }}>
 
-                <Stack 
-                  sx={{ width: '100%', padding: 5 }} 
+                <Stack
+                  sx={{ width: '100%', padding: 5 }}
                   spacing={2}
                 >
 
@@ -576,14 +588,15 @@ const CreateEvent: React.FC = () => {
 
               {/* start of section 3 row 2 */}
               <Box sx={{
-                margin: 4,
+                margin: isMobile ? 0 : 4,
+                marginTop: isMobile ? 2 : 4,
                 width: isMobile ? '100%' : '33%',
                 backgroundColor: mode === 'light' ? 'white' : 'black',
                 boxShadow: '3px 3px 5px 0px rgba(0,0,0,0.3)'
               }}>
 
-                <Stack 
-                  sx={{ width: '100%', padding: 5 }} 
+                <Stack
+                  sx={{ width: '100%', padding: 5 }}
                   spacing={2}
                 >
 
@@ -651,7 +664,7 @@ const CreateEvent: React.FC = () => {
             </Box> {/* END of row 2 */}
 
             {/* start of submit button */}
-            <Box 
+            <Box
               sx={{ display: 'flex', justifyContent: 'flex-end' }}
             >
 
@@ -659,7 +672,9 @@ const CreateEvent: React.FC = () => {
                 type="submit"
                 variant="contained"
                 color="primary"
-                style={{ textTransform: "none" }} >
+                style={{ textTransform: "none" }}
+                sx={{ margin: 1 }}
+              >
                 Create Event
               </Button>
             </Box>
