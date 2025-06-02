@@ -5,9 +5,10 @@ interface UserHeaderProps {
   firstName: string;
   lastName: string;
   pronouns: string;
+  role: string;
 }
 
-const UserHeader: React.FC<UserHeaderProps> = ({ firstName, lastName, pronouns }) => {
+const UserHeader: React.FC<UserHeaderProps> = ({ firstName, lastName, pronouns, role }) => {
 
   const { palette } = useTheme();
   const containerColor = palette.mode === "dark" ? "#333" : "#fff";
@@ -40,7 +41,7 @@ const UserHeader: React.FC<UserHeaderProps> = ({ firstName, lastName, pronouns }
         <Typography sx={{ fontSize: { xs: '1rem', sm:"1.25rem", md: '1.5rem' } }}>{firstName} {lastName}</Typography>
         <Typography sx={{ fontSize: { xs: '0.7rem', sm:"0.85rem", md: '1rem' } }}>({pronouns})</Typography>
         {/* Role Still Needs To Be Extracted From Backend */}
-        <Typography sx={{ fontSize: { xs: '0.7rem', sm:"0.85rem", md: '1rem' } }}>Role</Typography>
+        <Typography sx={{ fontSize: { xs: '0.7rem', sm:"0.85rem", md: '1rem' } }}>{role}</Typography>
       </Box>
     </Box>
   )

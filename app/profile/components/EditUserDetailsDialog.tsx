@@ -15,12 +15,14 @@ export interface User {
   lastName: string;
   email: string;
   pronouns: string;
+  role: string;
 }
 
 const EditUserDetailsDialog: React.FC<EditUserDetailsDialogProps> = ({ open, onClose, user }) => {
   const [firstName, setFirstName] = useState(user.firstName);
   const [lastName, setLastName] = useState(user.lastName);
   const [pronouns, setPronouns] = useState(user.pronouns);
+  const [role, setRole] = useState(user.role);
   const [isUpdated, setIsUpdated] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
@@ -30,6 +32,7 @@ const EditUserDetailsDialog: React.FC<EditUserDetailsDialogProps> = ({ open, onC
     setFirstName(user.firstName);
     setLastName(user.lastName);
     setPronouns(user.pronouns);
+    setRole(user.role);
     setIsUpdated(false);
   }, [user]);
 
