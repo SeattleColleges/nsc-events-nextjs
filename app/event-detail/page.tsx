@@ -17,6 +17,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ActivityDatabase } from "@/models/activityDatabase";
 import Snackbar from "@mui/material/Snackbar";
 import EditIcon from "@mui/icons-material/Edit";
+import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import DeleteIcon from "@mui/icons-material/Delete";
 import ArchiveIcon from "@mui/icons-material/Archive";
 import UnarchiveIcon from '@mui/icons-material/Unarchive';
@@ -36,6 +37,7 @@ import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import { useTheme } from "@mui/material";
 import { useArchivedEvents, useEventById, useFilteredEvents, useIsAttending, useMyEvents } from "@/utility/queries";
 import { getCurrentUserId } from "@/utility/userUtils";
+import CoverPhotoDialog from "@/components/CoverPhotoDialog";
 
 interface SearchParams {
   searchParams: {
@@ -62,6 +64,7 @@ const EventDetail = () => {
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [attendDialogOpen, setAttendDialogOpen] = useState(false);
   const [moreDetailsDialogOpen, setMoreDetailsDialogOpen] = useState(false);
+  const [coverPhotoDialogOpen, setCoverPhotoDialogOpen] = useState(false);
   const [userId, setUserId] = useState("");
   const [userRole, setUserRole] = useState("");
 
@@ -236,7 +239,8 @@ const EventDetail = () => {
   
   useEffect(() => {
     const fetchAttendeeData = async () => {
-      if (!event?._id || userRole !== "admin") {
+      if (!event?._id || userRole !== "admin" &&
+                    (userRole === "creator" && event?.createdByUser !== userId)) {
         return;
       }
       try {
@@ -265,6 +269,10 @@ const EventDetail = () => {
     } else {
       setAttendDialogOpen(!attendDialogOpen);
     }
+  };
+
+  const toggleCoverPhotoDialog = () => {
+    setCoverPhotoDialogOpen(!coverPhotoDialogOpen);
   };
 
   const toggleViewMoreDetailsDialog = () => {
@@ -403,12 +411,32 @@ const EventDetail = () => {
           >
             
             <Card sx={{ width: isMobile ? "41vh" : "50vh", maxHeight: '100vh', overflowY: 'auto', mt: isMobile ? 5 : "", marginBottom: 3 }}>
-              <CardMedia
-                component="img"
-                image={event.eventCoverPhoto}
-                alt={event.eventTitle}
-                sx={{ height: "37vh" }}
-              />
+            <Box sx={{ position: "relative", display: "inline-block", width: "100%" }}>
+                <CardMedia
+                  component="img"
+                  image={event.eventCoverPhoto}
+                  alt={event.eventTitle}
+                  sx={{ height: "37vh", width: "100%", objectFit: "cover" }}
+                />
+                { event.eventCoverPhoto && (userRole === "admin" || (userRole === "creator" && event.createdByUser === userId)) && 
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => setCoverPhotoDialogOpen(true)}
+                    sx={{
+                      position: "absolute",
+                      bottom: 8,
+                      right: 8,
+                      textTransform: "none",
+                      flex: "0 0 auto",
+                      zIndex: 1
+                    }}
+                  >
+                    <AddPhotoAlternateIcon sx={{ marginRight: "5px" }} />
+                    {isMobile ? "" : "Cover Photo"}
+                  </Button>
+                }
+              </Box>
               <CardContent>
                 <Typography gutterBottom variant="h5" component="div">
                   {event.eventTitle}
@@ -429,7 +457,8 @@ const EventDetail = () => {
                   Location: {event.eventLocation}
                 </Typography>
 
-                {userRole === "admin" && attendeeCount !== null && (
+                {(userRole === "admin" ||
+                    (userRole === "creator" && event?.createdByUser === userId)) && attendeeCount !== null && (
                 <Box sx={{ mb: 2 }}>
                   <Typography variant="h6" sx={{ mt: 2, fontWeight: "bold" }}>
                     Attendees ({attendeeCount})
@@ -637,6 +666,12 @@ const EventDetail = () => {
             isOpen={archiveDialogOpen}
             event={event}
             dialogToggle={toggleArchiveDialog}
+          />
+          <CoverPhotoDialog 
+            isOpen={coverPhotoDialogOpen}
+            dialogToggle={toggleCoverPhotoDialog}
+            eventId={event._id}
+            setEvent={setEvent}
           />
           <EditDialog isOpen={editDialogOpen} event={event} toggleEditDialog={toggleEditDialog} />
           <Snackbar
