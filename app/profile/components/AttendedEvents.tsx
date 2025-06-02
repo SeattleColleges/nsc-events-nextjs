@@ -46,32 +46,43 @@ const EventCard: React.FC<EventCardProps> = ({
   eventStartTime,
   onRequestUnattend,
 }) => {
-  const date = eventDate.slice(0, 10);
+  const date = new Date(eventDate).toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+    timeZone: "UTC",
+  });
   return (
     <Box
       sx={{
+        marginX: 2,
         border: 1,
         borderColor: "divider",
         borderRadius: 2,
         p: 2,
         mb: 2,
         backgroundColor: "background.paper",
+        display: "flex",
+        flexDirection: "column",
       }}
     >
-      <Typography variant="h6">{eventTitle}</Typography>
-      <Typography variant="body2">
-        {date} at {eventStartTime}
-      </Typography>
-      {onRequestUnattend && (
-        <Button
-          size="small"
-          color="error"
-          onClick={onRequestUnattend}
-          sx={{ mt: 1 }}
-        >
+      <Box sx={{ mb: 1 }}>
+        <Typography variant="h6">{eventTitle}</Typography>
+        <Typography variant="body2">
+          {date} at {eventStartTime}
+        </Typography>
+      </Box>
+
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "flex-end",
+        }}
+      >
+        <Button size="small" color="error" onClick={onRequestUnattend}>
           Unregister
         </Button>
-      )}
+      </Box>
     </Box>
   );
 };
