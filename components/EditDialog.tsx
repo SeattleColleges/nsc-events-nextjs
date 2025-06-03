@@ -46,7 +46,10 @@ const EditDialog = ({ isOpen, event, toggleEditDialog }: EditDialogProps) => {
     }, [isOpen, event]);
 
     const isEventUpdated = () => {
-        return JSON.stringify(initialEventData) !== JSON.stringify(eventData) || (selectedDate && selectedDate.toISOString() !== eventData.eventDate) || (startTimeDate && to12HourTime(startTimeDate ? format(startTimeDate, 'HH:mm') : '').toString() !== eventData.eventStartTime) || (endTimeDate && to12HourTime(endTimeDate ? format(endTimeDate, 'HH:mm') : '').toString() !== eventData.eventEndTime);
+        return JSON.stringify(initialEventData) !== JSON.stringify(eventData) || 
+                (selectedDate && selectedDate.toISOString() !== eventData.eventDate) || 
+                (startTimeDate && to12HourTime(startTimeDate ? format(startTimeDate, 'HH:mm') : '').toString() !== eventData.eventStartTime) || 
+                (endTimeDate && to12HourTime(endTimeDate ? format(endTimeDate, 'HH:mm') : '').toString() !== eventData.eventEndTime);
     };
 
     return (
