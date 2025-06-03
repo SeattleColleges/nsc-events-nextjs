@@ -58,7 +58,7 @@ const UserContent: React.FC<UserContentProps> = () => {
           marginTop: "15px",
           width: "100%",
         }}
-      >
+      >{/*
         <Box
           sx={{
             width: isMobile ? "auto" : { sm: "100%", md: "35%" },
@@ -68,10 +68,10 @@ const UserContent: React.FC<UserContentProps> = () => {
           }}
         >
           <Typography sx={headerStyle}>Bio/Affiliations</Typography>
-        </Box>
+        </Box>*/}
         <Box
           sx={{
-            width: { xs: "100%", sm: "100%", md: "65%" },
+            width: { xs: "100%", sm: "100%", md: "100%" },
             boxShadow: 3,
             backgroundColor: containerColor,
             borderRadius: "7px",
