@@ -159,7 +159,7 @@ const CreateEvent: React.FC = () => {
 
                   <TextField
                     id="event-title"
-                    label="Event Title"
+                    label="Event Title *"
                     variant="outlined"
                     name="eventTitle"
                     value={eventData.eventTitle}
@@ -174,7 +174,7 @@ const CreateEvent: React.FC = () => {
 
                   <TextField
                     id="event-host"
-                    label="Event Host"
+                    label="Event Host *"
                     variant="outlined"
                     name="eventHost"
                     value={eventData.eventHost}
@@ -204,7 +204,7 @@ const CreateEvent: React.FC = () => {
 
                   <TextField
                     id="event-description"
-                    label="Event Description"
+                    label="Event Description *"
                     multiline
                     maxRows={3}
                     variant="outlined"
@@ -330,7 +330,7 @@ const CreateEvent: React.FC = () => {
 
                   <TextField
                     id="event-capacity"
-                    label="Event Capacity"
+                    label="Event Capacity *"
                     variant="outlined"
                     name="eventCapacity"
                     value={eventData.eventCapacity}
@@ -360,7 +360,7 @@ const CreateEvent: React.FC = () => {
 
                   <TextField
                     id="event-location"
-                    label="Event Location"
+                    label="Event Location *"
                     variant="outlined"
                     name="eventLocation"
                     value={eventData.eventLocation}
@@ -398,7 +398,7 @@ const CreateEvent: React.FC = () => {
 
                 <TextField
                   id="add-custom-tag"
-                  label="Add Tag"
+                  label="Add Tag *"
                   variant="outlined"
                   name="addedTag"
                   value={newTag}
@@ -410,6 +410,8 @@ const CreateEvent: React.FC = () => {
                   InputProps={{ style: textFieldStyle.input }}
                   InputLabelProps={{ style: textFieldStyle.label }}
                   placeholder="Enter the tag of the event"
+                  sx={{
+                    backgroundColor: mode === 'light' ? 'white' : 'black' }}
                 />
 
                 <Button
@@ -418,6 +420,12 @@ const CreateEvent: React.FC = () => {
                   color="primary"
                   onClick={addCustomTag}
                   style={{ textTransform: "none", margin: 10 }}
+                  sx={{
+                    '&:hover': {
+                      backgroundColor: '#114FA2',
+                      color: 'white'
+                    },
+                    } }
                 >
                   Add Tag
                 </Button>
@@ -526,7 +534,7 @@ const CreateEvent: React.FC = () => {
 
                   <TextField
                     id="event-contact"
-                    label="Event Contact"
+                    label="Event Contact *"
                     variant="outlined"
                     name="eventContact"
                     value={eventData.eventContact}
@@ -673,7 +681,12 @@ const CreateEvent: React.FC = () => {
                 variant="contained"
                 color="primary"
                 style={{ textTransform: "none" }}
-                sx={{ margin: 1 }}
+                sx={{ margin: 1,
+                  '&:hover': {
+                    backgroundColor: '#114FA2',
+                      color: 'white'
+                   },
+                    }}
               >
                 Create Event
               </Button>
