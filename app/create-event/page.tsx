@@ -406,7 +406,7 @@ const CreateEvent: React.FC = () => {
                   InputLabelProps={{ style: textFieldStyle.label }}
                   placeholder="Enter the tag of the event"
                   sx={{
-                    backgroundColor: mode === 'light' ? 'white' : 'black' }}
+                    backgroundColor: mode === 'light' ? 'white' : 'black', borderRadius: 1 }} // change border radius as needed
                 />
 
                 <Button
