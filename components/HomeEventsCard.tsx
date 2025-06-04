@@ -143,6 +143,7 @@ function HomeEventsCard({ event }: EventCardProps) {
                             {new Date(event.eventDate).toLocaleDateString("en-US", {
                                 month: "short",
                                 day: "numeric",
+                                timeZone: "UTC",
                             })}
                         </Box>
                     </Box>
@@ -152,7 +153,9 @@ function HomeEventsCard({ event }: EventCardProps) {
                             <strong>Location:</strong> {event.eventLocation}
                         </Typography>
                         <Typography fontFamily="font-serif">
-                            <strong>Time:</strong> {formatDate(event.eventDate)}
+                            <strong>Start Time:</strong> {event.eventStartTime}
+                            <br />
+                            <strong>End Time:</strong> {event.eventEndTime}
                         </Typography>
 
                         <Typography
@@ -168,7 +171,7 @@ function HomeEventsCard({ event }: EventCardProps) {
                                 wordBreak: "break-word", // allow word wrapping
                             }}
                         >
-                            <strong>Description:</strong> {event.eventDescription}
+                            {event.eventDescription}
                         </Typography>
                     </Box>
 

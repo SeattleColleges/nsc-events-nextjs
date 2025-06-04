@@ -13,7 +13,6 @@ import { MouseEvent, ChangeEvent, useState, FormEvent } from "react";
 import useAuth from "@/hooks/useAuth";
 import UnauthorizedPageMessage from "@/components/UnauthorizedPageMessage";
 import { EventTags } from "@/utility/tags";
-
 import { useThemeContext } from "../theme/providers";
 
 
@@ -42,8 +41,6 @@ const CreateEvent: React.FC = () => {
     mode: string;
     toggleTheme: () => void;
   };
-
-
 
   // Convert startTime and endTime from string to Date for TimePicker
   const startTimeDate = startTime ? parse(startTime, 'HH:mm', new Date()) : null;
@@ -84,8 +81,6 @@ const CreateEvent: React.FC = () => {
   };
 
   const { isAuth, user } = useAuth();
-
-
 
   if (isAuth && (user?.role === 'admin' || user?.role === 'creator')) {
     return (
