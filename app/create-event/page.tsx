@@ -101,6 +101,7 @@ const CreateEvent: React.FC = () => {
             <Box sx={{
               backgroundColor: '#114FA2',
               boxShadow: '3px 3px 5px 0px rgba(0,0,0,0.3)',
+              borderRadius: 1,
             }}>
 
               <Typography
@@ -133,7 +134,8 @@ const CreateEvent: React.FC = () => {
               flexDirection: isMobile ? 'column' : 'row',
               backgroundColor: '#114FA2',
               boxShadow: '3px 3px 5px 0px rgba(0,0,0,0.3)',
-              width: '100%'
+              width: '100%',
+              borderRadius: 1
             }}>
 
 
@@ -143,7 +145,8 @@ const CreateEvent: React.FC = () => {
                 marginTop: isMobile ? 2 : 4,
                 width: isMobile ? '100%' : '33%',
                 backgroundColor: mode === 'light' ? 'white' : 'black',
-                boxShadow: '3px 3px 5px 0px rgba(0,0,0,0.3)'
+                boxShadow: '3px 3px 5px 0px rgba(0,0,0,0.3)',
+                borderRadius: 1
               }}>
 
                 {/* stack tag for vertical alignment of text fields */}
@@ -238,7 +241,8 @@ const CreateEvent: React.FC = () => {
                 marginTop: isMobile ? 2 : 4,
                 width: isMobile ? '100%' : '33%',
                 backgroundColor: mode === 'light' ? 'white' : 'black',
-                boxShadow: '3px 3px 5px 0px rgba(0,0,0,0.3)'
+                boxShadow: '3px 3px 5px 0px rgba(0,0,0,0.3)',
+                borderRadius: 1
               }}>
 
                 {/* stack tag for vertical alignment */}
@@ -285,7 +289,8 @@ const CreateEvent: React.FC = () => {
                 marginTop: isMobile ? 2 : 4,
                 width: isMobile ? '100%' : '33%',
                 backgroundColor: mode === 'light' ? 'white' : 'black',
-                boxShadow: '3px 3px 5px 0px rgba(0,0,0,0.3)'
+                boxShadow: '3px 3px 5px 0px rgba(0,0,0,0.3)',
+                borderRadius: 1
               }}>
 
                 {/* stack tag for vertical alignment */}
@@ -377,7 +382,8 @@ const CreateEvent: React.FC = () => {
             <Box sx={{
               backgroundColor: '#42A5F5',
               padding: 2,
-              boxShadow: '3px 3px 5px 0px rgba(0,0,0,0.3)'
+              boxShadow: '3px 3px 5px 0px rgba(0,0,0,0.3)',
+              borderRadius: 1
             }}>
 
               <TagSelector
@@ -434,7 +440,8 @@ const CreateEvent: React.FC = () => {
               justifyContent: 'center',
               flexDirection: isMobile ? 'column' : 'row',
               backgroundColor: '#114FA2',
-              boxShadow: '3px 3px 5px 0px rgba(0,0,0,0.3)'
+              boxShadow: '3px 3px 5px 0px rgba(0,0,0,0.3)',
+              borderRadius: 1,
             }}>
 
               {/* start of seciton 1 row 2 */}
@@ -443,7 +450,8 @@ const CreateEvent: React.FC = () => {
                 marginTop: isMobile ? 2 : 4,
                 width: isMobile ? '100%' : '33%',
                 backgroundColor: mode === 'light' ? 'white' : 'black',
-                boxShadow: '3px 3px 5px 0px rgba(0,0,0,0.3)'
+                boxShadow: '3px 3px 5px 0px rgba(0,0,0,0.3)',
+                borderRadius: 1
               }}>
 
                 <Stack
@@ -519,7 +527,8 @@ const CreateEvent: React.FC = () => {
                 marginTop: isMobile ? 2 : 4,
                 width: isMobile ? '100%' : '33%',
                 backgroundColor: mode === 'light' ? 'white' : 'black',
-                boxShadow: '3px 3px 5px 0px rgba(0,0,0,0.3)'
+                boxShadow: '3px 3px 5px 0px rgba(0,0,0,0.3)',
+                borderRadius: 1
               }}>
 
                 <Stack
@@ -595,7 +604,8 @@ const CreateEvent: React.FC = () => {
                 marginTop: isMobile ? 2 : 4,
                 width: isMobile ? '100%' : '33%',
                 backgroundColor: mode === 'light' ? 'white' : 'black',
-                boxShadow: '3px 3px 5px 0px rgba(0,0,0,0.3)'
+                boxShadow: '3px 3px 5px 0px rgba(0,0,0,0.3)',
+                borderRadius: 1
               }}>
 
                 <Stack
