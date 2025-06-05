@@ -238,7 +238,9 @@ const EventDetail = () => {
 
   useEffect(() => {
     const fetchAttendeeData = async () => {
-      if (!event?._id) return; // if event is null, return
+      if (!event?._id) { // if event is null, return
+        return;
+      } 
 
       try {
         const apiUrl = process.env.NSC_EVENTS_PUBLIC_API_URL;
@@ -264,6 +266,7 @@ const EventDetail = () => {
         console.error("Failed to fetch attendee data", err);
       }
     };
+    
 
     fetchAttendeeData();
   }, [event, userRole, token, userId]);
