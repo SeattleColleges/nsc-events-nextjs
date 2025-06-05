@@ -236,13 +236,10 @@ const EventDetail = () => {
     }
   }, [queryClient, data, eventIds]);
 
-  
   useEffect(() => {
     const fetchAttendeeData = async () => {
-      if (!event?._id || userRole !== "admin" &&
-                    (userRole === "creator" && event?.createdByUser !== userId)) {
-        return;
-      }
+      if (!event?._id) return; // if event is null, return
+
       try {
         const apiUrl = process.env.NSC_EVENTS_PUBLIC_API_URL;
         const res = await fetch(`${apiUrl}/event-registration/event/${event._id}`, {
@@ -250,18 +247,26 @@ const EventDetail = () => {
             Authorization: `Bearer ${token}`,
           },
         });
+
         const data = await res.json();
         setAttendeeCount(data.count);
         setAnonymousCount(data.anonymousCount);
-        setAttendeeNames(data.attendeeNames || []);
-        setAttendees(data.attendees || []);
+
+        // Only set full attendee details if user has permission
+        if (
+          userRole === "admin" ||
+          (userRole === "creator" && event?.createdByUser === userId)
+        ) {
+          setAttendeeNames(data.attendeeNames || []);
+          setAttendees(data.attendees || []);
+        }
       } catch (err) {
         console.error("Failed to fetch attendee data", err);
       }
     };
-  
+
     fetchAttendeeData();
-  }, [event, userRole, token]);
+  }, [event, userRole, token, userId]);
   
   const toggleAttendDialog = () => {
     if (token === "") {
@@ -457,27 +462,32 @@ const EventDetail = () => {
                   Location: {event.eventLocation}
                 </Typography>
 
-                {(userRole === "admin" ||
-                    (userRole === "creator" && event?.createdByUser === userId)) && attendeeCount !== null && (
-                <Box sx={{ mb: 2 }}>
-                  <Typography variant="h6" sx={{ mt: 2, fontWeight: "bold" }}>
-                    Attendees ({attendeeCount})
-                  </Typography>
-                  <Button
-                    variant="outlined"
-                    onClick={() => setViewDialogOpen(true)}
-                    sx={{ mt: 1 }}
-                  >
-                    View Attendees
-                  </Button>
-                  <ViewAttendeesDialog
-                    open={viewDialogOpen}
-                    onClose={() => setViewDialogOpen(false)}
-                    attendees={attendees}
-                  />
-                </Box>
-              )}
+                {attendeeCount !== null && (
+                  <Box sx={{ mb: 2 }}>
+                    {/* Attendee count visible to everyone */}
+                    <Typography variant="h6" sx={{ mt: 2, fontWeight: "bold" }}>
+                      Attendees ({attendeeCount ?? 0}) {/* fallback to 0 if attendeeCount is null */}
+                    </Typography>
 
+                    {/* View button only visible to admins and event creators */}
+                    {(userRole === "admin" || (userRole === "creator" && event?.createdByUser === userId)) && (
+                      <>
+                        <Button
+                          variant="outlined"
+                          onClick={() => setViewDialogOpen(true)}
+                          sx={{ mt: 1 }}
+                        >
+                          View Attendees
+                        </Button>
+                        <ViewAttendeesDialog
+                          open={viewDialogOpen}
+                          onClose={() => setViewDialogOpen(false)}
+                          attendees={attendees}
+                        />
+                      </>
+                    )}
+                  </Box>
+                )}
 
               </CardContent>
             </Card>
