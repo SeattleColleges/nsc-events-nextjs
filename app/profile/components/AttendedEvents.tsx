@@ -15,6 +15,7 @@ import {
   useTheme,
 } from "@mui/material";
 import { format } from "date-fns";
+import Link from "next/link";
 
 const URL = process.env.NSC_EVENTS_PUBLIC_API_URL!;
 
@@ -41,6 +42,7 @@ interface EventCardProps extends AttendedEvent {
 }
 
 const EventCard: React.FC<EventCardProps> = ({
+  eventId,
   eventTitle,
   eventDate,
   eventStartTime,
@@ -66,13 +68,21 @@ const EventCard: React.FC<EventCardProps> = ({
         flexDirection: "column",
       }}
     >
-      <Box sx={{ mb: 1 }}>
-        <Typography variant="h6">{eventTitle}</Typography>
-        <Typography variant="body2">
-          {date} at {eventStartTime}
-        </Typography>
-      </Box>
-
+      <Link
+        key={eventId}
+        href={{
+          pathname: "/event-detail",
+          query: { id: eventId },
+        }}
+        style={{ textDecoration: "none", display: "block" }}
+      >
+        <Box sx={{ mb: 1 }}>
+          <Typography variant="h6">{eventTitle}</Typography>
+          <Typography variant="body2">
+            {date} at {eventStartTime}
+          </Typography>
+        </Box>
+      </Link>
       <Box
         sx={{
           display: "flex",
@@ -174,8 +184,8 @@ export const AttendedEvents: React.FC<AttendedEventsProps> = ({
   const confirmUnattend = async () => {
     if (!pendingEvent) {
       return;
-    }   
-    
+    }
+
     try {
       const res = await fetch(`${URL}/event-registration/unattend`, {
         method: "DELETE",
