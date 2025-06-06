@@ -83,6 +83,7 @@ const EventCard: React.FC<EventCardProps> = ({
           </Typography>
         </Box>
       </Link>
+
       <Box
         sx={{
           display: "flex",
