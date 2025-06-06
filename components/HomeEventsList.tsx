@@ -61,7 +61,7 @@ export function HomeEventsList() {
                 flexDirection={(isMobile || isTablet) ? "column" : "row"}
                 justifyContent="center"
                 alignItems="center"
-                sx={{ m: "auto" }}
+                sx={{ m: "auto", width: '100%' }}
             >
                 <Box marginY={5} maxWidth={'md'}>
                     {/* Toggle button to show/hide the TagSelector */}
