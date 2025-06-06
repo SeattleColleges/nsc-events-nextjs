@@ -41,7 +41,7 @@ const UserHeader: React.FC<UserHeaderProps> = ({ firstName, lastName, pronouns, 
         <Typography sx={{ fontSize: { xs: '1rem', sm:"1.25rem", md: '1.5rem' } }}>{firstName} {lastName}</Typography>
         <Typography sx={{ fontSize: { xs: '0.7rem', sm:"0.85rem", md: '1rem' } }}>({pronouns})</Typography>
         {/* Role Still Needs To Be Extracted From Backend */}
-        <Typography sx={{ fontSize: { xs: '0.7rem', sm:"0.85rem", md: '1rem' } }}>{role}</Typography>
+        <Typography sx={{ fontSize: { xs: '0.7rem', sm:"0.85rem", md: '1rem' }, fontStyle: "italic" }}>{role}</Typography>
       </Box>
     </Box>
   )
