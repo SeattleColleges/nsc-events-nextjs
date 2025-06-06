@@ -74,6 +74,7 @@ const CreateEvent: React.FC = () => {
       setCustomTags([...customTags, normalizedNewTag]);
       setNewTag("");
     }
+    handleTagClick(newTag)
   };
 
   const handleNewTagChange = (e: ChangeEvent<HTMLInputElement>) => {
