@@ -155,7 +155,7 @@ const Home = () => {
           type="button"
           variant="contained"
           color="primary"
-          style={{ textTransform: "none", margin: "1em auto" }}
+          style={{ textTransform: "none", margin: "2em auto", }}
         >
           Load more events
         </Button>

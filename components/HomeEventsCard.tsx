@@ -30,11 +30,11 @@ function HomeEventsCard({ event }: EventCardProps) {
       <Box
         sx={{
           width: "100%",
-          mx: "auto",
+          mx: "auto", // adjust the margin as needed
+          p: 0.5, // adjust the padding as needed
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
-          p: 2,
         }}
       >
         <Card
@@ -44,8 +44,6 @@ function HomeEventsCard({ event }: EventCardProps) {
             borderRadius: 2,
             boxShadow: 2,
             overflow: "hidden",
-            marginLeft: isMobile || isTablet || isSmallLaptop ? 2 : 0,
-            marginRight: isMobile || isTablet || isSmallLaptop ? 2 : 0,
           }}
         >
           {!isMobile && (
@@ -84,9 +82,7 @@ function HomeEventsCard({ event }: EventCardProps) {
                 minWidth: 0, // prevent overflow from children
               }}
             >
-              <Box sx={{ flex: 1, minWidth: 0 }}>
-                {" "}
-                {/* prevent overflow from children */}
+              <Box sx={{ flex: 1, minWidth: 0 }}> {/* prevent overflow from children */}
                 <Link
                   key={event._id}
                   href={{
