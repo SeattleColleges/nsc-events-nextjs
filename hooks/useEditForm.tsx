@@ -163,6 +163,7 @@ export const useEditForm = (initialData: ActivityDatabase) => {
     successMessage,
     errorMessage,
     startTimeDate,
-    endTimeDate
+    endTimeDate,
+    to12HourTime,
   };
 }
