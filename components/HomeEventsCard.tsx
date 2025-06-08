@@ -152,7 +152,7 @@ function HomeEventsCard({ event }: EventCardProps) {
                 <strong>Location:</strong> {event.eventLocation}
               </Typography>
                 <Typography fontFamily="font-serif">
-                    <strong>Date:</strong>
+                    <strong>Date:&nbsp;</strong>
                     {new Date(event.eventDate).toLocaleDateString('en-US', {
                         year: 'numeric',
                         month: 'numeric',
