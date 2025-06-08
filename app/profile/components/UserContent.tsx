@@ -40,25 +40,19 @@ const UserContent: React.FC<UserContentProps> = () => {
         justifyContent: "flex-start",
         borderRadius: "7px",
         padding: { xs: "10px", sm: "15px", md: "20px" },
-        marginBottom: { xs: "15px", sm: "0px" },
+        marginBottom: { xs: "15px", sm: "auto" },
         boxShadow: 3,
       }}
     >
-      <Typography
-        sx={{ fontSize: { xs: "1rem", sm: "1.25rem", md: "1.5rem" } }}
-      >
-        User Content
-      </Typography>
       <Box
         sx={{
           display: "flex",
           flexDirection: isMobile ? "column" : { sm: "column", md: "row" },
           gap: "20px",
           justifyContent: "space-between",
-          marginTop: "15px",
           width: "100%",
         }}
-      >
+      >{/*
         <Box
           sx={{
             width: isMobile ? "auto" : { sm: "100%", md: "35%" },
@@ -68,13 +62,10 @@ const UserContent: React.FC<UserContentProps> = () => {
           }}
         >
           <Typography sx={headerStyle}>Bio/Affiliations</Typography>
-        </Box>
+        </Box>*/}
         <Box
           sx={{
-            width: { xs: "100%", sm: "100%", md: "65%" },
-            boxShadow: 3,
-            backgroundColor: containerColor,
-            borderRadius: "7px",
+            width: "100%",
           }}
         >
           <AttendedEvents userId={userId} token={token} />
