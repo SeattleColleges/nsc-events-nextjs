@@ -151,13 +151,20 @@ function HomeEventsCard({ event }: EventCardProps) {
               <Typography fontFamily="font-serif">
                 <strong>Location:</strong> {event.eventLocation}
               </Typography>
-              <Typography fontFamily="font-serif">
-                <strong>Start Time:</strong> {event.eventStartTime}
-                <br />
-                <strong>End Time:</strong> {event.eventEndTime}
-              </Typography>
+                <Typography fontFamily="font-serif">
+                    <strong>Date:</strong>
+                    {new Date(event.eventDate).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'numeric',
+                        day: 'numeric',
+                    })}
+                    <br/>
+                    <strong>Start Time:</strong> {event.eventStartTime}
+                    <br/>
+                    <strong>End Time:</strong> {event.eventEndTime}
+                </Typography>
 
-              <Typography
+                <Typography
                 fontFamily="font-serif"
                 mt={1}
                 sx={{
