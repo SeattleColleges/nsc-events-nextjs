@@ -54,7 +54,13 @@ export const useEditForm = (initialData: ActivityDatabase) => {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const newErrors = validateFormData(eventData);
+    let newErrors = validateFormData(eventData);
+
+    // Add timeError if it exists
+    if (timeError) {
+      newErrors = { ...newErrors, eventStartTime: timeError };
+    }
+
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
     } else {
@@ -66,7 +72,7 @@ export const useEditForm = (initialData: ActivityDatabase) => {
     setSelectedDate(newDate);
   };
 
-  const to24HourTime  = (time: string) => {
+  const to24HourTime = (time: string) => {
     return parse(time, 'hh:mma', new Date());
   }
 
