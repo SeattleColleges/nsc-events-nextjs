@@ -90,19 +90,6 @@ const EditDialog = ({ isOpen, event, toggleEditDialog }: EditDialogProps) => {
                                 InputLabelProps={{ style: textFieldStyle.label }}
                                 placeholder="Enter the description of the event"
                             />
-                            <TextField
-                                id="event-category"
-                                label="Event Category"
-                                variant="outlined"
-                                name="eventCategory"
-                                value={eventData.eventCategory || ""}
-                                onChange={handleInputChange}
-                                error={!!errors.eventCategory}
-                                helperText={errors.eventCategory}
-                                InputProps={{ style: textFieldStyle.input }}
-                                InputLabelProps={{ style: textFieldStyle.label }}
-                                placeholder="Enter the category of the event"
-                            />
                             <DatePicker
                                 label="Event Date"
                                 value={selectedDate}
@@ -141,19 +128,6 @@ const EditDialog = ({ isOpen, event, toggleEditDialog }: EditDialogProps) => {
             Event Cover Photo
           <ImagePicker />
           </label> */}
-                            <TextField
-                                id="event-cover-photo"
-                                label="Event Cover Photo"
-                                variant="outlined"
-                                name="eventCoverPhoto"
-                                value={eventData.eventCoverPhoto || ""}
-                                onChange={handleInputChange}
-                                error={!!errors.eventCoverPhoto}
-                                helperText={errors.eventCoverPhoto}
-                                InputProps={{ style: textFieldStyle.input }}
-                                InputLabelProps={{ style: textFieldStyle.label }}
-                                placeholder="Enter the event cover photo of the event"
-                            />
                             <TextField
                                 id="event-host"
                                 label="Event Host"
