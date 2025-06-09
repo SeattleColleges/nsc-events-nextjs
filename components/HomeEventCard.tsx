@@ -29,7 +29,7 @@ function HomeEventsCard({ event }: EventCardProps) {
                     <CardMedia
                         component="img"
                         sx={{ height: "auto", objectFit: "cover", marginBlock: 2, marginLeft: 2, minWidth: 100, maxWidth: 200 }}
-                        image={event.eventCoverPhoto}
+                        image={'/images/test.jpg'}
                         alt={event.eventTitle}
                     />
                 )}
