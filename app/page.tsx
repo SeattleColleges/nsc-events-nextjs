@@ -129,11 +129,11 @@ const Home = () => {
           />
         )}
       </Box>
-      <Grid container spacing={4} sx={{ px: 2 }}> {/* Can be modified if needed (mx: 15)*/}
+      <Grid container spacing={4} sx={{ px: 2, width: '100%' }}> {/* Can be modified if needed (mx: 15)*/}
         {/* Display the events */}
         {events && events.length > 0 ? (
           events.map((event: ActivityDatabase) => (
-            <Grid size={{ md: 12, lg: 6 }} key={event._id} sx={{}}>
+            <Grid size={{ xs: 12, md: 12, lg: 6 }} key={event._id} sx={{}}>
               <HomeEventsCard event={event} />
             </Grid>
           ))
@@ -155,7 +155,7 @@ const Home = () => {
           type="button"
           variant="contained"
           color="primary"
-          style={{ textTransform: "none", margin: "1em auto" }}
+          style={{ textTransform: "none", margin: "2em auto", }}
         >
           Load more events
         </Button>
