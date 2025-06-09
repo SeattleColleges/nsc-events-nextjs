@@ -37,7 +37,11 @@ export const useEditForm = (initialData: ActivityDatabase) => {
 
   useEffect(() => {
     setEventData(initialData as ActivityDatabase)
-    setSelectedDate(new Date(eventData.eventDate))
+    if (eventData.eventDate) {
+      const utcDateString = eventData.eventDate.split("T")[0]; // "2025-06-25"
+      const localDate = new Date(`${utcDateString}T00:00:00`);
+      setSelectedDate(localDate);
+    }
   }, [eventData.eventDate, initialData, setEventData]);
 
   const {
@@ -87,8 +91,14 @@ export const useEditForm = (initialData: ActivityDatabase) => {
     const { createdByUser, ...dataToSend } = activityData;
 
     if (selectedDate) {
-      dataToSend.eventDate = selectedDate.toISOString().split('T')[0];
+      const utcMidnight = new Date(Date.UTC(
+        selectedDate.getFullYear(),
+        selectedDate.getMonth(),
+        selectedDate.getDate()
+      ));
+      dataToSend.eventDate = utcMidnight.toISOString();
     }
+
     if (startTime) {
       dataToSend.eventStartTime = to12HourTime(startTime);
     }
