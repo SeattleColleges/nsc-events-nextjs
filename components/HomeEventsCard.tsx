@@ -52,7 +52,6 @@ function HomeEventsCard({ event }: EventCardProps) {
               image={event.eventCoverPhoto}
               alt={event.eventTitle}
               sx={{
-                height: 250, // fixed height of the image
                 objectFit: "cover",
                 marginBlock: 2,
                 marginLeft: 2,
