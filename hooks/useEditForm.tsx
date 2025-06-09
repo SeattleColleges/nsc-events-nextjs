@@ -38,7 +38,9 @@ export const useEditForm = (initialData: ActivityDatabase) => {
   useEffect(() => {
     setEventData(initialData as ActivityDatabase)
     if (eventData.eventDate) {
-      const utcDateString = eventData.eventDate.split("T")[0]; // "2025-06-25"
+      // Convert the eventDate from UTC to local date
+      const utcDateString = eventData.eventDate.split("T")[0]; 
+      // Convert to local date with time set to midnight
       const localDate = new Date(`${utcDateString}T00:00:00`);
       setSelectedDate(localDate);
     }
@@ -57,6 +59,7 @@ export const useEditForm = (initialData: ActivityDatabase) => {
     let newErrors = validateFormData(eventData);
 
     // Add timeError if it exists
+    // timeError is being set in useDateTimeSelection hook if startTime is after endTime
     if (timeError) {
       newErrors = { ...newErrors, eventStartTime: timeError };
     }
@@ -97,11 +100,13 @@ export const useEditForm = (initialData: ActivityDatabase) => {
     const { createdByUser, ...dataToSend } = activityData;
 
     if (selectedDate) {
+      // Convert selectedDate to UTC midnight
       const utcMidnight = new Date(Date.UTC(
         selectedDate.getFullYear(),
         selectedDate.getMonth(),
         selectedDate.getDate()
       ));
+      // Set the eventDate to the UTC midnight date
       dataToSend.eventDate = utcMidnight.toISOString();
     }
 
