@@ -348,6 +348,7 @@ const EventDetail = () => {
     mutationFn: unattendEvent,
     onSuccess: async () => {
       await queryClient.refetchQueries({ queryKey: ['events', 'myEvents', 'archivedEvents'] });
+      setAttendeeCount(prev => prev === null ? 0 : Math.max(prev - 1, 0)); // Update attendee count, or set to 0 if null, and ensure it doesn't go below 0
       setSnackbarMessage("Successfully unregistered from event.");
       setIsRegistered(false);      
     },
@@ -673,7 +674,11 @@ const EventDetail = () => {
             isOpen={attendDialogOpen}
             eventId={event._id}
             dialogToggle={toggleAttendDialog}
-            onSuccess={() => setIsRegistered(true)}
+            onSuccess={() => {
+              setIsRegistered(true)
+              setAttendeeCount(prev => (prev ?? 0) + 1);
+              queryClient.refetchQueries({queryKey: ['events', 'myEvents', 'archivedEvents'] }); // Optional safety refetch
+            }}
           />
           <ArchiveDialog
             isOpen={archiveDialogOpen}
