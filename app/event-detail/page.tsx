@@ -418,7 +418,7 @@ const EventDetail = () => {
                   alt={event.eventTitle}
                   sx={{ height: "37vh", width: "100%", objectFit: "cover" }}
                 />
-                { event.eventCoverPhoto && (userRole === "admin" || (userRole === "creator" && event.createdByUser === userId)) && 
+                { (userRole === "admin" || (userRole === "creator" && event.createdByUser === userId)) && 
                   <Button
                     variant="contained"
                     color="primary"
