@@ -677,7 +677,7 @@ const EventDetail = () => {
             onSuccess={() => {
               setIsRegistered(true)
               setAttendeeCount(prev => (prev ?? 0) + 1);
-              queryClient.refetchQueries({queryKey: ['events', 'myEvents', 'archivedEvents'] }); // Optional safety refetch
+              queryClient.refetchQueries({ queryKey: ['events', 'myEvents', 'archivedEvents'] }); // Optional safety refetch
             }}
           />
           <ArchiveDialog
