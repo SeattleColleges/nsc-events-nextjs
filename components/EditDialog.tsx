@@ -8,7 +8,7 @@ import TextField from "@mui/material/TextField";
 import { textFieldStyle } from "@/components/InputFields";
 import TagSelector from "@/components/TagSelector";
 import { useEditForm } from "@/hooks/useEditForm";
-
+import { format } from "date-fns";
 
 interface EditDialogProps {
     isOpen: boolean,
@@ -33,7 +33,8 @@ const EditDialog = ({ isOpen, event, toggleEditDialog }: EditDialogProps) => {
         successMessage,
         errorMessage,
         startTimeDate,
-        endTimeDate
+        endTimeDate,
+        to12HourTime,
     } = useEditForm(event);
     
     const [initialEventData, setInitialEventData] = useState(event);    
@@ -45,7 +46,10 @@ const EditDialog = ({ isOpen, event, toggleEditDialog }: EditDialogProps) => {
     }, [isOpen, event]);
 
     const isEventUpdated = () => {
-        return JSON.stringify(initialEventData) !== JSON.stringify(eventData);
+        return JSON.stringify(initialEventData) !== JSON.stringify(eventData) || 
+                (selectedDate && selectedDate.toISOString() !== eventData.eventDate) || 
+                (startTimeDate && to12HourTime(startTimeDate ? format(startTimeDate, 'HH:mm') : '').toString() !== eventData.eventStartTime) || 
+                (endTimeDate && to12HourTime(endTimeDate ? format(endTimeDate, 'HH:mm') : '').toString() !== eventData.eventEndTime);
     };
 
     return (
@@ -86,19 +90,6 @@ const EditDialog = ({ isOpen, event, toggleEditDialog }: EditDialogProps) => {
                                 InputLabelProps={{ style: textFieldStyle.label }}
                                 placeholder="Enter the description of the event"
                             />
-                            <TextField
-                                id="event-category"
-                                label="Event Category"
-                                variant="outlined"
-                                name="eventCategory"
-                                value={eventData.eventCategory || ""}
-                                onChange={handleInputChange}
-                                error={!!errors.eventCategory}
-                                helperText={errors.eventCategory}
-                                InputProps={{ style: textFieldStyle.input }}
-                                InputLabelProps={{ style: textFieldStyle.label }}
-                                placeholder="Enter the category of the event"
-                            />
                             <DatePicker
                                 label="Event Date"
                                 value={selectedDate}
@@ -137,19 +128,6 @@ const EditDialog = ({ isOpen, event, toggleEditDialog }: EditDialogProps) => {
             Event Cover Photo
           <ImagePicker />
           </label> */}
-                            <TextField
-                                id="event-cover-photo"
-                                label="Event Cover Photo"
-                                variant="outlined"
-                                name="eventCoverPhoto"
-                                value={eventData.eventCoverPhoto || ""}
-                                onChange={handleInputChange}
-                                error={!!errors.eventCoverPhoto}
-                                helperText={errors.eventCoverPhoto}
-                                InputProps={{ style: textFieldStyle.input }}
-                                InputLabelProps={{ style: textFieldStyle.label }}
-                                placeholder="Enter the event cover photo of the event"
-                            />
                             <TextField
                                 id="event-host"
                                 label="Event Host"
