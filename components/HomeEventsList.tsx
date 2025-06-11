@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { Grid, Button, useMediaQuery, useTheme, Container, Box, Typography } from '@mui/material';
 import { ActivityDatabase } from "@/models/activityDatabase";
-import HomeEventsCard from "./HomeEventCard";
+import HomeEventsCard from "./HomeEventsCard";
 import { useFilteredEvents } from "@/utility/queries";
 import Link from "next/link";
 import TagSelector from "@/components/TagSelector";
@@ -61,7 +61,7 @@ export function HomeEventsList() {
                 flexDirection={(isMobile || isTablet) ? "column" : "row"}
                 justifyContent="center"
                 alignItems="center"
-                sx={{ m: "auto" }}
+                sx={{ m: "auto", width: '100%' }}
             >
                 <Box marginY={5} maxWidth={'md'}>
                     {/* Toggle button to show/hide the TagSelector */}
@@ -83,7 +83,7 @@ export function HomeEventsList() {
                 {events.length > 0 ? (
                     events.map((event: ActivityDatabase) => (
                         <Grid key={event._id} size={12}>
-                            <HomeEventsCard key={event._id} event={event} />                            
+                            <HomeEventsCard key={event._id} event={event} />
                         </Grid>
                     ))
                 ) : (
