@@ -94,7 +94,7 @@ function HomeEventsCard({ event }: EventCardProps) {
               >
                 <Box
                   sx={{
-                    backgroundColor: palette.primary.dark,
+                    backgroundColor: palette.primary.main,
                     color: palette.primary.contrastText,
                     borderRadius: 1,
                     px: 2,
