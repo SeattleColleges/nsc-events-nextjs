@@ -44,6 +44,7 @@ function HomeEventsCard({ event }: EventCardProps) {
           borderRadius: 2,
           boxShadow: 2,
           overflow: "hidden",
+          height: "100%",
         }}
       >
         {!isMobile && (
