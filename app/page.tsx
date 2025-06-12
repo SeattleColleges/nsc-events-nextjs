@@ -116,7 +116,7 @@ const Home = () => {
 
       <Box m={3} maxWidth={"md"}>
         {/* Toggle button to show/hide the TagSelector */}
-        <Button variant="contained" sx={{background: palette.primary.main, color: palette.primary.contrastText}} onClick={toggleTagVisibility}>
+        <Button variant="contained" sx={{ background: palette.primary.main, color: palette.primary.contrastText }} onClick={toggleTagVisibility}>
           {showTags ? "Hide Tags" : "Filter by Tags"}
         </Button>
 
