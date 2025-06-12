@@ -49,7 +49,8 @@ function HomeEventsCard({ event }: EventCardProps) {
           {!isMobile && (
             <CardMedia
               component="img"
-              image={event.eventCoverPhoto}
+              // image={event.eventCoverPhoto} this is the original line of code below
+              image={event.eventCoverPhoto == '' ? event.eventCoverPhoto : '/images/defaultLogo.jpg'}
               alt={event.eventTitle}
               sx={{
                 objectFit: "cover",
