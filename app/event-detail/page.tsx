@@ -414,7 +414,7 @@ const EventDetail = () => {
             <Box sx={{ position: "relative", display: "inline-block", width: "100%" }}>
                 <CardMedia
                   component="img"
-                  image={event.eventCoverPhoto}
+                  image={event.eventCoverPhoto ? event.eventCoverPhoto : '/images/default_cover_detail_light.png'}
                   alt={event.eventTitle}
                   sx={{ height: "37vh", width: "100%", objectFit: "cover" }}
                 />
