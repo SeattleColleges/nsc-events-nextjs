@@ -87,16 +87,24 @@ const AttendDialog = ({ isOpen, eventId, dialogToggle, onSuccess }: AttendDialog
     };
 
     const { mutate: attendEventMutation } = useMutation({
-        mutationFn: attendEvent,
-        onSuccess: (data) => {
-            if (data) {
-                setSnackbarMessage("You are now attending this event!");
-                onSuccess && onSuccess();
-            } else {
-                setSnackbarMessage("Error: Unable to attend the event.");
-            }
+      mutationFn: attendEvent,
+      onSuccess: async (data) => {
+        if (data) {
+          setSnackbarMessage("You are now attending this event!");
+          dialogToggle(); // close dialog here
+          onSuccess && onSuccess();
+        } else {
+          setSnackbarMessage("Error: Unable to attend the event."); 
         }
+      },  
+      onError: () => {
+        setSnackbarMessage("Failed to attend the event."); 
+      },
     });
+
+    const handleAttend = () => {
+      attendEventMutation(eventId);
+    };
 
 
   return (
@@ -233,8 +241,7 @@ const AttendDialog = ({ isOpen, eventId, dialogToggle, onSuccess }: AttendDialog
             <Box>
               <Button
                 onClick={() => {
-                  attendEventMutation(eventId);
-                  handleDialogBtnClick();
+                  handleAttend();
                 }}
                 autoFocus
               >
