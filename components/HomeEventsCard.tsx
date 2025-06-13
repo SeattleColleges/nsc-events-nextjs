@@ -156,6 +156,7 @@ function HomeEventsCard({ event }: EventCardProps) {
                         year: 'numeric',
                         month: 'numeric',
                         day: 'numeric',
+                        timeZone: 'UTC',
                     })}
                     <br/>
                     <strong>Start Time:</strong> {event.eventStartTime}
