@@ -147,33 +147,41 @@ function HomeEventsCard({ event }: EventCardProps) {
               })}
             </Box>
           </Box>
+          
+            <Box>
+              <Typography fontFamily="font-serif">
+                <strong>Location:</strong> {event.eventLocation}
+              </Typography>
+                <Typography fontFamily="font-serif">
+                    <strong>Date:&nbsp;</strong>
+                    {new Date(event.eventDate).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'numeric',
+                        day: 'numeric',
+                        timeZone: 'UTC',
+                    })}
+                    <br/>
+                    <strong>Start Time:</strong> {event.eventStartTime}
+                    <br/>
+                    <strong>End Time:</strong> {event.eventEndTime}
+                </Typography>
 
-          <Box>
-            <Typography fontFamily="font-serif">
-              <strong>Location:</strong> {event.eventLocation}
-            </Typography>
-            <Typography fontFamily="font-serif">
-              <strong>Start Time:</strong> {event.eventStartTime}
-              <br />
-              <strong>End Time:</strong> {event.eventEndTime}
-            </Typography>
-
-            <Typography
-              fontFamily="font-serif"
-              mt={1}
-              sx={{
-                display: "-webkit-box",
-                WebkitBoxOrient: "vertical",
-                WebkitLineClamp: 3, // adjust if necessary
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                height: "4.5rem", // fixed height for 3 lines
-                wordBreak: "break-word", // allow word wrapping
-              }}
-            >
-              {event.eventDescription}
-            </Typography>
-          </Box>
+                <Typography
+                fontFamily="font-serif"
+                mt={1}
+                sx={{
+                  display: "-webkit-box",
+                  WebkitBoxOrient: "vertical",
+                  WebkitLineClamp: 3, // adjust if necessary
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  height: "4.5rem", // fixed height for 3 lines
+                  wordBreak: "break-word", // allow word wrapping
+                }}
+              >
+                {event.eventDescription}
+              </Typography>
+            </Box>
 
           <Box mt="auto">
             <Typography>
