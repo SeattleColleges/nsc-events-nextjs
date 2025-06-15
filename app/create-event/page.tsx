@@ -72,6 +72,7 @@ const CreateEvent: React.FC = () => {
     e.preventDefault();
     if (newTag && !customTags.includes(normalizedNewTag)) {
       setCustomTags([...customTags, normalizedNewTag]);
+      handleTagClick(normalizedNewTag)
       setNewTag("");
     }
   };
