@@ -37,7 +37,13 @@ export const useEditForm = (initialData: ActivityDatabase) => {
 
   useEffect(() => {
     setEventData(initialData as ActivityDatabase)
-    setSelectedDate(new Date(eventData.eventDate))
+    if (eventData.eventDate) {
+      // Convert the eventDate from UTC to local date
+      const utcDateString = eventData.eventDate.split("T")[0]; 
+      // Convert to local date with time set to midnight
+      const localDate = new Date(`${utcDateString}T00:00:00`);
+      setSelectedDate(localDate);
+    }
   }, [eventData.eventDate, initialData, setEventData]);
 
   const {
@@ -50,7 +56,14 @@ export const useEditForm = (initialData: ActivityDatabase) => {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const newErrors = validateFormData(eventData);
+    let newErrors = validateFormData(eventData);
+
+    // Add timeError if it exists
+    // timeError is being set in useDateTimeSelection hook if startTime is after endTime
+    if (timeError) {
+      newErrors = { ...newErrors, eventStartTime: timeError };
+    }
+
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
     } else {
@@ -62,7 +75,7 @@ export const useEditForm = (initialData: ActivityDatabase) => {
     setSelectedDate(newDate);
   };
 
-  const to24HourTime  = (time: string) => {
+  const to24HourTime = (time: string) => {
     return parse(time, 'hh:mma', new Date());
   }
 
@@ -87,8 +100,16 @@ export const useEditForm = (initialData: ActivityDatabase) => {
     const { createdByUser, ...dataToSend } = activityData;
 
     if (selectedDate) {
-      dataToSend.eventDate = selectedDate.toISOString().split('T')[0];
+      // Convert selectedDate to UTC midnight
+      const utcMidnight = new Date(Date.UTC(
+        selectedDate.getFullYear(),
+        selectedDate.getMonth(),
+        selectedDate.getDate()
+      ));
+      // Set the eventDate to the UTC midnight date
+      dataToSend.eventDate = utcMidnight.toISOString();
     }
+
     if (startTime) {
       dataToSend.eventStartTime = to12HourTime(startTime);
     }

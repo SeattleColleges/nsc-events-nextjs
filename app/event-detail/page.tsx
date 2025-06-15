@@ -236,13 +236,12 @@ const EventDetail = () => {
     }
   }, [queryClient, data, eventIds]);
 
-  
   useEffect(() => {
     const fetchAttendeeData = async () => {
-      if (!event?._id || userRole !== "admin" &&
-                    (userRole === "creator" && event?.createdByUser !== userId)) {
+      if (!event?._id) { // if event is null, return
         return;
-      }
+      } 
+
       try {
         const apiUrl = process.env.NSC_EVENTS_PUBLIC_API_URL;
         const res = await fetch(`${apiUrl}/event-registration/event/${event._id}`, {
@@ -250,18 +249,27 @@ const EventDetail = () => {
             Authorization: `Bearer ${token}`,
           },
         });
+
         const data = await res.json();
         setAttendeeCount(data.count);
         setAnonymousCount(data.anonymousCount);
-        setAttendeeNames(data.attendeeNames || []);
-        setAttendees(data.attendees || []);
+
+        // Only set full attendee details if user has permission
+        if (
+          userRole === "admin" ||
+          (userRole === "creator" && event?.createdByUser === userId)
+        ) {
+          setAttendeeNames(data.attendeeNames || []);
+          setAttendees(data.attendees || []);
+        }
       } catch (err) {
         console.error("Failed to fetch attendee data", err);
       }
     };
-  
+    
+
     fetchAttendeeData();
-  }, [event, userRole, token]);
+  }, [event, userRole, token, userId]);
   
   const toggleAttendDialog = () => {
     if (token === "") {
@@ -340,6 +348,7 @@ const EventDetail = () => {
     mutationFn: unattendEvent,
     onSuccess: async () => {
       await queryClient.refetchQueries({ queryKey: ['events', 'myEvents', 'archivedEvents'] });
+      setAttendeeCount(prev => prev === null ? 0 : Math.max(prev - 1, 0)); // Update attendee count, or set to 0 if null, and ensure it doesn't go below 0
       setSnackbarMessage("Successfully unregistered from event.");
       setIsRegistered(false);      
     },
@@ -414,11 +423,11 @@ const EventDetail = () => {
             <Box sx={{ position: "relative", display: "inline-block", width: "100%" }}>
                 <CardMedia
                   component="img"
-                  image={event.eventCoverPhoto}
+                  image={event.eventCoverPhoto ? event.eventCoverPhoto : '/images/default_cover_detail_light.png'}
                   alt={event.eventTitle}
                   sx={{ height: "37vh", width: "100%", objectFit: "cover" }}
                 />
-                { event.eventCoverPhoto && (userRole === "admin" || (userRole === "creator" && event.createdByUser === userId)) && 
+                { (userRole === "admin" || (userRole === "creator" && event.createdByUser === userId)) && 
                   <Button
                     variant="contained"
                     color="primary"
@@ -457,27 +466,32 @@ const EventDetail = () => {
                   Location: {event.eventLocation}
                 </Typography>
 
-                {(userRole === "admin" ||
-                    (userRole === "creator" && event?.createdByUser === userId)) && attendeeCount !== null && (
-                <Box sx={{ mb: 2 }}>
-                  <Typography variant="h6" sx={{ mt: 2, fontWeight: "bold" }}>
-                    Attendees ({attendeeCount})
-                  </Typography>
-                  <Button
-                    variant="outlined"
-                    onClick={() => setViewDialogOpen(true)}
-                    sx={{ mt: 1 }}
-                  >
-                    View Attendees
-                  </Button>
-                  <ViewAttendeesDialog
-                    open={viewDialogOpen}
-                    onClose={() => setViewDialogOpen(false)}
-                    attendees={attendees}
-                  />
-                </Box>
-              )}
+                {attendeeCount !== null && (
+                  <Box sx={{ mb: 2 }}>
+                    {/* Attendee count visible to everyone */}
+                    <Typography variant="h6" sx={{ mt: 2, fontWeight: "bold" }}>
+                      Attendees ({attendeeCount ?? 0}) {/* fallback to 0 if attendeeCount is null */}
+                    </Typography>
 
+                    {/* View button only visible to admins and event creators */}
+                    {(userRole === "admin" || (userRole === "creator" && event?.createdByUser === userId)) && (
+                      <>
+                        <Button
+                          variant="outlined"
+                          onClick={() => setViewDialogOpen(true)}
+                          sx={{ mt: 1 }}
+                        >
+                          View Attendees
+                        </Button>
+                        <ViewAttendeesDialog
+                          open={viewDialogOpen}
+                          onClose={() => setViewDialogOpen(false)}
+                          attendees={attendees}
+                        />
+                      </>
+                    )}
+                  </Box>
+                )}
 
               </CardContent>
             </Card>
@@ -660,7 +674,11 @@ const EventDetail = () => {
             isOpen={attendDialogOpen}
             eventId={event._id}
             dialogToggle={toggleAttendDialog}
-            onSuccess={() => setIsRegistered(true)}
+            onSuccess={() => {
+              setIsRegistered(true)
+              setAttendeeCount(prev => (prev ?? 0) + 1);
+              queryClient.refetchQueries({ queryKey: ['events', 'myEvents', 'archivedEvents'] }); // Optional safety refetch
+            }}
           />
           <ArchiveDialog
             isOpen={archiveDialogOpen}

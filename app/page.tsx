@@ -116,7 +116,7 @@ const Home = () => {
 
       <Box m={3} maxWidth={"md"}>
         {/* Toggle button to show/hide the TagSelector */}
-        <Button variant="contained" onClick={toggleTagVisibility}>
+        <Button variant="contained" sx={{ background: palette.primary.main, color: palette.primary.contrastText }} onClick={toggleTagVisibility}>
           {showTags ? "Hide Tags" : "Filter by Tags"}
         </Button>
 
@@ -133,7 +133,7 @@ const Home = () => {
         {/* Display the events */}
         {events && events.length > 0 ? (
           events.map((event: ActivityDatabase) => (
-            <Grid size={{ xs: 12, md: 12, lg: 6 }} key={event._id} sx={{}}>
+            <Grid size={{ xs: 12, md: 12, lg: 6 }} display="flex" key={event._id} sx={{}}>
               <HomeEventsCard event={event} />
             </Grid>
           ))
